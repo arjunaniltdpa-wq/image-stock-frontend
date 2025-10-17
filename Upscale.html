@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ✅ SEO Optimized Title -->
+  <title>Free AI Image Upscaler Online | Enhance & Enlarge Images - Pexelora</title>
+
+  <!-- ✅ Meta Description -->
+  <meta name="description" content="Use Pexelora’s free AI Image Upscaler to enlarge and enhance images online. Improve photo resolution, sharpen details, and upscale instantly without losing quality." />
+
+  <!-- ✅ Meta Keywords -->
+  <meta name="keywords" content="AI image upscaler, free image upscaler, upscale photo online, enhance image resolution, enlarge image, AI photo enhancer, Pexelora" />
+
+  <!-- ✅ Canonical URL -->
+  <link rel="canonical" href="https://www.yoursite.com/upscale.html" />
+
+  <!-- ✅ Open Graph (Social Sharing) -->
+  <meta property="og:title" content="Free AI Image Upscaler Online | Pexelora" />
+  <meta property="og:description" content="Enlarge and enhance photos instantly with Pexelora’s AI Image Upscaler. Free, fast, and high-quality image upscaling online." />
+  <meta property="og:image" content="https://www.yoursite.com/images/upscale-tool.jpg" />
+  <meta property="og:url" content="https://www.yoursite.com/upscale.html" />
+  <meta property="og:type" content="website" />
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free AI Image Upscaler | Pexelora" />
+  <meta name="twitter:description" content="Upscale and enhance images instantly with AI. Free online tool by Pexelora." />
+  <meta name="twitter:image" content="https://www.yoursite.com/images/upscale-tool.jpg" />
+
+  <!-- ✅ Favicon -->
+  <link rel="icon" href="images/favicon.png" type="image/png">
+
+  <!-- ✅ Styles -->
+  <link rel="stylesheet" href="css/upscale.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
+
+  <!-- ✅ UpscalerJS library -->
+  <script src="https://cdn.jsdelivr.net/npm/upscaler/dist/browser/umd/upscaler.min.js"></script>
+
+  <style>
+    /* ✅ Simple CSS Loader */
+    #loader {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 10px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ Header -->
+  <header class="main-header">
+    <a href="index.html" class="logo-link">Pexelora</a>
+    <nav class="nav-menu">
+      <a href="upscale.html" class="nav-item active">Upscale</a>
+      <a href="bgremove.html" class="nav-item">BG Remove</a>
+      <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
+      <a href="formatconverter.html" class="nav-item">Format Converter</a>
+    </nav>
+  </header>
+
+  <!-- ✅ Hero -->
+  <section class="hero">
+    <h1>FREE AI Image Upscaler</h1>
+    <p>Upscale images with AI. Sharpen and enhance photos automatically with our free tool. Upload and upscale in seconds.</p>
+  </section>
+
+  <!-- ✅ Upload -->
+  <section class="upload-box">
+    <input type="file" id="uploadInput" accept="image/*" />
+    <p class="upload-note">Supports .jpg, .png (Max size: 5MB)</p>
+    <button id="upscaleBtn">Upscale Image</button>
+    <!-- ✅ Loader -->
+    <div id="loader">
+      <div class="spinner"></div>
+      <p>Upscaling in progress...</p>
+    </div>
+  </section>
+
+  <!-- ✅ Preview -->
+  <section class="preview-section">
+    <h2>Preview Your Upscaled Image</h2>
+    <img id="previewImg" src="https://via.placeholder.com/600x300" alt="Upscaled Image Preview - Pexelora">
+    <div class="download-btn">
+      <a id="downloadLink" href="#" download="upscaled.png" style="display:none;">
+        <button>Download (after 5s ad)</button>
+      </a>
+    </div>
+  </section>
+
+  <!-- Ads -->
+  <section class="ad-section">
+    <p>Reward Ad Placeholder — Show this every 3 image processes</p>
+  </section>
+
+  <!-- ✅ Other Tools Section -->
+  <section class="other-tools">
+    <!-- Tool 1 -->
+    <div class="tool">
+      <div class="tool-img">
+        <img src="images/upscale-tool.jpg" alt="AI Image Upscaler Tool" />
+      </div>
+      <div class="tool-text">
+        <h3>AI Image Upscaler</h3>
+        <p>Enlarge and enhance images with smart AI algorithms to improve quality instantly.</p>
+        <a href="upscale.html">Try Upscaler</a>
+      </div>
+    </div>
+
+    <!-- Tool 2 -->
+    <div class="tool reverse">
+      <div class="tool-text">
+        <h3>Background Remover</h3>
+        <p>Remove backgrounds from images automatically for use in designs and product shots.</p>
+        <a href="bgremove.html">Try BG Remover</a>
+      </div>
+      <div class="tool-img">
+        <img src="images/bg-remove-tool.jpg" alt="Background Remover Tool" />
+      </div>
+    </div>
+
+    <!-- Tool 3 -->
+    <div class="tool">
+      <div class="tool-img">
+        <img src="images/image-compressor.jpg" alt="Image Compressor Tool" />
+      </div>
+      <div class="tool-text">
+        <h3>Image Compressor</h3>
+        <p>Reduce file size without losing quality. Ideal for web, email, and social media use.</p>
+        <a href="imagecompressor.html">Try Compressor</a>
+      </div>
+    </div>
+
+    <!-- Tool 4 -->
+    <div class="tool reverse">
+      <div class="tool-text">
+        <h3>Format Converter</h3>
+        <p>Quickly convert image formats like JPG, PNG, WebP, and more with high quality.</p>
+        <a href="formatconverter.html">Try Converter</a>
+      </div>
+      <div class="tool-img">
+        <img src="images/format-converter.jpg" alt="Image Format Converter Tool" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ Footer -->
+  <footer>
+    &copy; 2025 Pexelora. All rights reserved.
+  </footer>
+
+  <script>
+  const upscaleBtn = document.getElementById("upscaleBtn");
+  const uploadInput = document.getElementById("uploadInput");
+  const previewImg = document.getElementById("previewImg");
+  const downloadLink = document.getElementById("downloadLink");
+  const loader = document.getElementById("loader");
+
+  let uploadedImage = null;
+
+  // Load image when selected
+  uploadInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        uploadedImage = e.target.result; // Save base64 for Upscaler
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Upscale with UpscalerJS (free, no API needed)
+  upscaleBtn.addEventListener("click", async () => {
+    if (!uploadedImage) {
+      alert("Please upload an image first!");
+      return;
+    }
+
+    // Show loader & disable button
+    loader.style.display = "block";
+    upscaleBtn.disabled = true;
+
+    const upscaler = new Upscaler();
+    const upscaledDataUrl = await upscaler.upscale(uploadedImage);
+
+    // Hide loader
+    loader.style.display = "none";
+
+    // Show result in preview
+    previewImg.src = upscaledDataUrl;
+
+    // Enable download button
+    downloadLink.href = upscaledDataUrl;
+    downloadLink.style.display = "inline-block";
+
+    // Reset button state
+    upscaleBtn.disabled = false;
+  });
+</script>
+
+</body>
+</html>

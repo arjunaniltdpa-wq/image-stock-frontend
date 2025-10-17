@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <!-- ✅ SEO Meta -->
+  <title>Free Online Image Format Converter | JPG, PNG, WebP, TIFF & PDF - Pexelora</title>
+  <meta name="description" content="Convert images online for free with Pexelora. Supports JPG, PNG, WebP, TIFF, and PDF formats. Fast, secure, no signup required." />
+  <meta name="keywords" content="image format converter, jpg to png, png to jpg, convert to webp, tiff converter, pdf image converter, online image tools" />
+  <link rel="canonical" href="https://www.yoursite.com/formatconverter.html" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Free Online Image Format Converter | Pexelora" />
+  <meta property="og:description" content="Easily convert your images to JPG, PNG, WebP, TIFF, or PDF formats online. 100% free and secure with Pexelora." />
+  <meta property="og:image" content="https://www.yoursite.com/images/format-converter.jpg" />
+  <meta property="og:url" content="https://www.yoursite.com/formatconverter.html" />
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free Online Image Format Converter | Pexelora" />
+  <meta name="twitter:description" content="Convert JPG, PNG, WebP, TIFF, and PDF formats online. Free, fast, and simple." />
+  <meta name="twitter:image" content="https://www.yoursite.com/images/format-converter.jpg" />
+
+  <!-- ✅ Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Pexelora - Free Image Format Converter",
+    "url": "https://www.yoursite.com/formatconverter.html",
+    "applicationCategory": "Multimedia",
+    "operatingSystem": "Web",
+    "description": "Convert images instantly between JPG, PNG, WebP, TIFF, and PDF formats. Free online converter powered by Pexelora.",
+    "image": "https://www.yoursite.com/images/format-converter.jpg",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Pexelora",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.yoursite.com/images/logo.png"
+      }
+    }
+  }
+  </script>
+
+  <!-- ✅ Fonts & CSS -->
+  <link rel="stylesheet" href="css/formatconverter.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
+
+  <style>
+    /* 🔄 Simple converting animation */
+    .loading {
+      display: none;
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    .loading::after {
+      content: "⏳";
+      display: inline-block;
+      margin-left: 8px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 📷 Preview */
+    .preview-box {
+      margin-top: 15px;
+      display: none;
+      text-align: center;
+    }
+    .preview-box img {
+      max-width: 300px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+    }
+
+    /* 🎨 Format button styles */
+    .format-options button {
+      padding: 10px 18px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f8f8f8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .format-options button:hover {
+      background: #eaeaea;
+    }
+    .format-options button.active {
+      background: #4caf50;
+      color: #fff;
+      border-color: #4caf50;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ Header -->
+  <header class="main-header">
+    <a href="index.html" class="logo-link">Pexelora</a>
+    <nav class="nav-menu">
+      <a href="upscale.html" class="nav-item">Upscale</a>
+      <a href="bgremove.html" class="nav-item">BG Remove</a>
+      <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
+      <a href="formatconverter.html" class="nav-item active">Format Converter</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>FREE Image Format Converter</h1>
+    <p>Convert images between PNG, JPG, WebP, TIFF and PDF. Fast and simple online image conversion with AI optimization.</p>
+  </section>
+
+  <section class="upload-box">
+    <p>Drop your image here or click to upload</p>
+    <input type="file" id="uploadInput" accept="image/*" hidden />
+    <button onclick="document.getElementById('uploadInput').click()">Upload Image</button>
+    <p class="upload-note">Supports .jpg, .png, .webp, .tiff (Max size: 5MB)</p>
+
+    <!-- 📷 Preview container -->
+    <div class="preview-box" id="previewBox">
+      <h3>Preview:</h3>
+      <img id="previewImage" alt="Uploaded Preview"/>
+    </div>
+  </section>
+
+  <section class="conversion-section">
+    <h2>Select Output Format</h2>
+    <div class="format-options">
+      <button onclick="setFormat('jpg', this)">JPG</button>
+      <button onclick="setFormat('png', this)">PNG</button>
+      <button onclick="setFormat('webp', this)">WEBP</button>
+      <button onclick="setFormat('tiff', this)">TIFF</button>
+      <button onclick="setFormat('pdf', this)">PDF</button>
+    </div>
+    <div class="download-btn">
+      <button onclick="convertImage()">Convert & Download</button>
+      <div class="loading" id="loading">Converting...</div>
+    </div>
+  </section>
+
+  <!-- ✅ Other Tools -->
+  <section class="other-tools">
+    <div class="tool">
+      <div class="tool-img">
+        <img src="images/upscale-tool.jpg" alt="AI Image Upscaler" />
+      </div>
+      <div class="tool-text">
+        <h3>AI Image Upscaler</h3>
+        <p>Enlarge and enhance images with smart AI algorithms to improve quality instantly.</p>
+        <a href="upscale.html">Try Upscaler</a>
+      </div>
+    </div>
+
+    <div class="tool reverse">
+      <div class="tool-text">
+        <h3>Background Remover</h3>
+        <p>Remove backgrounds from images automatically for use in designs and product shots.</p>
+        <a href="bgremove.html">Try BG Remover</a>
+      </div>
+      <div class="tool-img">
+        <img src="images/bg-remove-tool.jpg" alt="Background Remover" />
+      </div>
+    </div>
+
+    <div class="tool">
+      <div class="tool-img">
+        <img src="images/image-compressor.jpg" alt="Image Compressor" />
+      </div>
+      <div class="tool-text">
+        <h3>Image Compressor</h3>
+        <p>Reduce file size without losing quality. Ideal for web, email, and social media use.</p>
+        <a href="imagecompressor.html">Try Compressor</a>
+      </div>
+    </div>
+
+    <div class="tool reverse">
+      <div class="tool-text">
+        <h3>Format Converter</h3>
+        <p>Quickly convert image formats like JPG, PNG, WebP, TIFF, and PDF with high quality.</p>
+        <a href="formatconverter.html">Try Converter</a>
+      </div>
+      <div class="tool-img">
+        <img src="images/format-converter.jpg" alt="Format Converter" />
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Pexelora. All rights reserved.
+  </footer>
+
+  <script>
+    let selectedFile = null;
+    let outputFormat = "jpg";
+
+    // 📂 Preview image
+    document.getElementById("uploadInput").addEventListener("change", (e) => {
+      selectedFile = e.target.files[0];
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById("previewImage").src = event.target.result;
+          document.getElementById("previewBox").style.display = "block";
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    });
+
+    // 🎨 Highlight selected format
+    function setFormat(fmt, btn) {
+      outputFormat = fmt;
+      document.querySelectorAll(".format-options button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    // 🔄 Conversion logic (optimized, no delay)
+    async function convertImage() {
+      if (!selectedFile) {
+        alert("Please upload an image first!");
+        return;
+      }
+
+      const loading = document.getElementById("loading");
+      loading.style.display = "block";
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = function() {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          let mime = "image/jpeg";
+          if (outputFormat === "png") mime = "image/png";
+          if (outputFormat === "webp") mime = "image/webp";
+          if (outputFormat === "tiff") mime = "image/tiff";
+
+          if (outputFormat === "pdf") {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            // 📏 Scale image to fit PDF page
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
+            const w = img.width * ratio;
+            const h = img.height * ratio;
+            const x = (pageWidth - w) / 2;
+            const y = (pageHeight - h) / 2;
+
+            pdf.addImage(canvas.toDataURL("image/jpeg"), "JPEG", x, y, w, h);
+            pdf.save("converted.pdf");
+          } else {
+            const link = document.createElement("a");
+            link.download = "converted." + outputFormat;
+            link.href = canvas.toDataURL(mime);
+            link.click();
+          }
+          loading.style.display = "none";
+        };
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  </script>
+
+  <!-- ✅ jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html>

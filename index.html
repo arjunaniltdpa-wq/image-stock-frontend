@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pexelora - Free Wallpapers</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Top Header with Tools Dropdown -->
+  <header class="top-header">
+    <div class="top-nav-container">
+      <div class="logo">Pexelora</div>
+      <nav class="nav-links" role="navigation" aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li class="dropdown">
+            <a href="#">Tools</a>
+            <ul class="dropdown-content">
+              <li><a href="upscale.html" class="tool">Upscale</a></li>
+              <li><a href="bgremove.html" class="tool">BG Remove</a></li>
+              <li><a href="imagecompressor.html" class="tool">Image Compressor</a></li>
+              <li><a href="formatconverter.html" class="tool">Format Converter</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Banner Section -->
+    <section class="banner">
+      <div class="banner-content">
+        <form class="search-bar-wrapper" action="search.html" method="GET">
+          <div class="search-bar-border">
+            <div class="search-bar">
+              <input type="text" name="query" placeholder="Search Images" required>
+              <button type="submit" class="search-icon">
+                <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
+              </button>
+            </div>
+          </div>
+        </form>
+        <h2 class="banner-text">Explore Free HD<br>Wallpapers & Stock Images</h2>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+      <div class="category-grid">
+        <a href="search.html?query=nature" class="category">Nature</a>
+        <a href="search.html?query=business" class="category">Business</a>
+        <a href="search.html?query=technology" class="category">Technology</a>
+        <a href="search.html?query=travel" class="category">Travel</a>
+        <a href="search.html?query=food" class="category">Food</a>
+        <a href="search.html?query=architecture" class="category">Architecture</a>
+        <a href="search.html?query=fashion" class="category">Fashion</a>
+        <a href="search.html?query=abstract" class="category">Abstract</a>
+        <a href="search.html?query=anime" class="category">Anime</a>
+      </div>
+    </section>
+
+    <!-- Popular Images (Masonry Grid) -->
+    <section class="popular-images" id="popular-images">
+      <div class="masonry-grid" id="image-container">
+        <!-- Example Images -->
+        <div class="image-item">
+          <a href="download.html?img=1015">
+            <img src="https://picsum.photos/id/1015/400/600" alt="Image 1" />
+          </a>
+          <a href="https://picsum.photos/id/1015/400/600" download class="download-overlay"></a>
+        </div>
+        <div class="image-item">
+          <a href="download.html?img=1016">
+            <img src="https://picsum.photos/id/1016/600/400" alt="Image 2" />
+          </a>
+          <a href="https://picsum.photos/id/1016/600/400" download class="download-overlay"></a>
+        </div>
+        <div class="image-item">
+          <a href="download.html?img=1018">
+            <img src="https://picsum.photos/id/1018/500/700" alt="Image 3" />
+          </a>
+          <a href="https://picsum.photos/id/1018/500/700" download class="download-overlay"></a>
+        </div>
+        <!-- More images loaded by infinite scroll -->
+      </div>
+    </section>
+
+  </main>
+
+ <script>
+const container = document.getElementById("image-container");
+const API_BASE = "http://localhost:5000/api/images"; // your backend
+
+let page = 1;
+const limit = 20; // number of images per fetch
+let loading = false;
+
+// Load initial images
+async function loadImages() {
+  if (loading) return;
+  loading = true;
+  const res = await fetch(`${API_BASE}?page=${page}&limit=${limit}`);
+  const images = await res.json();
+
+  images.forEach(img => {
+    const div = document.createElement("div");
+    div.classList.add("image-item");
+    div.innerHTML = `
+      <a href="${img.url}">
+        <img src="${img.url}" alt="${img.name}" />
+      </a>
+      <a href="${img.url}" download class="download-overlay"></a>
+    `;
+    container.appendChild(div);
+  });
+
+  page++;
+  loading = false;
+}
+
+// Infinite scroll
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    loadImages();
+  }
+});
+
+// Search
+const searchForm = document.querySelector(".search-bar-wrapper");
+searchForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const query = searchForm.query.value.trim();
+  container.innerHTML = ""; // clear current images
+  const res = await fetch(`${API_BASE}/search?q=${query}`);
+  const images = await res.json();
+  images.forEach(img => {
+    const div = document.createElement("div");
+    div.classList.add("image-item");
+    div.innerHTML = `
+      <a href="${img.url}">
+        <img src="${img.url}" alt="${img.name}" />
+      </a>
+      <a href="${img.url}" download class="download-overlay"></a>
+    `;
+    container.appendChild(div);
+  });
+});

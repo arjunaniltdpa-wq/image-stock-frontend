@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search - Pexelora</title>
+  <link rel="stylesheet" href="css/search.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header -->
+<div class="header">
+  <div class="header-overlay">
+    <a href="index.html" class="logo">Pexelora</a>
+    <div class="search-bar-wrapper">
+      <div class="search-bar-border">
+        <form class="search-bar" onsubmit="return redirectSearch()">
+          <input type="text" id="searchInput" placeholder="Search Image" required>
+          <button type="submit" class="search-icon"><i class="fas fa-search"></i></button>  
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Info -->
+<div class="search-info">
+  <p>Showing Results of</p>
+  <h1><span class="keyword">"Abstract Wallpapers"</span></h1>
+  <div class="image-count">100K Images</div>
+</div>
+
+<!-- New Ads Slot Between Count and Gallery -->
+<div class="ads-slot">
+  <img src="https://via.placeholder.com/970x90?text=Ad+Banner" alt="Ad Banner">
+</div>
+
+<!-- Layout -->
+<div class="layout-wrapper">
+  <!-- Left Ads -->
+  <div class="ads-column">Ads</div>
+
+  <!-- Gallery -->
+  <div class="gallery">
+
+    <!-- Repeat for 20 images with download active -->
+    <!-- Image 1 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=1&name=img1">
+        <img src="https://picsum.photos/300/400?random=1" alt="img1">
+      </a>
+      <a href="https://picsum.photos/800/600?random=1&name=img1" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 2 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=2&name=img2">
+        <img src="https://picsum.photos/300/300?random=2" alt="img2">
+      </a>
+      <a href="https://picsum.photos/800/600?random=2&name=img2" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 3 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=3&name=img3">
+        <img src="https://picsum.photos/300/500?random=3" alt="img3">
+      </a>
+      <a href="https://picsum.photos/800/600?random=3&name=img3" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 4 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=4&name=img4">
+        <img src="https://picsum.photos/300/250?random=4" alt="img4">
+      </a>
+      <a href="https://picsum.photos/800/600?random=4&name=img4" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 5 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=5&name=img5">
+        <img src="https://picsum.photos/300/350?random=5" alt="img5">
+      </a>
+      <a href="https://picsum.photos/800/600?random=5&name=img5" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 6 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=6&name=img6">
+        <img src="https://picsum.photos/300/450?random=6" alt="img6">
+      </a>
+      <a href="https://picsum.photos/800/600?random=6&name=img6" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 7 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=7&name=img7">
+        <img src="https://picsum.photos/300/400?random=7" alt="img7">
+      </a>
+      <a href="https://picsum.photos/800/600?random=7&name=img7" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 8 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=8&name=img8">
+        <img src="https://picsum.photos/300/300?random=8" alt="img8">
+      </a>
+      <a href="https://picsum.photos/800/600?random=8&name=img8" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 9 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=9&name=img9">
+        <img src="https://picsum.photos/300/500?random=9" alt="img9">
+      </a>
+      <a href="https://picsum.photos/800/600?random=9&name=img9" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 10 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=10&name=img10">
+        <img src="https://picsum.photos/300/250?random=10" alt="img10">
+      </a>
+      <a href="https://picsum.photos/800/600?random=10&name=img10" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 11 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=11&name=img11">
+        <img src="https://picsum.photos/300/350?random=11" alt="img11">
+      </a>
+      <a href="https://picsum.photos/800/600?random=11&name=img11" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 12 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=12&name=img12">
+        <img src="https://picsum.photos/300/450?random=12" alt="img12">
+      </a>
+      <a href="https://picsum.photos/800/600?random=12&name=img12" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 13 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=13&name=img13">
+        <img src="https://picsum.photos/300/400?random=13" alt="img13">
+      </a>
+      <a href="https://picsum.photos/800/600?random=13&name=img13" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 14 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=14&name=img14">
+        <img src="https://picsum.photos/300/300?random=14" alt="img14">
+      </a>
+      <a href="https://picsum.photos/800/600?random=14&name=img14" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 15 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=15&name=img15">
+        <img src="https://picsum.photos/300/500?random=15" alt="img15">
+      </a>
+      <a href="https://picsum.photos/800/600?random=15&name=img15" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 16 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=16&name=img16">
+        <img src="https://picsum.photos/300/250?random=16" alt="img16">
+      </a>
+      <a href="https://picsum.photos/800/600?random=16&name=img16" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 17 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=17&name=img17">
+        <img src="https://picsum.photos/300/350?random=17" alt="img17">
+      </a>
+      <a href="https://picsum.photos/800/600?random=17&name=img17" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 18 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=18&name=img18">
+        <img src="https://picsum.photos/300/450?random=18" alt="img18">
+      </a>
+      <a href="https://picsum.photos/800/600?random=18&name=img18" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 19 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=19&name=img19">
+        <img src="https://picsum.photos/300/400?random=19" alt="img19">
+      </a>
+      <a href="https://picsum.photos/800/600?random=19&name=img19" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+    <!-- Image 20 -->
+    <div class="image-card">
+      <a href="download.html?img=https://picsum.photos/800/600?random=20&name=img20">
+        <img src="https://picsum.photos/300/300?random=20" alt="img20">
+      </a>
+      <a href="https://picsum.photos/800/600?random=20&name=img20" class="download-icon" download>
+        <img src="images/download-icon.png" alt="Download" />
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Right Ads -->
+  <div class="ads-column right">Ads</div>
+</div>
+
+<!-- Bottom Ads -->
+<div class="ads-bottom">Ads</div>
+
+<div class="total-count">Total Images: 2400+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const query = params.get('query');
+if (query) {
+  const formattedQuery = query.charAt(0).toUpperCase() + query.slice(1);
+  const qSpan = document.querySelector('.keyword');
+  if (qSpan) {
+    qSpan.textContent = `"${formattedQuery}"`;
+  }
+}
+
+const imageCards = document.querySelectorAll('.image-card img');
+const modal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
+const downloadBtn = document.getElementById('downloadBtn');
+const closeBtn = document.querySelector('.modal-close');
+const modalContent = document.querySelector('.modal-content');
+const relatedGrid = document.querySelector('.related-grid');
+
+imageCards.forEach(img => {
+  img.addEventListener('click', () => {
+    modalImage.src = img.src;
+    if(downloadBtn) downloadBtn.href = img.src;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    if(relatedGrid) {
+      relatedGrid.innerHTML = '';
+      loadMoreRelatedImages();
+    }
+  });
+});
+
+if(closeBtn) closeBtn.addEventListener('click', closeModal);
+if(modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+</script>
+
+</body>
+</html>
