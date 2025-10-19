@@ -67,26 +67,6 @@
     <!-- Popular Images (Masonry Grid) -->
     <section class="popular-images" id="popular-images">
       <div class="masonry-grid" id="image-container">
-        <!-- Example Images -->
-        <div class="image-item">
-          <a href="download.html?img=1015">
-            <img src="https://picsum.photos/id/1015/400/600" alt="Image 1" />
-          </a>
-          <a href="https://picsum.photos/id/1015/400/600" download class="download-overlay"></a>
-        </div>
-        <div class="image-item">
-          <a href="download.html?img=1016">
-            <img src="https://picsum.photos/id/1016/600/400" alt="Image 2" />
-          </a>
-          <a href="https://picsum.photos/id/1016/600/400" download class="download-overlay"></a>
-        </div>
-        <div class="image-item">
-          <a href="download.html?img=1018">
-            <img src="https://picsum.photos/id/1018/500/700" alt="Image 3" />
-          </a>
-          <a href="https://picsum.photos/id/1018/500/700" download class="download-overlay"></a>
-        </div>
-        <!-- More images loaded by infinite scroll -->
       </div>
     </section>
 
@@ -94,59 +74,88 @@
 
  <script>
 const container = document.getElementById("image-container");
-const API_BASE = "http://localhost:3000/api/images";
+const API_BASE = "https://image-stock-backend.onrender.com/api/images"; // backend API
 
 let page = 1;
-const limit = 20; // number of images per fetch
+const limit = 20; // images per request
 let loading = false;
 
-// Load initial images
+// Function to create image divs
+function createImageDiv(img) {
+  const div = document.createElement("div");
+  div.classList.add("image-item");
+
+  // Use the full URL from backend
+  const fileUrl = img.url.startsWith("http") ? img.url : `${img.url}`;
+
+  div.innerHTML = `
+    <a href="${fileUrl}">
+      <img src="${fileUrl}" alt="${img.name}" />
+    </a>
+    <a href="${fileUrl}" download class="download-overlay"></a>
+  `;
+  container.appendChild(div);
+}
+
+// Load images from backend
 async function loadImages() {
   if (loading) return;
   loading = true;
-  const res = await fetch(`${API_BASE}?page=${page}&limit=${limit}`);
-  const images = await res.json();
 
-  images.forEach(img => {
-    const div = document.createElement("div");
-    div.classList.add("image-item");
-    div.innerHTML = `
-      <a href="${img.url}">
-        <img src="${img.url}" alt="${img.name}" />
-      </a>
-      <a href="${img.url}" download class="download-overlay"></a>
-    `;
-    container.appendChild(div);
-  });
+  try {
+    const res = await fetch(`${API_BASE}?page=${page}&limit=${limit}`);
+    const data = await res.json();
 
-  page++;
-  loading = false;
+    // Check if API returns `images` or direct array
+    const images = data.images || data;
+
+    if (images.length === 0) {
+      // No more images to load
+      window.removeEventListener("scroll", onScroll);
+      return;
+    }
+
+    images.forEach(img => createImageDiv(img));
+    page++;
+  } catch (err) {
+    console.error("Error loading images:", err);
+  } finally {
+    loading = false;
+  }
 }
 
 // Infinite scroll
-window.addEventListener("scroll", () => {
+function onScroll() {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
     loadImages();
   }
-});
+}
+window.addEventListener("scroll", onScroll);
 
-// Search
+// Initial load
+loadImages();
+
+// Search functionality
 const searchForm = document.querySelector(".search-bar-wrapper");
 searchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const query = searchForm.query.value.trim();
   container.innerHTML = ""; // clear current images
-  const res = await fetch(`${API_BASE}/search?q=${query}`);
-  const images = await res.json();
-  images.forEach(img => {
-    const div = document.createElement("div");
-    div.classList.add("image-item");
-    div.innerHTML = `
-      <a href="${img.url}">
-        <img src="${img.url}" alt="${img.name}" />
-      </a>
-      <a href="${img.url}" download class="download-overlay"></a>
-    `;
-    container.appendChild(div);
-  });
+  page = 1; // reset page
+
+  try {
+    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    const images = data.images || data;
+
+    if (images.length === 0) {
+      container.innerHTML = "<p>No images found.</p>";
+      return;
+    }
+
+    images.forEach(img => createImageDiv(img));
+  } catch (err) {
+    console.error("Search error:", err);
+  }
 });
+</script>
