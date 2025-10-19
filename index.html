@@ -80,13 +80,12 @@ let page = 1;
 const limit = 20; // images per request
 let loading = false;
 
-// Function to create image divs
 function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  // Use the full URL from backend
-  const fileUrl = img.url.startsWith("http") ? img.url : `${img.url}`;
+  // Correct URL using backend proxy
+  const fileUrl = `https://image-stock-backend.onrender.com/api/images/file/${encodeURIComponent(img.name)}`;
 
   div.innerHTML = `
     <a href="${fileUrl}">
@@ -96,6 +95,8 @@ function createImageDiv(img) {
   `;
   container.appendChild(div);
 }
+
+
 
 // Load images from backend
 async function loadImages() {
