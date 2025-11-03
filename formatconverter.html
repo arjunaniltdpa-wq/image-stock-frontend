@@ -10,94 +10,37 @@
   <meta name="keywords" content="image format converter, jpg to png, png to jpg, convert to webp, tiff converter, pdf image converter, online image tools" />
   <link rel="canonical" href="https://www.yoursite.com/formatconverter.html" />
 
-  <!-- ✅ Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Free Online Image Format Converter | Pexelora" />
-  <meta property="og:description" content="Easily convert your images to JPG, PNG, WebP, TIFF, or PDF formats online. 100% free and secure with Pexelora." />
-  <meta property="og:image" content="https://www.yoursite.com/images/format-converter.jpg" />
-  <meta property="og:url" content="https://www.yoursite.com/formatconverter.html" />
-
-  <!-- ✅ Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Free Online Image Format Converter | Pexelora" />
-  <meta name="twitter:description" content="Convert JPG, PNG, WebP, TIFF, and PDF formats online. Free, fast, and simple." />
-  <meta name="twitter:image" content="https://www.yoursite.com/images/format-converter.jpg" />
-
-  <!-- ✅ Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Pexelora - Free Image Format Converter",
-    "url": "https://www.yoursite.com/formatconverter.html",
-    "applicationCategory": "Multimedia",
-    "operatingSystem": "Web",
-    "description": "Convert images instantly between JPG, PNG, WebP, TIFF, and PDF formats. Free online converter powered by Pexelora.",
-    "image": "https://www.yoursite.com/images/format-converter.jpg",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Pexelora",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.yoursite.com/images/logo.png"
-      }
-    }
-  }
-  </script>
-
   <!-- ✅ Fonts & CSS -->
   <link rel="stylesheet" href="css/formatconverter.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
 
   <style>
     /* 🔄 Simple converting animation */
-    .loading {
-      display: none;
-      margin-top: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #333;
-    }
-    .loading::after {
-      content: "⏳";
-      display: inline-block;
-      margin-left: 8px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    .loading { display: none; margin-top: 15px; font-size: 16px; font-weight: bold; color: #333; }
+    .loading::after { content: "⏳"; display: inline-block; margin-left: 8px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     /* 📷 Preview */
-    .preview-box {
-      margin-top: 15px;
-      display: none;
-      text-align: center;
-    }
-    .preview-box img {
-      max-width: 300px;
-      border-radius: 10px;
-      border: 2px solid #ddd;
-    }
+    .preview-box { margin-top: 15px; display: none; text-align: center; }
+    .preview-box img { max-width: 300px; border-radius: 10px; border: 2px solid #ddd; width: 100%; height: auto; }
 
     /* 🎨 Format button styles */
-    .format-options button {
-      padding: 10px 18px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #f8f8f8;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .format-options button:hover {
-      background: #eaeaea;
-    }
-    .format-options button.active {
-      background: #4caf50;
-      color: #fff;
-      border-color: #4caf50;
-      font-weight: bold;
+    .format-options button { padding: 10px 18px; border: 1px solid #ccc; border-radius: 8px; background: #f8f8f8; cursor: pointer; transition: all 0.2s ease; margin: 5px; }
+    .format-options button:hover { background: #eaeaea; }
+    .format-options button.active { background: #4caf50; color: #fff; border-color: #4caf50; font-weight: bold; }
+
+    /* 🟢 Hamburger menu */
+    .hamburger { display: none; flex-direction: column; cursor: pointer; margin-left: auto; gap: 5px; }
+    .hamburger div { width: 25px; height: 3px; background-color: #333; transition: all 0.3s ease; }
+    @media (max-width: 1024px) {
+      .nav-menu { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 220px; }
+      .nav-menu.active { display: flex; }
+      .hamburger { display: flex; }
+      .hero h1 { font-size: 24px; }
+      .hero p { font-size: 14px; }
+      .format-options button { padding: 8px 12px; font-size: 14px; }
+      .preview-box img { max-width: 100%; }
+      .other-tools .tool img { max-width: 100%; height: auto; }
     }
   </style>
 </head>
@@ -106,7 +49,12 @@
   <!-- ✅ Header -->
   <header class="main-header">
     <a href="index.html" class="logo-link">Pexelora</a>
-    <nav class="nav-menu">
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav class="nav-menu" id="navMenu">
       <a href="upscale.html" class="nav-item">Upscale</a>
       <a href="bgremove.html" class="nav-item">BG Remove</a>
       <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
@@ -125,7 +73,6 @@
     <button onclick="document.getElementById('uploadInput').click()">Upload Image</button>
     <p class="upload-note">Supports .jpg, .png, .webp, .tiff (Max size: 5MB)</p>
 
-    <!-- 📷 Preview container -->
     <div class="preview-box" id="previewBox">
       <h3>Preview:</h3>
       <img id="previewImage" alt="Uploaded Preview"/>
@@ -147,7 +94,7 @@
     </div>
   </section>
 
-  <!-- ✅ Other Tools -->
+  <!-- ✅ Other Tools Section -->
   <section class="other-tools">
     <div class="tool">
       <div class="tool-img">
@@ -198,86 +145,66 @@
     &copy; 2025 Pexelora. All rights reserved.
   </footer>
 
-  <script>
-    let selectedFile = null;
-    let outputFormat = "jpg";
+<script>
+let selectedFile = null;
+let outputFormat = "jpg";
 
-    // 📂 Preview image
-    document.getElementById("uploadInput").addEventListener("change", (e) => {
-      selectedFile = e.target.files[0];
-      if (selectedFile) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          document.getElementById("previewImage").src = event.target.result;
-          document.getElementById("previewBox").style.display = "block";
-        };
-        reader.readAsDataURL(selectedFile);
-      }
-    });
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('active'); // toggles dropdown
+});
 
-    // 🎨 Highlight selected format
-    function setFormat(fmt, btn) {
-      outputFormat = fmt;
-      document.querySelectorAll(".format-options button").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+// Preview image
+document.getElementById("uploadInput").addEventListener("change", (e) => {
+  selectedFile = e.target.files[0];
+  if (selectedFile) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      document.getElementById("previewImage").src = event.target.result;
+      document.getElementById("previewBox").style.display = "block";
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+});
+
+// Highlight selected format
+function setFormat(fmt, btn) {
+  outputFormat = fmt;
+  document.querySelectorAll(".format-options button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+// Conversion logic
+async function convertImage() {
+  if (!selectedFile) { alert("Please upload an image first!"); return; }
+
+  const loading = document.getElementById("loading");
+  loading.style.display = "inline-block";
+
+  const formData = new FormData();
+  formData.append("image_file", selectedFile);
+  formData.append("format", outputFormat);
+
+  try {
+    const response = await fetch("http://localhost:3000/api/convert", { method: "POST", body: formData });
+    if (!response.ok) {
+      let errMsg = "Conversion failed";
+      try { const errJson = await response.json(); errMsg = errJson.message || errMsg; } catch {}
+      throw new Error(errMsg);
     }
 
-    // 🔄 Conversion logic (optimized, no delay)
-    async function convertImage() {
-      if (!selectedFile) {
-        alert("Please upload an image first!");
-        return;
-      }
-
-      const loading = document.getElementById("loading");
-      loading.style.display = "block";
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.src = e.target.result;
-
-        img.onload = function() {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
-
-          let mime = "image/jpeg";
-          if (outputFormat === "png") mime = "image/png";
-          if (outputFormat === "webp") mime = "image/webp";
-          if (outputFormat === "tiff") mime = "image/tiff";
-
-          if (outputFormat === "pdf") {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-
-            // 📏 Scale image to fit PDF page
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
-            const w = img.width * ratio;
-            const h = img.height * ratio;
-            const x = (pageWidth - w) / 2;
-            const y = (pageHeight - h) / 2;
-
-            pdf.addImage(canvas.toDataURL("image/jpeg"), "JPEG", x, y, w, h);
-            pdf.save("converted.pdf");
-          } else {
-            const link = document.createElement("a");
-            link.download = "converted." + outputFormat;
-            link.href = canvas.toDataURL(mime);
-            link.click();
-          }
-          loading.style.display = "none";
-        };
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  </script>
-
-  <!-- ✅ jsPDF for PDF export -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</body>
-</html>
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = outputFormat === "pdf" ? `converted.pdf` : `converted.${outputFormat}`;
+    link.click();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("Conversion error:", err);
+    alert(`❌ Conversion failed: ${err.message}`);
+  } finally { loading.style.display = "none"; }
+}
+</script>

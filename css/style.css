@@ -1,409 +1,338 @@
 /* Reset */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+  }
 
 body {
-  font-family: 'PT Sans', sans-serif;
-  background-color: #f9f9f9;
-  color: #222;
+font-family: 'PT Sans', sans-serif;
+background-color: #f9f9f9;
+color: #222;
 }
 
-/* Top Header */
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'PT Sans', sans-serif;
-  background-color: #f9f9f9;
-  color: #6d1a1a;
-}
-
+/* ---------------- HEADER ---------------- */
 .top-header {
-  position: absolute;       /* overlay on banner */
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: transparent;  /* no white background */
-  box-shadow: none;         /* remove shadow if you don’t want it */
-  z-index: 1000;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+background: transparent;
+z-index: 1000;
 }
 
 .top-nav-container {
-  max-width: 80%;
-  margin: 0 auto;
-  padding: 20px 0;          /* adjust spacing */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+max-width: 90%;
+margin: 0 auto;
+padding: 20px 0;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
-
-/* Logo with Marck Script */
 .logo {
-  font-family: 'Marck Script', cursive;
-  font-size: 32px;
-  color: #262626;  
-  letter-spacing: -0.07em;
-
+font-family: 'Marck Script', cursive;
+font-size: 45px;
+color: #262626;
+letter-spacing: -0.08em;
 }
 
-/* Container for navigation */
 .nav-links {
-  display: flex;
-  gap: 20px;
-  align-items: center;
+display: flex;
+gap: 20px;
+align-items: center;
 }
 
-/* Anchor links inside navigation */
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  position: relative;
-  padding: 8px 16px;
-  border-radius: 30px;
-  transition: all 0.3s ease;
-}
-
-/* Remove bullet points from all list levels */
 .nav-menu,
 .nav-menu li,
 .dropdown-content {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+list-style: none;
+margin: 0;
+padding: 0;
 }
 
-/* Main menu layout */
 .nav-menu {
-  display: flex;
-  gap: 20px;
+display: flex;
+gap: 20px;
 }
 
-/* Dropdown setup */
 .dropdown {
-  position: relative;
+position: relative;
 }
 
-/* Dropdown content hidden by default */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  z-index: 10;
+.nav-links a {
+text-decoration: none;
+color: #333;
+font-weight: 400;
+padding: 10px 25px;
+border-radius: 30px;
+transition: all 0.3s ease;
 }
 
-/* Show dropdown on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Dropdown item styles */
-.dropdown-content a {
-  display: block;
-  padding: 10px 16px;
-  text-decoration: none;
-  color: #333;
-  border-radius: 0;
-  transition: background 0.3s;
-}
-
-/* Hover effect for dropdown links */
-.dropdown-content a:hover {
-  background-color: #f0f0f0;
-}
-
-/* Highlight active tool */
-.tool.active {
-  font-weight: bold;
-  color: #007bff;
-}
-
-/* Gradient Animation on Hover for Tools Link */
 .nav-links .dropdown > a {
-  background: #1f1e1e;
-  background-size: 400% 400%;
-  color: white;
+background: #1f1e1e;
+color: white;
+font-size: 20px;
+border-radius: 18px;
 }
 
 /* Dropdown */
-.dropdown {
-  position: relative;
-}
-
 .dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  padding: 10px 0;
-  z-index: 2000;
-  min-width: 220px;
-  border-radius: 6px;
+display: none;
+position: absolute;
+top: 100%;
+right: 0; /* Open left side */
+transform: translateX(0%);
+background: #fff;
+border-radius: 0px;
+min-width: 200px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+z-index: 10;
 }
 
-/* Gradient hover effect on dropdown items */
+.dropdown:hover .dropdown-content {
+display: block;
+}
+
 .dropdown-content a {
-  display: block;
-  padding: 10px 20px;
-  color: #333;
-  text-decoration: none;
-  white-space: nowrap;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+display: block;
+padding: 10px 20px;
+color: #333;
+font-size: 17px;
+text-decoration: none;
+border-radius: 0;
+transition: all 0.3s;
 }
 
 .dropdown-content a:hover {
-  background:  linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-  background-size: 400% 400%;
-  color: white;
+background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
+background-size: 300% 300%;
+color: #fff;
 }
 
-/* Show Dropdown on Hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Banner Section */
+/* ---------------- BANNER ---------------- */
 .banner {
-  background-image: url("../images/banner.jpg");
-  background-size: cover;
-  background-position: center;
-  height: 590px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
+background-image: url("../images/banner.jpg");
+background-size: cover;
+background-position: center;
+height: 450px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+position: relative;
+overflow: hidden;
+padding-top: 100px;
 }
 
 .banner-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  width: 100%;
+width: 100%;
+max-width: 900px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
 }
 
-/* Search bar with animated border */
+/* Search Bar */
 .search-bar-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 150px;
+display: flex;
+justify-content: center;
+width: 100%;
+margin-bottom: 40px;
 }
 
 .search-bar-border {
-  padding: 3px;
-  border-radius: 1000px;
-  background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-  background-size: 400% 400%;
-  animation: gradientGlow 5s linear infinite;
+padding: 2px;
+border-radius: 22px;
+background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
+background-size: 300% 300%;
+animation: gradientGlow 5s linear infinite;
 }
 
 @keyframes gradientGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
 }
 
 .search-bar {
-  width: 700px;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border-radius: 50px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+width: 700px;
+height: 55px;
+max-width: 100%;
+display: flex;
+align-items: center;
+background-color: white;
+border-radius: 20px;
+overflow: hidden;
+box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .search-bar input {
-  flex: 1;
-  padding: 14px 20px;
-  border: none;
-  font-size: 16px;
-  outline: none;
+flex: 1;
+padding: 20px 20px;
+border: none;
+font-size: 18px;
+outline: none;
 }
 
 .search-bar .search-icon {
-  padding: 0 20px;
+  padding: 0 20px;       /* keep horizontal spacing */
   background: none;
   border: none;
-  font-size: 20px;  
-  color: #26ffdb;
+  font-size: 32px;       /* bigger size */
+  line-height: 1;        /* ensures vertical center */
+  display: flex;          /* flex to center vertically */
+  align-items: center;    /* center icon inside button */
+  justify-content: center; 
   cursor: pointer;
 }
 
-/* Banner Gradient Text */
+/* Banner Text */
 .banner-text {
-  position: absolute;
-  bottom: -70px;
-  left: 50%;
-  transform: translateX(-50%);  
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.07em;
-  font-size: clamp(40px, 6vw, 80px);
-  background: linear-gradient(90deg, #15ffad, #deff07);
-  background-size: 300% auto; /* Animate across 200% width */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  white-space: nowrap;
-  z-index: 2;
-
-  animation: gradientMove 2s ease-in-out infinite;
-  
+font-family: 'Onest', sans-serif;
+font-weight: 800;
+letter-spacing: -0.07em;
+font-size: clamp(10px, 6vw, 80px);
+background: linear-gradient(90deg, #15ffad, #deff07);
+background-size: 300% auto;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+white-space: nowrap;
+animation: gradientMove 2s ease-in-out infinite;
+margin-top: 10px; /* Keep safe space from search bar */
 }
 
-
+/* ---------------- CATEGORY ---------------- */
 .category-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 30px 0 20px;
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: center;
+margin: 30px 0 20px;
 }
 
 .category {
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 16px;
-  color: #222;
-  padding: 10px 20px;
-  border-radius: 30px;
-  background: transparent;
-  transition: all 0.3s ease;
+text-decoration: none;
+font-weight: 400;
+font-size: 20px;
+color: #222;
+padding: 10px 20px;
+border-radius: 30px;
+background: transparent;
+transition: all 0.3s ease;
 }
 
 .category.selected {
-  background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-  background-size: 400% 400%;
-  animation: gradientGlow 10s linear infinite;
-  color: #fff;
+background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
+background-size: 400% 400%;
+animation: gradientGlow 10s linear infinite;
+color: #fff;
 }
+
 .category:hover {
-  background-image: linear-gradient(135deg, #08ff9c, #025aff);
-  color: white;
+background-image: linear-gradient(135deg, #08ff9c, #025aff);
+color: white;
 }
 
-.ads-banner-slot {
-  width: 1180px;
-  height: 150px;
-  margin: 30px auto;
-  background-color: #dcdcdc;
-  border: 2px dashed #aaa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 20px;
-  color: #555;
-}
-
-.section-title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-  font-family: 'Inter', sans-serif;
-}
-
-/* Masonry / Pinterest-style gallery */
+/* ---------------- MASONRY GRID ---------------- */
 .masonry-grid {
-  column-count: 5;
-  column-gap: 20px;
-  max-width: 1500px;
-  margin: 0 auto 40px;
-  padding: 0 40px;
+column-count: 5;
+column-gap: 20px;
+max-width: 1500px;
+margin: 0 auto 40px;
+padding: 0 40px;
 }
 
 .masonry-grid .image-item {
-  break-inside: avoid;            /* keep each image intact */
-  -webkit-column-break-inside: avoid;
-  -moz-column-break-inside: avoid;
-  margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
+break-inside: avoid;
+-webkit-column-break-inside: avoid;
+-moz-column-break-inside: avoid;
+margin-bottom: 20px;
+position: relative;
+overflow: hidden;
+border-radius: 8px;
 }
 
 .masonry-grid .image-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 8px;
-  object-fit: cover;              /* keeps portrait/landscape aligned */
-  transition: transform 0.25s ease;
+width: 100%;
+height: auto;
+display: block;
+border-radius: 8px;
+object-fit: cover;
+transition: transform 0.25s ease;
 }
 
 .masonry-grid .download-overlay {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 120px;       /* adjust size */
-  height: 40px;
-  background: url('../images/download-icon.png') no-repeat center center; /* your icon */
-  background-size: cover;
-  border-radius: 0;
-  opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  cursor: pointer;
+position: absolute;
+bottom: 10px;
+right: 10px;
+width: 120px;
+height: 40px;
+background: url('../images/download-icon.png') no-repeat center center;
+background-size: cover;
+opacity: 0;
+transition: opacity 0.25s ease, transform 0.25s ease;
+cursor: pointer;
 }
 
 .masonry-grid .image-item:hover .download-overlay {
-  opacity: 1;
-  transform: scale(1.1);
+opacity: 1;
+transform: scale(1.1);
 }
 
-
-/* Responsive column counts */
+/* Responsive columns */
 @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
 @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
 @media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
 @media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
 
+/* ---------------- RESPONSIVE ---------------- */
 
-.ad-slot-wide {
-  max-width: 1180px;
-  height: 200px;
-  background-color: #ececec;
-  border: 2px dashed #bbb;
-  color: #444;
-  font-size: 20px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 30px auto;
-  border-radius: 12px;
-}
+/* ---------------- RESPONSIVE SIZING ---------------- */
 
-
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% center;
+/* Tablet */
+@media (max-width: 992px) {
+  .search-bar {
+    width: 100%;   /* shrink width */
+    height: 55px; /* keep height fixed */
   }
-  50% {
-    background-position: 100% center;
+
+  .search-bar input {
+    font-size: 18px;
+    padding: 0 20px;
   }
-  100% {
-    background-position: 0% center;
+
+  .search-bar .search-icon {
+    font-size: 36px;
+  }
+    .banner-text {
+    font-size: clamp(30px, 6vw, 60px); /* smaller max size */
   }
 }
 
 
+/* Mobile */
+@media (max-width: 600px) {
+  .search-bar {
+    width: 100%;   /* shrink more for mobile */
+    height: 55px; /* fixed height */
+  }
+
+  .search-bar input {
+    font-size: 20 px;
+    padding: 0 18px;
+  }
+
+  .search-bar .search-icon {
+    font-size: 38px;
+  }
+  .banner-text {
+    font-size: clamp(30px, 10vw, 60px); /* smaller max size for mobile */
+    white-space: normal;  /* allow text to wrap if needed */
+    line-height: 1.2;
+    margin-top: 20px;
+  }
+}

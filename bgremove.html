@@ -29,35 +29,21 @@
   <!-- ✅ Styles -->
   <link rel="stylesheet" href="css/bgremove.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
-
-  <style>
-    .loader {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 15px;
-    }
-    .spinner {
-      border: 6px solid #eee;
-      border-top: 6px solid #3498db;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 10px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
 </head>
 
 <body>
   <!-- ✅ Header -->
   <header class="main-header">
     <a href="index.html" class="logo-link">Pexelora</a>
-    <nav class="nav-menu">
+
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <nav class="nav-menu" id="navMenu">
       <a href="upscale.html" class="nav-item">Upscale</a>
       <a href="bgremove.html" class="nav-item active">BG Remove</a>
       <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
@@ -71,7 +57,7 @@
     <p>Remove backgrounds from images automatically. Upload your photo and get a transparent PNG in seconds.</p>
   </section>
 
-  <!-- ✅ Upload -->
+  <!-- ✅ Upload Section -->
   <section class="upload-box">
     <input type="file" id="uploadInput" accept="image/*" />
     <p class="upload-note">Supports JPG, PNG (Max size: 5MB)</p>
@@ -84,7 +70,7 @@
     </div>
   </section>
 
-  <!-- ✅ Preview -->
+  <!-- ✅ Preview Section -->
   <section class="preview-section">
     <h2>Preview Your Image</h2>
     <img id="previewImg" src="https://via.placeholder.com/600x300" alt="Background Removed Preview">
@@ -144,12 +130,21 @@
     &copy; 2025 Pexelora. All rights reserved.
   </footer>
 
+  <!-- ✅ Scripts -->
   <script>
     const uploadInput = document.getElementById("uploadInput");
     const removeBgBtn = document.getElementById("removeBgBtn");
     const previewImg = document.getElementById("previewImg");
     const downloadLink = document.getElementById("downloadLink");
     const loader = document.getElementById("loader");
+
+    const hamburger = document.getElementById("hamburger");
+    const navMenu = document.getElementById("navMenu");
+
+    // Hamburger toggle
+    hamburger.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+    });
 
     let uploadedFile = null;
 
@@ -178,14 +173,10 @@
 
       const formData = new FormData();
       formData.append("image_file", uploadedFile);
-      formData.append("size", "auto");
 
       try {
-        const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+        const response = await fetch("http://localhost:3000/api/remove-bg", {
           method: "POST",
-          headers: {
-            "X-Api-Key": "Fyh8RFw85Ha5DrxUMhDLj7hG" // 🔑 Replace with your Remove.bg API Key
-          },
           body: formData,
         });
 

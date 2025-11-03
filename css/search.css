@@ -31,66 +31,89 @@ body {
   position: absolute;
   top: 10px;
   left: 30px;
+  text-decoration: none; 
   font-family: 'Marck Script', cursive;
   font-size: 40px;
-  color: #fff;
-  letter-spacing: -0.07em;
+  color: #ffffff;
+  letter-spacing: -0.08em;
 
 }
 
-/* =============== Search Bar =============== */
+/* --- Search Bar Wrapper --- */
 .search-bar-wrapper {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 30px; /* 👈 Add this line to move it down */
-  margin-bottom: 100px;
+  margin-bottom: 40px;
 }
 
-.search-bar-border {
-  padding: 3px;
-  border-radius: 1000px;
-  background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-  background-size: 400% 400%;
-  animation: gradientGlow 5s linear infinite;
-}
-
-@keyframes gradientGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
+/* --- Inner Search Bar --- */
 .search-bar {
   width: 700px;
+  max-width: 100%;
+  height: 55px;
   display: flex;
   align-items: center;
-  background-color: white;
-  border-radius: 50px;
+  background-color: #fff;
+  border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .search-bar input {
   flex: 1;
-  padding: 14px 20px;
+  padding: 0 20px;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   outline: none;
 }
 
+/* --- Search Icon --- */
 .search-bar .search-icon {
-  padding: 0 20px;
+  width: 45px;
+  height: 45px;
   background: none;
   border: none;
-  font-size: 20px;
-  color: #26ffdb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  padding: 0;
 }
+
+.search-bar .search-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+
+
+/* --- Fix for Search Icon Size and Alignment --- */
+.search-bar .search-icon {
+  width: 45px;              /* fixed width for button area */
+  height: 45px;             /* fixed height to match bar height */
+  background: none;
+  border: none;
+  display: flex;            /* centers the icon */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;               /* remove extra padding */
+}
+
+.search-bar .search-icon img {
+  width: 22px;              /* perfect icon size */
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+
+
 
 /* =============== Search Info =============== */
 .search-info {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 30px auto 20px;
   padding: 0 20px;
 }
@@ -98,12 +121,13 @@ body {
 .search-info p {
   font-style: italic;
   color: #666;
+  font-size: 20px;
   margin: 0 0 6px;
 }
 
 .search-info h1 {
-  font-weight: 700;
-  font-size: 28px;
+  font-weight: 600;
+  font-size: 40px;
   margin: 0 0 12px;
 }
 
@@ -390,3 +414,80 @@ body {
   object-fit: cover;
 }
 
+
+/* ================= Responsive Masonry Columns ================= */
+@media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
+@media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
+@media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
+@media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
+
+/* ================= Tablet (up to 992px) ================= */
+/* Tablet */
+@media (max-width: 992px) {
+  .search-bar {
+    width: 100%;   /* shrink width */
+    height: 55px; /* keep height fixed */
+  }
+
+  .search-bar input {
+    font-size: 18px;
+    padding: 0 20px;
+  }
+
+  .search-bar .search-icon {
+    font-size: 36px;
+  }
+    .banner-text {
+    font-size: clamp(30px, 6vw, 60px); /* smaller max size */
+  }
+}
+
+/* ================= Mobile ================= */
+
+@media (max-width: 600px) {
+
+   /* Header / Banner */
+  .header {
+    height: 100px;                /* smaller height for mobile */
+    border-bottom-left-radius: 30px;  
+    border-bottom-right-radius: 30px;
+  }
+
+
+  .search-bar-wrapper {
+    justify-content: flex-end;   /* keep on right */
+    margin: 0px 10px 0 180px;       /* adjust top & right spacing */
+    width: auto;                 /* fit content */
+  }
+
+  /* Search bar: mobile-friendly size */
+  .search-bar {
+    width: 200px;                  
+    height: 40px;                  
+    border-radius: 15px;
+    position: relative;            /* ensure icon positioning works */
+  } 
+
+  /* Search input */
+  .search-bar input {
+    font-size: 14px;               
+    padding: 0 10px;               /* space for icon */
+    height: 100%;
+  }
+
+  /* Search icon */
+  .search-bar .search-icon {
+    position: absolute;            /* position inside search bar */
+    right: 5px;                    /* distance from right edge */
+    top: 50%;                       /* center vertically */
+    transform: translateY(-50%);    /* vertical centering */
+    width: 24px;                   /* smaller button */
+    height: 24px;
+    padding: 0;
+  }
+
+  .search-bar .search-icon img {
+    width: 16px;                   /* smaller icon */
+    height: 16px;
+  }
+}

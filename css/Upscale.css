@@ -13,15 +13,21 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   top: 0;
   z-index: 1000;
+  position: relative;
+}
+.main-header .logo-link {
+  font-size: 45px !important; /* force size */
+  line-height: 1; /* prevent extra spacing issues */
 }
 
-/* Logo */
 .logo-link {
-  font-family: 'Pacifico', cursive;
-  font-size: 2rem;
+  font-family: 'Marck Script', cursive;
+  font-size: 60px;
   color: #ff5e66;
+  letter-spacing: -0.08em;
   text-decoration: none;
 }
+
 
 /* Navigation Menu */
 .nav-menu {
@@ -48,7 +54,45 @@ body {
   font-weight: bold;
 }
 
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
 
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+}
+
+/* Mobile menu hidden by default */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px; /* below header */
+    right: 20px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 200px;
+  }
+
+  .nav-menu.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* Main content and other sections remain unchanged */
 .main-content {
   padding: 40px;
   text-align: center;
@@ -105,13 +149,51 @@ body {
   font-size: 14px;
 }
 
+/* Loader Overlay */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+/* Spinner Animation */
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #00bfff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-overlay p {
+  color: white;
+  font-family: sans-serif;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
 .preview-section {
   text-align: center;
   margin: 60px 20px;
 }
 
 .preview-section img {
-  max-width: 90%;
+  max-width: 50%;
   height: auto;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -158,13 +240,13 @@ body {
   flex-direction: row-reverse;
 }
 
+/* Tool Images - Responsive */
 .tool-img img {
-  max-width: 200%;
+  width: 100%;       /* scale to container width */
+  max-width: 700px;  /* keep original max width */
+  height: auto;      /* maintain aspect ratio */
   border-radius: 30px;
-  width: 700px;
-  height: auto;
 }
-
 .tool-text {
   max-width: 500px;
 }
@@ -194,11 +276,11 @@ body {
   background: #0056cc;
 }
 
-
 footer {
   text-align: center;
   padding: 20px;
   background-color: #0e0e0e;
   color: white;
-  
 }
+
+

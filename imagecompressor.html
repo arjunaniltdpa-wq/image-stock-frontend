@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <!-- ✅ Title & Description for SEO -->
   <title>Pexelora - Free Online Image Compressor | Reduce Image Size Without Losing Quality</title>
   <meta name="description" content="Compress images online for free with Pexelora. Reduce JPG & PNG file size without losing quality. Perfect for websites, emails, and social media uploads.">
   <meta name="keywords" content="free image compressor, online image compressor, compress jpg, compress png, reduce image size, Pexelora">
   <meta name="author" content="Pexelora">
-
-  <!-- ✅ Canonical -->
   <link rel="canonical" href="https://yourdomain.com/imagecompressor.html" />
 
   <!-- ✅ Open Graph (Facebook, LinkedIn) -->
@@ -26,28 +23,10 @@
   <meta name="twitter:description" content="Reduce image size without losing quality. Free JPG & PNG compressor tool online.">
   <meta name="twitter:image" content="https://yourdomain.com/images/image-compressor.jpg">
 
-  <!-- ✅ Structured Data (JSON-LD for Tool) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Pexelora Image Compressor",
-    "url": "https://yourdomain.com/imagecompressor.html",
-    "description": "Free online image compressor to reduce JPG & PNG file sizes without losing quality.",
-    "applicationCategory": "Multimedia",
-    "operatingSystem": "Web",
-    "image": "https://yourdomain.com/images/image-compressor.jpg",
-    "author": {
-      "@type": "Organization",
-      "name": "Pexelora"
-    }
-  }
-  </script>
-
   <!-- Fonts + CSS -->
   <link rel="stylesheet" href="css/compressor.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
-  
+
   <style>
     /* Loader spinner */
     .loader {
@@ -75,6 +54,42 @@
       color: #d32f2f;
       display: none;
     }
+
+    /* Hamburger menu styles */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background: #ff5e66;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 1024px) {
+      .nav-menu { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 220px; }
+      .nav-menu.active {
+        display: flex;
+      }
+      .nav-item {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Make preview & tool images responsive */
+    .preview-section img,
+    .tool-img img {
+      width: 100%;
+      height: auto;
+      max-width: 700px;
+    }
   </style>
 </head>
 
@@ -88,6 +103,11 @@
       <a href="imagecompressor.html" class="nav-item active">Image Compressor</a>
       <a href="formatconverter.html" class="nav-item">Format Converter</a>
     </nav>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </header>
 
   <!-- ✅ Hero Section -->
@@ -102,7 +122,6 @@
     <p class="upload-note">Supports .jpg, .png (Max size: 10MB)</p>
     <button id="compressBtn">Compress Image</button>
 
-    <!-- Loader animation -->
     <div class="loader" id="loader">
       <div class="spinner"></div>
       <p>⏳ Compressing... Please wait</p>
@@ -113,7 +132,6 @@
   <section class="preview-section">
     <h2>Preview Your Compressed Image</h2>
     <img id="previewImg" src="https://via.placeholder.com/600x300" alt="Compressed Image Preview">
-
     <div class="download-btn">
       <p id="countdown"></p>
       <a id="downloadLink" href="#" download="compressed.jpg" style="display:none;">
@@ -129,7 +147,6 @@
 
   <!-- ✅ Other Tools Section -->
   <section class="other-tools">
-    <!-- Tool 1 -->
     <div class="tool">
       <div class="tool-img">
         <img src="images/upscale-tool.jpg" alt="AI Image Upscaler Tool" />
@@ -141,7 +158,6 @@
       </div>
     </div>
 
-    <!-- Tool 2 -->
     <div class="tool reverse">
       <div class="tool-text">
         <h3>Background Remover</h3>
@@ -153,7 +169,6 @@
       </div>
     </div>
 
-    <!-- Tool 3 -->
     <div class="tool">
       <div class="tool-img">
         <img src="images/image-compressor.jpg" alt="Free Online Image Compressor" />
@@ -165,7 +180,6 @@
       </div>
     </div>
 
-    <!-- Tool 4 -->
     <div class="tool reverse">
       <div class="tool-text">
         <h3>Format Converter</h3>
@@ -183,89 +197,86 @@
     <p>&copy; 2025 Pexelora. All rights reserved. Free online tools for images.</p>
   </footer>
 
-  <script>
-    const uploadInput = document.getElementById("uploadInput");
-    const compressBtn = document.getElementById("compressBtn");
-    const previewImg = document.getElementById("previewImg");
-    const downloadLink = document.getElementById("downloadLink");
-    const loader = document.getElementById("loader");
-    const countdown = document.getElementById("countdown");
+<script>
+  // Hamburger toggle
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.querySelector(".nav-menu");
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
 
-    let uploadedFile = null;
+  // Image compression logic
+  const uploadInput = document.getElementById("uploadInput");
+  const compressBtn = document.getElementById("compressBtn");
+  const previewImg = document.getElementById("previewImg");
+  const downloadLink = document.getElementById("downloadLink");
+  const loader = document.getElementById("loader");
+  const countdown = document.getElementById("countdown");
 
-    // Upload image preview
-    uploadInput.addEventListener("change", (event) => {
-      uploadedFile = event.target.files[0];
-      if (uploadedFile) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          previewImg.src = e.target.result;
-          previewImg.alt = "Uploaded Image Preview for Compression";
-        };
-        reader.readAsDataURL(uploadedFile);
-      }
-    });
+  let uploadedFile = null;
 
-    // Compress button
-    compressBtn.addEventListener("click", () => {
-      if (!uploadedFile) {
-        alert("Please upload an image first!");
-        return;
-      }
-
-      loader.style.display = "flex";
-      compressBtn.disabled = true;
-      downloadLink.style.display = "none";
-      countdown.style.display = "none";
-
+  uploadInput.addEventListener("change", (event) => {
+    uploadedFile = event.target.files[0];
+    if (uploadedFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(uploadedFile);
-
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-
-          canvas.width = img.width;
-          canvas.height = img.height;
-
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          // Compress to jpeg (quality 0.6)
-          canvas.toBlob(
-            (blob) => {
-              const url = URL.createObjectURL(blob);
-              previewImg.src = url;
-              previewImg.alt = "Compressed Image Preview";
-              downloadLink.href = url;
-
-              // Hide loader
-              loader.style.display = "none";
-              compressBtn.disabled = false;
-
-              // 5s ad countdown before download
-              let timeLeft = 5;
-              countdown.style.display = "block";
-              countdown.innerText = `Ad running... ${timeLeft}s`;
-              const timer = setInterval(() => {
-                timeLeft--;
-                countdown.innerText = `Ad running... ${timeLeft}s`;
-                if (timeLeft <= 0) {
-                  clearInterval(timer);
-                  countdown.style.display = "none";
-                  downloadLink.style.display = "inline-block";
-                }
-              }, 1000);
-            },
-            "image/jpeg",
-            0.6
-          );
-        };
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        previewImg.alt = "Uploaded Image Preview";
       };
-    });
-  </script>
+      reader.readAsDataURL(uploadedFile);
+    }
+  });
+
+  compressBtn.addEventListener("click", async () => {
+    if (!uploadedFile) {
+      alert("Please upload an image first!");
+      return;
+    }
+
+    loader.style.display = "flex";
+    compressBtn.disabled = true;
+    downloadLink.style.display = "none";
+    countdown.style.display = "none";
+
+    try {
+      const formData = new FormData();
+      formData.append("image_file", uploadedFile);
+
+      const response = await fetch("http://localhost:3000/api/compress", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error("Compression failed: " + response.statusText);
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      previewImg.src = url;
+      downloadLink.href = url;
+
+      let timeLeft = 5;
+      countdown.style.display = "block";
+      countdown.innerText = `Ad running... ${timeLeft}s`;
+      const timer = setInterval(() => {
+        timeLeft--;
+        countdown.innerText = `Ad running... ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          countdown.style.display = "none";
+          downloadLink.style.display = "inline-block";
+        }
+      }, 1000);
+
+    } catch (err) {
+      alert("Error: " + err.message);
+    } finally {
+      loader.style.display = "none";
+      compressBtn.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>

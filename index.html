@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pexelora - Free Wallpapers</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -14,10 +14,10 @@
   <header class="top-header">
     <div class="top-nav-container">
       <div class="logo">Pexelora</div>
-      <nav class="nav-links" role="navigation" aria-label="Main Navigation">
+      <nav class="nav-links">
         <ul class="nav-menu">
           <li class="dropdown">
-            <a href="#">Tools</a>
+            <a href="#">AI Tools</a>
             <ul class="dropdown-content">
               <li><a href="upscale.html" class="tool">Upscale</a></li>
               <li><a href="bgremove.html" class="tool">BG Remove</a></li>
@@ -35,10 +35,10 @@
     <!-- Banner Section -->
     <section class="banner">
       <div class="banner-content">
-        <form class="search-bar-wrapper" action="search.html" method="GET">
+        <form class="search-bar-wrapper">
           <div class="search-bar-border">
             <div class="search-bar">
-              <input type="text" name="query" placeholder="Search Images" required>
+              <input type="text" id="searchInput" placeholder="Search Images" required>
               <button type="submit" class="search-icon">
                 <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
               </button>
@@ -66,37 +66,27 @@
 
     <!-- Popular Images (Masonry Grid) -->
     <section class="popular-images" id="popular-images">
-      <div class="masonry-grid" id="image-container">
-      </div>
+      <div class="masonry-grid" id="image-container"></div>
     </section>
 
   </main>
 
- <script>
-const container = document.getElementById("image-container");
-const API_BASE = "https://image-stock-backend.onrender.com/api/images"; // backend API
-
-let page = 1;
-const limit = 20; // images per request
-let loading = false;
+<script>
+const API_BASE = "http://localhost:3000/api/images"; // your backend
 
 function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  // Correct URL using backend proxy
-  const fileUrl = `https://image-stock-backend.onrender.com/api/images/file/${encodeURIComponent(img.name)}`;
-
   div.innerHTML = `
-    <a href="${fileUrl}">
-      <img src="${fileUrl}" alt="${img.name}" />
+    <a href="download.html?id=${encodeURIComponent(img._id)}">
+      <img src="${img.url}" alt="${img.name}" loading="lazy"/>
     </a>
-    <a href="${fileUrl}" download class="download-overlay"></a>
+    <a href="${img.url}" download class="download-overlay" title="Download"></a>
   `;
+
   container.appendChild(div);
 }
-
-
 
 // Load images from backend
 async function loadImages() {
@@ -104,14 +94,11 @@ async function loadImages() {
   loading = true;
 
   try {
-    const res = await fetch(`${API_BASE}?page=${page}&limit=${limit}`);
+    const res = await fetch(`${API_BASE}/popular?page=${page}&limit=${limit}`);
     const data = await res.json();
-
-    // Check if API returns `images` or direct array
     const images = data.images || data;
 
-    if (images.length === 0) {
-      // No more images to load
+    if (!images || images.length === 0) {
       window.removeEventListener("scroll", onScroll);
       return;
     }
@@ -125,6 +112,7 @@ async function loadImages() {
   }
 }
 
+
 // Infinite scroll
 function onScroll() {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
@@ -132,31 +120,16 @@ function onScroll() {
   }
 }
 window.addEventListener("scroll", onScroll);
-
-// Initial load
 loadImages();
 
-// Search functionality
+// Search redirect
 const searchForm = document.querySelector(".search-bar-wrapper");
-searchForm.addEventListener("submit", async (e) => {
+searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const query = searchForm.query.value.trim();
-  container.innerHTML = ""; // clear current images
-  page = 1; // reset page
-
-  try {
-    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
-    const data = await res.json();
-    const images = data.images || data;
-
-    if (images.length === 0) {
-      container.innerHTML = "<p>No images found.</p>";
-      return;
-    }
-
-    images.forEach(img => createImageDiv(img));
-  } catch (err) {
-    console.error("Search error:", err);
-  }
+  const query = document.getElementById('searchInput').value.trim();
+  if (query) window.location.href = `search.html?query=${encodeURIComponent(query)}`;
 });
 </script>
+
+</body>
+</html>

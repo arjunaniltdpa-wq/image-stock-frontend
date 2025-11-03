@@ -1,4 +1,3 @@
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,20 +13,20 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="header-overlay">
-      <a href="index.html" class="logo">Pexelora</a>
-      <div class="search-bar-wrapper">
-        <div class="search-bar-border">
-          <form class="search-bar" onsubmit="return redirectSearch()">
-            <input type="text" id="searchInput" placeholder="Search Image" required>
-            <button type="submit" class="search-icon"><i class="fas fa-search"></i></button>
-          </form>
-        </div>
-      </div>
+<!-- Header -->
+<div class="header">
+  <div class="header-overlay">
+    <a href="index.html" class="logo">Pexelora</a>
+    <div class="search-bar-wrapper">
+      <form class="search-bar" onsubmit="return redirectSearch()">
+        <input type="text" id="searchInput" placeholder="Search Image" required>
+        <button type="submit" class="search-icon">
+          <img src="images/search-icon.png" alt="Search">
+        </button>
+      </form>
     </div>
   </div>
+</div>
 
   <!-- Main Content -->
   <main>
@@ -84,6 +83,21 @@
     </div>
   </main>
 
+  <!-- Info Modal -->
+  <div id="infoModal" class="info-modal">
+    <div class="info-content">
+      <span class="close-btn">&times;</span>
+      <h2>Image Information</h2>
+      <ul>
+        <li><strong>Name:</strong> <span id="info-name">-</span></li>
+        <li><strong>Dimensions:</strong> <span id="info-dimensions">-</span></li>
+        <li><strong>File Size:</strong> <span id="info-size">-</span></li>
+        <li><strong>Format:</strong> <span id="info-format">-</span></li>
+        <li><strong>License:</strong> Free to use for commercial and personal purposes</li>
+      </ul>
+    </div>
+  </div>
+
   <!-- JS -->
   <script>
     // Infinite Scroll for related images
@@ -118,8 +132,62 @@
     if (name) {
       document.getElementById("image-name").textContent = name;
     }
+
+    // INFO MODAL SCRIPT (optimized)
+    const infoBtn = document.querySelector(".info-btn");
+    const modal = document.getElementById("infoModal");
+    const closeBtn = document.querySelector(".close-btn");
+
+    infoBtn.addEventListener("click", () => {
+      const imgElement = document.getElementById("download-image");
+      const imgSrc = imgElement.src;
+      const imgName = document.getElementById("image-name").textContent;
+
+      // Show modal immediately
+      modal.classList.add("active");
+
+      // Set temporary info instantly
+      document.getElementById("info-name").textContent = imgName;
+      document.getElementById("info-dimensions").textContent = "Loading...";
+      document.getElementById("info-size").textContent = "Loading...";
+      document.getElementById("info-format").textContent = "Loading...";
+
+      // Load info asynchronously
+      (async () => {
+        try {
+          const tempImg = new Image();
+          tempImg.src = imgSrc;
+          await tempImg.decode();
+          const width = tempImg.naturalWidth;
+          const height = tempImg.naturalHeight;
+
+          const formatMatch = imgSrc.split(".").pop().split("?")[0].toUpperCase();
+
+          let fileSize = "Unknown";
+          const response = await fetch(imgSrc, { method: "HEAD" });
+          const sizeBytes = response.headers.get("content-length");
+          if (sizeBytes) {
+            const sizeMB = (sizeBytes / (1024 * 1024)).toFixed(2);
+            fileSize = `${sizeMB} MB`;
+          }
+
+          document.getElementById("info-dimensions").textContent = `${width} × ${height}px`;
+          document.getElementById("info-size").textContent = fileSize;
+          document.getElementById("info-format").textContent = formatMatch;
+        } catch (err) {
+          console.error("Error loading image info:", err);
+        }
+      })();
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("active");
+    });
   </script>
 
 </body>
 </html>
-```
