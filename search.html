@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Search - Pexelora</title>
+  <title>Search - Pixeora</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <link rel="stylesheet" href="css/search.css">
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
 
+  <meta name="description" content="Search and download free HD wallpapers & stock images on Pixeora. Nature, Technology, Travel, Food, and more.">
+  <meta property="og:title" content="Pixeora - Free Stock Images Search">
+  <meta property="og:description" content="Explore free HD wallpapers and images for any category.">
+  <meta property="og:type" content="website">
 </head>
 <body>
 
 <!-- Header -->
 <header class="header">
   <div class="header-overlay">
-    <a href="index.html" class="logo">Pexelora</a>
+    <a href="index.html" class="logo">Pixeora</a>
     
     <div class="search-bar-wrapper">
       <div class="search-bar-border">
@@ -33,7 +37,7 @@
 
   <!-- Search Info -->
   <div class="search-info">
-    <p>Showing Results of</p>
+    <p>Showing Results for</p>
     <h1><span class="keyword">""</span></h1>
     <div class="image-count" id="image-count">0 Images</div>
   </div>
@@ -44,7 +48,11 @@
   </div>
 
 <script>
-const API_BASE = "http://localhost:3000/api/images"; // backend
+/* ✅ Auto-detect local or live backend */
+const API_BASE = window.location.hostname.includes("localhost")
+  ? "http://localhost:3000/api/images"
+  : "https://image-stock-backend.onrender.com/"; // <-- change this to your Render backend URL
+
 const params = new URLSearchParams(window.location.search);
 const query = params.get('query');
 const gallery = document.getElementById('gallery');
@@ -81,10 +89,11 @@ async function loadSearchImages(q) {
     images.forEach(img => {
       const div = document.createElement('div');
       div.classList.add('image-card');
-      const fileUrl = `${API_BASE}/file/${encodeURIComponent(img.name)}`;
+      // ✅ Fixed: consistent key (use fileName if your backend returns it)
+      const fileUrl = `${API_BASE}/file/${encodeURIComponent(img.fileName || img.name)}`;
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}">
-          <img src="${fileUrl}" alt="${img.name}" loading="lazy"/>
+          <img src="${fileUrl}" alt="${img.name}" loading="lazy" onerror="this.src='images/placeholder.jpg'"/>
         </a>
         <a href="${fileUrl}" download class="download-icon" title="Download">
           <img src="images/download-icon.png" alt="Download"/>

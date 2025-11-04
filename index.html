@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pexelora - Free Wallpapers</title>
+  <title>Pixeora - Free Wallpapers</title>
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
   <!-- Top Header with Tools Dropdown -->
   <header class="top-header">
     <div class="top-nav-container">
-      <div class="logo">Pexelora</div>
+      <div class="logo">Pixeora</div>
       <nav class="nav-links">
         <ul class="nav-menu">
           <li class="dropdown">
@@ -72,23 +72,30 @@
   </main>
 
 <script>
-const API_BASE = "http://localhost:3000/api/images"; // your backend
+const API_BASE = "https://image-stock-backend.onrender.com/";
+
+let page = 1;
+const limit = 20;
+let loading = false;
+const container = document.getElementById("image-container");
 
 function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
+  // ✅ Use backend proxy route for image access
+  const imageUrl = `${API_BASE}/file/${encodeURIComponent(img.fileName)}`;
+
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
-      <img src="${img.url}" alt="${img.name}" loading="lazy"/>
+      <img src="${imageUrl}" alt="${img.name}" loading="lazy" />
     </a>
-    <a href="${img.url}" download class="download-overlay" title="Download"></a>
+    <a href="${imageUrl}" download class="download-overlay" title="Download"></a>
   `;
 
   container.appendChild(div);
 }
 
-// Load images from backend
 async function loadImages() {
   if (loading) return;
   loading = true;
@@ -96,9 +103,9 @@ async function loadImages() {
   try {
     const res = await fetch(`${API_BASE}/popular?page=${page}&limit=${limit}`);
     const data = await res.json();
-    const images = data.images || data;
+    const images = data.images || [];
 
-    if (!images || images.length === 0) {
+    if (images.length === 0) {
       window.removeEventListener("scroll", onScroll);
       return;
     }
@@ -106,30 +113,27 @@ async function loadImages() {
     images.forEach(img => createImageDiv(img));
     page++;
   } catch (err) {
-    console.error("Error loading images:", err);
+    console.error("❌ Error loading images:", err);
   } finally {
     loading = false;
   }
 }
 
-
-// Infinite scroll
 function onScroll() {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
     loadImages();
   }
 }
+
 window.addEventListener("scroll", onScroll);
 loadImages();
 
-// Search redirect
-const searchForm = document.querySelector(".search-bar-wrapper");
-searchForm.addEventListener("submit", (e) => {
+// ✅ Search redirect
+document.querySelector(".search-bar-wrapper").addEventListener("submit", (e) => {
   e.preventDefault();
   const query = document.getElementById('searchInput').value.trim();
   if (query) window.location.href = `search.html?query=${encodeURIComponent(query)}`;
 });
 </script>
-
 </body>
 </html>
