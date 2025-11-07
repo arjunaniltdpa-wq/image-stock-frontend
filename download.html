@@ -76,19 +76,17 @@
 </div>
 
 <script>
-// ✅ Backend auto-switch (local / production)
-const API_BASE = window.location.hostname.includes("localhost")
-  ? "http://localhost:3000/api/images"
-  : "https://image-stock-backend.onrender.com/"; // replace with your Render backend
+/* ✅ Real hosting backend */
+const API_BASE = "https://api.pixeora.com/api/images";
 
-// --- SEARCH REDIRECT ---
+/* ✅ SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
-// --- MAIN IMAGE LOAD ---
+/* ✅ MAIN IMAGE LOAD */
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
@@ -97,24 +95,43 @@ async function loadImageDetails() {
     const res = await fetch(`${API_BASE}/id/${imageId}`);
     const img = await res.json();
 
-    const fileUrl = `${API_BASE}/file/${encodeURIComponent(img.fileName)}`;
-    document.getElementById("download-image").src = fileUrl;
-    document.getElementById("download-link").href = fileUrl;
+    // ✅ Thumbnail or full image
+    const fileToShow = img.thumbnailFileName || img.fileName;
+    const displayUrl = `https://api.pixeora.com/api/images/file/${encodeURIComponent(fileToShow)}`;
+
+    // ✅ Full resolution signed URL will be fetched on click
+    document.getElementById("download-image").src = displayUrl;
     document.getElementById("image-name").textContent = img.name || "Untitled";
 
-    // Keywords
+    // ✅ Update Download Button
+    document.getElementById("download-link").onclick = () => fetchSignedDownload(img.fileName);
+
+    // ✅ Keywords
     const keywordBox = document.getElementById("keywords");
     keywordBox.innerHTML = (img.tags || []).map(tag => `<span>${tag}</span>`).join("");
 
     // Load related
     loadRelated(img.category);
+
   } catch (err) {
     console.error("❌ Error loading image:", err);
     document.getElementById("image-name").textContent = "Image not found.";
   }
 }
 
-// --- RELATED IMAGES ---
+/* ✅ Generate Signed Download URL */
+async function fetchSignedDownload(fileName) {
+  try {
+    const res = await fetch(`https://api.pixeora.com/api/get-file-url/${encodeURIComponent(fileName)}`);
+    const data = await res.json();
+    window.open(data.url, "_blank");
+  } catch (err) {
+    alert("Download failed");
+    console.error(err);
+  }
+}
+
+/* ✅ RELATED IMAGES */
 async function loadRelated(category) {
   try {
     const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(category || "nature")}`);
@@ -123,14 +140,15 @@ async function loadRelated(category) {
     relatedContainer.innerHTML = "";
 
     (data.images || []).slice(0, 12).forEach(img => {
-      const fileUrl = `${API_BASE}/file/${encodeURIComponent(img.fileName)}`;
+      const fileToShow = img.thumbnailFileName || img.fileName;
+      const fileUrl = `https://api.pixeora.com/api/images/file/${encodeURIComponent(fileToShow)}`;
+
       const div = document.createElement("div");
       div.classList.add("image-item");
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}">
           <img src="${fileUrl}" alt="${img.name}" loading="lazy"/>
         </a>
-        <a href="${fileUrl}" download class="download-overlay"></a>
       `;
       relatedContainer.appendChild(div);
     });
@@ -139,7 +157,7 @@ async function loadRelated(category) {
   }
 }
 
-// --- INFO MODAL ---
+/* ✅ INFO MODAL */
 const infoBtn = document.querySelector(".info-btn");
 const modal = document.getElementById("infoModal");
 const closeBtn = document.querySelector(".close-btn");
@@ -156,15 +174,13 @@ infoBtn.addEventListener("click", async () => {
 
     const width = tempImg.naturalWidth;
     const height = tempImg.naturalHeight;
-    const format = imgEl.src.split(".").pop().split("?")[0].toUpperCase();
-
     const head = await fetch(imgEl.src, { method: "HEAD" });
     const bytes = head.headers.get("content-length");
     const size = bytes ? `${(bytes / (1024 * 1024)).toFixed(2)} MB` : "Unknown";
 
     document.getElementById("info-dimensions").textContent = `${width} × ${height}px`;
     document.getElementById("info-size").textContent = size;
-    document.getElementById("info-format").textContent = format;
+    document.getElementById("info-format").textContent = imgEl.src.split(".").pop().toUpperCase();
   } catch {
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
@@ -175,9 +191,6 @@ infoBtn.addEventListener("click", async () => {
 closeBtn.addEventListener("click", () => modal.classList.remove("active"));
 window.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("active"); });
 
-// --- INIT ---
+/* ✅ INIT */
 loadImageDetails();
 </script>
-
-</body>
-</html>

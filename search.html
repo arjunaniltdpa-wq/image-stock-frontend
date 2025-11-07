@@ -48,10 +48,8 @@
   </div>
 
 <script>
-/* ✅ Auto-detect local or live backend */
-const API_BASE = window.location.hostname.includes("localhost")
-  ? "http://localhost:3000/api/images"
-  : "https://image-stock-backend.onrender.com/"; // <-- change this to your Render backend URL
+// ✅ Always use real backend for hosting
+const API_BASE = "https://api.pixeora.com/api/images";
 
 const params = new URLSearchParams(window.location.search);
 const query = params.get('query');
@@ -79,8 +77,8 @@ async function loadSearchImages(q) {
     const images = data.images || data;
 
     imageCountDiv.textContent = `${images.length} Images`;
-
     gallery.innerHTML = "";
+
     if (!images || images.length === 0) {
       gallery.innerHTML = "<p>No images found.</p>";
       return;
@@ -89,15 +87,18 @@ async function loadSearchImages(q) {
     images.forEach(img => {
       const div = document.createElement('div');
       div.classList.add('image-card');
-      // ✅ Fixed: consistent key (use fileName if your backend returns it)
-      const fileUrl = `${API_BASE}/file/${encodeURIComponent(img.fileName || img.name)}`;
+
+      // ✅ Thumbnail first, fallback full image
+      const fileToShow = img.thumbnailFileName || img.fileName;
+      const fileUrl = `https://api.pixeora.com/api/images/file/${encodeURIComponent(fileToShow)}`;
+
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}">
-          <img src="${fileUrl}" alt="${img.name}" loading="lazy" onerror="this.src='images/placeholder.jpg'"/>
+          <img src="${fileUrl}" alt="${img.name}" loading="lazy" />
         </a>
-        <a href="${fileUrl}" download class="download-icon" title="Download">
+        <span class="download-icon" onclick="goDownload('${img._id}')" title="Download">
           <img src="images/download-icon.png" alt="Download"/>
-        </a>
+        </span>
       `;
       gallery.appendChild(div);
     });
@@ -107,7 +108,9 @@ async function loadSearchImages(q) {
     gallery.innerHTML = "<p>Error loading images.</p>";
   }
 }
-</script>
 
-</body>
-</html>
+// ✅ Redirect to download page (secure signed URL generation happens there)
+function goDownload(id) {
+  window.location.href = `download.html?id=${encodeURIComponent(id)}`;
+}
+</script>
