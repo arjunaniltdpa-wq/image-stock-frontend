@@ -76,37 +76,39 @@
 </div>
 
 <script>
-/* ✅ Real hosting backend */
+/* Backend URL */
 const API_BASE = "https://api.pixeora.com";
 
-/* ✅ SEARCH REDIRECT */
+/* SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
-/* ✅ MAIN IMAGE LOAD */
+/* MAIN IMAGE LOAD */
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
 async function loadImageDetails() {
   try {
-    const res = await fetch(`${API_BASE}/id/${imageId}`);
+    // ✅ FIXED API PATH
+    const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
+    if (!res.ok) throw new Error("Image not found");
+
     const img = await res.json();
 
-    // ✅ Thumbnail or full image
+    // 👇 Show thumbnail on page, but download full
     const fileToShow = img.thumbnailFileName || img.fileName;
-    const displayUrl = `https://api.pixeora.com/api/images/file/${encodeURIComponent(fileToShow)}`;
+    const displayUrl = `${API_BASE}/api/images/file/${encodeURIComponent(fileToShow)}`;
 
-    // ✅ Full resolution signed URL will be fetched on click
     document.getElementById("download-image").src = displayUrl;
-    document.getElementById("image-name").textContent = img.name || "Untitled";
+    document.getElementById("image-name").textContent = img.title || img.name || img.fileName;
 
-    // ✅ Update Download Button
+    // Download button → full resolution
     document.getElementById("download-link").onclick = () => fetchSignedDownload(img.fileName);
 
-    // ✅ Keywords
+    // Keywords
     const keywordBox = document.getElementById("keywords");
     keywordBox.innerHTML = (img.tags || []).map(tag => `<span>${tag}</span>`).join("");
 
@@ -115,14 +117,14 @@ async function loadImageDetails() {
 
   } catch (err) {
     console.error("❌ Error loading image:", err);
-    document.getElementById("image-name").textContent = "Image not found.";
+    document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
 
-/* ✅ Generate Signed Download URL */
+/* SIGNED DOWNLOAD URL (full quality) */
 async function fetchSignedDownload(fileName) {
   try {
-    const res = await fetch(`https://api.pixeora.com/api/get-file-url/${encodeURIComponent(fileName)}`);
+    const res = await fetch(`${API_BASE}/api/get-file-url/${encodeURIComponent(fileName)}`);
     const data = await res.json();
     window.open(data.url, "_blank");
   } catch (err) {
@@ -131,17 +133,21 @@ async function fetchSignedDownload(fileName) {
   }
 }
 
-/* ✅ RELATED IMAGES */
+/* RELATED IMAGES */
 async function loadRelated(category) {
   try {
-    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(category || "nature")}`);
-    const data = await res.json();
+    // ✅ FIXED PATH
+    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(category || "wallpaper")}`);
+    let data = await res.json();
+
+    if (data.images) data = data.images;
+
     const relatedContainer = document.getElementById("related-images");
     relatedContainer.innerHTML = "";
 
-    (data.images || []).slice(0, 12).forEach(img => {
+    data.slice(0, 12).forEach(img => {
       const fileToShow = img.thumbnailFileName || img.fileName;
-      const fileUrl = `https://api.pixeora.com/api/images/file/${encodeURIComponent(fileToShow)}`;
+      const fileUrl = `${API_BASE}/api/images/file/${encodeURIComponent(fileToShow)}`;
 
       const div = document.createElement("div");
       div.classList.add("image-item");
@@ -157,7 +163,7 @@ async function loadRelated(category) {
   }
 }
 
-/* ✅ INFO MODAL */
+/* INFO MODAL */
 const infoBtn = document.querySelector(".info-btn");
 const modal = document.getElementById("infoModal");
 const closeBtn = document.querySelector(".close-btn");
@@ -168,29 +174,34 @@ infoBtn.addEventListener("click", async () => {
   document.getElementById("info-name").textContent = document.getElementById("image-name").textContent;
 
   try {
+    // Load the image to measure its dimensions
     const tempImg = new Image();
     tempImg.src = imgEl.src;
     await tempImg.decode();
 
-    const width = tempImg.naturalWidth;
-    const height = tempImg.naturalHeight;
+    document.getElementById("info-dimensions").textContent = `${tempImg.naturalWidth} × ${tempImg.naturalHeight}px`;
+
+    // HEAD request to get size
     const head = await fetch(imgEl.src, { method: "HEAD" });
     const bytes = head.headers.get("content-length");
     const size = bytes ? `${(bytes / (1024 * 1024)).toFixed(2)} MB` : "Unknown";
-
-    document.getElementById("info-dimensions").textContent = `${width} × ${height}px`;
     document.getElementById("info-size").textContent = size;
-    document.getElementById("info-format").textContent = imgEl.src.split(".").pop().toUpperCase();
-  } catch {
+
+    // File format from URL
+    const ext = imgEl.src.split(".").pop().split("?")[0].toUpperCase();
+    document.getElementById("info-format").textContent = ext;
+
+  } catch (err) {
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
     document.getElementById("info-format").textContent = "-";
   }
 });
 
+// Close modal
 closeBtn.addEventListener("click", () => modal.classList.remove("active"));
 window.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("active"); });
 
-/* ✅ INIT */
+/* INIT */
 loadImageDetails();
 </script>

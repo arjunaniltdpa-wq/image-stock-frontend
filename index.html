@@ -79,40 +79,43 @@ const limit = 20;
 let loading = false;
 const container = document.getElementById("image-container");
 
+// Create a card for each image
 function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  // ✅ Choose thumbnail if exists, else full image
+  // Use thumbnail if available
   const fileToShow = img.thumbnailFileName || img.fileName;
   const imageUrl = `${API_BASE}/api/images/file/${encodeURIComponent(fileToShow)}`;
 
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
-      <img src="${imageUrl}" alt="${img.name}" loading="lazy" />
+      <img src="${imageUrl}" alt="${img.name || img.fileName}" loading="lazy" />
     </a>
-
-    <!-- ✅ Download should get signed URL via /download.html -->
     <span class="download-overlay" onclick="goDownload('${img._id}')"></span>
   `;
 
   container.appendChild(div);
 }
 
-// ✅ Open download page with ID (best method)
+// Navigate to download page
 function goDownload(id) {
   window.location.href = `download.html?id=${encodeURIComponent(id)}`;
 }
 
+// Load popular images
 async function loadImages() {
   if (loading) return;
   loading = true;
 
   try {
     const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
+    if (!res.ok) throw new Error("Failed to load images");
+
     const data = await res.json();
     const images = data.images || [];
 
+    // No more images
     if (images.length === 0) {
       window.removeEventListener("scroll", onScroll);
       return;
@@ -120,6 +123,7 @@ async function loadImages() {
 
     images.forEach(img => createImageDiv(img));
     page++;
+
   } catch (err) {
     console.error("❌ Error loading images:", err);
   } finally {
@@ -127,20 +131,24 @@ async function loadImages() {
   }
 }
 
+// Infinite scrolling
 function onScroll() {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
     loadImages();
   }
 }
 
 window.addEventListener("scroll", onScroll);
+
+// First load
 loadImages();
 
+// Search form
 document
   .querySelector(".search-bar-wrapper")
   .addEventListener("submit", (e) => {
     e.preventDefault();
-    const query = document.getElementById('searchInput').value.trim();
+    const query = document.getElementById("searchInput").value.trim();
     if (query) window.location.href = `search.html?query=${encodeURIComponent(query)}`;
-});
+  });
 </script>
