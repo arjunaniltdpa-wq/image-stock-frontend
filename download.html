@@ -115,6 +115,9 @@ async function loadImageDetails() {
     document.getElementById("download-link").href =
       `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
+    // Store ORIGINAL file name for info modal use
+    window.__originalFileName = img.fileName;
+
     // Keywords
     document.getElementById("keywords").innerHTML =
       (img.tags || []).map(t => `<span>${t}</span>`).join("");
@@ -169,26 +172,32 @@ const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
 
 infoBtn.onclick = async () => {
-  const imgEl = document.getElementById("download-image");
   modal.classList.add("active");
+
+  const originalFile = window.__originalFileName;
+  const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(originalFile)}`;
 
   document.getElementById("info-name").textContent =
     document.getElementById("image-name").textContent;
 
   try {
+    // ⭐ REAL HD Dimensions
     const tmp = new Image();
-    tmp.src = imgEl.src;
+    tmp.src = originalUrl;
     await tmp.decode();
 
     document.getElementById("info-dimensions").textContent =
       `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
 
-    const head = await fetch(imgEl.src, { method: "HEAD" });
+    // ⭐ REAL HD File Size
+    const head = await fetch(originalUrl, { method: "HEAD" });
     const size = head.headers.get("content-length");
+
     document.getElementById("info-size").textContent =
       size ? (size / (1024 * 1024)).toFixed(2) + " MB" : "Unknown";
 
-    const ext = imgEl.src.split(".").pop().split("?")[0].toUpperCase();
+    // ⭐ REAL File Format
+    const ext = originalUrl.split(".").pop().split("?")[0].toUpperCase();
     document.getElementById("info-format").textContent = ext;
 
   } catch (e) {
@@ -203,6 +212,3 @@ window.onclick = e => { if (e.target === modal) modal.classList.remove("active")
 
 loadImageDetails();
 </script>
-
-</body>
-</html>
