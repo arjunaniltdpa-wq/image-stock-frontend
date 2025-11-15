@@ -76,132 +76,133 @@
 </div>
 
 <script>
-/* Backend URL */
 const API_BASE = "https://api.pixeora.com";
 
-/* SEARCH REDIRECT */
+// Search Redirect
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
-/* MAIN IMAGE LOAD */
+// Get image ID
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
+// Load Image Details
 async function loadImageDetails() {
   try {
-    // ✅ FIXED API PATH
     const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
-    if (!res.ok) throw new Error("Image not found");
+
+    if (!res.ok) {
+      document.getElementById("image-name").textContent = "Image Not Found.";
+      return;
+    }
 
     const img = await res.json();
 
-    // 👇 Show thumbnail on page, but download full
+    // Select thumbnail or full
     const fileToShow = img.thumbnailFileName || img.fileName;
-    const displayUrl = `${API_BASE}/api/images/file/${encodeURIComponent(fileToShow)}`;
+
+    // ⭐ Optimized CDN image (preview)
+    const displayUrl =
+      `https://pixeora.com/cdn-cgi/image/w=900,q=90,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
     document.getElementById("download-image").src = displayUrl;
-    document.getElementById("image-name").textContent = img.title || img.name || img.fileName;
+    document.getElementById("image-name").textContent = img.title || img.fileName;
 
-    // Download button → full resolution
-    document.getElementById("download-link").onclick = () => fetchSignedDownload(img.fileName);
+    // ⭐ Full HD download (original file — no compression)
+    document.getElementById("download-link").href =
+      `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     // Keywords
-    const keywordBox = document.getElementById("keywords");
-    keywordBox.innerHTML = (img.tags || []).map(tag => `<span>${tag}</span>`).join("");
+    document.getElementById("keywords").innerHTML =
+      (img.tags || []).map(t => `<span>${t}</span>`).join("");
 
-    // Load related
-    loadRelated(img.category);
+    // Related
+    const category = img.category || (img.tags ? img.tags[0] : "");
+    if (category) loadRelated(category);
 
-  } catch (err) {
-    console.error("❌ Error loading image:", err);
+  } catch (e) {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
 
-/* SIGNED DOWNLOAD URL (full quality) */
-async function fetchSignedDownload(fileName) {
+// Load Related Images
+async function loadRelated(keyword) {
   try {
-    const res = await fetch(`${API_BASE}/api/get-file-url/${encodeURIComponent(fileName)}`);
-    const data = await res.json();
-    window.open(data.url, "_blank");
-  } catch (err) {
-    alert("Download failed");
-    console.error(err);
-  }
-}
+    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
+    const json = await res.json();
 
-/* RELATED IMAGES */
-async function loadRelated(category) {
-  try {
-    // ✅ FIXED PATH
-    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(category || "wallpaper")}`);
-    let data = await res.json();
+    let images = [];
 
-    if (data.images) data = data.images;
+    if (Array.isArray(json)) images = json;
+    else if (json.images) images = json.images;
 
-    const relatedContainer = document.getElementById("related-images");
-    relatedContainer.innerHTML = "";
+    const related = document.getElementById("related-images");
+    related.innerHTML = "";
 
-    data.slice(0, 12).forEach(img => {
+    images.slice(0, 12).forEach(img => {
       const fileToShow = img.thumbnailFileName || img.fileName;
-      const fileUrl = `${API_BASE}/api/images/file/${encodeURIComponent(fileToShow)}`;
 
-      const div = document.createElement("div");
-      div.classList.add("image-item");
-      div.innerHTML = `
-        <a href="download.html?id=${encodeURIComponent(img._id)}">
-          <img src="${fileUrl}" alt="${img.name}" loading="lazy"/>
-        </a>
+      // ⭐ Optimized CDN URL for related thumbnails
+      const fileUrl =
+        `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
+      related.innerHTML += `
+        <div class="image-item">
+          <a href="download.html?id=${img._id}">
+            <img src="${fileUrl}" loading="lazy">
+          </a>
+        </div>
       `;
-      relatedContainer.appendChild(div);
     });
-  } catch (err) {
-    console.error("❌ Error loading related images:", err);
+
+  } catch (e) {
+    console.log("Related load failed:", e);
   }
 }
 
-/* INFO MODAL */
-const infoBtn = document.querySelector(".info-btn");
+// Info Modal
 const modal = document.getElementById("infoModal");
+const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
 
-infoBtn.addEventListener("click", async () => {
+infoBtn.onclick = async () => {
   const imgEl = document.getElementById("download-image");
   modal.classList.add("active");
-  document.getElementById("info-name").textContent = document.getElementById("image-name").textContent;
+
+  document.getElementById("info-name").textContent =
+    document.getElementById("image-name").textContent;
 
   try {
-    // Load the image to measure its dimensions
-    const tempImg = new Image();
-    tempImg.src = imgEl.src;
-    await tempImg.decode();
+    const tmp = new Image();
+    tmp.src = imgEl.src;
+    await tmp.decode();
 
-    document.getElementById("info-dimensions").textContent = `${tempImg.naturalWidth} × ${tempImg.naturalHeight}px`;
+    document.getElementById("info-dimensions").textContent =
+      `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
 
-    // HEAD request to get size
     const head = await fetch(imgEl.src, { method: "HEAD" });
-    const bytes = head.headers.get("content-length");
-    const size = bytes ? `${(bytes / (1024 * 1024)).toFixed(2)} MB` : "Unknown";
-    document.getElementById("info-size").textContent = size;
+    const size = head.headers.get("content-length");
+    document.getElementById("info-size").textContent =
+      size ? (size / (1024 * 1024)).toFixed(2) + " MB" : "Unknown";
 
-    // File format from URL
     const ext = imgEl.src.split(".").pop().split("?")[0].toUpperCase();
     document.getElementById("info-format").textContent = ext;
 
-  } catch (err) {
+  } catch (e) {
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
     document.getElementById("info-format").textContent = "-";
   }
-});
+};
 
-// Close modal
-closeBtn.addEventListener("click", () => modal.classList.remove("active"));
-window.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("active"); });
+closeBtn.onclick = () => modal.classList.remove("active");
+window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
-/* INIT */
 loadImageDetails();
 </script>
+
+</body>
+</html>

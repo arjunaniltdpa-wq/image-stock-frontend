@@ -162,13 +162,11 @@ body {
 }
 /* =============== Layout Wrapper =============== */
 .layout-wrapper {
-  display: grid;
-  grid-template-columns: 100px 1fr 100px;
-  gap: 20px;
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
+
 
 /* =============== Ads Columns =============== */
 .ads-column {
@@ -188,25 +186,28 @@ body {
 
 /* =============== Gallery =============== */
 .gallery {
-  column-count: 4; 
-  column-gap: 16px; 
+  column-count: 4;
+  column-gap: 20px;
+  width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 0 auto;       /* center it */
+  display: block;
 }
 
 .image-card {
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 16px;
-  position: relative;
+  position: relative;      /* ⭐ required for download icon */
+  break-inside: avoid;
+  margin-bottom: 20px;
 }
+
 
 .image-card img {
   width: 100%;
-  border-radius: 8px;
+  height: auto;
+  border-radius: 10px;
   display: block;
 }
+
 
 .image-card .download-icon {
   position: absolute;

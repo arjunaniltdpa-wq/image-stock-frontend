@@ -34,18 +34,18 @@
   </div>
 </header>
 
+<!-- Search Info -->
+<div class="search-info">
+  <p>Showing Results for</p>
+  <h1><span class="keyword">""</span></h1>
+  <div class="image-count" id="image-count">0 Images</div>
+</div>
 
-  <!-- Search Info -->
-  <div class="search-info">
-    <p>Showing Results for</p>
-    <h1><span class="keyword">""</span></h1>
-    <div class="image-count" id="image-count">0 Images</div>
-  </div>
+<!-- Gallery -->
+<div class="layout-wrapper">
+  <div class="gallery" id="gallery"></div>
+</div>
 
-  <!-- Gallery -->
-  <div class="layout-wrapper">
-    <div class="gallery" id="gallery"></div>
-  </div>
 <script>
 // Backend URL
 const API_BASE = "https://api.pixeora.com";
@@ -56,6 +56,7 @@ const gallery = document.getElementById('gallery');
 const keywordSpan = document.querySelector('.keyword');
 const imageCountDiv = document.getElementById('image-count');
 
+// Initial search text update
 if (query) {
   keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
   loadSearchImages(query);
@@ -73,13 +74,12 @@ function redirectSearch() {
 // Load search images
 async function loadSearchImages(q) {
   try {
-    // FIXED: correct API path
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(q)}`);
     if (!res.ok) throw new Error("Failed to fetch");
 
     let images = await res.json();
 
-    // Some backends return {images: []}
+    // If backend returns { images: [...] }
     if (images.images) images = images.images;
 
     imageCountDiv.textContent = `${images.length} Images`;
@@ -94,11 +94,12 @@ async function loadSearchImages(q) {
       const div = document.createElement('div');
       div.classList.add('image-card');
 
-      // 👇 Use thumbnail if available
+      const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
+
+      // Thumbnail fallback
       const fileToShow = img.thumbnailFileName || img.fileName;
 
-      const fileUrl = `${API_BASE}/api/images/file/${encodeURIComponent(fileToShow)}`;
-      const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
+      const fileUrl = `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
@@ -114,7 +115,7 @@ async function loadSearchImages(q) {
     });
 
   } catch (err) {
-    console.error("Error fetching search images:", err);
+    console.error("Error fetching search images:", err.message);
     gallery.innerHTML = "<p>Error loading images.</p>";
   }
 }
@@ -124,3 +125,6 @@ function goDownload(id) {
   window.location.href = `download.html?id=${encodeURIComponent(id)}`;
 }
 </script>
+
+</body>
+</html>
