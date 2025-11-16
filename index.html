@@ -80,15 +80,11 @@ let loading = false;
 const container = document.getElementById("image-container");
 
 /* ---------------------------------------------------
-   DOWNLOAD HANDLER (Supports _, -, symbols, all names)
+   DOWNLOAD HANDLER
 -----------------------------------------------------*/
 function downloadImage(rawName) {
   if (!rawName) return;
-
-  const cleaned = rawName.trim();
-  const encoded = encodeURIComponent(cleaned);
-
-  const url = `${API_BASE}/api/images/download/${encoded}`;
+  const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
   window.location.href = url;
 }
 
@@ -108,10 +104,8 @@ function createImageDiv(img) {
     <a href="download.html?id=${encodeURIComponent(img._id)}">
       <img src="${imageUrl}" alt="${img.name || img.fileName}" loading="lazy" />
     </a>
-
     <span class="download-overlay"
-      onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')">
-    </span>
+      onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
   `;
 
   container.appendChild(div);
@@ -156,13 +150,54 @@ window.addEventListener("scroll", onScroll);
 loadImages();
 
 /* ---------------------------------------------------
-   SEARCH
+   SEARCH REDIRECT
 -----------------------------------------------------*/
-document
-  .querySelector(".search-bar-wrapper")
-  .addEventListener("submit", (e) => {
-    e.preventDefault();
-    const query = document.getElementById("searchInput").value.trim();
-    if (query) window.location.href = `search.html?query=${encodeURIComponent(query)}`;
-  });
+document.querySelector(".search-bar-wrapper").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const query = document.getElementById("searchInput").value.trim();
+  if (query) window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+});
+
+/* ---------------------------------------------------
+   AUTO-SUGGEST SEARCH (NEW)
+-----------------------------------------------------*/
+const input = document.getElementById("searchInput");
+const suggestionBox = document.createElement("div");
+suggestionBox.id = "suggestionBox";
+suggestionBox.style.position = "absolute";
+suggestionBox.style.background = "white";
+suggestionBox.style.width = "100%";
+suggestionBox.style.zIndex = "2000";
+suggestionBox.style.borderRadius = "6px";
+suggestionBox.style.boxShadow = "0 3px 10px rgba(0,0,0,0.2)";
+input.parentNode.appendChild(suggestionBox);
+
+let suggestTimer;
+
+input.addEventListener("input", () => {
+  clearTimeout(suggestTimer);
+
+  const q = input.value.trim();
+  if (q.length < 2) {
+    suggestionBox.innerHTML = "";
+    return;
+  }
+
+  suggestTimer = setTimeout(async () => {
+    const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
+    const suggestions = await res.json();
+
+    suggestionBox.innerHTML = suggestions
+      .map(s => `<div class="suggest-item" style="padding:10px;cursor:pointer">${s}</div>`)
+      .join("");
+
+    document.querySelectorAll(".suggest-item").forEach(item => {
+      item.onclick = () => {
+        input.value = item.innerText;
+        suggestionBox.innerHTML = "";
+      };
+    });
+
+  }, 200);
+});
 </script>
