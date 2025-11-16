@@ -74,7 +74,7 @@ function redirectSearch() {
 // Load search images
 async function loadSearchImages(q) {
   try {
-    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(q)}`);
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
     if (!res.ok) throw new Error("Failed to fetch");
 
     let images = await res.json();
