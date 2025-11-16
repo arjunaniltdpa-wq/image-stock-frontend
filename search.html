@@ -74,13 +74,12 @@ function redirectSearch() {
 // Load search images
 async function loadSearchImages(q) {
   try {
+    // FIXED → Correct backend route
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
     if (!res.ok) throw new Error("Failed to fetch");
 
+    // FIXED → Backend returns ARRAY directly
     let images = await res.json();
-
-    // If backend returns { images: [...] }
-    if (images.images) images = images.images;
 
     imageCountDiv.textContent = `${images.length} Images`;
     gallery.innerHTML = "";
@@ -95,11 +94,10 @@ async function loadSearchImages(q) {
       div.classList.add('image-card');
 
       const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
-
-      // Thumbnail fallback
       const fileToShow = img.thumbnailFileName || img.fileName;
 
-      const fileUrl = `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+      const fileUrl = 
+        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
