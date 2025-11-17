@@ -71,6 +71,15 @@ function redirectSearch() {
   return false;
 }
 
+/* ---------------------------------------------------
+   SAME DOWNLOAD HANDLER AS INDEX.HTML
+-----------------------------------------------------*/
+function downloadImage(rawName) {
+  if (!rawName) return;
+  const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  window.location.href = url;
+}
+
 // Load search images
 async function loadSearchImages(q) {
   try {
@@ -97,21 +106,17 @@ async function loadSearchImages(q) {
       const fileUrl = 
         `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
-      // ⭐ DOWNLOAD THROUGH BACKEND FORCED DOWNLOAD
-      const downloadUrl = `${API_BASE}/api/download/${encodeURIComponent(fileToShow)}`;
-
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
           <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
         </a>
 
-        <!-- NEW DOWNLOAD ICON (WORKS ON ALL DEVICES) -->
-        <a 
-          href="${downloadUrl}"
-          class="download-icon"
+        <!-- EXACT SAME DOWNLOAD STYLE AS INDEX -->
+        <span class="download-icon" 
+          onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')" 
           title="Download">
           <img src="images/download-icon.png" alt="Download"/>
-        </a>
+        </span>
       `;
 
       gallery.appendChild(div);
@@ -128,6 +133,7 @@ function goDownload(id) {
   window.location.href = `download.html?id=${encodeURIComponent(id)}`;
 }
 </script>
+
 
 
 </body>
