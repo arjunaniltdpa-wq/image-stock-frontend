@@ -102,11 +102,11 @@ async function loadSearchImages(q) {
           <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
         </a>
 
-        <!-- UPDATED: Direct download icon -->
+        <!-- FINAL UPDATED DOWNLOAD ICON (forces download on all devices) -->
         <a 
-          href="https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}" 
-          download 
-          class="download-icon" 
+          href="https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}?download=1"
+          download="${safeName || 'pixeora-image'}.jpg"
+          class="download-icon"
           title="Download">
           <img src="images/download-icon.png" alt="Download"/>
         </a>
