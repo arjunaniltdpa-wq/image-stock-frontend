@@ -264,36 +264,78 @@
 
 
   /* =============== Related Images =============== */
-  .related-section {
-    max-width: 100%;
-    margin: 30px auto;
-    padding: 0 20px;
-  }
+.related-section {
+  max-width: 100%;
+  margin: 30px auto;
+  padding: 0 20px;
+}
 
-  .related-section h2 {
-    margin-bottom: 20px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #1d1d1d;
-  }
+.related-section h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1d1d1d;
+}
 
-  .related-images {
-    column-count: 4;
-    column-gap: 15px;
-  }
+/* --- 5 GRID RELATED IMAGES (UNIFORM SIZE) --- */
+#related-images {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 15px;
+}
 
-  .related-images img {
-    width: 100%;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    object-fit: cover;
-    transition: transform 0.3s;
-    display: block;
+@media(max-width: 1024px) {
+  #related-images {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
 
-  .related-images img:hover {
-    transform: scale(1.05);
+@media(max-width: 600px) {
+  #related-images {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.related-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f9f9f9;
+}
+
+/* ⭐ SAME SIZE — No Cropping */
+#related-images .related-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  padding: 5px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Mini Download Icon */
+.mini-dl {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  background: rgba(0,0,0,0.6);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mini-dl img {
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+}
+
 
   /* =============== Responsive Masonry =============== */
   @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
