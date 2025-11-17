@@ -97,15 +97,17 @@ async function loadSearchImages(q) {
       const fileUrl = 
         `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
+      // ⭐ DOWNLOAD THROUGH BACKEND FORCED DOWNLOAD
+      const downloadUrl = `${API_BASE}/api/download/${encodeURIComponent(fileToShow)}`;
+
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
           <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
         </a>
 
-        <!-- FINAL UPDATED DOWNLOAD ICON (forces download on all devices) -->
+        <!-- NEW DOWNLOAD ICON (WORKS ON ALL DEVICES) -->
         <a 
-          href="https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}?download=1"
-          download="${safeName || 'pixeora-image'}.jpg"
+          href="${downloadUrl}"
           class="download-icon"
           title="Download">
           <img src="images/download-icon.png" alt="Download"/>
@@ -126,6 +128,7 @@ function goDownload(id) {
   window.location.href = `download.html?id=${encodeURIComponent(id)}`;
 }
 </script>
+
 
 </body>
 </html>
