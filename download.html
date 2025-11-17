@@ -19,7 +19,7 @@
   <meta property="og:description" content="Get high-quality wallpapers and photos for free. Nature, Travel, Fashion, Food, and more.">
   <meta property="og:type" content="website">
 
-  
+
 
 </head>
 <body>
@@ -109,7 +109,7 @@ async function loadImageDetails() {
     const fileToShow = img.thumbnailFileName || img.fileName;
 
     const displayUrl =
-      `https://pixeora.com/cdn-cgi/image/w=900,q=90,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+      `https://pixeora.com/cdn-cgi/image/w=900,q=95,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
     document.getElementById("download-image").src = displayUrl;
     document.getElementById("image-name").textContent = img.title || img.fileName;
