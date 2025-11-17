@@ -74,11 +74,9 @@ function redirectSearch() {
 // Load search images
 async function loadSearchImages(q) {
   try {
-    // FIXED → Correct backend route
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
     if (!res.ok) throw new Error("Failed to fetch");
 
-    // FIXED → Backend returns ARRAY directly
     let images = await res.json();
 
     imageCountDiv.textContent = `${images.length} Images`;
@@ -104,9 +102,14 @@ async function loadSearchImages(q) {
           <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
         </a>
 
-        <span class="download-icon" onclick="goDownload('${img._id}')" title="Download">
+        <!-- UPDATED: Direct download icon -->
+        <a 
+          href="https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}" 
+          download 
+          class="download-icon" 
+          title="Download">
           <img src="images/download-icon.png" alt="Download"/>
-        </span>
+        </a>
       `;
 
       gallery.appendChild(div);
