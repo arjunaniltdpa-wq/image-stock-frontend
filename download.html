@@ -18,6 +18,71 @@
   <meta property="og:title" content="Pixeora - Free Image Download">
   <meta property="og:description" content="Get high-quality wallpapers and photos for free. Nature, Travel, Fashion, Food, and more.">
   <meta property="og:type" content="website">
+
+  <style>
+    /* --- 5 GRID RELATED IMAGES --- */
+    #related-images {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    @media(max-width: 1024px) {
+      #related-images {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media(max-width: 600px) {
+      #related-images {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Mini download icon */
+    .mini-dl {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      background: rgba(0,0,0,0.6);
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mini-dl img {
+      width: 18px;
+      height: 18px;
+      filter: invert(1);
+    }
+
+    .related-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    /* Keywords clickable */
+    #keywords span {
+      background: #eee;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin: 4px;
+      display: inline-block;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #keywords span:hover {
+      background: #ddd;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -44,6 +109,8 @@
 
     <div class="image-actions">
       <button class="info-btn"><i class="fas fa-info-circle"></i> Info</button>
+
+      <!-- Updated: forced download via backend -->
       <a id="download-link" href="#" download>
         <button class="download-btn"><i class="fas fa-download"></i> Download</button>
       </a>
@@ -56,7 +123,7 @@
   <!-- Related Images -->
   <div class="related-section">
     <h2>Related Images</h2>
-    <div class="masonry-grid" id="related-images"></div>
+    <div id="related-images"></div>
   </div>
 </main>
 
@@ -78,18 +145,18 @@
 <script>
 const API_BASE = "https://api.pixeora.com";
 
-// Search Redirect
+/* SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
-// Get image ID
+/* GET IMAGE ID */
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
-// Load Image Details
+/* LOAD IMAGE DETAILS */
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
@@ -101,28 +168,29 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    // Select thumbnail or full
     const fileToShow = img.thumbnailFileName || img.fileName;
 
-    // ⭐ Optimized CDN image (preview)
     const displayUrl =
       `https://pixeora.com/cdn-cgi/image/w=900,q=90,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
     document.getElementById("download-image").src = displayUrl;
     document.getElementById("image-name").textContent = img.title || img.fileName;
 
-    // ⭐ Full HD download (original file — no compression)
+    /* ⭐ Forced download (same as homepage) */
     document.getElementById("download-link").href =
-      `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+      `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
-    // Store ORIGINAL file name for info modal use
     window.__originalFileName = img.fileName;
 
-    // Keywords
+    /* ⭐ Clickable keywords */
     document.getElementById("keywords").innerHTML =
-      (img.tags || []).map(t => `<span>${t}</span>`).join("");
+      (img.tags || [])
+        .map(t =>
+          `<span onclick="window.location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`
+        )
+        .join("");
 
-    // Related
+    /* Load related */
     const category = img.category || (img.tags ? img.tags[0] : "");
     if (category) loadRelated(category);
 
@@ -131,32 +199,35 @@ async function loadImageDetails() {
   }
 }
 
-// Load Related Images
+/* LOAD RELATED IMAGES */
 async function loadRelated(keyword) {
   try {
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
     const json = await res.json();
 
-    let images = [];
-
-    if (Array.isArray(json)) images = json;
-    else if (json.images) images = json.images;
+    let images = Array.isArray(json) ? json : json.images || [];
 
     const related = document.getElementById("related-images");
     related.innerHTML = "";
 
-    images.slice(0, 12).forEach(img => {
+    images.slice(0, 15).forEach(img => {
       const fileToShow = img.thumbnailFileName || img.fileName;
 
-      // ⭐ Optimized CDN URL for related thumbnails
       const fileUrl =
         `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
+      /* ⭐ Mini download icon uses backend forced download */
+      const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
+
       related.innerHTML += `
-        <div class="image-item">
+        <div class="related-item">
           <a href="download.html?id=${img._id}">
             <img src="${fileUrl}" loading="lazy">
           </a>
+
+          <span class="mini-dl" onclick="window.location.href='${dlUrl}'">
+            <img src="images/download-icon.png">
+          </span>
         </div>
       `;
     });
@@ -166,7 +237,7 @@ async function loadRelated(keyword) {
   }
 }
 
-// Info Modal
+/* INFO MODAL */
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
@@ -181,7 +252,6 @@ infoBtn.onclick = async () => {
     document.getElementById("image-name").textContent;
 
   try {
-    // ⭐ REAL HD Dimensions
     const tmp = new Image();
     tmp.src = originalUrl;
     await tmp.decode();
@@ -189,14 +259,12 @@ infoBtn.onclick = async () => {
     document.getElementById("info-dimensions").textContent =
       `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
 
-    // ⭐ REAL HD File Size
     const head = await fetch(originalUrl, { method: "HEAD" });
     const size = head.headers.get("content-length");
 
     document.getElementById("info-size").textContent =
       size ? (size / (1024 * 1024)).toFixed(2) + " MB" : "Unknown";
 
-    // ⭐ REAL File Format
     const ext = originalUrl.split(".").pop().split("?")[0].toUpperCase();
     document.getElementById("info-format").textContent = ext;
 
@@ -212,3 +280,6 @@ window.onclick = e => { if (e.target === modal) modal.classList.remove("active")
 
 loadImageDetails();
 </script>
+
+</body>
+</html>
