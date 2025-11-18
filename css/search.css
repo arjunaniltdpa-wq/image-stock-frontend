@@ -415,6 +415,77 @@ body {
   object-fit: cover;
 }
 
+/* ============================================================
+   ⭐ RELATED IMAGES (same style as search result image grid)
+   ============================================================ */
+
+.related-section {
+  max-width: 1400px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+.related-section h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* ⭐ Use same masonry layout as gallery */
+#related-images {
+  column-count: 4;
+  column-gap: 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) { #related-images { column-count: 3; } }
+@media (max-width: 700px) { #related-images { column-count: 2; } }
+@media (max-width: 420px) { #related-images { column-count: 1; } }
+
+/* ⭐ Related Image Card (same as image-card) */
+.related-item {
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 20px;
+}
+
+.related-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* ⭐ Clean icon only (no background) */
+.download-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+  width: 130px;
+  height: 50px;
+
+  background-image: url('../images/download-icon.png');
+  background-size: 120px;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Show on hover */
+.related-item:hover .download-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1.15);
+}
+
+
 
 /* ================= Responsive Masonry Columns ================= */
 @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }

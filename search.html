@@ -46,6 +46,12 @@
   <div class="gallery" id="gallery"></div>
 </div>
 
+<!-- Related Section (added below search results) -->
+<div class="related-section" id="related-section" style="display:none;">
+  <h2>Related Images</h2>
+  <div id="related-images"></div>
+</div>
+
 <script>
 // Backend URL
 const API_BASE = "https://api.pixeora.com";
@@ -55,6 +61,9 @@ const query = params.get('query');
 const gallery = document.getElementById('gallery');
 const keywordSpan = document.querySelector('.keyword');
 const imageCountDiv = document.getElementById('image-count');
+
+const relatedSection = document.getElementById("related-section");
+const relatedContainer = document.getElementById("related-images");
 
 // Initial search text update
 if (query) {
@@ -91,11 +100,18 @@ async function loadSearchImages(q) {
     imageCountDiv.textContent = `${images.length} Images`;
     gallery.innerHTML = "";
 
+    /* -------------------------------
+       ❌ NO RESULTS — SHOW RELATED
+    --------------------------------*/
     if (!images || images.length === 0) {
       gallery.innerHTML = "<p>No images found.</p>";
+      loadRelatedImages(q);   // 🔥 added
       return;
     }
 
+    /* -------------------------------
+       ✅ SHOW NORMAL SEARCH RESULTS
+    --------------------------------*/
     images.forEach(img => {
       const div = document.createElement('div');
       div.classList.add('image-card');
@@ -111,7 +127,6 @@ async function loadSearchImages(q) {
           <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
         </a>
 
-        <!-- EXACT SAME DOWNLOAD STYLE AS INDEX -->
         <span class="download-icon" 
           onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')" 
           title="Download">
@@ -128,13 +143,53 @@ async function loadSearchImages(q) {
   }
 }
 
-// Redirect to download page
-function goDownload(id) {
-  window.location.href = `download.html?id=${encodeURIComponent(id)}`;
+/* ---------------------------------------------------
+   ⭐ LOAD RELATED IMAGES (same as download.html)
+-----------------------------------------------------*/
+async function loadRelatedImages(keyword) {
+  try {
+    relatedSection.style.display = "block"; // Show section
+
+    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
+    const json = await res.json();
+
+    let images = Array.isArray(json) ? json : json.images || [];
+
+    relatedContainer.innerHTML = "";
+
+    // If still no matches, fallback to "popular"
+    if (images.length === 0) {
+      const pop = await fetch(`${API_BASE}/api/images/popular?page=1&limit=15`);
+      const popJson = await pop.json();
+      images = popJson.images || [];
+    }
+
+    images.slice(0, 15).forEach(img => {
+      const fileToShow = img.thumbnailFileName || img.fileName;
+
+      const fileUrl =
+        `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
+      const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
+
+      relatedContainer.innerHTML += `
+        <div class="related-item">
+          <a href="download.html?id=${img._id}">
+            <img src="${fileUrl}" loading="lazy">
+          </a>
+
+          <span class="download-overlay" 
+            onclick="window.location.href='${dlUrl}'"></span>
+        </div>
+      `;
+    });
+
+  } catch (e) {
+    console.log("Related load failed:", e);
+  }
 }
+
 </script>
-
-
 
 </body>
 </html>
