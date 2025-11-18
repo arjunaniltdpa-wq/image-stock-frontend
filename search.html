@@ -64,15 +64,10 @@ const imageCountDiv = document.getElementById('image-count');
 const relatedSection = document.getElementById("related-section");
 const relatedContainer = document.getElementById("related-images");
 
-let page = 1;               // For global infinite scroll
-let loading = false;        // Prevent duplicate calls
-let endReached = false;     // Stop when DB finish
-
-// Initial search text update + first load
+// Initial search text update
 if (query) {
   keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
-  loadSearchImages(query); 
-  loadRelatedImagesGlobal(); // Always show global-category related
+  loadSearchImages(query);
 }
 
 // Redirect search
@@ -93,9 +88,7 @@ function downloadImage(rawName) {
   window.location.href = url;
 }
 
-/* ===================================================
-   🔥 1) LOAD SEARCH RESULTS (Exact match only)
-===================================================*/
+// Load search images
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
@@ -106,13 +99,18 @@ async function loadSearchImages(q) {
     imageCountDiv.textContent = `${images.length} Images`;
     gallery.innerHTML = "";
 
-    // ❌ NO RESULTS — SHOW RELATED ONLY + INFINITY
+    /* -------------------------------
+       ❌ NO RESULTS — SHOW RELATED
+    --------------------------------*/
     if (!images || images.length === 0) {
       gallery.innerHTML = "<p>No images found.</p>";
-      return; // Do NOT call keyword related, we now use global categories
+      loadRelatedImages(q);   // 🔥 added
+      return;
     }
 
-    // ✅ Show exact results
+    /* -------------------------------
+       ✅ SHOW NORMAL SEARCH RESULTS
+    --------------------------------*/
     images.forEach(img => {
       const div = document.createElement('div');
       div.classList.add('image-card');
@@ -120,7 +118,7 @@ async function loadSearchImages(q) {
       const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
       const fileToShow = img.thumbnailFileName || img.fileName;
 
-      const fileUrl =
+      const fileUrl = 
         `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
@@ -144,38 +142,28 @@ async function loadSearchImages(q) {
   }
 }
 
-/* ===================================================
-   🔥 2) RELATED IMAGES — GLOBAL POPULAR CATEGORIES
-   (NOT keyword-based)
-===================================================*/
-async function loadRelatedImagesGlobal() {
+/* ---------------------------------------------------
+   ⭐ LOAD RELATED IMAGES (same as download.html)
+-----------------------------------------------------*/
+async function loadRelatedImages(keyword) {
   try {
-    relatedSection.style.display = "block";
+    relatedSection.style.display = "block"; // Show section
 
-    // Get 2-3 random categories from backend
-    const categories = ["animals","nature","background","abstract","flower",
-                        "people","festival","texture","travel","technology",
-                        "pattern","minimal","wallpaper"];
+    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
+    const json = await res.json();
 
-    const randomCats = categories.sort(() => 0.5 - Math.random()).slice(0, 3);
+    let images = Array.isArray(json) ? json : json.images || [];
 
-    const res = await fetch(
-      `${API_BASE}/api/images/random-categories?cats=${encodeURIComponent(randomCats.join(","))}&limit=15`
-    );
+    relatedContainer.innerHTML = "";
 
-    const data = await res.json();
-    let images = data.images || data || [];
-
-    // Fallback if API not available → load popular
+    // If still no matches, fallback to "popular"
     if (images.length === 0) {
       const pop = await fetch(`${API_BASE}/api/images/popular?page=1&limit=15`);
       const popJson = await pop.json();
       images = popJson.images || [];
     }
 
-    relatedContainer.innerHTML = "";
-
-    images.forEach(img => {
+    images.slice(0, 15).forEach(img => {
       const fileToShow = img.thumbnailFileName || img.fileName;
 
       const fileUrl =
@@ -189,7 +177,7 @@ async function loadRelatedImagesGlobal() {
             <img src="${fileUrl}" loading="lazy">
           </a>
 
-          <span class="download-overlay"
+          <span class="download-overlay" 
             onclick="window.location.href='${dlUrl}'"></span>
         </div>
       `;
@@ -200,59 +188,7 @@ async function loadRelatedImagesGlobal() {
   }
 }
 
-/* ===================================================
-   🔥 3) GLOBAL INFINITE SCROLL
-===================================================*/
-async function loadMoreGlobalImages() {
-  if (loading || endReached) return;
-  loading = true;
-
-  try {
-    const res = await fetch(
-      `${API_BASE}/api/images/all?page=${page}&limit=40`
-    );
-
-    const json = await res.json();
-    const images = json.images || json;
-
-    if (!images || images.length === 0) {
-      endReached = true;
-      return;
-    }
-
-    images.forEach(img => {
-      const div = document.createElement("div");
-      div.classList.add("image-card");
-
-      const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
-      const fileToShow = img.thumbnailFileName || img.fileName;
-
-      const fileUrl =
-        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-
-      div.innerHTML = `
-        <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
-          <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
-        </a>
-      `;
-
-      gallery.appendChild(div);
-    });
-
-    page++;
-  } catch (e) {
-    console.error("Infinite scroll failed:", e);
-  } finally {
-    loading = false;
-  }
-}
-
-/* ===================================================
-   🔥 TRIGGER INFINITE SCROLL
-===================================================*/
-window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-    loadMoreGlobalImages();
-  }
-});
 </script>
+
+</body>
+</html>
