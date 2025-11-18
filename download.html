@@ -18,9 +18,6 @@
   <meta property="og:title" content="Pixeora - Free Image Download">
   <meta property="og:description" content="Get high-quality wallpapers and photos for free. Nature, Travel, Fashion, Food, and more.">
   <meta property="og:type" content="website">
-
-
-
 </head>
 <body>
 
@@ -154,18 +151,17 @@ async function loadRelated(keyword) {
       const fileUrl =
         `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
-      /* ⭐ Mini download icon uses backend forced download */
       const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
+      /* ⭐ UPDATED: Same download icon as homepage */
       related.innerHTML += `
         <div class="related-item">
           <a href="download.html?id=${img._id}">
             <img src="${fileUrl}" loading="lazy">
           </a>
 
-          <span class="mini-dl" onclick="window.location.href='${dlUrl}'">
-            <img src="images/download-icon.png">
-          </span>
+          <span class="download-overlay"
+            onclick="window.location.href='${dlUrl}'"></span>
         </div>
       `;
     });
