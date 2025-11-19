@@ -283,79 +283,44 @@ opacity: 1;
 transform: scale(1.1);
 }
 
-/* ------------------------------------ */
 /* TOP BANNER AD */
-/* ------------------------------------ */
 .top-banner-ad {
   width: 100%;
   text-align: center;
-  padding: 10px 0;
+  margin-top: 20px;
 }
-.top-banner-ad img {
+
+/* AFFILIATE BOX */
+.affiliate-box {
   width: 100%;
-  max-width: 1200px;
-  height: auto;
+  text-align: center;
+  margin: 20px 0;
+}
+.affiliate-box img {
+  width: 100%;
+  max-width: 970px;
   border-radius: 10px;
 }
 
-/* ------------------------------------ */
-/* AFFILIATE BOX */
-/* ------------------------------------ */
-.affiliate-box {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #f2f2f2;
-  border-radius: 12px;
-  text-align: center;
-}
-.affiliate-box h3 {
-  margin-bottom: 10px;
-  font-size: 22px;
-}
-.affiliate-btn {
-  display: inline-block;
-  background: #ff0044;
-  color: #fff;
-  padding: 12px 30px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* ------------------------------------ */
 /* MID GRID AD */
-/* ------------------------------------ */
-.mid-grid-ad {
-  width: 100%;
+.midgrid-ad {
+  break-inside: avoid-column;
   margin: 20px 0;
   text-align: center;
-}
-.mid-grid-ad img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
 }
 
-/* ------------------------------------ */
 /* BOTTOM STICKY AD */
-/* ------------------------------------ */
 .bottom-sticky-ad {
-  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #fff;
-  border-top: 2px solid #ccc;
-  text-align: center;
-  padding: 10px 0;
-  z-index: 99999;
-}
-.bottom-sticky-ad img {
-  width: 100%;
-  max-width: 1200px;
-  height: auto;
+  background: white;
+  padding: 5px;
+  display: none;
+  z-index: 9999;
+  box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
 }
 
 

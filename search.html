@@ -7,15 +7,13 @@
   <link rel="stylesheet" href="css/search.css">
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
+
+  <meta name="description" content="Search and download free HD wallpapers & stock images on Pixeora. Nature, Technology, Travel, Food, and more.">
+  <meta property="og:title" content="Pixeora - Free Stock Images Search">
+  <meta property="og:description" content="Explore free HD wallpapers and images for any category.">
+  <meta property="og:type" content="website">
 </head>
 <body>
-
-<!-- ========================================= -->
-<!-- ✅ TOP BANNER AD (FULL WIDTH) -->
-<!-- ========================================= -->
-<div class="top-banner-ad">
-  <img src="images/ad-wide-placeholder.jpg" alt="Ad Banner">
-</div>
 
 <!-- Header -->
 <header class="header">
@@ -31,6 +29,7 @@
         </form>
       </div>
     </div>
+
   </div>
 </header>
 
@@ -41,111 +40,96 @@
   <div class="image-count" id="image-count">0 Images</div>
 </div>
 
-<!-- ========================================= -->
-<!-- ✅ AFFILIATE BOX -->
-<!-- ========================================= -->
-<div class="affiliate-box">
-  <h3>Recommended Tools</h3>
-  <a href="#" class="affiliate-btn">🔥 Adobe Photoshop Free Trial →</a>
-</div>
-
 <!-- Gallery -->
 <div class="layout-wrapper">
   <div class="gallery" id="gallery"></div>
 </div>
 
-<!-- Related Section -->
+<!-- Related Section (added below search results) -->
 <div class="related-section" id="related-section" style="display:none;">
   <h2>Related Images</h2>
   <div id="related-images"></div>
 </div>
 
-<!-- ========================================= -->
-<!-- ✅ BOTTOM STICKY AD (SHOW AFTER 10 SEC) -->
-<!-- ========================================= -->
-<div id="bottom-sticky-ad" class="bottom-sticky-ad">
-  <img src="images/ad-wide-placeholder.jpg" alt="Bottom Ad">
-</div>
-
 <script>
+// Backend URL
 const API_BASE = "https://api.pixeora.com";
+
 const params = new URLSearchParams(window.location.search);
 const query = params.get('query');
 const gallery = document.getElementById('gallery');
 const keywordSpan = document.querySelector('.keyword');
 const imageCountDiv = document.getElementById('image-count');
 
-/* ============================
-   BOTTOM AD TIMER 
-=============================*/
-setTimeout(() => {
-  document.getElementById("bottom-sticky-ad").style.display = "block";
-}, 10000);
+const relatedSection = document.getElementById("related-section");
+const relatedContainer = document.getElementById("related-images");
 
-/* ============================
-   REDIRECT SEARCH
-=============================*/
+// Initial search text update
+if (query) {
+  keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
+  loadSearchImages(query);
+}
+
+// Redirect search
 function redirectSearch() {
-  const s = document.getElementById('searchInput').value.trim();
-  if (s) window.location.href = `search.html?query=${encodeURIComponent(s)}`;
+  const searchInput = document.getElementById('searchInput').value.trim();
+  if (searchInput) {
+    window.location.href = `search.html?query=${encodeURIComponent(searchInput)}`;
+  }
   return false;
 }
 
-/* ============================
-   DOWNLOAD HANDLER
-=============================*/
+/* ---------------------------------------------------
+   SAME DOWNLOAD HANDLER AS INDEX.HTML
+-----------------------------------------------------*/
 function downloadImage(rawName) {
   if (!rawName) return;
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
   window.location.href = url;
 }
 
-/* ============================
-   LOAD SEARCH IMAGES
-=============================*/
+// Load search images
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
+    if (!res.ok) throw new Error("Failed to fetch");
+
     let images = await res.json();
 
     imageCountDiv.textContent = `${images.length} Images`;
     gallery.innerHTML = "";
 
+    /* -------------------------------
+       ❌ NO RESULTS — SHOW RELATED
+    --------------------------------*/
     if (!images || images.length === 0) {
       gallery.innerHTML = "<p>No images found.</p>";
-      loadRelatedImages(q);
+      loadRelatedImages(q);   // 🔥 added
       return;
     }
 
-    /* ----------------------------
-       Insert images + mid grid ads
-    -----------------------------*/
-    let counter = 0;
-
+    /* -------------------------------
+       ✅ SHOW NORMAL SEARCH RESULTS
+    --------------------------------*/
     images.forEach(img => {
-      counter++;
+      const div = document.createElement('div');
+      div.classList.add('image-card');
 
-      // Insert ad every 20 images
-      if (counter % 20 === 0) {
-        const ad = document.createElement("div");
-        ad.classList.add("mid-grid-ad");
-        ad.innerHTML = `<img src="images/ad-rectangle-placeholder.jpg" alt="Ad">`;
-        gallery.appendChild(ad);
-      }
-
-      const div = document.createElement("div");
-      div.classList.add("image-card");
-
+      const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
       const fileToShow = img.thumbnailFileName || img.fileName;
+
       const fileUrl = 
-      `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
-        <a href="download.html?id=${encodeURIComponent(img._id)}">
-          <img src="${fileUrl}" alt="${img.name}" loading="lazy">
+        <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
+          <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
         </a>
-        <span class="download-icon" onclick="downloadImage('${img.fileName}')">
-            <img src="images/download-icon.png">
+
+        <span class="download-icon" 
+          onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')" 
+          title="Download">
+          <img src="images/download-icon.png" alt="Download"/>
         </span>
       `;
 
@@ -153,47 +137,57 @@ async function loadSearchImages(q) {
     });
 
   } catch (err) {
+    console.error("Error fetching search images:", err.message);
     gallery.innerHTML = "<p>Error loading images.</p>";
   }
 }
 
-/* ============================
-   LOAD RELATED IMAGES
-=============================*/
+/* ---------------------------------------------------
+   ⭐ LOAD RELATED IMAGES (same as download.html)
+-----------------------------------------------------*/
 async function loadRelatedImages(keyword) {
-  const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
-  const json = await res.json();
-  let images = json.images || json;
+  try {
+    relatedSection.style.display = "block"; // Show section
 
-  if (images.length === 0) {
-    const pop = await fetch(`${API_BASE}/api/images/popular?page=1&limit=15`);
-    const p = await pop.json();
-    images = p.images || [];
+    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
+    const json = await res.json();
+
+    let images = Array.isArray(json) ? json : json.images || [];
+
+    relatedContainer.innerHTML = "";
+
+    // If still no matches, fallback to "popular"
+    if (images.length === 0) {
+      const pop = await fetch(`${API_BASE}/api/images/popular?page=1&limit=15`);
+      const popJson = await pop.json();
+      images = popJson.images || [];
+    }
+
+    images.slice(0, 15).forEach(img => {
+      const fileToShow = img.thumbnailFileName || img.fileName;
+
+      const fileUrl =
+        `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
+      const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
+
+      relatedContainer.innerHTML += `
+        <div class="related-item">
+          <a href="download.html?id=${img._id}">
+            <img src="${fileUrl}" loading="lazy">
+          </a>
+
+          <span class="download-overlay" 
+            onclick="window.location.href='${dlUrl}'"></span>
+        </div>
+      `;
+    });
+
+  } catch (e) {
+    console.log("Related load failed:", e);
   }
-
-  document.getElementById("related-section").style.display = "block";
-  const box = document.getElementById("related-images");
-  box.innerHTML = "";
-
-  images.slice(0, 15).forEach(img => {
-    const fileToShow = img.thumbnailFileName || img.fileName;
-    const fileUrl =
-    `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-
-    box.innerHTML += `
-      <div class="related-item">
-        <a href="download.html?id=${img._id}">
-          <img src="${fileUrl}" loading="lazy">
-        </a>
-      </div>
-    `;
-  });
 }
 
-if (query) {
-  keywordSpan.textContent = `"${query}"`;
-  loadSearchImages(query);
-}
 </script>
 
 </body>
