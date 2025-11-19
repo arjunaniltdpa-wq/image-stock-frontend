@@ -323,6 +323,22 @@ transform: scale(1.1);
   box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
 }
 
+/* FIX: Header overlay blocking typing */
+.header-overlay {
+    pointer-events: none !important;
+}
+
+/* Allow clicks on search bar */
+.search-bar-wrapper,
+.search-bar-border,
+.search-bar,
+#searchInput,
+.search-icon {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 9999 !important;
+}
+
 
 /* Responsive columns */
 @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
