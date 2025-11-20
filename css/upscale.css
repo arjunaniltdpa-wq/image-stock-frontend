@@ -276,6 +276,66 @@ body {
   background: #0056cc;
 }
 
+/* Coming Soon Animation */
+.coming-soon-box {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.coming-soon-box .cs-image {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 14px;
+  position: relative;
+  z-index: 2;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Moving Gradient Overlay */
+.coming-soon-box::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 0% 0%, 
+      rgba(255, 0, 120, 0.35), 
+      rgba(0, 130, 255, 0.25),
+      rgba(255, 255, 255, 0)
+  );
+  filter: blur(80px);
+  animation: gradientMove 6s ease-in-out infinite alternate;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Float Effect */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Smooth gradient movement */
+@keyframes gradientMove {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    background-position: 0% 0%;
+  }
+  50% {
+    transform: translate(-45%, -45%) scale(1.15);
+    background-position: 100% 50%;
+  }
+  100% {
+    transform: translate(-55%, -55%) scale(1);
+    background-position: 50% 100%;
+  }
+}
+
 footer {
   text-align: center;
   padding: 20px;

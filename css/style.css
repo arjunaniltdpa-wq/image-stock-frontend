@@ -193,16 +193,16 @@ outline: none;
 /* Banner Text */
 .banner-text {
 font-family: 'Onest', sans-serif;
-font-weight: 800;
-letter-spacing: -0.07em;
-font-size: clamp(10px, 6vw, 80px);
+font-weight: 900;
+letter-spacing: -0.08em;
+font-size: clamp(10px, 10vw, 90px);
 background: linear-gradient(90deg, #15ffad, #deff07);
-background-size: 300% auto;
+background-size: 400% auto;
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 white-space: nowrap;
 animation: gradientMove 2s ease-in-out infinite;
-margin-top: 10px; /* Keep safe space from search bar */
+margin-top: -35px; /* Keep safe space from search bar */
 }
 
 /* ---------------- CATEGORY ---------------- */

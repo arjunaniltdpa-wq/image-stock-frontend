@@ -1,274 +1,113 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>Free AI Image Upscaler Online | Enhance & Enlarge Images - Pixeora</title>
+  <title>Free AI Image Upscaler Online | Enhance & Enlarge Images - Pixeora</title>
 
-    <meta name="description" content="Use Pixeora’s free AI Image Upscaler to enlarge and enhance images online. Improve photo resolution, sharpen details, and upscale instantly without losing quality." />
-    <meta name="keywords" content="AI image upscaler, free image upscaler, upscale photo online, enhance image resolution, enlarge image, AI photo enhancer, Pixeora" />
+  <meta name="description" content="Use Pixeora’s free AI Image Upscaler to enlarge and enhance images online. Improve photo resolution, sharpen details, and upscale instantly without losing quality." />
+  <meta name="keywords" content="AI image upscaler, free image upscaler, upscale photo online, enhance image resolution, enlarge image, AI photo enhancer, Pixeora" />
 
-    <link rel="canonical" href="https://pexelora.com/upscale.html" />
-    <meta property="og:title" content="Free AI Image Upscaler Online | Pixeora" />
-    <meta property="og:description" content="Enlarge and enhance photos instantly with Pixeora’s AI Image Upscaler. Free, fast, and high-quality image upscaling online." />
-    <meta property="og:image" content="https://pexelora.com/images/upscale-tool.jpg" />
-    <meta property="og:url" content="https://pexelora.com/upscale.html" />
-    <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://pexelora.com/upscale.html" />
+  <meta property="og:title" content="Free AI Image Upscaler Online | Pixeora" />
+  <meta property="og:description" content="Enlarge and enhance photos instantly with Pixeora’s AI Image Upscaler. Free, fast, and high-quality image upscaling online." />
+  <meta property="og:image" content="https://pexelora.com/images/upscale-tool.jpg" />
+  <meta property="og:url" content="https://pexelora.com/upscale.html" />
+  <meta property="og:type" content="website" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Free AI Image Upscaler | Pixeora" />
-    <meta name="twitter:description" content="Upscale and enhance images instantly with AI. Free online tool by Pixeora." />
-    <meta name="twitter:image" content="https://pexelora.com/images/upscale-tool.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free AI Image Upscaler | Pixeora" />
+  <meta name="twitter:description" content="Upscale and enhance images instantly with AI. Free online tool by Pixeora." />
+  <meta name="twitter:image" content="https://pexelora.com/images/upscale-tool.jpg" />
 
-    <link rel="icon" href="images/favicon.png" type="image/png">
-    <link rel="stylesheet" href="css/upscale.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="styl esheet">
-    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet" />
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="css/upscale.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
 
-    
-    <style>
-      /* Loader */
-      #loader { display: none; text-align: center; margin-top: 15px; }
-      .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 10px auto; }
-      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</head>
 
-      /* Header */  
-      .main-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem 3rem;
-        background-color: #ffffff;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        top: 0;
-        z-index: 1000;
-        position: relative;
-      }
+<body>
 
-      .logo-link {
-        font-family: 'Marck Script', cursive;
-        font-size: 2rem;
-        color: #ff5e66;
-        text-decoration: none;
-      }
+  <!-- Header -->
+  <header class="main-header">
+    <a href="index.html" class="logo-link">Pixeora</a>
+    <nav class="nav-menu">
+      <a href="upscale.html" class="nav-item active">Upscale</a>
+      <a href="bgremove.html" class="nav-item">BG Remove</a>
+      <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
+      <a href="formatconverter.html" class="nav-item">Format Converter</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <div></div><div></div><div></div>
+    </div>
+  </header>
 
-      .nav-menu {
-        display: flex;
-        gap: 1.5rem;
-      }
+  <!-- Hero -->
+  <section class="hero">
+    <h1>FREE AI Image Upscaler</h1>
+    <p>Upscale images with AI. Sharpen and enhance photos automatically with our free tool.</p>
+  </section>
 
-      .nav-item {
-        font-size: 1rem;
-        color: #333;
-        text-decoration: none;
-        padding: 0.6rem 1rem;
-        border-radius: 8px;
-        transition: background 0.2s, color 0.2s;
-      }
+  <!-- Coming Soon Replaces Upload -->
+  <section class="coming-soon-box">
+    <img src="images/upscale-coming-soon.png" class="cs-image" alt="Upscale Coming Soon">
+  </section>
 
-      .nav-item:hover { background-color: #f1f1f1; }
-      .nav-item.active { background-color: #ff5e66; color: #fff; font-weight: bold; }
-
-      /* Hamburger */
-      .hamburger {
-        display: none;
-        flex-direction: column;
-        cursor: pointer;
-        gap: 5px;
-      }
-
-      .hamburger div {
-        width: 25px;
-        height: 3px;
-        background-color: #333;
-      }
-
-      /* Mobile Menu Hidden */  
-      @media (max-width: 1024px) {
-        .nav-menu { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 220px; }
-        .nav-menu.show { display: flex; }
-        .hamburger { display: flex; }
-      }
-    </style>
-  </head>
-
-  <body>
-    <!-- Header -->
-    <header class="main-header">
-      <a href="index.html" class="logo-link">Pixeora</a>
-      <nav class="nav-menu">
-        <a href="upscale.html" class="nav-item active">Upscale</a>
-        <a href="bgremove.html" class="nav-item">BG Remove</a>
-        <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
-        <a href="formatconverter.html" class="nav-item">Format Converter</a>
-      </nav>
-      <div class="hamburger" id="hamburger">
-        <div></div>
-        <div></div>
-        <div></div>
+  <!-- Other Tools -->
+  <section class="other-tools">
+    <div class="tool">
+      <div class="tool-img"><img src="images/upscale-tool.jpg" alt="AI Image Upscaler Tool" /></div>
+      <div class="tool-text">
+        <h3>AI Image Upscaler</h3>
+        <p>Enlarge and enhance images with smart AI algorithms.</p>
+        <a href="upscale.html">Try Upscaler</a>
       </div>
-    </header>
+    </div>
 
-    <!-- Hero -->
-    <section class="hero">
-      <h1>FREE AI Image Upscaler</h1>
-      <p>Upscale images with AI. Sharpen and enhance photos automatically with our free tool. Upload and upscale in seconds.</p>
-    </section>
-
-    <!-- Upload -->
-    <section class="upload-box">
-      <input type="file" id="uploadInput" accept="image/*" />
-      <p class="upload-note">Supports .jpg, .png (Max size: 5MB)</p>
-      <button id="upscaleBtn">Upscale Image</button>
-      <div id="loader">
-        <div class="spinner"></div>
-        <p>Upscaling in progress...</p>
+    <div class="tool reverse">
+      <div class="tool-text">
+        <h3>Background Remover</h3>
+        <p>Remove backgrounds from images automatically.</p>
+        <a href="bgremove.html">Try BG Remover</a>
       </div>
-    </section>
+      <div class="tool-img"><img src="images/bg-remove-tool.jpg" alt="Background Remover Tool" /></div>
+    </div>
 
-    <!-- Preview -->
-    <section class="preview-section">
-      <h2>Preview Your Upscaled Image</h2>
-      <img id="previewImg" src="https://via.placeholder.com/600x300" alt="Upscaled Image Preview - Pixeora">
-      <div class="download-btn">
-        <a id="downloadLink" href="#" download="upscaled.png" style="display:none;">
-          <button>Download (after 5s ad)</button>
-        </a>
+    <div class="tool">
+      <div class="tool-img"><img src="images/image-compressor.jpg" alt="Image Compressor Tool" /></div>
+      <div class="tool-text">
+        <h3>Image Compressor</h3>
+        <p>Reduce file size without losing quality.</p>
+        <a href="imagecompressor.html">Try Compressor</a>
       </div>
-    </section>
+    </div>
 
-    <!-- Ads -->
-    <section class="ad-section">
-      <p>Reward Ad Placeholder — Show this every 3 image processes</p>
-    </section>
-
-    <!-- Other Tools -->
-    <section class="other-tools">
-      <div class="tool">
-        <div class="tool-img"><img src="images/upscale-tool.jpg" alt="AI Image Upscaler Tool" /></div>
-        <div class="tool-text">
-          <h3>AI Image Upscaler</h3>
-          <p>Enlarge and enhance images with smart AI algorithms to improve quality instantly.</p>
-          <a href="upscale.html">Try Upscaler</a>
-        </div>
+    <div class="tool reverse">
+      <div class="tool-text">
+        <h3>Format Converter</h3>
+        <p>Convert image formats like JPG, PNG, WebP easily.</p>
+        <a href="formatconverter.html">Try Converter</a>
       </div>
+      <div class="tool-img"><img src="images/format-converter.jpg" alt="Image Format Converter Tool" /></div>
+    </div>
+  </section>
 
-      <div class="tool reverse">
-        <div class="tool-text">
-          <h3>Background Remover</h3>
-          <p>Remove backgrounds from images automatically for use in designs and product shots.</p>
-          <a href="bgremove.html">Try BG Remover</a>
-        </div>
-        <div class="tool-img"><img src="images/bg-remove-tool.jpg" alt="Background Remover Tool" /></div>
-      </div>
-
-      <div class="tool">
-        <div class="tool-img"><img src="images/image-compressor.jpg" alt="Image Compressor Tool" /></div>
-        <div class="tool-text">
-          <h3>Image Compressor</h3>
-          <p>Reduce file size without losing quality. Ideal for web, email, and social media use.</p>
-          <a href="imagecompressor.html">Try Compressor</a>
-        </div>
-      </div>
-
-      <div class="tool reverse">
-        <div class="tool-text">
-          <h3>Format Converter</h3>
-          <p>Quickly convert image formats like JPG, PNG, WebP, and more with high quality.</p>
-          <a href="formatconverter.html">Try Converter</a>
-        </div>
-        <div class="tool-img"><img src="images/format-converter.jpg" alt="Image Format Converter Tool" /></div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      &copy; 2025 Pixeora. All rights reserved.
-    </footer>
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Pixeora. All rights reserved.
+  </footer>
 
 <script>
-  // 🍔 Hamburger toggle
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.querySelector(".nav-menu");
-  hamburger.addEventListener("click", () => {
-    navMenu.classList.toggle("show");
+  // Menu toggle
+  document.getElementById("hamburger").addEventListener("click", () => {
+    document.querySelector(".nav-menu").classList.toggle("show");
   });
 
-  // 🎨 Elements
-  const uploadInput = document.getElementById("uploadInput");
-  const upscaleBtn = document.getElementById("upscaleBtn");
-  const loader = document.getElementById("loader");
-  const previewImg = document.getElementById("previewImg");
-  const downloadLink = document.getElementById("downloadLink");
-
-  // ✅ Real hosting backend
-  const API_BASE = "https://api.pixeora.com/api/upscale";
-
-  let uploadedFile = null;
-
-  // 📁 Handle file upload
-  uploadInput.addEventListener("change", (e) => {
-    uploadedFile = e.target.files[0];
-    if (uploadedFile) {
-      if (uploadedFile.size > 5 * 1024 * 1024) {
-        alert("Please upload an image smaller than 5MB!");
-        uploadInput.value = "";
-        uploadedFile = null;
-        return;
-      }
-      previewImg.src = URL.createObjectURL(uploadedFile);
-      downloadLink.style.display = "none";
-    }
-  });
-
-  // ⚡ Upscale via backend
-  upscaleBtn.addEventListener("click", async () => {
-    if (!uploadedFile) {
-      alert("Please select an image first!");
-      return;
-    }
-
-    loader.style.display = "block";
-    upscaleBtn.disabled = true;
-
-    const formData = new FormData();
-    formData.append("image", uploadedFile);
-
-    try {
-      const response = await fetch(`${API_BASE}/api/upscale`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Upscale failed!");
-
-      const result = await response.json();
-
-      if (!result.outputUrl) throw new Error("No output URL returned from server!");
-
-      // ✅ Show upscaled image
-      previewImg.src = result.outputUrl;
-      downloadLink.href = result.outputUrl;
-      downloadLink.style.display = "inline-block";
-    } catch (err) {
-      console.error("Upscale error:", err);
-      alert("Upscale failed: " + err.message);
-    } finally {
-      loader.style.display = "none";
-      upscaleBtn.disabled = false;
-    }
-  });
-
-  // ⏳ 5-second ad delay before download
-  downloadLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    const href = downloadLink.href;
-    if (!href) return;
-    alert("Please wait 5 seconds while the ad plays...");
-    setTimeout(() => {
-      window.location.href = href;
-    }, 5000);
-  });
+  // Disable old tool JS
+  console.log("Upscale tool disabled — Coming Soon mode active.");
 </script>
+
+</body>
+</html>
