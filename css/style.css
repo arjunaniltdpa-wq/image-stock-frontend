@@ -116,7 +116,7 @@ color: #fff;
 background-image: url("../images/banner.jpg");
 background-size: cover;
 background-position: center;
-height: 450px;
+height: 500px;
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -159,7 +159,7 @@ animation: gradientGlow 5s linear infinite;
 }
 
 .search-bar {
-width: 700px;
+width: 800px;
 height: 55px;
 max-width: 100%;
 display: flex;
@@ -167,7 +167,7 @@ align-items: center;
 background-color: white;
 border-radius: 20px;
 overflow: hidden;
-box-shadow: 0 0 10px rgba(0,0,0,0.1);
+box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
 .search-bar input {
@@ -190,20 +190,39 @@ outline: none;
   cursor: pointer;
 }
 
-/* Banner Text */
 .banner-text {
-font-family: 'Onest', sans-serif;
-font-weight: 900;
-letter-spacing: -0.08em;
-font-size: clamp(10px, 10vw, 90px);
-background: linear-gradient(90deg, #15ffad, #deff07);
-background-size: 400% auto;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-white-space: nowrap;
-animation: gradientMove 2s ease-in-out infinite;
-margin-top: -35px; /* Keep safe space from search bar */
+  font-family: 'Onest', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  font-size: clamp(28px, 8vw, 90px);
+  background: linear-gradient(90deg, #15ffad, #deff07, #15ffad);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 3s ease-in-out infinite;
+
+  margin-top: -40px;
+  text-align: center;
+  line-height: 0.8;
+  white-space: normal;
+
+  display: inline-block;    /* 💚 Fix clipping */
+  padding: 25px 0;          /* adds breathing room */
 }
+
+/* Gradient Animation */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 /* ---------------- CATEGORY ---------------- */
 .category-grid {
@@ -236,6 +255,22 @@ color: #fff;
 background-image: linear-gradient(135deg, #08ff9c, #025aff);
 color: white;
 }
+
+.after-category-ad {
+  overflow: visible !important;
+}
+.after-category-ad {
+  text-align: center;
+  margin: 20px auto;
+  min-height: 90px; 
+}
+
+.after-category-ad ins {
+  display: block !important;
+  height: 90px !important; 
+  max-height: 90px !important;
+}
+
 
 /* ---------------- MASONRY GRID ---------------- */
 .masonry-grid {
@@ -290,17 +325,6 @@ transform: scale(1.1);
   margin-top: 20px;
 }
 
-/* AFFILIATE BOX */
-.affiliate-box {
-  width: 100%;
-  text-align: center;
-  margin: 20px 0;
-}
-.affiliate-box img {
-  width: 100%;
-  max-width: 970px;
-  border-radius: 10px;
-}
 
 /* MID GRID AD */
 .midgrid-ad {
@@ -313,14 +337,37 @@ transform: scale(1.1);
 /* BOTTOM STICKY AD */
 .bottom-sticky-ad {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  bottom: -100px; /* start hidden */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
   background: white;
-  padding: 5px;
-  display: none;
+  padding: 10px;
+  display: block; /* keep it block; we control visibility with animation */
   z-index: 9999;
-  box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  opacity: 0;
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+/* SLIDE UP ANIMATION */
+@keyframes slideUp {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+  100% {
+    bottom: 15px;
+    opacity: 1;
+  }
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width: 600px) {
+  .bottom-sticky-ad {
+    width: 90%;
+  }
 }
 
 /* FIX: Header overlay blocking typing */
