@@ -231,72 +231,81 @@
     background: #444;
   }
 
-  /* Other Tools */
-  .other-tools {
-    background-color: #1e1e1e;
-    padding: 60px 20px;
-    max-width: 100%;
-    margin: auto;
-    color: white;
-  }
+/* Other Tools */
+.other-tools {
+  background-color: #1e1e1e; /* dark grey */
+  padding: 60px 20px;
+  max-width: 100%;
+  margin: auto;
+  color: white;
+}
 
-  .tool {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 60px;
-    gap: 40px;
-  }
+.tool {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 60px;
+  gap: 40px;
+}
 
-  .tool.reverse {
-    flex-direction: row-reverse;
-  }
+.tool.reverse {
+  flex-direction: row-reverse;
+}
 
-  .tool-img img {
-    max-width: 100%;
-    border-radius: 30px;
-    width: auto;
-    height: auto;
-  }
+.tool-img img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  border-radius: 30px;
+}
 
-  .tool-text {
-    max-width: 500px;
-  }
+.tool-text {
+  max-width: 500px;
+}
 
-  .tool-text h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
+.tool-text h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
 
-  .tool-text p {
-    font-size: 16px;
-    color: #ccc;
-    margin-bottom: 15px;
-  }
+.tool-text p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+}
 
-  .tool-text a {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: background 0.8s ease;
-  }
+.tool-text a {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: background 0.8s ease;
+}
 
-  .tool-text a:hover {
-    background: #0056cc;
-  }
+.tool-text a:hover {
+  background: #0056cc;
+}
 
-  /* Footer */
-  footer {
-    background: #222;
-    color: #aaa;
-    text-align: center;
-    padding: 1.5rem;
-    font-size: 0.9rem;
-  }
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #171717;
+  color: #555;
+  font-size: 14px;
+}
 
+.footer-legal {
+  margin-left: 15px;
+  color: #0077ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-legal:hover {
+  text-decoration: underline;
+}
   /* Preview Box */
   .preview-box {
     margin-top: 15px;
@@ -331,6 +340,204 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  /* 🔄 Simple converting animation */
+.loading {
+  display: none;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.loading::after {
+  content: "⏳";
+  display: inline-block;
+  margin-left: 8px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 📷 Preview */
+.preview-box {
+  margin-top: 15px;
+  display: none;
+  text-align: center;
+}
+.preview-box img {
+  max-width: 300px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  width: 100%;
+  height: auto;
+}
+
+/* 🎨 Format button styles */
+.format-options button {
+  padding: 10px 18px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f8f8f8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 5px;
+}
+.format-options button:hover {
+  background: #eaeaea;
+}
+.format-options button.active {
+  background: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+  font-weight: bold;
+}
+
+/* 🟢 Hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: auto;
+  gap: 5px;
+}
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 220px;
+  }
+  .nav-menu.active {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .hero h1 { font-size: 24px; }
+  .hero p { font-size: 14px; }
+  .format-options button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .preview-box img {
+    max-width: 100%;
+  }
+  .other-tools .tool img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ⭐ Top Banner Ad */
+.banner-ad {
+  max-width: 900px;
+  margin: 25px auto;
+  text-align: center;
+}
+
+/* ⭐ Page Wrapper for Side Ads Around Tool (Balanced Layout) */
+.tools-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 10px;
+}
+
+.side-ad-vertical {
+  width: 160px;
+  max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .side-ad-vertical {
+    display: none;
+  }
+}
+
+.converter-wrapper {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* BOTTOM STICKY AD */
+.bottom-sticky-ad {
+  position: fixed;
+  bottom: -100px; /* start hidden */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  background: white;
+  padding: 10px;
+  display: block; /* keep it block; we control visibility with animation */
+  z-index: 9999;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* SLIDE UP ANIMATION */
+@keyframes slideUp {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+  100% {
+    bottom: 15px;
+    opacity: 1;
+  }
+}
+
+.close-sticky {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  z-index: 99999;
+  opacity: 0.8;
+}
+
+.close-sticky:hover {
+  opacity: 1;
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width: 600px) {
+  .bottom-sticky-ad {
+    width: 90%;
+  }
+}
+
+/* Normalize ad alignment */
+.adsbygoogle {
+  margin: 0 auto;
+}
 
   /* Responsive */
   @media (max-width: 768px) {

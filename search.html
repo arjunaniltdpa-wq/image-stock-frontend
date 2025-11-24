@@ -12,13 +12,22 @@
   <meta property="og:title" content="Pixeora - Free Stock Images Search">
   <meta property="og:description" content="Explore free HD wallpapers and images for any category.">
   <meta property="og:type" content="website">
+
+  <!-- ⭐ GOOGLE ADSENSE -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous"></script>
+
 </head>
 <body>
 
 <!-- Header -->
 <header class="header">
   <div class="header-overlay">
+
+    <!-- LEFT: LOGO -->
     <a href="index.html" class="logo">Pixeora</a>
+
+    <!-- CENTER: SEARCH BAR -->
     <div class="search-bar-wrapper">
       <div class="search-bar-border">
         <form class="search-bar" onsubmit="return redirectSearch()">
@@ -30,8 +39,21 @@
       </div>
     </div>
 
+    <!-- RIGHT: LEGAL LINK -->
+    <a href="legal.html" class="legal-link-header">Legal & Policies</a>
+
+    <!-- ⭐ TOP BANNER AD BELOW SEARCH BAR -->
+    <div class="top-search-ad" style="margin:20px 0; text-align:center;">
+      <ins class="adsbygoogle"
+           style="display:block; width:100%; max-width:728px; height:90px; margin:0 auto;"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="1551401768"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
   </div>
 </header>
+
 
 <!-- Search Info -->
 <div class="search-info">
@@ -40,16 +62,40 @@
   <div class="image-count" id="image-count">0 Images</div>
 </div>
 
+<!-- ⭐ MID-PAGE AD (AFTER SEARCH RESULTS) -->
+<div class="midpage-ad" style="margin:40px auto; text-align:center;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="3493494231"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
 <!-- Gallery -->
 <div class="layout-wrapper">
   <div class="gallery" id="gallery"></div>
 </div>
 
-<!-- Related Section (added below search results) -->
+
+<!-- Related Section -->
 <div class="related-section" id="related-section" style="display:none;">
   <h2>Related Images</h2>
   <div id="related-images"></div>
 </div>
+
+<!-- ⭐ Bottom Sticky Ad -->
+<div class="bottom-sticky-ad" id="stickyAd">
+  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;height:60px"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="2074145941"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 
 <script>
 // Backend URL
@@ -63,6 +109,52 @@ const imageCountDiv = document.getElementById('image-count');
 
 const relatedSection = document.getElementById("related-section");
 const relatedContainer = document.getElementById("related-images");
+
+// ⭐ Tiny inline base64 placeholder (1×1 transparent GIF)
+const PLACEHOLDER_SRC =
+  "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
+
+// ⭐ IntersectionObserver-based lazy loader
+let lazyObserver = null;
+
+function initLazyObserver() {
+  if (!("IntersectionObserver" in window)) {
+    // Fallback: load all immediately
+    document.querySelectorAll("img.lazy-img[data-src]").forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute("data-src");
+    });
+    return;
+  }
+
+  if (lazyObserver) return; // already created
+
+  lazyObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const img = entry.target;
+        const realSrc = img.dataset.src;
+        if (realSrc) {
+          img.src = realSrc;
+          img.removeAttribute("data-src");
+        }
+        observer.unobserve(img);
+      });
+    },
+    {
+      rootMargin: "200px 0px",
+      threshold: 0.01
+    }
+  );
+}
+
+function registerLazyImages(scope) {
+  initLazyObserver();
+  if (!lazyObserver) return;
+  const imgs = scope.querySelectorAll("img.lazy-img[data-src]");
+  imgs.forEach(img => lazyObserver.observe(img));
+}
 
 // Initial search text update
 if (query) {
@@ -79,16 +171,18 @@ function redirectSearch() {
   return false;
 }
 
-/* ---------------------------------------------------
-   SAME DOWNLOAD HANDLER AS INDEX.HTML
------------------------------------------------------*/
+/* DOWNLOAD */
 function downloadImage(rawName) {
   if (!rawName) return;
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
   window.location.href = url;
 }
 
-// Load search images
+/* ----------------------------------------------
+   ⭐ LOAD SEARCH RESULTS WITH IN-FEED ADS
+------------------------------------------------*/
+let searchCounter = 0;
+
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
@@ -99,19 +193,28 @@ async function loadSearchImages(q) {
     imageCountDiv.textContent = `${images.length} Images`;
     gallery.innerHTML = "";
 
-    /* -------------------------------
-       ❌ NO RESULTS — SHOW RELATED
-    --------------------------------*/
     if (!images || images.length === 0) {
       gallery.innerHTML = "<p>No images found.</p>";
-      loadRelatedImages(q);   // 🔥 added
+      loadRelatedImages(q);
       return;
     }
 
-    /* -------------------------------
-       ✅ SHOW NORMAL SEARCH RESULTS
-    --------------------------------*/
     images.forEach(img => {
+      searchCounter++;
+
+      /* ⭐ IN-FEED AD EVERY 20 IMAGES */
+      if (searchCounter % 20 === 0) {
+        const adDiv = document.createElement("div");
+        adDiv.classList.add("midgrid-ad");
+        adDiv.innerHTML = `
+          <ins class="adsbygoogle"
+               style="display:block;width:100%;height:250px"
+               data-ad-client="ca-pub-4549865852809903"
+               data-ad-slot="5554225959"></ins>`;
+        gallery.appendChild(adDiv);
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      }
+
       const div = document.createElement('div');
       div.classList.add('image-card');
 
@@ -123,12 +226,16 @@ async function loadSearchImages(q) {
 
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
-          <img src="${fileUrl}" alt="${safeName}" loading="lazy" />
+          <img
+            src="${PLACEHOLDER_SRC}"
+            data-src="${fileUrl}"
+            alt="${safeName}"
+            class="lazy-img"
+          />
         </a>
 
         <span class="download-icon" 
-          onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')" 
-          title="Download">
+          onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')">
           <img src="images/download-icon.png" alt="Download"/>
         </span>
       `;
@@ -136,18 +243,22 @@ async function loadSearchImages(q) {
       gallery.appendChild(div);
     });
 
+    // ⭐ Activate lazy loading on newly added images
+    registerLazyImages(gallery);
+
   } catch (err) {
-    console.error("Error fetching search images:", err.message);
     gallery.innerHTML = "<p>Error loading images.</p>";
   }
 }
 
-/* ---------------------------------------------------
-   ⭐ LOAD RELATED IMAGES (same as download.html)
------------------------------------------------------*/
+/* ----------------------------------------------
+   ⭐ RELATED IMAGES WITH IN-FEED ADS
+------------------------------------------------*/
+let relatedCounter = 0;
+
 async function loadRelatedImages(keyword) {
   try {
-    relatedSection.style.display = "block"; // Show section
+    relatedSection.style.display = "block";
 
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
     const json = await res.json();
@@ -156,7 +267,6 @@ async function loadRelatedImages(keyword) {
 
     relatedContainer.innerHTML = "";
 
-    // If still no matches, fallback to "popular"
     if (images.length === 0) {
       const pop = await fetch(`${API_BASE}/api/images/popular?page=1&limit=15`);
       const popJson = await pop.json();
@@ -164,6 +274,20 @@ async function loadRelatedImages(keyword) {
     }
 
     images.slice(0, 15).forEach(img => {
+      relatedCounter++;
+
+      /* ⭐ IN-FEED AD EVERY 20 IMAGES (Related) */
+      if (relatedCounter % 20 === 0) {
+        relatedContainer.innerHTML += `
+          <div class="midgrid-ad">
+            <ins class="adsbygoogle"
+                 style="display:block;width:100%;height:250px"
+                 data-ad-client="ca-pub-4549865852809903"
+                 data-ad-slot="5554225959"></ins>
+          </div>`;
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      }
+
       const fileToShow = img.thumbnailFileName || img.fileName;
 
       const fileUrl =
@@ -174,18 +298,39 @@ async function loadRelatedImages(keyword) {
       relatedContainer.innerHTML += `
         <div class="related-item">
           <a href="download.html?id=${img._id}">
-            <img src="${fileUrl}" loading="lazy">
+            <img
+              src="${PLACEHOLDER_SRC}"
+              data-src="${fileUrl}"
+              loading="lazy"
+              class="lazy-img"
+            >
           </a>
 
           <span class="download-overlay" 
             onclick="window.location.href='${dlUrl}'"></span>
-        </div>
-      `;
+        </div>`;
     });
 
-  } catch (e) {
-    console.log("Related load failed:", e);
-  }
+    // ⭐ Activate lazy loading on related images
+    registerLazyImages(relatedContainer);
+
+  } catch (e) {}
+}
+
+/* ⭐ Show sticky ad after 10 sec */
+setTimeout(() => {
+  document.getElementById("bottom-sticky-ad").style.display = "block";
+}, 3000);
+
+// ⭐ CLOSE + RETURN STICKY AD
+function closeStickyAd() {
+  const ad = document.getElementById("stickyAd");
+  ad.style.display = "none";
+
+  // Reappear after 8 seconds
+  setTimeout(() => {
+    ad.style.display = "block";
+  }, 8000);
 }
 
 </script>

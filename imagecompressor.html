@@ -27,70 +27,11 @@
   <link rel="stylesheet" href="css/compressor.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
 
-  <style>
-    /* Loader spinner */
-    .loader {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 15px;
-    }
-    .spinner {
-      border: 6px solid #eee;
-      border-top: 6px solid #4CAF50;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 10px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    #countdown {
-      font-weight: bold;
-      color: #d32f2f;
-      display: none;
-    }
+  <!-- ⭐ Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous">
+  </script>
 
-    /* Hamburger menu styles */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-    }
-    .hamburger span {
-      height: 3px;
-      width: 25px;
-      background: #ff5e66;
-      border-radius: 2px;
-    }
-
-    @media (max-width: 1024px) {
-      .nav-menu { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 220px; }
-      .nav-menu.active {
-        display: flex;
-      }
-      .nav-item {
-        padding: 1rem;
-        border-bottom: 1px solid #eee;
-      }
-      .hamburger {
-        display: flex;
-      }
-    }
-
-    /* Make preview & tool images responsive */
-    .preview-section img,
-    .tool-img img {
-      width: 100%;
-      height: auto;
-      max-width: 700px;
-    }
-  </style>
 </head>
 
 <body>
@@ -110,40 +51,90 @@
     </div>
   </header>
 
+  <!-- ⭐ Top Banner Ad under header -->
+  <div class="banner-ad">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4549865852809903"
+         data-ad-slot="1551401768"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
   <!-- ✅ Hero Section -->
   <section class="hero">
     <h1>Free Online Image Compressor</h1>
     <p>Reduce JPG & PNG file size without losing quality. Save storage and load your websites faster with Pixeora.</p>
   </section>
 
-  <!-- ✅ Upload Box -->
-  <section class="upload-box">
-    <input type="file" id="uploadInput" accept="image/*" aria-label="Upload Image for Compression" />
-    <p class="upload-note">Supports .jpg, .png (Max size: 10MB)</p>
-    <button id="compressBtn">Compress Image</button>
+  <!-- ⭐ Side Ads + Tool Wrapper -->
+  <div class="tools-container">
 
-    <div class="loader" id="loader">
-      <div class="spinner"></div>
-      <p>⏳ Compressing... Please wait</p>
+    <!-- Left Side Ad -->
+    <div class="side-ad-vertical">
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="4083649188"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-  </section>
 
-  <!-- ✅ Preview Section -->
-  <section class="preview-section">
-    <h2>Preview Your Compressed Image</h2>
-    <img id="previewImg" src="https://via.placeholder.com/600x300" alt="Compressed Image Preview">
-    <div class="download-btn">
-      <p id="countdown"></p>
-      <a id="downloadLink" href="#" download="compressed.jpg" style="display:none;">
-        <button>Download</button>
-      </a>
+    <!-- Center Tool Area -->
+    <div class="compress-wrapper">
+
+      <!-- ✅ Upload Box -->
+      <section class="upload-box">
+        <input type="file" id="uploadInput" accept="image/*" aria-label="Upload Image for Compression" />
+        <p class="upload-note">Supports .jpg, .png (Max size: 10MB)</p>
+        <button id="compressBtn">Compress Image</button>
+
+        <div class="loader" id="loader">
+          <div class="spinner"></div>
+          <p>⏳ Compressing... Please wait</p>
+        </div>
+      </section>
+
+      <!-- ⭐ Banner Ad under Upload Box -->
+      <div class="banner-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4549865852809903"
+             data-ad-slot="3493494231"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <!-- ✅ Preview Section -->
+      <section class="preview-section">
+        <h2>Preview Your Compressed Image</h2>
+        <img id="previewImg" src="https://via.placeholder.com/600x300" alt="Compressed Image Preview">
+        <div class="download-btn">
+          <p id="countdown"></p>
+          <a id="downloadLink" href="#" download="compressed.jpg" style="display:none;">
+            <button>Download</button>
+          </a>
+        </div>
+      </section>
+
+      <!-- ✅ Ad Section Placeholder (you can later replace with video/reward ad) -->
+      <section class="ad-section">
+        <p>Reward Ad Placeholder — Show this every 3 image processes</p>
+      </section>
+
     </div>
-  </section>
 
-  <!-- ✅ Ad Section -->
-  <section class="ad-section">
-    <p>Reward Ad Placeholder — Show this every 3 image processes</p>
-  </section>
+    <!-- Right Side Ad -->
+    <div class="side-ad-vertical">
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="4083649188"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+  </div>
 
   <!-- ✅ Other Tools Section -->
   <section class="other-tools">
@@ -192,20 +183,35 @@
     </div>
   </section>
 
-  <!-- ✅ Footer -->
-  <footer>
-    <p>&copy; 2025 Pixeora. All rights reserved. Free online tools for images.</p>
-  </footer>
+<footer>
+  &copy; 2025 Pixeora. All rights reserved.
+  <a href="legal.html" class="footer-legal">Legal & Policies</a>
+</footer>
+
+  <!-- ⭐ Bottom Sticky Ad -->
+<div class="bottom-sticky-ad" id="stickyAd">
+  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;height:60px"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="2074145941"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <script>
-  // Hamburger toggle
+  // ============================
+  // HAMBURGER MENU
+  // ============================
   const hamburger = document.getElementById("hamburger");
   const navMenu = document.querySelector(".nav-menu");
+
   hamburger.addEventListener("click", () => {
     navMenu.classList.toggle("active");
   });
 
-  // Image compression logic
+  // ============================
+  // IMAGE COMPRESSION LOGIC
+  // ============================
   const uploadInput = document.getElementById("uploadInput");
   const compressBtn = document.getElementById("compressBtn");
   const previewImg = document.getElementById("previewImg");
@@ -242,7 +248,7 @@
       const formData = new FormData();
       formData.append("image_file", uploadedFile);
 
-      // ✅ Real hosting backend
+      // Backend API
       const response = await fetch("https://api.pixeora.com/api/compress", {
         method: "POST",
         body: formData
@@ -261,6 +267,7 @@
       let timeLeft = 5;
       countdown.style.display = "block";
       countdown.innerText = `Ad running... ${timeLeft}s`;
+
       const timer = setInterval(() => {
         timeLeft--;
         countdown.innerText = `Ad running... ${timeLeft}s`;
@@ -278,4 +285,21 @@
       compressBtn.disabled = false;
     }
   });
+
+  // ============================
+  // STICKY AD CLOSE + AUTO RETURN
+  // ============================
+  function closeStickyAd() {
+    const ad = document.getElementById("stickyAd");
+    ad.style.display = "none";
+
+    // Reappear after 8 seconds
+    setTimeout(() => {
+      ad.style.display = "block";
+    }, 8000);
+  }
 </script>
+
+
+</body>
+</html>

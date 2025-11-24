@@ -1,16 +1,16 @@
-/* =============== Reset =============== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* =============== Reset & Base =============== */
 body {
+  margin: 0;
   font-family: 'Inter', sans-serif;
-  background: #f9f9f9;
-  color: #141414;
+  background-color: #fff;
 }
 
+/* ============================================
+   PIXEORA SEARCH HEADER (COPIED EXACTLY)
+   Now used for DOWNLOAD PAGE also
+   ============================================ */
+
+/* =============== Header =============== */
 /* =============== Header =============== */
 .header {
   background-image: url('../images/banner.jpg');
@@ -24,52 +24,69 @@ body {
   overflow: hidden;
 }
 
+/* FLEX HEADER CONTAINER */
 .header-overlay {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;            /* Remove top padding */
+    height: 100%;               /* Fill header height */
+    display: flex;
+    align-items: flex-start;    /* Move ALL ITEMS upward */
+    justify-content: space-between;
+    position: relative;
+    margin-top: 1%;
 }
 
-.header .logo {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 40px;
-}
-
+/* LOGO LEFT */
 .logo {
-  position: absolute;
-  top: 10px;
-  left: 30px;
+  position: relative;
   text-decoration: none;
   font-family: 'Marck Script', cursive;
   font-size: 40px;
-  color: #26ffdb;
+  color: #ffffff;
   letter-spacing: -0.08em;
+  z-index: 10;
 }
 
-/* =============== Search Bar =============== */
+/* DESKTOP ONLY — Legal link */
+.legal-link-header {
+  font-size: 13px;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  transition: 0.2s;
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .legal-link-header {
+    display: none !important;
+  }
+}
+
+/* ============== Search Bar ============== */
+
 .search-bar-wrapper {
+  flex: 1;
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin-bottom: 40px;
+  z-index: 20;
+  margin-top: 40px;  
 }
 
 .search-bar {
   width: 700px;
   max-width: 100%;
   height: 55px;
+  position: relative;   /* ⭐ Important for icon alignment */
   display: flex;
   align-items: center;
   background-color: #fff;
   border-radius: 22px;
   overflow: hidden;
-  border: 1px solid #ccc;
-  box-shadow: none;
-  position: relative;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .search-bar input {
@@ -80,29 +97,83 @@ body {
   outline: none;
 }
 
+/* ⭐️ Final Correct Search Icon Position */
 .search-bar .search-icon {
-  width: 45px;
-  height: 45px;
-  border: none;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
   background: none;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   padding: 0;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .search-bar .search-icon img {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
+  display: block;
 }
 
-/* =============== Image Section =============== */
+/* ======================================================
+   ⭐ PAGE WRAPPER (FOR SIDE ADS)
+====================================================== */
+.page-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 20px 10px;
+}
+
+@media (max-width: 1024px) {
+  .page-wrapper {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 12px !important;
+  }
+}
+
+/* ======================================================
+   ⭐ SIDE ADS (160×600)
+====================================================== */
+.side-ad {
+  width: 160px;
+  min-width: 160px;
+  height: 600px;
+  display: block;
+}
+
+.left-ad {
+  order: 1;
+}
+
+.right-ad {
+  order: 3;
+}
+
+@media (max-width: 1024px) {
+  .side-ad {
+    display: none !important;
+  }
+}
+
+/* Main area */
+.page-wrapper main {
+  max-width: 900px;
+  width: 100%;
+  order: 2;
+}
+
+/* ======================================================
+   IMAGE SECTION
+====================================================== */
 .image-section {
   max-width: 900px;
   margin: 20px auto;
@@ -151,7 +222,18 @@ body {
   background: #2c82bc;
 }
 
-/* =============== Keywords =============== */
+/* ======================================================
+   ⭐ TOP BANNER AD
+====================================================== */
+.top-banner-ad {
+  max-width: 900px;
+  margin: 20px auto 10px auto;
+  text-align: center;
+}
+
+/* ======================================================
+   KEYWORDS SECTION
+====================================================== */
 .keywords {
   max-width: 900px;
   margin: 20px auto;
@@ -174,7 +256,106 @@ body {
   color: #fff;
 }
 
-/* =============== Info Modal =============== */
+/* ======================================================
+   ⭐ BANNER UNDER KEYWORDS
+====================================================== */
+.keywords-banner-ad {
+  max-width: 900px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* ======================================================
+   RELATED IMAGES
+====================================================== */
+.related-section {
+  max-width: 100%;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.related-section h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#related-images {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 12px !important;
+}
+
+@media (max-width: 1024px) {
+  #related-images {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  #related-images {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+.related-item {
+  background: #fff;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+#related-images .related-item img {
+  width: 100%;
+  height: 160px !important;
+  object-fit: cover !important;
+  border-radius: 12px;
+}
+
+/* DOWNLOAD OVERLAY */
+.download-overlay {
+  position: absolute;
+  bottom: 5px;
+  right: 3px;
+  width: 130px;
+  height: 50px;
+  background-image: url('../images/download-icon.png');
+  background-size: 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.related-item:hover .download-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ======================================================
+   ⭐ IN-FEED AD BLOCK
+====================================================== */
+.infeed-ad {
+  grid-column: span 5;
+  text-align: center;
+  margin: 20px 0;
+}
+
+@media (max-width: 1024px) {
+  .infeed-ad {
+    grid-column: span 3;
+  }
+}
+@media (max-width: 600px) {
+  .infeed-ad {
+    grid-column: span 2;
+  }
+}
+
+/* ======================================================
+   INFO MODAL
+====================================================== */
 .info-modal {
   display: none;
   position: fixed;
@@ -198,7 +379,6 @@ body {
   border-radius: 12px;
   width: 90%;
   max-width: 420px;
-  text-align: left;
   position: relative;
 }
 
@@ -210,97 +390,269 @@ body {
   cursor: pointer;
 }
 
-/* =============== Related Images =============== */
-.related-section {
-  max-width: 100%;
-  margin: 30px auto;
-  padding: 0 20px;
+/* ======================================================
+   ⭐ BOTTOM STICKY AD
+====================================================== */
+
+.bottom-sticky-ad {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  background: white;
+  padding: 10px;
+  display: block;
+  z-index: 9999;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out forwards;
 }
 
-.related-section h2 {
-  margin-bottom: 20px;
-  font-size: 22px;
-  font-weight: bold;
+@keyframes slideUp {
+  0% { bottom: -100px; opacity: 0; }
+  100% { bottom: 15px; opacity: 1; }
 }
 
-/* ⭐ 5 GRID – No cropping */
-#related-images {
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
-  gap: 12px !important;
-}
-
-@media (max-width: 1024px) {
-  #related-images {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
-
-@media (max-width: 600px) {
-  #related-images {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-/* ⭐ Fix: make images fit inside rounded card */
-.related-item {
-  background: #fff; /* White background */
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden; /* IMPORTANT: round image inside box */
-}
-
-/* ⭐ Image fits cleanly inside card */
-#related-images .related-item img {
-  width: 100%;
-  height: 160px !important;
-  object-fit: cover !important; /* Or 'contain' if you prefer full fit */
-  border-radius: 12px;
-  background: #fff;
-  padding: 0; /* Remove padding so image fits edge-to-edge */
-}
-
-/* ⭐ Clean download icon (only icon, no background) */
-.download-overlay {
+.close-sticky {
   position: absolute;
-  bottom: 5px;
-  right: 3px;
-
-  width: 130px;
-  height: 50px;
-
-  background-image: url('../images/download-icon.png');
-  background-size: 120px;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: 0;               /* Hidden initially */
-  pointer-events: none;      /* Prevent accidental clicks when hidden */
-  transition: opacity 0.25s ease;
+  top: -10px;
+  right: -10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  opacity: 0.8;
 }
 
-/* ⭐ Show icon only when hovering image card */
-.related-item:hover .download-overlay {
+.close-sticky:hover {
   opacity: 1;
-  pointer-events: auto;       /* Enable click when visible */
+}
+
+@media(max-width: 600px) {
+  .bottom-sticky-ad {
+    width: 90%;
+  }
+}
+
+/* Normalize ad alignment */
+.adsbygoogle {
+  margin: 0 auto;
+}
+/* ================= Responsive Masonry Columns ================= */
+@media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
+@media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
+@media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
+@media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
+
+/* ================= Tablet ================= */
+@media (max-width: 1200px) and (min-width: 601px) {
+
+  .header {
+    height: 130px;
+    border-bottom-left-radius: 55px;
+    border-bottom-right-radius: 55px;
+  }
+
+  .header-overlay {
+    padding: 0 20px !important;       /* ✔ same as search page */
+    align-items: flex-start !important; /* ✔ match search page */
+    margin-top: 4% !important;         /* ✔ same as desktop */
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 36px;
+    position: relative;
+  }
+
+  .search-bar-wrapper {
+    width: auto;
+    margin: 0;
+    justify-content: flex-end;
+  }
+
+  .search-bar {
+    width: 260px;
+    height: 45px;
+  }
+
+  .search-bar input {
+    font-size: 16px;
+  }
+
+  .search-bar .search-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  /* Hide legal on mobile */
+  .legal-link-header {
+    display: none !important;
+  }
 }
 
 
-/* Responsive Search Fix */
-@media (max-width: 992px) {
+/* ================= Mobile ================= */
+@media (max-width: 600px) {
+
+  /* Header smaller on mobile */
+  .header {
+    height: 110px;
+    border-bottom-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+  }
+
+  /* Proper left-right layout */
+  .header-overlay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 15px;
+  }
+
+  /* Mobile Logo */
+  .logo {
+    position: relative;
+    font-size: 30px;
+    margin: 0;
+  }
+
+  /* Right side search bar */
   .search-bar-wrapper {
-    position: absolute !important;
-    top: 20px !important;
+    width: auto;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .search-bar {
+    width: 180px;
+    height: 38px;
+    border-radius: 16px;
+  }
+
+  .search-bar input {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .search-bar .search-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .search-bar .search-icon img {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Hide legal on mobile */
+  .legal-link-header {
+    display: none !important;
+  }
+}
+/* GRID FIX */
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 2 !important;
+  }
+}
+
+@media (max-width: 1140px) and (min-width: 601px) {
+  .gallery {
+    column-count: 3 !important;
+  }
+}
+
+@media (min-width: 1140px) {
+  .gallery {
+    column-count: 4 !important;
+  }
+}
+
+/* FIX: Remove right-side white gap on mobile/tablet */
+html, body {
+    width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+.page-wrapper,
+.layout-wrapper,
+.related-section,
+#related-images {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+}
+@media (max-width: 1024px) {
+    body {
+        padding-right: 0 !important;
+    }
+
+    .header,
+    .header-overlay {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+}
+
+/* GRID FIX: Related images */
+#related-images {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+}
+
+/* REMOVE DESKTOP SIDEBAR SPACE ON MOBILE / TABLET */
+@media (max-width: 1024px) {
+    .page-wrapper {
+        display: block !important;
+        gap: 0 !important;
+        padding: 0 !important;
+    }
+
+    .side-ad {
+        display: none !important;
+        width: 0 !important;
+        min-width: 0 !important;
+    }
+
+    main {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 12px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* Prevent sticky ad overflow */
+.bottom-sticky-ad {
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 420px !important;
-  }
+    max-width: 95% !important;
 }
 
-@media (max-width: 600px) {
-  .search-bar-wrapper {
-    top: 20px !important;
-    left: 65% !important;
-    transform: translateX(-30%) !important;
-    width: 180px !important;
-  }
+/* ===========================
+   BLUR-UP LAZY LOAD EFFECT
+   =========================== */
+
+.blur-load {
+  filter: blur(20px);
+  opacity: 0.6;
+  transition: filter .5s ease, opacity .4s ease;
+  transform: translateZ(0);
+}
+
+.blur-load.loaded {
+  filter: blur(0);
+  opacity: 1;
 }

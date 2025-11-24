@@ -14,101 +14,113 @@ color: #222;
 
 /* ---------------- HEADER ---------------- */
 .top-header {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-background: transparent;
-z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: transparent;
+    z-index: 1000;
 }
 
 .top-nav-container {
-max-width: 90%;
-margin: 0 auto;
-padding: 20px 0;
-display: flex;
-justify-content: space-between;
-align-items: center;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
+/* LOGO */
 .logo {
-font-family: 'Marck Script', cursive;
-font-size: 45px;
-color: #262626;
-letter-spacing: -0.08em;
+    font-family: 'Marck Script', cursive;
+    font-size: 45px;
+    color: #ffffff; /* FIX: white on banner */
+    letter-spacing: -0.08em;
 }
 
+/* LEGAL LINK */
+.legal-link-header {
+    font-size: 16px;
+    color: #ffffff; /* FIX: white on banner */
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+/* NAV LINKS */
 .nav-links {
-display: flex;
-gap: 20px;
-align-items: center;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .nav-menu,
 .nav-menu li,
 .dropdown-content {
-list-style: none;
-margin: 0;
-padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-menu {
-display: flex;
-gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 
 .dropdown {
-position: relative;
+    position: relative;
 }
 
+/* NAV LINKS - default */
 .nav-links a {
-text-decoration: none;
-color: #333;
-font-weight: 400;
-padding: 10px 25px;
-border-radius: 30px;
-transition: all 0.3s ease;
+    text-decoration: none;
+    color: #ffffff; /* FIX: white on banner */
+    font-weight: 400;
+    padding: 10px 25px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
 }
 
+/* AI Tools Button */
 .nav-links .dropdown > a {
-background: #1f1e1e;
-color: white;
-font-size: 20px;
-border-radius: 18px;
+    background: #1f1e1e;
+    color: white !important;
+    font-size: 20px;
+    border-radius: 18px;
 }
 
-/* Dropdown */
+/* DROPDOWN MENU */
 .dropdown-content {
-display: none;
-position: absolute;
-top: 100%;
-right: 0; /* Open left side */
-transform: translateX(0%);
-background: #fff;
-border-radius: 0px;
-min-width: 200px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-z-index: 10;
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border-radius: 2px;
+    min-width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 20;
 }
 
 .dropdown:hover .dropdown-content {
-display: block;
+    display: block;
 }
 
 .dropdown-content a {
-display: block;
-padding: 10px 20px;
-color: #333;
-font-size: 17px;
-text-decoration: none;
-border-radius: 0;
-transition: all 0.3s;
+    display: block;
+    padding: 10px 20px;
+    color: #333 !important;
+    font-size: 17px;
+    border-radius: 0;
+    transition: all 0.3s;
 }
 
 .dropdown-content a:hover {
-background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-background-size: 300% 300%;
-color: #fff;
+    background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
+    background-size: 300% 300%;
+    color: #fff !important;
 }
 
 /* ---------------- BANNER ---------------- */
@@ -363,6 +375,28 @@ transform: scale(1.1);
   }
 }
 
+.close-sticky {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  z-index: 99999;
+  opacity: 0.8;
+}
+
+.close-sticky:hover {
+  opacity: 1;
+}
+
 /* MOBILE RESPONSIVE */
 @media(max-width: 600px) {
   .bottom-sticky-ad {
@@ -393,50 +427,137 @@ transform: scale(1.1);
 @media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
 @media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
 
-/* ---------------- RESPONSIVE ---------------- */
+/* ===========================================
+   ✅ MOBILE & TABLET HEADER FIX (Option B)
+   =========================================== */
 
-/* ---------------- RESPONSIVE SIZING ---------------- */
+@media (max-width: 1024px) {
 
-/* Tablet */
-@media (max-width: 992px) {
+  /* Header container adjusts */
+  .top-nav-container {
+      max-width: 100%;
+      padding: 15px 18px;
+  }
+
+  /* Logo left */
+  .logo {
+      font-size: 34px;
+      color: #ffffff !important;
+      position: relative;
+      z-index: 10;
+  }
+
+  /* Hide "Legal & Policies" from header on mobile */
+  .legal-link-header {
+      display: none !important;
+  }
+
+  /* AI Tools becomes a small button on right */
+  .nav-links .dropdown > a {
+      background: #000;
+      color: #fff;
+      padding: 6px 14px;
+      font-size: 16px;
+      border-radius: 14px;
+  }
+
+  /* AI Tools dropdown styling */
+  .dropdown-content {
+      right: 0;
+      min-width: 160px;
+      border-radius: 10px;
+  }
+
+  /* Mobile header layout: Logo left, AI Tools right */
+  .nav-menu {
+      gap: 10px;
+      align-items: center;
+  }
+
+  /* Banner height for mobile */
+  .banner {
+      height: 450px;
+      padding-top: 80px;
+  }
+
+  /* Search bar width */
   .search-bar {
-    width: 100%;   /* shrink width */
-    height: 55px; /* keep height fixed */
+      width: 100%;
+      max-width: 450px;
   }
 
+  /* Search input */
   .search-bar input {
-    font-size: 18px;
-    padding: 0 20px;
+      font-size: 16px;
+      padding: 0 16px;
   }
 
-  .search-bar .search-icon {
-    font-size: 36px;
+  .search-bar .search-icon img {
+      width: 20px;
+      height: 20px;
   }
-    .banner-text {
-    font-size: clamp(30px, 6vw, 60px); /* smaller max size */
+
+  /* Banner text mobile size */
+  .banner-text {
+      font-size: clamp(26px, 8vw, 52px);
+      margin-top: 10px;
+      line-height: 1.1;
+  }
+
+  /* Categories grid */
+  .category-grid {
+      gap: 8px;
+      padding: 0 10px;
+  }
+
+  .category {
+      padding: 8px 14px;
+      font-size: 17px;
   }
 }
 
+/* ===========================================
+   ✅ SMALL MOBILE (≤ 600px)
+   =========================================== */
 
-/* Mobile */
 @media (max-width: 600px) {
+
+  /* Header spacing */
+  .top-nav-container {
+      padding: 12px 15px;
+  }
+
+  /* Smaller logo for small screens */
+  .logo {
+      font-size: 30px;
+  }
+
+  /* AI Tools button */
+  .nav-links .dropdown > a {
+      font-size: 14px;
+      padding: 5px 10px;
+  }
+
+  /* Banner height */
+  .banner {
+      height: 420px;
+      padding-top: 90px;
+  }
+
+  /* Search bar centered */
   .search-bar {
-    width: 100%;   /* shrink more for mobile */
-    height: 55px; /* fixed height */
+      height: 52px;
+      width: 100%;
+      border-radius: 16px;
   }
 
   .search-bar input {
-    font-size: 20 px;
-    padding: 0 18px;
+      font-size: 15px;
   }
 
-  .search-bar .search-icon {
-    font-size: 38px;
-  }
-  .banner-text {
-    font-size: clamp(30px, 10vw, 60px); /* smaller max size for mobile */
-    white-space: normal;  /* allow text to wrap if needed */
-    line-height: 1.2;
-    margin-top: 20px;
+  /* Categories */
+  .category {
+      padding: 8px 12px;
+      font-size: 16px;
   }
 }

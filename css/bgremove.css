@@ -235,15 +235,186 @@ body {
   background: #0056cc;
 }
 
-/* Footer */
 footer {
   text-align: center;
-  padding: 1.5rem;
-  background: #f1f1f1;
-  font-size: 0.9rem;
-  color: #666;
+  padding: 20px;
+  background: #171717;
+  color: #555;
+  font-size: 14px;
 }
 
+.footer-legal {
+  margin-left: 15px;
+  color: #0077ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-legal:hover {
+  text-decoration: underline;
+}
+
+/* ======================================================
+   ⭐ COMING SOON ANIMATION
+====================================================== */
+
+.coming-soon-box {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.coming-soon-box .cs-image {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 14px;
+  position: relative;
+  z-index: 2;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Gradient Glow Animation */
+.coming-soon-box::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 0% 0%,
+      rgba(255, 0, 120, 0.35),
+      rgba(0, 130, 255, 0.25),
+      rgba(255, 255, 255, 0)
+  );
+  filter: blur(80px);
+  animation: gradientMove 6s ease-in-out infinite alternate;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes gradientMove {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-45%, -48%) scale(1.15); }
+  100% { transform: translate(-52%, -55%) scale(1); }
+}
+
+/* Hide tool UI since it's Coming Soon */
+.upload-box,
+.preview-section,
+.ad-section {
+  display: none !important;
+}
+
+/* ======================================================
+   ⭐ TOP BANNER AD
+====================================================== */
+
+.banner-ad {
+  max-width: 900px;
+  margin: 25px auto;
+  text-align: center;
+}
+
+/* ======================================================
+   ⭐ SIDE ADS (Left + Right)
+====================================================== */
+
+.tools-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 10px;
+}
+
+.side-ad-vertical {
+  width: 160px;
+  max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .side-ad-vertical {
+    display: none;
+  }
+}
+
+.coming-wrapper {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* BOTTOM STICKY AD */
+.bottom-sticky-ad {
+  position: fixed;
+  bottom: -100px; /* start hidden */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  background: white;
+  padding: 10px;
+  display: block; /* keep it block; we control visibility with animation */
+  z-index: 9999;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 18px;
+  opacity: 0;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* SLIDE UP ANIMATION */
+@keyframes slideUp {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+  100% {
+    bottom: 15px;
+    opacity: 1;
+  }
+}
+
+.close-sticky {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  z-index: 99999;
+  opacity: 0.8;
+}
+
+.close-sticky:hover {
+  opacity: 1;
+}
+
+
+/* MOBILE RESPONSIVE */
+@media(max-width: 600px) {
+  .bottom-sticky-ad {
+    width: 90%;
+  }
+}
+
+/* Normalize ad alignment */
+.adsbygoogle {
+  margin: 0 auto;
+}
 /* ------------------ Responsive ------------------ */
 @media (max-width: 1024px) {
   .hamburger {

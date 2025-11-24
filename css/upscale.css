@@ -313,6 +313,127 @@ body {
   pointer-events: none;
 }
 
+/* ======================================================
+   ⭐ Sticky Ads (Top + Bottom) — Updated (NO animation for top)
+====================================================== */
+/* ======================================================
+   ⭐ Sticky Ads (Top + Bottom) — Updated
+====================================================== */
+
+/* Shared styling */
+.top-sticky-ad,
+.bottom-sticky-ad {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-width: 900px;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 18px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.25);
+  z-index: 9999;
+}
+
+/* ⭐ TOP Sticky AD — under header (NO animation) */
+.top-sticky-ad {
+  top: 90px;   /* <-- this puts it right below your header */
+  opacity: 1;
+}
+
+/* ⭐ Bottom sticky with animation (same as before) */
+.bottom-sticky-ad {
+  bottom: -100px;
+  opacity: 0;
+  animation: slideUpSticky 2s ease-out forwards;
+}
+
+@keyframes slideUpSticky {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+  100% {
+    bottom: 15px;
+    opacity: 1;
+  }
+}
+
+.close-sticky {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  z-index: 99999;
+  opacity: 0.8;
+}
+
+.close-sticky:hover {
+  opacity: 1;
+}
+
+/* Prevent content hiding */
+body {
+  padding-bottom: 60px;
+}
+
+
+/* ======================================================
+   ⭐ Side Ads — Responsive Vertical
+   (Only around Coming-Soon Poster)
+====================================================== */
+.tools-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 10px;
+}
+
+.side-ad-vertical {
+  width: 160px;        /* Google auto chooses final size */
+  max-width: 100%;
+}
+
+/* Hide side ads on small screens */
+@media (max-width: 1024px) {
+  .side-ad-vertical {
+    display: none;
+  }
+}
+
+/* ======================================================
+   ⭐ Coming Soon Box Wrapper
+====================================================== */
+.coming-wrapper {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* ======================================================
+   ⭐ Banner Ad Blocks
+====================================================== */
+.banner-ad {
+  max-width: 900px;
+  margin: 25px auto;
+  text-align: center;
+}
+
+.adsbygoogle {
+  margin: 0 auto;
+}
+
+
 /* Float Effect */
 @keyframes float {
   0% { transform: translateY(0px); }
@@ -339,8 +460,20 @@ body {
 footer {
   text-align: center;
   padding: 20px;
-  background-color: #0e0e0e;
-  color: white;
+  background: #171717;
+  color: #555;
+  font-size: 14px;
+}
+
+.footer-legal {
+  margin-left: 15px;
+  color: #0077ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-legal:hover {
+  text-decoration: underline;
 }
 
 

@@ -14,35 +14,11 @@
   <link rel="stylesheet" href="css/formatconverter.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
 
-  <style>
-    /* 🔄 Simple converting animation */
-    .loading { display: none; margin-top: 15px; font-size: 16px; font-weight: bold; color: #333; }
-    .loading::after { content: "⏳"; display: inline-block; margin-left: 8px; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  <!-- ⭐ Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous">
+  </script>
 
-    /* 📷 Preview */
-    .preview-box { margin-top: 15px; display: none; text-align: center; }
-    .preview-box img { max-width: 300px; border-radius: 10px; border: 2px solid #ddd; width: 100%; height: auto; }
-
-    /* 🎨 Format button styles */
-    .format-options button { padding: 10px 18px; border: 1px solid #ccc; border-radius: 8px; background: #f8f8f8; cursor: pointer; transition: all 0.2s ease; margin: 5px; }
-    .format-options button:hover { background: #eaeaea; }
-    .format-options button.active { background: #4caf50; color: #fff; border-color: #4caf50; font-weight: bold; }
-
-    /* 🟢 Hamburger menu */
-    .hamburger { display: none; flex-direction: column; cursor: pointer; margin-left: auto; gap: 5px; }
-    .hamburger div { width: 25px; height: 3px; background-color: #333; transition: all 0.3s ease; }
-    @media (max-width: 1024px) {
-      .nav-menu { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 220px; }
-      .nav-menu.active { display: flex; }
-      .hamburger { display: flex; }
-      .hero h1 { font-size: 24px; }
-      .hero p { font-size: 14px; }
-      .format-options button { padding: 8px 12px; font-size: 14px; }
-      .preview-box img { max-width: 100%; }
-      .other-tools .tool img { max-width: 100%; height: auto; }
-    }
-  </style>
 </head>
 
 <body>
@@ -62,37 +38,89 @@
     </nav>
   </header>
 
+  <!-- ⭐ Top Banner Ad under header -->
+  <div class="banner-ad">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4549865852809903"
+         data-ad-slot="1551401768"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
   <section class="hero">
     <h1>FREE Image Format Converter</h1>
     <p>Convert images between PNG, JPG, WebP, TIFF and PDF. Fast and simple online image conversion with AI optimization.</p>
   </section>
 
-  <section class="upload-box">
-    <p>Drop your image here or click to upload</p>
-    <input type="file" id="uploadInput" accept="image/*" hidden />
-    <button onclick="document.getElementById('uploadInput').click()">Upload Image</button>
-    <p class="upload-note">Supports .jpg, .png, .webp, .tiff (Max size: 5MB)</p>
+  <!-- ⭐ Side Ads + Tool Wrapper -->
+  <div class="tools-container">
 
-    <div class="preview-box" id="previewBox">
-      <h3>Preview:</h3>
-      <img id="previewImage" alt="Uploaded Preview"/>
+    <!-- Left Side Ad -->
+    <div class="side-ad-vertical">
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="4083649188"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-  </section>
 
-  <section class="conversion-section">
-    <h2>Select Output Format</h2>
-    <div class="format-options">
-      <button onclick="setFormat('jpg', this)">JPG</button>
-      <button onclick="setFormat('png', this)">PNG</button>
-      <button onclick="setFormat('webp', this)">WEBP</button>
-      <button onclick="setFormat('tiff', this)">TIFF</button>
-      <button onclick="setFormat('pdf', this)">PDF</button>
+    <!-- Center Tool Area -->
+    <div class="converter-wrapper">
+
+      <!-- ✅ Upload Box -->
+      <section class="upload-box">
+        <p>Drop your image here or click to upload</p>
+        <input type="file" id="uploadInput" accept="image/*" hidden />
+        <button onclick="document.getElementById('uploadInput').click()">Upload Image</button>
+        <p class="upload-note">Supports .jpg, .png, .webp, .tiff (Max size: 5MB)</p>
+
+        <div class="preview-box" id="previewBox">
+          <h3>Preview:</h3>
+          <img id="previewImage" alt="Uploaded Preview"/>
+        </div>
+      </section>
+
+      <!-- ⭐ Banner Ad under Upload Box -->
+      <div class="banner-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4549865852809903"
+             data-ad-slot="3493494231"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <!-- ✅ Conversion Section -->
+      <section class="conversion-section">
+        <h2>Select Output Format</h2>
+        <div class="format-options">
+          <button onclick="setFormat('jpg', this)">JPG</button>
+          <button onclick="setFormat('png', this)">PNG</button>
+          <button onclick="setFormat('webp', this)">WEBP</button>
+          <button onclick="setFormat('tiff', this)">TIFF</button>
+          <button onclick="setFormat('pdf', this)">PDF</button>
+        </div>
+        <div class="download-btn">
+          <button onclick="convertImage()">Convert & Download</button>
+          <div class="loading" id="loading">Converting...</div>
+        </div>
+      </section>
+
     </div>
-    <div class="download-btn">
-      <button onclick="convertImage()">Convert & Download</button>
-      <div class="loading" id="loading">Converting...</div>
+
+    <!-- Right Side Ad -->
+    <div class="side-ad-vertical">
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="4083649188"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-  </section>
+
+  </div>
 
   <!-- ✅ Other Tools Section -->
   <section class="other-tools">
@@ -141,22 +169,37 @@
     </div>
   </section>
 
-  <footer>
-    &copy; 2025 Pixeora. All rights reserved.
-  </footer>
+<footer>
+  &copy; 2025 Pixeora. All rights reserved.
+  <a href="legal.html" class="footer-legal">Legal & Policies</a>
+</footer>
+
+  <!-- ⭐ Bottom Sticky Ad -->
+<div class="bottom-sticky-ad" id="stickyAd">
+  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;height:60px"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="2074145941"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <script>
 let selectedFile = null;
 let outputFormat = "jpg";
 
-// Hamburger toggle
+// ==========================
+// HAMBURGER MENU
+// ==========================
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('navMenu');
 hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+  navMenu.classList.toggle('active');
 });
 
-// Preview image
+// ==========================
+// PREVIEW IMAGE
+// ==========================
 document.getElementById("uploadInput").addEventListener("change", (e) => {
   selectedFile = e.target.files[0];
   if (selectedFile) {
@@ -169,16 +212,24 @@ document.getElementById("uploadInput").addEventListener("change", (e) => {
   }
 });
 
-// Highlight selected format
+// ==========================
+// FORMAT SELECTOR
+// ==========================
 function setFormat(fmt, btn) {
   outputFormat = fmt;
-  document.querySelectorAll(".format-options button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".format-options button")
+    .forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-// ✅ Conversion logic
+// ==========================
+// CONVERSION LOGIC
+// ==========================
 async function convertImage() {
-  if (!selectedFile) { alert("Please upload an image first!"); return; }
+  if (!selectedFile) {
+    alert("Please upload an image first!");
+    return;
+  }
 
   const loading = document.getElementById("loading");
   loading.style.display = "inline-block";
@@ -195,7 +246,10 @@ async function convertImage() {
 
     if (!response.ok) {
       let errMsg = "Conversion failed";
-      try { const errJson = await response.json(); errMsg = errJson.message || errMsg; } catch {}
+      try { 
+        const errJson = await response.json(); 
+        errMsg = errJson.message || errMsg; 
+      } catch {}
       throw new Error(errMsg);
     }
 
@@ -216,4 +270,20 @@ async function convertImage() {
     loading.style.display = "none";
   }
 }
+
+// ==========================
+// STICKY AD — CLOSE + AUTO RETURN
+// ==========================
+function closeStickyAd() {
+  const ad = document.getElementById("stickyAd");
+  ad.style.display = "none";
+
+  // Reappear after 8 seconds
+  setTimeout(() => {
+    ad.style.display = "block";
+  }, 8000);
+}
 </script>
+
+</body>
+</html>

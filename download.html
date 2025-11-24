@@ -11,56 +11,123 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/download.css">
-  <link rel="stylesheet" href="css/style.css">
-
+  
   <!-- SEO -->
   <meta name="description" content="Download free HD wallpapers and stock images from Pixeora for commercial and personal use.">
   <meta property="og:title" content="Pixeora - Free Image Download">
   <meta property="og:description" content="Get high-quality wallpapers and photos for free. Nature, Travel, Fashion, Food, and more.">
   <meta property="og:type" content="website">
+
+  <!-- ⭐ GOOGLE ADSENSE -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous"></script>
 </head>
 <body>
 
 <!-- Header -->
-<div class="header">
+<header class="header">
   <div class="header-overlay">
+
+    <!-- LEFT: LOGO -->
     <a href="index.html" class="logo">Pixeora</a>
+
+    <!-- CENTER: SEARCH BAR -->
     <div class="search-bar-wrapper">
-      <form class="search-bar" onsubmit="return redirectSearch()">
-        <input type="text" id="searchInput" placeholder="Search Image" required>
-        <button type="submit" class="search-icon">
-          <img src="images/search-icon.png" alt="Search">
-        </button>
-      </form>
+      <div class="search-bar-border">
+        <form class="search-bar" onsubmit="return redirectSearch()">
+          <input type="text" id="searchInput" placeholder="Search Image" required>
+          <button type="submit" class="search-icon">
+            <img src="images/search-icon.png" alt="Search" loading="lazy">
+          </button>
+        </form>
+      </div>
     </div>
+
+    <!-- RIGHT: LEGAL LINK -->
+    <a href="legal.html" class="legal-link-header">Legal & Policies</a>
+
+    <!-- ⭐ TOP BANNER AD BELOW SEARCH BAR -->
+    <div class="top-search-ad" style="margin:20px 0; text-align:center;">
+      <ins class="adsbygoogle"
+           style="display:block; width:100%; max-width:728px; height:90px; margin:0 auto;"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="1551401768"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
   </div>
+</header>
+
+<!-- ⭐ Page Wrapper -->
+<div class="page-wrapper">
+
+  <!-- Left Side Ad -->
+  <div class="side-ad left-ad">
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:160px;height:600px"
+         data-ad-client="ca-pub-4549865852809903"
+         data-ad-slot="4083649188"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- MAIN IMAGE -->
+  <main>
+
+    <div class="image-section">
+      <img id="download-image" src="" alt="Selected Image" loading="lazy">
+      <h2 id="image-name">Loading...</h2>
+
+      <div class="image-actions">
+        <button class="info-btn"><i class="fas fa-info-circle"></i> Info</button>
+
+        <a id="download-link" href="#" download>
+          <button class="download-btn"><i class="fas fa-download"></i> Download</button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords" id="keywords"></div>
+
+    <!-- ⭐ Banner Under Keywords -->
+    <div class="keywords-banner-ad">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="3493494231"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+  </main>
+
+  <!-- Right Side Ad -->
+  <div class="side-ad right-ad">
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:160px;height:600px"
+         data-ad-client="ca-pub-4549865852809903"
+         data-ad-slot="4083649188"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
 </div>
 
-<!-- Main Content -->
-<main>
-  <div class="image-section">
-    <img id="download-image" src="" alt="Selected Image">
-    <h2 id="image-name">Loading...</h2>
+<!-- ⭐ RELATED IMAGES -->
+<div class="related-section">
+  <h2>Related Images</h2>
+  <div id="related-images"></div>
+</div>
 
-    <div class="image-actions">
-      <button class="info-btn"><i class="fas fa-info-circle"></i> Info</button>
-
-      <!-- Updated: forced download via backend -->
-      <a id="download-link" href="#" download>
-        <button class="download-btn"><i class="fas fa-download"></i> Download</button>
-      </a>
-    </div>
-  </div>
-
-  <!-- Keywords Section -->
-  <div class="keywords" id="keywords"></div>
-
-  <!-- Related Images -->
-  <div class="related-section">
-    <h2>Related Images</h2>
-    <div id="related-images"></div>
-  </div>
-</main>
+<!-- ⭐ Bottom Sticky Ad -->
+<div class="bottom-sticky-ad" id="stickyAd">
+  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;height:60px"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="2074145941"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <!-- Info Modal -->
 <div id="infoModal" class="info-modal">
@@ -80,52 +147,39 @@
 <script>
 const API_BASE = "https://api.pixeora.com";
 
-/* SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
-/* GET IMAGE ID */
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
-/* LOAD IMAGE DETAILS */
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
-
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
     }
 
     const img = await res.json();
-
-    const fileToShow = img.thumbnailFileName || img.fileName;
-
-    const displayUrl =
-      `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+    const displayUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     document.getElementById("download-image").src = displayUrl;
     document.getElementById("image-name").textContent = img.title || img.fileName;
 
-    /* ⭐ Forced download (same as homepage) */
     document.getElementById("download-link").href =
       `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
     window.__originalFileName = img.fileName;
 
-    /* ⭐ Clickable keywords */
     document.getElementById("keywords").innerHTML =
       (img.tags || [])
-        .map(t =>
-          `<span onclick="window.location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`
-        )
+        .map(t => `<span onclick="window.location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
         .join("");
 
-    /* Load related */
     const category = img.category || (img.tags ? img.tags[0] : "");
     if (category) loadRelated(category);
 
@@ -134,44 +188,50 @@ async function loadImageDetails() {
   }
 }
 
-/* LOAD RELATED IMAGES */
+let relatedCount = 0;
+
 async function loadRelated(keyword) {
   try {
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
     const json = await res.json();
 
     let images = Array.isArray(json) ? json : json.images || [];
-
     const related = document.getElementById("related-images");
+
     related.innerHTML = "";
 
-    images.slice(0, 15).forEach(img => {
-      const fileToShow = img.thumbnailFileName || img.fileName;
+    images.slice(0, 50).forEach(img => {
+      relatedCount++;
 
+      if (relatedCount % 20 === 0) {
+        related.innerHTML += `
+          <div class="infeed-ad">
+            <ins class="adsbygoogle"
+                 style="display:block;width:100%;height:250px"
+                 data-ad-client="ca-pub-4549865852809903"
+                 data-ad-slot="5554225959"></ins>
+          </div>`;
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      }
+
+      const fileToShow = img.thumbnailFileName || img.fileName;
       const fileUrl =
         `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-
       const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
-      /* ⭐ UPDATED: Same download icon as homepage */
       related.innerHTML += `
         <div class="related-item">
           <a href="download.html?id=${img._id}">
             <img src="${fileUrl}" loading="lazy">
           </a>
-
           <span class="download-overlay"
             onclick="window.location.href='${dlUrl}'"></span>
-        </div>
-      `;
+        </div>`;
     });
 
-  } catch (e) {
-    console.log("Related load failed:", e);
-  }
+  } catch (e) {}
 }
 
-/* INFO MODAL */
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
@@ -179,8 +239,7 @@ const closeBtn = document.querySelector(".close-btn");
 infoBtn.onclick = async () => {
   modal.classList.add("active");
 
-  const originalFile = window.__originalFileName;
-  const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(originalFile)}`;
+  const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(window.__originalFileName)}`;
 
   document.getElementById("info-name").textContent =
     document.getElementById("image-name").textContent;
@@ -212,8 +271,26 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
+setTimeout(() => {
+  document.getElementById("bottom-sticky-ad").classList.add("show");
+}, 3000);
+
 loadImageDetails();
+
+setTimeout(() => {
+  document.getElementById("bottom-sticky-ad").style.display = "block";
+}, 3000);
+
+function closeStickyAd() {
+  const ad = document.getElementById("stickyAd");
+  ad.style.display = "none";
+
+  setTimeout(() => {
+    ad.style.display = "block";
+  }, 8000);
+}
 </script>
 
 </body>
 </html>
+  

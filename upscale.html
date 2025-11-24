@@ -22,14 +22,20 @@
   <meta name="twitter:image" content="https://pexelora.com/images/upscale-tool.jpg" />
 
   <link rel="icon" href="images/favicon.png" type="image/png">
+
   <link rel="stylesheet" href="css/upscale.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
 
+  <!-- Adsense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous">
+  </script>
+    
+    
 </head>
 
 <body>
-
   <!-- Header -->
   <header class="main-header">
     <a href="index.html" class="logo-link">Pixeora</a>
@@ -44,16 +50,65 @@
     </div>
   </header>
 
+  <!-- ⭐ Banner Ad under header -->
+  <div class="banner-ad">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4549865852809903"
+         data-ad-slot="1551401768"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
   <!-- Hero -->
   <section class="hero">
     <h1>FREE AI Image Upscaler</h1>
-    <p>Upscale images with AI. Sharpen and enhance photos automatically with our free tool.</p>
+    <p>Upscale images with AI. Sharpen and enhance photos automatically.</p>
   </section>
 
-  <!-- Coming Soon Replaces Upload -->
-  <section class="coming-soon-box">
-    <img src="images/upscale-coming-soon.png" class="cs-image" alt="Upscale Coming Soon">
-  </section>
+  <!-- ⭐ Side Ads + Coming Soon Poster -->
+  <div class="tools-container">
+
+    <!-- Left Side Responsive Vertical Ad -->
+    <div class="side-ad-vertical">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="4083649188"
+           data-ad-format="auto"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Coming Soon Section ONLY -->
+    <div class="coming-wrapper">
+      <section class="coming-soon-box">
+        <img src="images/upscale-coming-soon.png" class="cs-image" alt="Upscale Coming Soon">
+      </section>
+
+      <!-- ⭐ Banner Ad under poster -->
+      <div class="banner-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4549865852809903"
+             data-ad-slot="3493494231"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+
+    <!-- Right Side Responsive Vertical Ad -->
+    <div class="side-ad-vertical">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="4083649188"
+           data-ad-format="auto"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+  </div>
 
   <!-- Other Tools -->
   <section class="other-tools">
@@ -94,19 +149,43 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    &copy; 2025 Pixeora. All rights reserved.
-  </footer>
+<footer>
+  &copy; 2025 Pixeora. All rights reserved.
+  <a href="legal.html" class="footer-legal">Legal & Policies</a>
+</footer>
+
+
+  <!-- ⭐ Bottom Sticky Ad -->
+<div class="bottom-sticky-ad" id="stickyAd">
+  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;height:60px"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="2074145941"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <script>
-  // Menu toggle
   document.getElementById("hamburger").addEventListener("click", () => {
     document.querySelector(".nav-menu").classList.toggle("show");
   });
 
-  // Disable old tool JS
-  console.log("Upscale tool disabled — Coming Soon mode active.");
+   // ⭐ Sticky bottom ad timer (change 3000 to any ms)
+  setTimeout(() => {
+    document.querySelector(".bottom-sticky-ad").classList.add("show");
+  }, 15000); // 3 seconds
+
+  function closeStickyAd() {
+  const ad = document.getElementById("stickyAd");
+  ad.style.display = "none";
+
+  // Restore after 15 seconds
+  setTimeout(() => {
+    ad.style.display = "block";
+  }, 8000);
+}
+
+
 </script>
 
 </body>
