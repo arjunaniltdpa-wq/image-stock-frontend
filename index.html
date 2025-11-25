@@ -188,8 +188,8 @@ function createImageDiv(img) {
 
   const fileToShow = img.thumbnailFileName || img.fileName;
 
-  const imageUrl = img.thumbnailUrl || img.url;
-
+  const imageUrl =
+    `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
