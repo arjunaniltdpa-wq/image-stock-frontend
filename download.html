@@ -147,6 +147,7 @@
 <script>
 const API_BASE = "https://api.pixeora.com";
 
+// SEARCH REDIRECT
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
@@ -156,6 +157,7 @@ function redirectSearch() {
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
+// ⭐ LOAD MAIN IMAGE DETAILS
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
@@ -165,6 +167,8 @@ async function loadImageDetails() {
     }
 
     const img = await res.json();
+
+    // ⭐ FIXED — CORRECT CDN URL
     const displayUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     document.getElementById("download-image").src = displayUrl;
@@ -175,6 +179,7 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
+    // TAGS
     document.getElementById("keywords").innerHTML =
       (img.tags || [])
         .map(t => `<span onclick="window.location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
@@ -190,6 +195,7 @@ async function loadImageDetails() {
 
 let relatedCount = 0;
 
+// ⭐ LOAD RELATED IMAGES
 async function loadRelated(keyword) {
   try {
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
@@ -197,12 +203,12 @@ async function loadRelated(keyword) {
 
     let images = Array.isArray(json) ? json : json.images || [];
     const related = document.getElementById("related-images");
-
     related.innerHTML = "";
 
     images.slice(0, 50).forEach(img => {
       relatedCount++;
 
+      // ADS
       if (relatedCount % 20 === 0) {
         related.innerHTML += `
           <div class="infeed-ad">
@@ -215,14 +221,15 @@ async function loadRelated(keyword) {
       }
 
       const fileToShow = img.thumbnailFileName || img.fileName;
-      const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
+      // ⭐ FIXED — NO CLOUDFLARE IMAGE OPTIMIZE LAYER
+      const thumbUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
       const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
       related.innerHTML += `
         <div class="related-item">
           <a href="download.html?id=${img._id}">
-            <img src="${fileUrl}" loading="lazy">
+            <img src="${thumbUrl}" loading="lazy">
           </a>
           <span class="download-overlay"
             onclick="window.location.href='${dlUrl}'"></span>
@@ -232,6 +239,7 @@ async function loadRelated(keyword) {
   } catch (e) {}
 }
 
+// ⭐ IMAGE INFO MODAL
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
@@ -240,7 +248,6 @@ infoBtn.onclick = async () => {
   modal.classList.add("active");
 
   const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(window.__originalFileName)}`;
-
   document.getElementById("info-name").textContent =
     document.getElementById("image-name").textContent;
 
@@ -271,11 +278,10 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
+// ⭐ STICKY AD
 setTimeout(() => {
   document.getElementById("bottom-sticky-ad").classList.add("show");
 }, 3000);
-
-loadImageDetails();
 
 setTimeout(() => {
   document.getElementById("bottom-sticky-ad").style.display = "block";
@@ -284,13 +290,11 @@ setTimeout(() => {
 function closeStickyAd() {
   const ad = document.getElementById("stickyAd");
   ad.style.display = "none";
-
   setTimeout(() => {
     ad.style.display = "block";
   }, 8000);
 }
-</script>
 
-</body>
-</html>
+loadImageDetails();
+</script>
   

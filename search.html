@@ -221,8 +221,7 @@ async function loadSearchImages(q) {
       const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
       const fileToShow = img.thumbnailFileName || img.fileName;
 
-      const fileUrl = 
-        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+      const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
         <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
@@ -290,7 +289,9 @@ async function loadRelatedImages(keyword) {
 
       const fileToShow = img.thumbnailFileName || img.fileName;
 
-      const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+      const fileUrl =
+       `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+    
 
       const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
