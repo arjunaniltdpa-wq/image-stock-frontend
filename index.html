@@ -194,7 +194,7 @@ function createImageDiv(img) {
 
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
-      <img data-src="${imageUrl}" class="lazy-img" />
+      <img data-src="${fileUrl}" class="lazy-img" />
     </a>
     <span class="download-overlay" onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
   `;
