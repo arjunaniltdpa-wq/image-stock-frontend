@@ -187,11 +187,10 @@ function createImageDiv(img) {
   }
 
   const fileToShow = img.thumbnailFileName || img.fileName;
-  const R2_PUBLIC = "https://pub-9e0fab1bdd424d76bb4464e1726a2389.r2.dev";
+  
+  const fileUrl = 
+        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
-  const fileUrl =
-      `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/${R2_PUBLIC}/${encodeURIComponent(fileToShow)}`;
-      
   // FIXED → imageUrl → fileUrl
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
