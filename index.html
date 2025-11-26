@@ -191,10 +191,10 @@ function createImageDiv(img) {
   const fileUrl = 
         `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
-
+  // FIXED → imageUrl → fileUrl
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
-      <img data-src="${fileUrl}" class="lazy-img" />
+      <img data-src="${fileUrl}" class="lazy-img" alt="" />
     </a>
     <span class="download-overlay" onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
   `;
@@ -308,5 +308,3 @@ function closeStickyAd() {
 }
 </script>
 
-</body>
-</html>
