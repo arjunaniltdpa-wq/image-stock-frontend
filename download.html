@@ -215,8 +215,8 @@ async function loadRelated(keyword) {
       }
 
       const fileToShow = img.thumbnailFileName || img.fileName;
-      const fileUrl =
-        `https://pixeora.com/cdn-cgi/image/w=400,q=80,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+      const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
       const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
       related.innerHTML += `
