@@ -166,6 +166,8 @@ function downloadImage(rawName) {
 }
 
 // IMAGE CARD + LAZY LOAD
+let imageCounter = 0;
+
 function createImageDiv(img) {
   imageCounter++;
 
@@ -186,8 +188,9 @@ function createImageDiv(img) {
 
   const fileToShow = img.thumbnailFileName || img.fileName;
 
-  // ✅ FIXED R2 IMAGE URL
-  const imageUrl = `https://pub-9e0fab1bdd424d76bb4464e1726a2389.r2.dev/${encodeURIComponent(fileToShow)}`;
+  const fileUrl = 
+        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
 
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
