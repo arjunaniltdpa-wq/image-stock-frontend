@@ -187,11 +187,10 @@ function createImageDiv(img) {
   }
 
   const fileToShow = img.thumbnailFileName || img.fileName;
-  
-  const fileUrl = `https://cdn.pixeora.com/hd-images-pixeora/${encodeURIComponent(fileToShow)}`;
 
+  // ✅ FINAL URL — CORRECT
+  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
-  // FIXED → imageUrl → fileUrl
   div.innerHTML = `
     <a href="download.html?id=${encodeURIComponent(img._id)}">
       <img data-src="${fileUrl}" class="lazy-img" alt="" />
@@ -201,6 +200,7 @@ function createImageDiv(img) {
 
   container.appendChild(div);
 }
+
 
 // LOAD IMAGES
 async function loadImages() {
