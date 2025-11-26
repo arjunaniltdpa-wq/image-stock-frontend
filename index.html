@@ -188,8 +188,8 @@ function createImageDiv(img) {
 
   const fileToShow = img.thumbnailFileName || img.fileName;
   
-  const fileUrl = 
-        `https://pixeora.com/cdn-cgi/image/w=600,q=85,f=auto/https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
 
   // FIXED → imageUrl → fileUrl
   div.innerHTML = `
