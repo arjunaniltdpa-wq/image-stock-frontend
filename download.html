@@ -18,9 +18,6 @@
   <meta property="og:description" content="Get high-quality wallpapers and photos for free. Nature, Travel, Fashion, Food, and more.">
   <meta property="og:type" content="website">
 
-  <!-- ⭐ GOOGLE ADSENSE -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
-    crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -46,29 +43,11 @@
     <!-- RIGHT: LEGAL LINK -->
     <a href="legal.html" class="legal-link-header">Legal & Policies</a>
 
-    <!-- ⭐ TOP BANNER AD BELOW SEARCH BAR -->
-    <div class="top-search-ad" style="margin:20px 0; text-align:center;">
-      <ins class="adsbygoogle"
-           style="display:block; width:100%; max-width:728px; height:90px; margin:0 auto;"
-           data-ad-client="ca-pub-4549865852809903"
-           data-ad-slot="1551401768"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
   </div>
 </header>
 
 <!-- ⭐ Page Wrapper -->
 <div class="page-wrapper">
-
-  <!-- Left Side Ad -->
-  <div class="side-ad left-ad">
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:160px;height:600px"
-         data-ad-client="ca-pub-4549865852809903"
-         data-ad-slot="4083649188"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
 
   <!-- MAIN IMAGE -->
   <main>
@@ -89,28 +68,6 @@
     <!-- Keywords -->
     <div class="keywords" id="keywords"></div>
 
-    <!-- ⭐ Banner Under Keywords -->
-    <div class="keywords-banner-ad">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-4549865852809903"
-           data-ad-slot="3493494231"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-  </main>
-
-  <!-- Right Side Ad -->
-  <div class="side-ad right-ad">
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:160px;height:600px"
-         data-ad-client="ca-pub-4549865852809903"
-         data-ad-slot="4083649188"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
 </div>
 
 <!-- ⭐ RELATED IMAGES -->
@@ -119,15 +76,6 @@
   <div id="related-images"></div>
 </div>
 
-<!-- ⭐ Bottom Sticky Ad -->
-<div class="bottom-sticky-ad" id="stickyAd">
-  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
-  <ins class="adsbygoogle"
-       style="display:block;width:100%;height:60px"
-       data-ad-client="ca-pub-4549865852809903"
-       data-ad-slot="2074145941"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
 
 <!-- Info Modal -->
 <div id="infoModal" class="info-modal">
@@ -208,18 +156,6 @@ async function loadRelated(keyword) {
     images.slice(0, 50).forEach(img => {
       relatedCount++;
 
-      // ADS
-      if (relatedCount % 20 === 0) {
-        related.innerHTML += `
-          <div class="infeed-ad">
-            <ins class="adsbygoogle"
-                 style="display:block;width:100%;height:250px"
-                 data-ad-client="ca-pub-4549865852809903"
-                 data-ad-slot="5554225959"></ins>
-          </div>`;
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      }
-
       const fileToShow = img.thumbnailFileName || img.fileName;
 
       // ⭐ FIXED — NO CLOUDFLARE IMAGE OPTIMIZE LAYER
@@ -278,22 +214,6 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
-// ⭐ STICKY AD
-setTimeout(() => {
-  document.getElementById("bottom-sticky-ad").classList.add("show");
-}, 3000);
-
-setTimeout(() => {
-  document.getElementById("bottom-sticky-ad").style.display = "block";
-}, 3000);
-
-function closeStickyAd() {
-  const ad = document.getElementById("stickyAd");
-  ad.style.display = "none";
-  setTimeout(() => {
-    ad.style.display = "block";
-  }, 8000);
-}
 
 loadImageDetails();
 </script>

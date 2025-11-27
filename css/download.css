@@ -140,29 +140,6 @@ body {
   }
 }
 
-/* ======================================================
-   ⭐ SIDE ADS (160×600)
-====================================================== */
-.side-ad {
-  width: 160px;
-  min-width: 160px;
-  height: 600px;
-  display: block;
-}
-
-.left-ad {
-  order: 1;
-}
-
-.right-ad {
-  order: 3;
-}
-
-@media (max-width: 1024px) {
-  .side-ad {
-    display: none !important;
-  }
-}
 
 /* Main area */
 .page-wrapper main {
@@ -223,15 +200,6 @@ body {
 }
 
 /* ======================================================
-   ⭐ TOP BANNER AD
-====================================================== */
-.top-banner-ad {
-  max-width: 900px;
-  margin: 20px auto 10px auto;
-  text-align: center;
-}
-
-/* ======================================================
    KEYWORDS SECTION
 ====================================================== */
 .keywords {
@@ -256,14 +224,6 @@ body {
   color: #fff;
 }
 
-/* ======================================================
-   ⭐ BANNER UNDER KEYWORDS
-====================================================== */
-.keywords-banner-ad {
-  max-width: 900px;
-  margin: 20px auto;
-  text-align: center;
-}
 
 /* ======================================================
    RELATED IMAGES
@@ -333,25 +293,6 @@ body {
   pointer-events: auto;
 }
 
-/* ======================================================
-   ⭐ IN-FEED AD BLOCK
-====================================================== */
-.infeed-ad {
-  grid-column: span 5;
-  text-align: center;
-  margin: 20px 0;
-}
-
-@media (max-width: 1024px) {
-  .infeed-ad {
-    grid-column: span 3;
-  }
-}
-@media (max-width: 600px) {
-  .infeed-ad {
-    grid-column: span 2;
-  }
-}
 
 /* ======================================================
    INFO MODAL
@@ -390,62 +331,6 @@ body {
   cursor: pointer;
 }
 
-/* ======================================================
-   ⭐ BOTTOM STICKY AD
-====================================================== */
-
-.bottom-sticky-ad {
-  position: fixed;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  background: white;
-  padding: 10px;
-  display: block;
-  z-index: 9999;
-  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.25);
-  border-radius: 18px;
-  opacity: 0;
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-@keyframes slideUp {
-  0% { bottom: -100px; opacity: 0; }
-  100% { bottom: 15px; opacity: 1; }
-}
-
-.close-sticky {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #000;
-  color: #fff;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 24px;
-  text-align: center;
-  opacity: 0.8;
-}
-
-.close-sticky:hover {
-  opacity: 1;
-}
-
-@media(max-width: 600px) {
-  .bottom-sticky-ad {
-    width: 90%;
-  }
-}
-
-/* Normalize ad alignment */
-.adsbygoogle {
-  margin: 0 auto;
-}
 /* ================= Responsive Masonry Columns ================= */
 @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
 @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
