@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/photo/:slug",
+      "destination": "/download.html"
+    }
+  ]
+}

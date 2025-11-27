@@ -102,11 +102,12 @@ function redirectSearch() {
 }
 
 const params = new URLSearchParams(window.location.search);
-const imageId = params.get("id");
+const slugPart = window.location.pathname.split("/photo/")[1];
+const slug = slugPart ? slugPart.replace(/\/$/, "") : "";
 
 async function loadImageDetails() {
   try {
-    const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
+    const res = await fetch(`${API_BASE}/api/images/slug/${slug}`);
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
@@ -137,7 +138,8 @@ async function loadImageDetails() {
     const seoDescription = img.description || `Download ${img.title} in high quality for free.`;
     const seoKeywords = (img.keywords || img.tags || []).join(", ");
     const seoImage = displayUrl;
-    const canonicalUrl = `https://pixeora.com/download.html?id=${img._id}`;
+    const canonicalUrl = `https://pixeora.com/photo/${img.slug}-${img._id}`;
+
 
     document.getElementById("seo-title").textContent = seoTitle;
     document.getElementById("seo-desc").setAttribute("content", seoDescription);
@@ -176,7 +178,7 @@ async function loadRelated(keyword) {
 
       related.innerHTML += `
         <div class="related-item">
-          <a href="download.html?id=${img._id}">
+          <a href="/photo/${img.slug}-${img._id}">
             <img src="${thumbUrl}" loading="lazy">
           </a>
           <span class="download-overlay"
