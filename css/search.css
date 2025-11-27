@@ -153,19 +153,6 @@ body {
   margin-top: 6px;
 }
 
-.ads-slot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 30px 0;
-}
-
-.ads-slot img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
 /* =============== Layout Wrapper =============== */
 .layout-wrapper {
   max-width: 1400px;
@@ -173,22 +160,6 @@ body {
   padding: 20px;
 }
 
-
-/* =============== Ads Columns =============== */
-.ads-column {
-  color: #bbb;
-  font-weight: 700;
-  font-size: 18px;
-  text-align: center;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  opacity: 0.6;
-}
-
-.ads-column.right {
-  writing-mode: vertical-lr;
-  transform: rotate(0deg);
-}
 
 /* =============== Gallery =============== */
 .gallery {
@@ -237,19 +208,6 @@ body {
   object-fit: contain;
 }
 
-
-/* =============== Bottom Ad =============== */
-.ads-bottom {
-  max-width: 1400px;
-  margin: 40px auto;
-  background: #ccc;
-  color: #666;
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-  padding: 20px 0;
-  border-radius: 10px;
-}
 
 .modal-overlay {
   position: fixed;
@@ -492,80 +450,6 @@ body {
 }
 
 
-/* TOP BANNER AD */
-.top-banner-ad {
-  width: 100%;
-  text-align: center;
-  margin-top: 20px;
-}
-
-
-/* MID GRID AD */
-.midgrid-ad {
-  break-inside: avoid-column;
-  margin: 20px 0;
-  text-align: center;
-  width: 100%;
-}
-
-/* BOTTOM STICKY AD */
-.bottom-sticky-ad {
-  position: fixed;
-  bottom: -100px; /* start hidden */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  background: white;
-  padding: 10px;
-  display: block; /* keep it block; we control visibility with animation */
-  z-index: 9999;
-  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.25);
-  border-radius: 18px;
-  opacity: 0;
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-/* SLIDE UP ANIMATION */
-@keyframes slideUp {
-  0% {
-    bottom: -100px;
-    opacity: 0;
-  }
-  100% {
-    bottom: 15px;
-    opacity: 1;
-  }
-}
-
-.close-sticky {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #000;
-  color: #fff;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 24px;
-  text-align: center;
-  z-index: 99999;
-  opacity: 0.8;
-}
-
-.close-sticky:hover {
-  opacity: 1;
-}
-
-/* MOBILE RESPONSIVE */
-@media(max-width: 600px) {
-  .bottom-sticky-ad {
-    width: 90%;
-  }
-}
-
 /* ================= Responsive Masonry Columns ================= */
 @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
 @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
@@ -756,12 +640,6 @@ html, body {
     }
 }
 
-/* Prevent sticky ad overflow */
-.bottom-sticky-ad {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    max-width: 95% !important;
-}
 
 /* FORCE MOBILE = 1 COLUMN */
 @media (max-width: 600px) {
