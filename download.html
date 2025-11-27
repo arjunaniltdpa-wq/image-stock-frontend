@@ -22,8 +22,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/download.css">
+  <!-- ⭐⭐ FIXED: Must be absolute path -->
+  <link rel="stylesheet" href="/css/download.css">
 
 </head>
 <body>
@@ -32,20 +32,25 @@
 <header class="header">
   <div class="header-overlay">
 
-    <a href="index.html" class="logo">Pixeora</a>
+    <!-- ⭐⭐ FIXED -->
+    <a href="/index.html" class="logo">Pixeora</a>
 
     <div class="search-bar-wrapper">
       <div class="search-bar-border">
         <form class="search-bar" onsubmit="return redirectSearch()">
           <input type="text" id="searchInput" placeholder="Search Image" required>
+
+          <!-- ⭐⭐ FIXED -->
           <button type="submit" class="search-icon">
-            <img src="images/search-icon.png" alt="Search" loading="lazy">
+            <img src="/images/search-icon.png" alt="Search" loading="lazy">
           </button>
+
         </form>
       </div>
     </div>
 
-    <a href="legal.html" class="legal-link-header">Legal & Policies</a>
+    <!-- ⭐⭐ FIXED -->
+    <a href="/legal.html" class="legal-link-header">Legal & Policies</a>
 
   </div>
 </header>
@@ -76,7 +81,6 @@
   <div id="related-images"></div>
 </div>
 
-
 <!-- Info Modal -->
 <div id="infoModal" class="info-modal">
   <div class="info-content">
@@ -101,7 +105,6 @@ function redirectSearch() {
   return false;
 }
 
-const params = new URLSearchParams(window.location.search);
 const slugPart = window.location.pathname.split("/photo/")[1];
 const slug = slugPart ? slugPart.replace(/\/$/, "") : "";
 
