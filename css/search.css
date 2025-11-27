@@ -681,7 +681,7 @@ body {
 /* GRID FIX */
 @media (max-width: 600px) {
   .gallery {
-    column-count: 2 !important;
+    column-count: 1 !important;
   }
 }
 
