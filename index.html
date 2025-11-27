@@ -141,18 +141,6 @@ function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  if (imageCounter % 20 === 0) {
-    const adDiv = document.createElement("div");
-    adDiv.classList.add("midgrid-ad");
-    adDiv.innerHTML = `
-      <ins class="adsbygoogle"
-           style="display:block;width:100%;height:250px"
-           data-ad-client="ca-pub-4549865852809903"
-           data-ad-slot="5554225959"></ins>`;
-    container.appendChild(adDiv);
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  }
-
   const fileToShow = img.thumbnailFileName || img.fileName;
 
   // ⭐ Correct URL — NO folder name
