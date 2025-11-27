@@ -1,655 +1,655 @@
-/* =============== Reset & Base =============== */
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #fff;
-}
-
-/* =============== Header =============== */
-.header {
-  background-image: url('../images/banner.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 150px;
-  position: relative;
-  border-bottom-left-radius: 80px;
-  border-bottom-right-radius: 80px;
-  overflow: hidden;
-}
-
-/* FLEX HEADER CONTAINER */
-.header-overlay {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 50px;            /* Remove top padding */
-    height: 100%;               /* Fill header height */
-    display: flex;
-    align-items: flex-start;    /* Move ALL ITEMS upward */
-    justify-content: space-between;
-    position: relative;
-    margin-top: 1%;
-}
-
-/* LOGO LEFT */
-.logo {
-  position: relative;
-  text-decoration: none;
-  font-family: 'Marck Script', cursive;
-  font-size: 40px;
-  color: #ffffff;
-  letter-spacing: -0.08em;
-  z-index: 10;
-}
-
-/* DESKTOP ONLY — Legal link */
-.legal-link-header {
-  font-size: 13px;
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 14px;
-  border-radius: 6px;
-  backdrop-filter: blur(4px);
-  transition: 0.2s;
-  position: relative;
-}
-
-@media (max-width: 992px) {
-  .legal-link-header {
-    display: none !important;
+  /* =============== Reset & Base =============== */
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
   }
-}
 
-/* ============== Search Bar ============== */
-
-.search-bar-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  z-index: 20;
-  margin-top: 40px;  
-}
-
-.search-bar {
-  width: 700px;
-  max-width: 100%;
-  height: 55px;
-  position: relative;   /* ⭐ Important for icon alignment */
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.search-bar input {
-  flex: 1;
-  padding: 0 20px;
-  border: none;
-  font-size: 18px;
-  outline: none;
-}
-
-/* ⭐️ Final Correct Search Icon Position */
-.search-bar .search-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-}
-
-.search-bar .search-icon img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  display: block;
-}
-
-
-
-/* =============== Search Info =============== */
-.search-info {
-  max-width: 100%;
-  margin: 30px auto 20px;
-  padding: 0 20px;
-}
-
-.search-info p {
-  font-style: italic;
-  color: #666;
-  font-size: 20px;
-  margin: 0 0 6px;
-}
-
-.search-info h1 {
-  font-weight: 600;
-  font-size: 40px;
-  margin: 0 0 12px;
-}
-
-.keyword {
-  font-weight: 600;
-  font-style: italic;
-  letter-spacing: -0.07em;
-}
-
-.image-count {
-  display: inline-block;
-  background: #000;
-  color: #00ffff;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  margin-top: 6px;
-}
-
-/* =============== Layout Wrapper =============== */
-.layout-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-
-/* =============== Gallery =============== */
-.gallery {
-  column-count: 4;
-  column-gap: 20px;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;       /* center it */
-  display: block;
-}
-
-.image-card {
-  position: relative;      /* ⭐ required for download icon */
-  break-inside: avoid;
-  margin-bottom: 20px;
-}
-
-
-.image-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  display: block;
-}
-
-
-.image-card .download-icon {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 120px;
-  height: 40px;
-  opacity: 0;
-  cursor: pointer;
-  transition: transform 0.25s, opacity 0.25s;
-}
-
-.image-card:hover .download-icon {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.image-card .download-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 1;
-}
-
-.modal-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 90%;
-  max-height: 90%;
-}
-
-#modal-image {
-  max-width: 90vw;      /* fits landscape images */
-  max-height: 80vh;     /* fits portrait images */
-  width: auto;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-}
-
-.modal-close {
-  position: absolute;
-  top: -40px;
-  right: -10px;
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-  z-index: 3;
-}
-
-.download-btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #03274c;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: 600;
-}
-
-.modal-overlay {
-  display: none; /* ✅ Hides the modal initially */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-
-.modal-content {
-  width: 90%;
-  max-width: 1400px;
-  max-height: 90vh;
-  background: #fff;
-  border-radius: 12px;
-  overflow-y: auto;
-  position: relative;
-  padding: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  background: #ccc;
-  border-radius: 50%;
-}
-
-.name-status {
-  display: flex;
-  flex-direction: column;
-}
-
-.available {
-  color: #007aff;
-  font-size: 12px;
-}
-
-.action-buttons .btn {
-  background: #f1f1f1;
-  border: none;
-  margin-left: 10px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.download {
-  background: #22c55e;
-  color: white;
-  font-weight: bold;
-}
-
-.image-preview {
-  margin: 20px 0;
-  text-align: center;
-}
-
-.image-preview img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.tags span {
-  background: #eee;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-}
-
-.related-grid {
-  width: 100%;
-  column-count: 3;
-  column-gap: 16px;
-  max-height: 600px;
-  overflow-y: auto;
-  padding: 0 10px;
-}
-
-.related-grid img {
-  width: 100%;
-  margin-bottom: 16px;
-  border-radius: 10px;
-  break-inside: avoid;
-  display: block;
-  object-fit: cover;
-}
-
-/* ============================================================
-   ⭐ RELATED IMAGES (same style as search result image grid)
-   ============================================================ */
-
-.related-section {
-  max-width: 1400px;
-  margin: 40px auto 0;
-  padding: 0 20px;
-}
-
-.related-section h2 {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-/* ⭐ Use same masonry layout as gallery */
-#related-images {
-  column-count: 4;
-  column-gap: 20px;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-@media (max-width: 1100px) { #related-images { column-count: 3; } }
-@media (max-width: 700px) { #related-images { column-count: 2; } }
-@media (max-width: 420px) { #related-images { column-count: 1; } }
-
-/* ⭐ Related Image Card (same as image-card) */
-.related-item {
-  position: relative;
-  break-inside: avoid;
-  margin-bottom: 20px;
-}
-
-.related-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-/* ⭐ Clean icon only (no background) */
-.download-overlay {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-
-  width: 130px;
-  height: 50px;
-
-  background-image: url('../images/download-icon.png');
-  background-size: 120px;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-/* Show on hover */
-.related-item:hover .download-overlay {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1.15);
-}
-
-
-/* ================= Responsive Masonry Columns ================= */
-@media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
-@media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
-@media (max-width: 700px)  { .masonry-grid { column-count: 1; } }
-@media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
-
-/* ================= Tablet ================= */
-@media (max-width: 1200px) and (min-width: 601px) {
-
+  /* =============== Header =============== */
   .header {
-    height: 130px;
-    border-bottom-left-radius: 55px;
-    border-bottom-right-radius: 55px;
+    background-image: url('../images/banner.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 150px;
+    position: relative;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    overflow: hidden;
   }
 
+  /* FLEX HEADER CONTAINER */
   .header-overlay {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 50px;            /* Remove top padding */
+      height: 100%;               /* Fill header height */
+      display: flex;
+      align-items: flex-start;    /* Move ALL ITEMS upward */
+      justify-content: space-between;
+      position: relative;
+      margin-top: 1%;
   }
 
+  /* LOGO LEFT */
   .logo {
-    font-size: 36px;
+    position: relative;
+    text-decoration: none;
+    font-family: 'Marck Script', cursive;
+    font-size: 40px;
+    color: #ffffff;
+    letter-spacing: -0.08em;
+    z-index: 10;
+  }
+
+  /* DESKTOP ONLY — Legal link */
+  .legal-link-header {
+    font-size: 13px;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+    transition: 0.2s;
     position: relative;
   }
+
+  @media (max-width: 992px) {
+    .legal-link-header {
+      display: none !important;
+    }
+  }
+
+  /* ============== Search Bar ============== */
 
   .search-bar-wrapper {
-    width: auto;
-    margin: 0;
-    justify-content: flex-end;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    z-index: 20;
+    margin-top: 40px;  
   }
 
   .search-bar {
-    width: 260px;
-    height: 45px;
+    width: 700px;
+    max-width: 100%;
+    height: 55px;
+    position: relative;   /* ⭐ Important for icon alignment */
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
 
   .search-bar input {
-    font-size: 16px;
+    flex: 1;
+    padding: 0 20px;
+    border: none;
+    font-size: 18px;
+    outline: none;
+  }
+
+  /* ⭐️ Final Correct Search Icon Position */
+  .search-bar .search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
   }
 
   .search-bar .search-icon img {
     width: 18px;
     height: 18px;
-  }
-  /* Hide legal on mobile */
-  .legal-link-header {
-    display: none !important;
-  }
-}
-
-
-/* ================= Mobile ================= */
-@media (max-width: 600px) {
-
-  /* Header smaller on mobile */
-  .header {
-    height: 110px;
-    border-bottom-left-radius: 35px;
-    border-bottom-right-radius: 35px;
+    object-fit: contain;
+    display: block;
   }
 
-  /* Proper left-right layout */
-  .header-overlay {
-    display: flex;
-    flex-direction: row;
+
+
+  /* =============== Search Info =============== */
+  .search-info {
+    max-width: 100%;
+    margin: 30px auto 20px;
+    padding: 0 20px;
+  }
+
+  .search-info p {
+    font-style: italic;
+    color: #666;
+    font-size: 20px;
+    margin: 0 0 6px;
+  }
+
+  .search-info h1 {
+    font-weight: 600;
+    font-size: 40px;
+    margin: 0 0 12px;
+  }
+
+  .keyword {
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: -0.07em;
+  }
+
+  .image-count {
+    display: inline-block;
+    background: #000;
+    color: #00ffff;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-top: 6px;
+  }
+
+  /* =============== Layout Wrapper =============== */
+  .layout-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+
+  /* =============== Gallery =============== */
+  .gallery {
+    column-count: 4;
+    column-gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;       /* center it */
+    display: block;
+  }
+
+  .image-card {
+    position: relative;      /* ⭐ required for download icon */
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+
+  .image-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+
+
+  .image-card .download-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 120px;
+    height: 40px;
+    opacity: 0;
+    cursor: pointer;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+
+  .image-card:hover .download-icon {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .image-card .download-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
     align-items: center;
-    justify-content: space-between;
-    padding: 0px 15px;
+    justify-content: center;
+    z-index: 9999;
   }
 
-  /* Mobile Logo */
-  .logo {
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1;
+  }
+
+  .modal-content {
     position: relative;
-    font-size: 30px;
-    margin: 0;
+    z-index: 2;
+    text-align: center;
+    max-width: 90%;
+    max-height: 90%;
   }
 
-  /* Right side search bar */
-  .search-bar-wrapper {
+  #modal-image {
+    max-width: 90vw;      /* fits landscape images */
+    max-height: 80vh;     /* fits portrait images */
     width: auto;
-    margin: 0;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: -40px;
+    right: -10px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  .download-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #03274c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+
+  .modal-overlay {
+    display: none; /* ✅ Hides the modal initially */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+
+  .modal-content {
+    width: 90%;
+    max-width: 1400px;
+    max-height: 90vh;
+    background: #fff;
+    border-radius: 12px;
+    overflow-y: auto;
+    position: relative;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+
+  .modal-header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .search-bar {
-    width: 180px;
-    height: 38px;
-    border-radius: 16px;
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .search-bar input {
+  .avatar {
+    width: 40px;
+    height: 40px;
+    background: #ccc;
+    border-radius: 50%;
+  }
+
+  .name-status {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .available {
+    color: #007aff;
+    font-size: 12px;
+  }
+
+  .action-buttons .btn {
+    background: #f1f1f1;
+    border: none;
+    margin-left: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .download {
+    background: #22c55e;
+    color: white;
+    font-weight: bold;
+  }
+
+  .image-preview {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .image-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tags span {
+    background: #eee;
+    padding: 6px 12px;
+    border-radius: 20px;
     font-size: 14px;
+  }
+
+  .related-grid {
+    width: 100%;
+    column-count: 3;
+    column-gap: 16px;
+    max-height: 600px;
+    overflow-y: auto;
     padding: 0 10px;
   }
 
-  .search-bar .search-icon {
-    width: 26px;
-    height: 26px;
+  .related-grid img {
+    width: 100%;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    break-inside: avoid;
+    display: block;
+    object-fit: cover;
   }
 
-  .search-bar .search-icon img {
-    width: 16px;
-    height: 16px;
+  /* ============================================================
+    ⭐ RELATED IMAGES (same style as search result image grid)
+    ============================================================ */
+
+  .related-section {
+    max-width: 1400px;
+    margin: 40px auto 0;
+    padding: 0 20px;
   }
 
-  /* Hide legal on mobile */
-  .legal-link-header {
-    display: none !important;
+  .related-section h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
   }
-}
-/* GRID FIX */
-@media (max-width: 600px) {
-  .gallery {
-    column-count: 1 !important;
-  }
-}
 
-@media (max-width: 1140px) and (min-width: 601px) {
-  .gallery {
-    column-count: 3 !important;
-  }
-}
-
-@media (min-width: 1140px) {
-  .gallery {
-    column-count: 4 !important;
-  }
-}
-
-/* ============================================================
-   ⭐ FINAL FIX — REMOVE RIGHT GAP ON MOBILE & TABLET ⭐
-   ============================================================ */
-
-html, body {
-    width: 100% !important;
-    overflow-x: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-
-/* MAIN WRAPPERS */
-.page-wrapper,
-.related-section,
-.keywords,
-.top-banner-ad,
-.keywords-banner-ad,
-.image-section {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-    box-sizing: border-box !important;
-}
-
-/* GRID FIX: Related images */
-#related-images {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    overflow-x: hidden !important;
-}
-
-/* REMOVE DESKTOP SIDEBAR SPACE ON MOBILE / TABLET */
-@media (max-width: 1024px) {
-    .page-wrapper {
-        display: block !important;
-        gap: 0 !important;
-        padding: 0 !important;
-    }
-
-    .side-ad {
-        display: none !important;
-        width: 0 !important;
-        min-width: 0 !important;
-    }
-
-    main {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 12px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-    }
-}
-
-
-/* FORCE MOBILE = 1 COLUMN */
-@media (max-width: 600px) {
-  .gallery {
-    column-count: 1 !important;
-  }
+  /* ⭐ Use same masonry layout as gallery */
   #related-images {
-    column-count: 1 !important;
+    column-count: 4;
+    column-gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
   }
-}
+
+  @media (max-width: 1100px) { #related-images { column-count: 3; } }
+  @media (max-width: 700px) { #related-images { column-count: 2; } }
+  @media (max-width: 420px) { #related-images { column-count: 1; } }
+
+  /* ⭐ Related Image Card (same as image-card) */
+  .related-item {
+    position: relative;
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .related-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  /* ⭐ Clean icon only (no background) */
+  .download-overlay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+    width: 130px;
+    height: 50px;
+
+    background-image: url('../images/download-icon.png');
+    background-size: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  /* Show on hover */
+  .related-item:hover .download-overlay {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1.15);
+  }
 
 
-  
+  /* ================= Responsive Masonry Columns ================= */
+  @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
+  @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
+  @media (max-width: 700px)  { .masonry-grid { column-count: 1; } }
+  @media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
+
+  /* ================= Tablet ================= */
+  @media (max-width: 1200px) and (min-width: 601px) {
+
+    .header {
+      height: 130px;
+      border-bottom-left-radius: 55px;
+      border-bottom-right-radius: 55px;
+    }
+
+    .header-overlay {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0px 20px;
+    }
+
+    .logo {
+      font-size: 36px;
+      position: relative;
+    }
+
+    .search-bar-wrapper {
+      width: auto;
+      margin: 0;
+      justify-content: flex-end;
+    }
+
+    .search-bar {
+      width: 260px;
+      height: 45px;
+    }
+
+    .search-bar input {
+      font-size: 16px;
+    }
+
+    .search-bar .search-icon img {
+      width: 18px;
+      height: 18px;
+    }
+    /* Hide legal on mobile */
+    .legal-link-header {
+      display: none !important;
+    }
+  }
+
+
+  /* ================= Mobile ================= */
+  @media (max-width: 600px) {
+
+    /* Header smaller on mobile */
+    .header {
+      height: 110px;
+      border-bottom-left-radius: 35px;
+      border-bottom-right-radius: 35px;
+    }
+
+    /* Proper left-right layout */
+    .header-overlay {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0px 15px;
+    }
+
+    /* Mobile Logo */
+    .logo {
+      position: relative;
+      font-size: 30px;
+      margin: 0;
+    }
+
+    /* Right side search bar */
+    .search-bar-wrapper {
+      width: auto;
+      margin: 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .search-bar {
+      width: 180px;
+      height: 38px;
+      border-radius: 16px;
+    }
+
+    .search-bar input {
+      font-size: 14px;
+      padding: 0 10px;
+    }
+
+    .search-bar .search-icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    .search-bar .search-icon img {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Hide legal on mobile */
+    .legal-link-header {
+      display: none !important;
+    }
+  }
+  /* GRID FIX */
+  @media (max-width: 600px) {
+    .gallery {
+      column-count: 1 !important;
+    }
+  }
+
+  @media (max-width: 1140px) and (min-width: 601px) {
+    .gallery {
+      column-count: 3 !important;
+    }
+  }
+
+  @media (min-width: 1140px) {
+    .gallery {
+      column-count: 4 !important;
+    }
+  }
+
+  /* ============================================================
+    ⭐ FINAL FIX — REMOVE RIGHT GAP ON MOBILE & TABLET ⭐
+    ============================================================ */
+
+  html, body {
+      width: 100% !important;
+      overflow-x: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+
+  /* MAIN WRAPPERS */
+  .page-wrapper,
+  .related-section,
+  .keywords,
+  .top-banner-ad,
+  .keywords-banner-ad,
+  .image-section {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      box-sizing: border-box !important;
+  }
+
+  /* GRID FIX: Related images */
+  #related-images {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 auto !important;
+      overflow-x: hidden !important;
+  }
+
+  /* REMOVE DESKTOP SIDEBAR SPACE ON MOBILE / TABLET */
+  @media (max-width: 1024px) {
+      .page-wrapper {
+          display: block !important;
+          gap: 0 !important;
+          padding: 0 !important;
+      }
+
+      .side-ad {
+          display: none !important;
+          width: 0 !important;
+          min-width: 0 !important;
+      }
+
+      main {
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 0 12px !important;
+          margin: 0 !important;
+          box-sizing: border-box !important;
+      }
+  }
+
+
+  /* FORCE MOBILE = 1 COLUMN */
+  @media (max-width: 600px) {
+    .gallery {
+      column-count: 1 !important;
+    }
+    #related-images {
+      column-count: 1 !important;
+    }
+  }
+
+
+    
