@@ -105,9 +105,21 @@ function redirectSearch() {
   return false;
 }
 
-const slugPart = window.location.pathname.split("/photo/")[1];
-const slug = slugPart ? slugPart.replace(/\/$/, "") : "";
+/* ---------------------------------------------------
+   ⭐ FIXED CLEAN URL SLUG PARSING
+   URL format: /photo/slug-here-ObjectID
+--------------------------------------------------- */
+const fullSlug = window.location.pathname.split("/photo/")[1] || "";
 
+// extract ID (last part after final "-")
+const id = fullSlug.split("-").pop();
+
+// extract slug (remove "-id" from end)
+const slug = fullSlug.replace("-" + id, "").trim();
+
+/* ---------------------------------------------------
+   LOAD IMAGE DETAILS
+--------------------------------------------------- */
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/slug/${slug}`);
@@ -143,7 +155,6 @@ async function loadImageDetails() {
     const seoImage = displayUrl;
     const canonicalUrl = `https://pixeora.com/photo/${img.slug}-${img._id}`;
 
-
     document.getElementById("seo-title").textContent = seoTitle;
     document.getElementById("seo-desc").setAttribute("content", seoDescription);
     document.getElementById("seo-keywords").setAttribute("content", seoKeywords);
@@ -161,6 +172,9 @@ async function loadImageDetails() {
   }
 }
 
+/* ---------------------------------------------------
+   RELATED IMAGES
+--------------------------------------------------- */
 let relatedCount = 0;
 
 async function loadRelated(keyword) {
@@ -192,6 +206,9 @@ async function loadRelated(keyword) {
   } catch (e) {}
 }
 
+/* ---------------------------------------------------
+   INFO MODAL
+--------------------------------------------------- */
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
@@ -230,8 +247,8 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
+/* ---------------------------------------------------
+   START LOADING
+--------------------------------------------------- */
 loadImageDetails();
 </script>
-
-</body>
-</html>
