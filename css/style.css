@@ -1,474 +1,305 @@
-/* Reset */
-
+/* -------------------------------------------------
+   RESET
+------------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  }
-
-body {
-font-family: 'PT Sans', sans-serif;
-background-color: #f9f9f9;
-color: #222;
 }
 
-/* ---------------- HEADER ---------------- */
+body {
+  font-family: 'PT Sans', sans-serif;
+  background-color: #f9f9f9;
+  color: #222;
+}
+
+/* -------------------------------------------------
+   HEADER
+------------------------------------------------- */
 .top-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: transparent;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+  z-index: 1000;
 }
 
 .top-nav-container {
-    max-width: 90%;
-    margin: 0 auto;
-    padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* LOGO */
 .logo {
-    font-family: 'Marck Script', cursive;
-    font-size: 45px;
-    color: #ffffff; /* FIX: white on banner */
-    letter-spacing: -0.08em;
+  font-family: 'Marck Script', cursive;
+  font-size: 45px;
+  color: #ffffff;
+  letter-spacing: -0.08em;
 }
 
 /* LEGAL LINK */
 .legal-link-header {
-    font-size: 16px;
-    color: #ffffff; /* FIX: white on banner */
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: 0.3s;
+  font-size: 16px;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
 }
 
-/* NAV LINKS */
+/* NAVIGATION */
 .nav-links {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.nav-menu,
-.nav-menu li,
-.dropdown-content {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .nav-menu {
-    display: flex;
-    gap: 20px;
+  list-style: none;
+  display: flex;
+  gap: 20px;
 }
 
 .dropdown {
-    position: relative;
+  position: relative;
 }
 
-/* NAV LINKS - default */
+/* Default links */
 .nav-links a {
-    text-decoration: none;
-    color: #ffffff; /* FIX: white on banner */
-    font-weight: 400;
-    padding: 10px 25px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 400;
+  padding: 10px 25px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
 }
 
-/* AI Tools Button */
+/* AI Tools button */
 .nav-links .dropdown > a {
-    background: #1f1e1e;
-    color: white !important;
-    font-size: 20px;
-    border-radius: 18px;
+  background: #1f1e1e;
+  color: white !important;
+  font-size: 20px;
+  border-radius: 18px;
 }
 
-/* DROPDOWN MENU */
+/* Dropdown */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: #fff;
-    border-radius: 2px;
-    min-width: 200px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 20;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border-radius: 2px;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 20;
 }
 
 .dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 
 .dropdown-content a {
-    display: block;
-    padding: 10px 20px;
-    color: #333 !important;
-    font-size: 17px;
-    border-radius: 0;
-    transition: all 0.3s;
+  padding: 10px 20px;
+  color: #333 !important;
+  font-size: 17px;
 }
 
 .dropdown-content a:hover {
-    background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-    background-size: 300% 300%;
-    color: #fff !important;
+  background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
+  background-size: 300% 300%;
+  color: #fff !important;
 }
 
-/* ---------------- BANNER ---------------- */
+/* -------------------------------------------------
+   BANNER SECTION
+------------------------------------------------- */
 .banner {
-background-image: url("../images/banner.jpg");
-background-size: cover;
-background-position: center;
-height: 500px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-position: relative;
-overflow: hidden;
-padding-top: 100px;
+  background-image: url("../images/banner.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 100px;
 }
 
 .banner-content {
-width: 100%;
-max-width: 900px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Search Bar */
+/* SEARCH BAR */
 .search-bar-wrapper {
-display: flex;
-justify-content: center;
-width: 100%;
-margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 40px;
 }
 
 .search-bar-border {
-padding: 2px;
-border-radius: 22px;
-background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-background-size: 300% 300%;
-animation: gradientGlow 5s linear infinite;
+  padding: 2px;
+  border-radius: 22px;
+  background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
+  animation: gradientGlow 5s linear infinite;
+  background-size: 300% 300%;
 }
 
 @keyframes gradientGlow {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .search-bar {
-width: 800px;
-height: 55px;
-max-width: 100%;
-display: flex;
-align-items: center;
-background-color: white;
-border-radius: 20px;
-overflow: hidden;
-box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  width: 800px;
+  max-width: 100%;
+  height: 55px;
+  background: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .search-bar input {
-flex: 1;
-padding: 20px 20px;
-border: none;
-font-size: 18px;
-outline: none;
+  flex: 1;
+  padding: 20px;
+  border: none;
+  font-size: 18px;
 }
 
 .search-bar .search-icon {
-  padding: 0 20px;       /* keep horizontal spacing */
+  padding: 0 20px;
   background: none;
   border: none;
-  font-size: 32px;       /* bigger size */
-  line-height: 1;        /* ensures vertical center */
-  display: flex;          /* flex to center vertically */
-  align-items: center;    /* center icon inside button */
-  justify-content: center; 
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
+/* TITLE */
 .banner-text {
   font-family: 'Onest', sans-serif;
   font-weight: 900;
-  letter-spacing: -0.05em;
   font-size: clamp(28px, 8vw, 90px);
   background: linear-gradient(90deg, #15ffad, #deff07, #15ffad);
-  background-size: 300% auto;
+  background-size: 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientMove 3s ease-in-out infinite;
-
-  margin-top: -40px;
-  text-align: center;
-  line-height: 0.8;
-  white-space: normal;
-
-  display: inline-block;    /* 💚 Fix clipping */
-  padding: 25px 0;          /* adds breathing room */
+  animation: gradientMove 3s ease infinite;
+  padding: 25px 0;
 }
 
-/* Gradient Animation */
 @keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-
-/* ---------------- CATEGORY ---------------- */
+/* -------------------------------------------------
+   CATEGORIES
+------------------------------------------------- */
 .category-grid {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-justify-content: center;
-margin: 30px 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 30px 0 20px;
 }
 
 .category {
-text-decoration: none;
-font-weight: 400;
-font-size: 20px;
-color: #222;
-padding: 10px 20px;
-border-radius: 30px;
-background: transparent;
-transition: all 0.3s ease;
-}
-
-.category.selected {
-background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-background-size: 400% 400%;
-animation: gradientGlow 10s linear infinite;
-color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 20px;
+  text-decoration: none;
+  color: #222;
+  transition: 0.3s;
 }
 
 .category:hover {
-background-image: linear-gradient(135deg, #08ff9c, #025aff);
-color: white;
+  background: linear-gradient(135deg, #08ff9c, #025aff);
+  color: white;
 }
 
-
-/* ---------------- MASONRY GRID ---------------- */
+/* -------------------------------------------------
+   MASONRY GRID
+------------------------------------------------- */
 .masonry-grid {
-column-count: 5;
-column-gap: 20px;
-max-width: 1500px;
-margin: 0 auto 40px;
-padding: 0 40px;
+  column-count: 5;
+  column-gap: 20px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px; /* FIX: reduced from 40 → 20 */
 }
 
-.masonry-grid .image-item {
-break-inside: avoid;
--webkit-column-break-inside: avoid;
--moz-column-break-inside: avoid;
-margin-bottom: 20px;
-position: relative;
-overflow: hidden;
-border-radius: 8px;
+.image-item {
+  break-inside: avoid;
+  margin-bottom: 20px;
+  position: relative;
 }
 
-.masonry-grid .image-item img {
-width: 100%;
-height: auto;
-display: block;
-border-radius: 8px;
-object-fit: cover;
-transition: transform 0.25s ease;
+.image-item img {
+  width: 100%;
+  border-radius: 8px;
 }
 
-.masonry-grid .download-overlay {
-position: absolute;
-bottom: 10px;
-right: 10px;
-width: 120px;
-height: 40px;
-background: url('../images/download-icon.png') no-repeat center center;
-background-size: cover;
-opacity: 0;
-transition: opacity 0.25s ease, transform 0.25s ease;
-cursor: pointer;
+/* DOWNLOAD ICON */
+.download-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 120px;
+  height: 40px;
+  background-image: url('../images/download-icon.png');
+  background-size: cover;
+  opacity: 0;
+  transition: 0.25s;
 }
 
-.masonry-grid .image-item:hover .download-overlay {
-opacity: 1;
-transform: scale(1.1);
+.image-item:hover .download-overlay {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-/* FIX: Header overlay blocking typing */
-.header-overlay {
-    pointer-events: none !important;
-}
-
-/* Allow clicks on search bar */
-.search-bar-wrapper,
-.search-bar-border,
-.search-bar,
-#searchInput,
-.search-icon {
-    pointer-events: auto !important;
-    position: relative !important;
-    z-index: 9999 !important;
-}
-
-
-/* Responsive columns */
+/* -------------------------------------------------
+   RESPONSIVE
+------------------------------------------------- */
 @media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
 @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
 @media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
-@media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
+@media (max-width: 450px)  { .masonry-grid { column-count: 1; padding: 0 10px; } }
 
-/* ===========================================
-   ✅ MOBILE & TABLET HEADER FIX (Option B)
-   =========================================== */
-
+/* -------------------------------------------------
+   TABLET
+------------------------------------------------- */
 @media (max-width: 1024px) {
-
-  /* Header container adjusts */
-  .top-nav-container {
-      max-width: 100%;
-      padding: 15px 18px;
-  }
-
-  /* Logo left */
-  .logo {
-      font-size: 34px;
-      color: #ffffff !important;
-      position: relative;
-      z-index: 10;
-  }
-
-  /* Hide "Legal & Policies" from header on mobile */
-  .legal-link-header {
-      display: none !important;
-  }
-
-  /* AI Tools becomes a small button on right */
-  .nav-links .dropdown > a {
-      background: #000;
-      color: #fff;
-      padding: 6px 14px;
-      font-size: 16px;
-      border-radius: 14px;
-  }
-
-  /* AI Tools dropdown styling */
-  .dropdown-content {
-      right: 0;
-      min-width: 160px;
-      border-radius: 10px;
-  }
-
-  /* Mobile header layout: Logo left, AI Tools right */
-  .nav-menu {
-      gap: 10px;
-      align-items: center;
-  }
-
-  /* Banner height for mobile */
-  .banner {
-      height: 450px;
-      padding-top: 80px;
-  }
-
-  /* Search bar width */
-  .search-bar {
-      width: 100%;
-      max-width: 450px;
-  }
-
-  /* Search input */
-  .search-bar input {
-      font-size: 16px;
-      padding: 0 16px;
-  }
-
-  .search-bar .search-icon img {
-      width: 20px;
-      height: 20px;
-  }
-
-  /* Banner text mobile size */
-  .banner-text {
-      font-size: clamp(26px, 8vw, 52px);
-      margin-top: 10px;
-      line-height: 1.1;
-  }
-
-  /* Categories grid */
-  .category-grid {
-      gap: 8px;
-      padding: 0 10px;
-  }
-
-  .category {
-      padding: 8px 14px;
-      font-size: 17px;
-  }
+  .top-nav-container { padding: 15px 18px; }
+  .logo { font-size: 34px; }
+  .legal-link-header { display: none !important; }
+  .banner { height: 450px; padding-top: 80px; }
+  .search-bar { max-width: 450px; }
 }
 
-/* ===========================================
-   ✅ SMALL MOBILE (≤ 600px)
-   =========================================== */
-
+/* -------------------------------------------------
+   MOBILE
+------------------------------------------------- */
 @media (max-width: 600px) {
-
-  /* Header spacing */
-  .top-nav-container {
-      padding: 12px 15px;
-  }
-
-  /* Smaller logo for small screens */
-  .logo {
-      font-size: 30px;
-  }
-
-  /* AI Tools button */
-  .nav-links .dropdown > a {
-      font-size: 14px;
-      padding: 5px 10px;
-  }
-
-  /* Banner height */
-  .banner {
-      height: 420px;
-      padding-top: 90px;
-  }
-
-  /* Search bar centered */
+  .top-nav-container { padding: 12px 15px; }
+  .logo { font-size: 30px; }
+  .banner { height: 420px; padding-top: 90px; }
   .search-bar {
-      height: 52px;
-      width: 100%;
-      border-radius: 16px;
+    height: 52px;
+    border-radius: 16px;
   }
-
-  .search-bar input {
-      font-size: 15px;
-  }
-
-  /* Categories */
-  .category {
-      padding: 8px 12px;
-      font-size: 16px;
-  }
+  .category { font-size: 16px; padding: 8px 12px; }
 }
