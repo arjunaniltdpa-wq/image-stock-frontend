@@ -3,7 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Download Free HD Image - Pixeora</title>
+
+  <!-- ⭐ Dynamic SEO (will be updated by JS) -->
+  <title id="seo-title">Pixeora Photo</title>
+  <meta id="seo-desc" name="description" content="">
+  <meta id="seo-keywords" name="keywords" content="">
+
+  <!-- OG Tags -->
+  <meta id="og-title" property="og:title" content="">
+  <meta id="og-desc" property="og:description" content="">
+  <meta id="og-image" property="og:image" content="">
+  <meta property="og:type" content="article">
+
+  <!-- Canonical -->
+  <link id="canonical-link" rel="canonical" href="">
 
   <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
@@ -11,12 +24,6 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/download.css">
-  
-  <!-- SEO -->
-  <meta name="description" content="Download free HD wallpapers and stock images from Pixeora for commercial and personal use.">
-  <meta property="og:title" content="Pixeora - Free Image Download">
-  <meta property="og:description" content="Get high-quality wallpapers and photos for free. Nature, Travel, Fashion, Food, and more.">
-  <meta property="og:type" content="website">
 
 </head>
 <body>
@@ -25,10 +32,8 @@
 <header class="header">
   <div class="header-overlay">
 
-    <!-- LEFT: LOGO -->
     <a href="index.html" class="logo">Pixeora</a>
 
-    <!-- CENTER: SEARCH BAR -->
     <div class="search-bar-wrapper">
       <div class="search-bar-border">
         <form class="search-bar" onsubmit="return redirectSearch()">
@@ -40,16 +45,13 @@
       </div>
     </div>
 
-    <!-- RIGHT: LEGAL LINK -->
     <a href="legal.html" class="legal-link-header">Legal & Policies</a>
 
   </div>
 </header>
 
-<!-- ⭐ Page Wrapper -->
 <div class="page-wrapper">
 
-  <!-- MAIN IMAGE -->
   <main>
 
     <div class="image-section">
@@ -65,12 +67,10 @@
       </div>
     </div>
 
-    <!-- Keywords -->
     <div class="keywords" id="keywords"></div>
 
 </div>
 
-<!-- ⭐ RELATED IMAGES -->
 <div class="related-section">
   <h2>Related Images</h2>
   <div id="related-images"></div>
@@ -95,7 +95,6 @@
 <script>
 const API_BASE = "https://api.pixeora.com";
 
-// SEARCH REDIRECT
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
@@ -105,7 +104,6 @@ function redirectSearch() {
 const params = new URLSearchParams(window.location.search);
 const imageId = params.get("id");
 
-// ⭐ LOAD MAIN IMAGE DETAILS
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/id/${imageId}`);
@@ -116,7 +114,6 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    // ⭐ FIXED — CORRECT CDN URL
     const displayUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     document.getElementById("download-image").src = displayUrl;
@@ -127,7 +124,6 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    // TAGS
     document.getElementById("keywords").innerHTML =
       (img.tags || [])
         .map(t => `<span onclick="window.location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
@@ -136,6 +132,25 @@ async function loadImageDetails() {
     const category = img.category || (img.tags ? img.tags[0] : "");
     if (category) loadRelated(category);
 
+    /* ⭐⭐⭐ DYNAMIC SEO UPDATE ⭐⭐⭐ */
+    const seoTitle = `${img.title} | Free HD Image Download - Pixeora`;
+    const seoDescription = img.description || `Download ${img.title} in high quality for free.`;
+    const seoKeywords = (img.keywords || img.tags || []).join(", ");
+    const seoImage = displayUrl;
+    const canonicalUrl = `https://pixeora.com/download.html?id=${img._id}`;
+
+    document.getElementById("seo-title").textContent = seoTitle;
+    document.getElementById("seo-desc").setAttribute("content", seoDescription);
+    document.getElementById("seo-keywords").setAttribute("content", seoKeywords);
+
+    document.getElementById("og-title").setAttribute("content", seoTitle);
+    document.getElementById("og-desc").setAttribute("content", seoDescription);
+    document.getElementById("og-image").setAttribute("content", seoImage);
+
+    document.getElementById("canonical-link").setAttribute("href", canonicalUrl);
+
+    document.getElementById("download-image").setAttribute("alt", img.alt || img.title);
+
   } catch (e) {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
@@ -143,7 +158,6 @@ async function loadImageDetails() {
 
 let relatedCount = 0;
 
-// ⭐ LOAD RELATED IMAGES
 async function loadRelated(keyword) {
   try {
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
@@ -157,8 +171,6 @@ async function loadRelated(keyword) {
       relatedCount++;
 
       const fileToShow = img.thumbnailFileName || img.fileName;
-
-      // ⭐ FIXED — NO CLOUDFLARE IMAGE OPTIMIZE LAYER
       const thumbUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
       const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
@@ -175,7 +187,6 @@ async function loadRelated(keyword) {
   } catch (e) {}
 }
 
-// ⭐ IMAGE INFO MODAL
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
@@ -214,7 +225,8 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
-
 loadImageDetails();
 </script>
-  
+
+</body>
+</html>

@@ -144,7 +144,7 @@ async function loadSearchImages(q) {
       const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
-        <a href="photo.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
+        <a href="download.html?id=${encodeURIComponent(img._id)}" title="${safeName}">
           <img src="${PLACEHOLDER_SRC}" data-src="${fileUrl}" class="lazy-img" alt="${safeName}">
         </a>
         <span class="download-icon"
@@ -179,7 +179,7 @@ async function loadRelatedImages(keyword) {
 
       relatedContainer.innerHTML += `
         <div class="related-item">
-          <a href="photo.html?id=${img._id}">
+          <a href="download.html?id=${img._id}">
             <img src="${PLACEHOLDER_SRC}" data-src="${fileUrl}" class="lazy-img">
           </a>
           <span class="download-overlay" onclick="window.location.href='${dlUrl}'"></span>

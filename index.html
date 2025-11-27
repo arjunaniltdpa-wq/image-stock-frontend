@@ -141,7 +141,7 @@ function createImageDiv(img) {
   const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
   div.innerHTML = `
-    <a href="photo.html?id=${encodeURIComponent(img._id)}">
+    <a href="download.html?id=${encodeURIComponent(img._id)}">
       <img data-src="${fileUrl}" class="lazy-img" alt="">
     </a>
     <span class="download-overlay" onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
