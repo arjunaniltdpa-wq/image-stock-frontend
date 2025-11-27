@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Dynamic SEO (filled by JS) -->
+  <title id="seo-title">Pixeora Photo</title>
+  <meta name="description" id="seo-description" content="">
+  <link rel="canonical" id="canonical-link" href="">
+
+  <link rel="stylesheet" href="css/photo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="photo-header">
+  <a href="index.html" class="logo">Pixeora</a>
+</header>
+
+
+<!-- MAIN IMAGE SECTION -->
+<section class="photo-view">
+  <div class="image-wrapper">
+    <img id="main-photo" alt="">
+  </div>
+
+  <button id="download-btn">Download</button>
+
+  <div class="tags" id="tags"></div>
+</section>
+
+
+<!-- RELATED -->
+<section class="related-section">
+  <h2>Related Images</h2>
+  <div class="related-grid" id="related-grid"></div>
+</section>
+
+
+<script>
+const API_BASE = "https://api.pixeora.com";
+
+// Read ID from URL
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if (!id) {
+  document.body.innerHTML = "<h2>Invalid Image</h2>";
+  throw new Error("No ID");
+}
+
+loadImageDetails(id);
+
+// ---------------------------
+// Load Main Image
+// ---------------------------
+async function loadImageDetails(id) {
+  const res = await fetch(`${API_BASE}/api/images/${id}`);
+  const img = await res.json();
+
+  // Set Image
+  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+  document.getElementById("main-photo").src = fileUrl;
+  document.getElementById("main-photo").alt = img.alt;
+
+  // Set SEO
+  document.getElementById("seo-title").innerText = img.title + " | Pixeora";
+  document.getElementById("seo-description").content = img.description;
+  document.getElementById("canonical-link").href = 
+    `https://pixeora.com/photo.html?id=${img._id}`;
+
+  // Download Button
+  document.getElementById("download-btn").onclick = () =>
+    window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
+
+  // Tags
+  const tagsDiv = document.getElementById("tags");
+  img.tags.forEach(t => {
+    const span = document.createElement("span");
+    span.classList.add("tag");
+    span.innerText = t;
+    tagsDiv.appendChild(span);
+  });
+
+  // Load related images by category
+  loadRelated(img.category, img._id);
+}
+
+
+// ---------------------------
+// Load Related Images
+// ---------------------------
+async function loadRelated(category, excludeId) {
+  const res = await fetch(`${API_BASE}/api/images/category/${encodeURIComponent(category)}?limit=20`);
+  let images = await res.json();
+
+  const container = document.getElementById("related-grid");
+  container.innerHTML = "";
+
+  images
+    .filter(im => im._id !== excludeId)
+    .forEach(img => {
+      const div = document.createElement("div");
+      div.classList.add("related-item");
+
+      const thumb = img.thumbnailFileName || img.fileName;
+      const url = `https://cdn.pixeora.com/${encodeURIComponent(thumb)}`;
+
+      div.innerHTML = `
+        <a href="photo.html?id=${img._id}">
+          <img src="${url}" alt="">
+        </a>
+      `;
+
+      container.appendChild(div);
+    });
+}
+</script>
+
+</body>
+</html>

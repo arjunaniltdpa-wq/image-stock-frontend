@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+}
+
+.photo-header {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo {
+  font-family: 'Marck Script', cursive;
+  font-size: 40px;
+  color: black;
+  text-decoration: none;
+}
+
+.photo-view {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.image-wrapper {
+  width: 100%;
+  text-align: center;
+}
+
+#main-photo {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+#download-btn {
+  margin-top: 15px;
+  background: black;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tags {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background: #f0f0f0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.related-section {
+  margin-top: 50px;
+  padding: 0 20px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.related-grid {
+  column-count: 4;
+  column-gap: 16px;
+}
+
+.related-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+.related-item img {
+  width: 100%;
+  border-radius: 8px;
+}
