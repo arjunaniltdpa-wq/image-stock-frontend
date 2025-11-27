@@ -762,6 +762,16 @@ html, body {
     transform: translateX(-50%) !important;
     max-width: 95% !important;
 }
-  
+
+/* FORCE MOBILE = 1 COLUMN */
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 1 !important;
+  }
+  #related-images {
+    column-count: 1 !important;
+  }
+}
+
 
   
