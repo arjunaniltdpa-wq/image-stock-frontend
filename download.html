@@ -94,7 +94,6 @@
     </ul>
   </div>
 </div>
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 
@@ -104,10 +103,13 @@ function redirectSearch() {
   return false;
 }
 
+/* ---------------------------------------------------
+   GET FULL CLEAN URL SLUG
+--------------------------------------------------- */
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
 
 /* ---------------------------------------------------
-   LOAD IMAGE DETAILS
+   LOAD IMAGE DETAILS + SKELETON + FADE ANIMATION
 --------------------------------------------------- */
 async function loadImageDetails() {
   try {
@@ -121,10 +123,9 @@ async function loadImageDetails() {
     const img = await res.json();
 
     const displayUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
-
     const mainImg = document.getElementById("download-image");
 
-    /* ⭐ Apply fade animation once loaded */
+    /* ⭐ Fade + unblur on load */
     mainImg.onload = () => {
       document.getElementById("main-skeleton").style.display = "none";
       mainImg.classList.add("image-loaded");
@@ -132,81 +133,104 @@ async function loadImageDetails() {
 
     mainImg.src = displayUrl;
 
-    document.getElementById("image-name").textContent = img.title || img.fileName;
+    document.getElementById("image-name").textContent =
+      img.title || img.fileName;
+
     document.getElementById("download-link").href =
       `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
     window.__originalFileName = img.fileName;
 
+    /* TAGS */
     document.getElementById("keywords").innerHTML =
       (img.tags || [])
-        .map(t => `<span onclick="window.location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
+        .map(
+          (t) =>
+            `<span onclick="window.location.href='search.html?query=${encodeURIComponent(
+              t
+            )}'">${t}</span>`
+        )
         .join("");
 
     const category = img.category || (img.tags ? img.tags[0] : "");
     if (category) loadRelated(category);
 
-    /* SEO Update */
+    /* ⭐⭐⭐ SEO UPDATE ⭐⭐⭐ */
     const seoTitle = `${img.title} | Free HD Image Download - Pixeora`;
-    const seoDescription = img.description || `Download ${img.title} in high quality for free.`;
+    const seoDescription =
+      img.description || `Download ${img.title} in high quality for free.`;
     const seoKeywords = (img.keywords || img.tags || []).join(", ");
     const seoImage = displayUrl;
     const canonicalUrl = `https://pixeora.com/photo/${img.slug}-${img._id}`;
 
     document.getElementById("seo-title").textContent = seoTitle;
-    document.getElementById("seo-desc").setAttribute("content", seoDescription);
-    document.getElementById("seo-keywords").setAttribute("content", seoKeywords);
+    document
+      .getElementById("seo-desc")
+      .setAttribute("content", seoDescription);
+    document
+      .getElementById("seo-keywords")
+      .setAttribute("content", seoKeywords);
 
     document.getElementById("og-title").setAttribute("content", seoTitle);
     document.getElementById("og-desc").setAttribute("content", seoDescription);
     document.getElementById("og-image").setAttribute("content", seoImage);
 
-    document.getElementById("canonical-link").setAttribute("href", canonicalUrl);
+    document
+      .getElementById("canonical-link")
+      .setAttribute("href", canonicalUrl);
 
-    document.getElementById("download-image").setAttribute("alt", img.alt || img.title);
-
+    mainImg.setAttribute("alt", img.alt || img.title);
   } catch (e) {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
 
 /* ---------------------------------------------------
-   RELATED IMAGES WITH SKELETON
+   RELATED IMAGES + SKELETON + FADE-IN
 --------------------------------------------------- */
 async function loadRelated(keyword) {
   try {
-    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`)
+    const res = await fetch(
+      `${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`
+    );
     const json = await res.json();
 
     let images = Array.isArray(json) ? json : json.images || [];
     const related = document.getElementById("related-images");
     related.innerHTML = "";
 
-    images.slice(0, 50).forEach(img => {
-      const div = document.createElement("div");
-      div.classList.add("related-item");
-
+    images.slice(0, 50).forEach((img) => {
       const fileToShow = img.thumbnailFileName || img.fileName;
       const thumbUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
+      const div = document.createElement("div");
+      div.classList.add("related-item");
+
       div.innerHTML = `
-        <div class="skeleton related-skeleton"></div>
-        <a href="/photo/${img.slug}-${img._id}">
-          <img src="${thumbUrl}" loading="lazy" class="image-load"
-               onload="this.previousElementSibling.style.display='none'; this.classList.add('image-loaded');">
-        </a>
-        <span class="download-overlay"
-          onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'"></span>
+        <div class="related-wrapper">
+          <div class="skeleton related-skeleton"></div>
+          <a href="/photo/${img.slug}-${img._id}">
+            <img 
+              src="${thumbUrl}" 
+              loading="lazy" 
+              class="image-load"
+              onload="this.previousElementSibling.style.display='none'; this.classList.add('image-loaded');"
+            >
+          </a>
+          <span class="download-overlay"
+            onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(
+        img.fileName
+      )}'"></span>
+        </div>
       `;
 
       related.appendChild(div);
     });
-
   } catch (e) {}
 }
 
 /* ---------------------------------------------------
-   INFO MODAL (unchanged)
+   INFO MODAL
 --------------------------------------------------- */
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
@@ -215,7 +239,9 @@ const closeBtn = document.querySelector(".close-btn");
 infoBtn.onclick = async () => {
   modal.classList.add("active");
 
-  const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(window.__originalFileName)}`;
+  const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(
+    window.__originalFileName
+  )}`;
   document.getElementById("info-name").textContent =
     document.getElementById("image-name").textContent;
 
@@ -224,18 +250,19 @@ infoBtn.onclick = async () => {
     tmp.src = originalUrl;
     await tmp.decode();
 
-    document.getElementById("info-dimensions").textContent =
-      `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
+    document.getElementById(
+      "info-dimensions"
+    ).textContent = `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
 
     const head = await fetch(originalUrl, { method: "HEAD" });
     const size = head.headers.get("content-length");
 
-    document.getElementById("info-size").textContent =
-      size ? (size / (1024 * 1024)).toFixed(2) + " MB" : "Unknown";
+    document.getElementById("info-size").textContent = size
+      ? (size / (1024 * 1024)).toFixed(2) + " MB"
+      : "Unknown";
 
     const ext = originalUrl.split(".").pop().split("?")[0].toUpperCase();
     document.getElementById("info-format").textContent = ext;
-
   } catch (e) {
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
@@ -244,10 +271,9 @@ infoBtn.onclick = async () => {
 };
 
 closeBtn.onclick = () => modal.classList.remove("active");
-window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
+window.onclick = (e) => {
+  if (e.target === modal) modal.classList.remove("active");
+};
 
 loadImageDetails();
 </script>
-
-</body>
-</html>

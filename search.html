@@ -71,11 +71,14 @@ const PLACEHOLDER_SRC = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
 
 let lazyObserver = null;
 
-/* LAZY LOADING OBSERVER */
+/* ======================================================
+   LAZY LOADING + SKELETON
+====================================================== */
 function initLazyObserver() {
   if (!("IntersectionObserver" in window)) {
     document.querySelectorAll("img.lazy-img[data-src]").forEach(img => {
       img.src = img.dataset.src;
+      img.classList.add("image-loaded");
       img.removeAttribute("data-src");
     });
     return;
@@ -95,12 +98,13 @@ function initLazyObserver() {
 
         img.onload = () => {
           img.classList.add("image-loaded");
-          const skeleton = img.parentNode.parentNode.querySelector(".skeleton");
+          const skeleton = img.closest(".img-wrapper").querySelector(".skeleton");
           if (skeleton) skeleton.remove();
         };
 
         img.removeAttribute("data-src");
       }
+
       observer.unobserve(img);
     });
   }, { rootMargin: "200px 0px" });
@@ -109,32 +113,42 @@ function initLazyObserver() {
 function registerLazyImages(scope) {
   initLazyObserver();
   if (!lazyObserver) return;
+
   const imgs = scope.querySelectorAll("img.lazy-img[data-src]");
   imgs.forEach(img => lazyObserver.observe(img));
 }
 
-/* INITIAL QUERY LOAD */
+/* ======================================================
+   INITIAL QUERY LOAD
+====================================================== */
 if (query) {
   keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
   loadSearchImages(query);
 }
 
-/* SEARCH REDIRECT */
+/* ======================================================
+   SEARCH REDIRECT
+====================================================== */
 function redirectSearch() {
   const q = document.getElementById('searchInput').value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
+/* ======================================================
+   DOWNLOAD HANDLER
+====================================================== */
 function downloadImage(rawName) {
   if (!rawName) return;
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
-/* LOAD SEARCH RESULTS */
+/* ======================================================
+   LOAD SEARCH RESULTS (FIXED)
+====================================================== */
 async function loadSearchImages(q) {
   try {
-    const res = await fetch(`${API_BASE}/api/popular?page=${page}&limit=${limit}`)
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
     const images = await res.json();
 
     imageCountDiv.textContent = `${images.length} Images`;
@@ -158,10 +172,10 @@ async function loadSearchImages(q) {
         <div class="img-wrapper">
           <div class="skeleton"></div>
           <a href="/photo/${img.slug}-${img._id}" title="${safeName}">
-            <img 
-              src="${PLACEHOLDER_SRC}" 
-              data-src="${fileUrl}" 
-              class="lazy-img image-load" 
+            <img
+              src="${PLACEHOLDER_SRC}"
+              data-src="${fileUrl}"
+              class="lazy-img image-load"
               alt="${safeName}">
           </a>
         </div>
@@ -181,12 +195,14 @@ async function loadSearchImages(q) {
   }
 }
 
-/* LOAD RELATED IMAGES */
+/* ======================================================
+   LOAD RELATED IMAGES
+====================================================== */
 async function loadRelatedImages(keyword) {
   try {
     relatedSection.style.display = "block";
 
-    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`)
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
     const images = await res.json();
 
     relatedContainer.innerHTML = "";
@@ -201,9 +217,9 @@ async function loadRelatedImages(keyword) {
           <div class="img-wrapper">
             <div class="skeleton"></div>
             <a href="/photo/${img.slug}-${img._id}">
-              <img 
-                src="${PLACEHOLDER_SRC}" 
-                data-src="${fileUrl}" 
+              <img
+                src="${PLACEHOLDER_SRC}"
+                data-src="${fileUrl}"
                 class="lazy-img image-load">
             </a>
           </div>
@@ -217,6 +233,3 @@ async function loadRelatedImages(keyword) {
   } catch (e) {}
 }
 </script>
-
-</body>
-</html>
