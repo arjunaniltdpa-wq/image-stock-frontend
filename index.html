@@ -141,7 +141,10 @@ function createImageDiv(img) {
     <div class="image-wrapper">
       <div class="skeleton"></div>
       <a href="/photo/${img.slug}-${img._id}">
-        <img data-src="${fileUrl}" class="lazy-img image-load" alt="">
+        <img 
+          data-src="${fileUrl}" 
+          class="lazy-img image-load" 
+          alt="">
       </a>
       <span class="download-overlay" onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
     </div>
@@ -151,15 +154,16 @@ function createImageDiv(img) {
 }
 
 /* ============================================================
-   LOAD IMAGES
+   LOAD IMAGES  (FIXED: await fetch)
 ============================================================ */
 async function loadImages() {
   if (loading) return;
   loading = true;
 
   try {
-    const res = fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`)
+    const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
     const data = await res.json();
+
     const images = data.images || [];
     if (images.length === 0) return;
 
@@ -169,6 +173,8 @@ async function loadImages() {
     lazyLoadInit();
     applyImageLoadAnimation();
 
+  } catch (err) {
+    console.error("Error loading images:", err);
   } finally {
     loading = false;
   }
@@ -185,6 +191,13 @@ function lazyLoadInit() {
         const img = entry.target;
         img.src = img.dataset.src;
         img.classList.remove("lazy-img");
+        
+        img.onload = () => {
+          img.classList.add("image-loaded");
+          const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
+        };
+
         obs.unobserve(img);
       }
     });
@@ -194,15 +207,14 @@ function lazyLoadInit() {
 }
 
 /* ============================================================
-   PREMIUM IMAGE LOAD EFFECT
+   PREMIUM FADE-IN + REMOVE SKELETON
 ============================================================ */
 function applyImageLoadAnimation() {
   document.querySelectorAll(".image-load").forEach(img => {
     img.onload = () => {
       img.classList.add("image-loaded");
-
-      const skeleton = img.parentNode.parentNode.querySelector(".skeleton");
-      if (skeleton) skeleton.style.display = "none";
+      const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+      if (skeleton) skeleton.remove();
     };
   });
 }
@@ -220,7 +232,9 @@ window.addEventListener("scroll", onScroll);
 /* INITIAL LOAD */
 loadImages();
 
-/* SEARCH REDIRECT */
+/* ============================================================
+   SEARCH REDIRECT
+============================================================ */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", (e) => {
   e.preventDefault();
   const q = document.getElementById("searchInput").value.trim();
@@ -268,6 +282,3 @@ input.addEventListener("input", () => {
   }, 200);
 });
 </script>
-
-</body>
-</html>
