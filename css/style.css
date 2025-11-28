@@ -473,3 +473,77 @@ transform: scale(1.1);
   }
 }
 
+/* Dark Glass Skeleton — premium glassy + glossy shine */
+.skeleton {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.02) 0%,
+    rgba(255,255,255,0.03) 50%,
+    rgba(255,255,255,0.02) 100%);
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+.skeleton::after{
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.02),
+    rgba(255,255,255,0.09),
+    rgba(255,255,255,0.02));
+  transform: rotate(25deg);
+  animation: glass-shine 1.6s linear infinite;
+  mix-blend-mode: overlay;
+}
+
+@keyframes glass-shine {
+  0% { transform: translateX(-60%) rotate(25deg); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateX(60%) rotate(25deg); opacity: 0; }
+}
+
+
+/* 💡 FIX: Natural image height – no padding ratio */
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  min-height: 180px; /* prevents zero height before image loads */
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;      /* THIS FIXES CROPPING */
+  display: block;
+}
+
+
+/* Fade-in + blur remove */
+.image-load {
+  opacity: 0;
+  filter: blur(12px);
+  transform: scale(0.985);
+  transition:
+    opacity .45s ease,
+    filter .55s ease,
+    transform .45s ease;
+}
+
+.image-loaded {
+  opacity: 1 !important;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* Optional staggered feel */
+.image-item:nth-child(odd) .image-load { transition-delay: 60ms; }
+.image-item:nth-child(even) .image-load { transition-delay: 120ms; }
