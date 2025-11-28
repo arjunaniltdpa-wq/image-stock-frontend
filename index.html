@@ -120,48 +120,35 @@ const API_BASE = "https://api.pixeora.com";
 let page = 1;
 let loading = false;
 const limit = 20;
-
-/* Get masonry columns */
-const masonry = document.getElementById("masonry");
-const cols = Array.from(document.querySelectorAll(".masonry-col"));
-
-let colIndex = 0; // for cycling columns (pexels style)
+const container = document.getElementById("image-container");
 
 function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
-/* CREATE CARD */
-function createImageCard(img) {
+/* CREATE IMAGE CARD */
+function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const file = img.thumbnailFileName || img.fileName;
-  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName || img.fileName)}`;
 
   div.innerHTML = `
     <div class="image-wrapper">
       <div class="skeleton"></div>
       <a href="/photo/${img.slug}-${img._id}">
         <img 
-          data-src="${url}" 
+          data-src="${fileUrl}" 
           class="lazy-img image-load"
           alt=""
         >
       </a>
     </div>
   `;
-
-  return div;
+  container.appendChild(div);
 }
 
-/* ADD CARD IN PEXELS ORDER: 1-2-3-4, 5-6-7-8 ... */
-function addToNextColumn(card) {
-  cols[colIndex].appendChild(card);
-  colIndex = (colIndex + 1) % cols.length; // move to next column
-}
-
-/* LOAD IMAGES */
+/* LOAD IMAGES — FIXED (added await) */
 async function loadImages() {
   if (loading) return;
   loading = true;
@@ -169,19 +156,17 @@ async function loadImages() {
   try {
     const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
     const data = await res.json();
+
     const images = data.images || [];
 
-    images.forEach(img => {
-      const card = createImageCard(img);
-      addToNextColumn(card);
-    });
-
+    images.forEach(img => createImageDiv(img));
     page++;
+
     lazyLoadInit();
     applyImageLoadAnimation();
 
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error("IMAGE LOAD ERROR:", err);
   }
 
   loading = false;
@@ -193,30 +178,32 @@ function lazyLoadInit() {
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
 
-      const img = entry.target;
-      img.src = img.dataset.src;
+        img.onload = () => {
+          img.classList.add("image-loaded");
 
-      img.onload = () => {
-        img.classList.add("image-loaded");
-        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (skeleton) skeleton.remove();
-      };
+          const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
+        };
 
-      img.classList.remove("lazy-img");
-      obs.unobserve(img);
+        img.classList.remove("lazy-img");
+        obs.unobserve(img);
+      }
     });
   });
 
   lazyImages.forEach(img => observer.observe(img));
 }
 
-/* FADE-IN */
+/* PREMIUM FADE-IN */
 function applyImageLoadAnimation() {
   document.querySelectorAll(".image-load").forEach(img => {
     img.onload = () => {
       img.classList.add("image-loaded");
+
       const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
       if (skeleton) skeleton.remove();
     };
@@ -225,42 +212,40 @@ function applyImageLoadAnimation() {
 
 /* INFINITE SCROLL */
 function onScroll() {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
     loadImages();
   }
 }
 window.addEventListener("scroll", onScroll);
 
-/* INITIAL */
+/* INITIAL LOAD */
 loadImages();
 
-/* SEARCH */
+/* SEARCH EVENT */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
   e.preventDefault();
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
 });
 
-/* SUGGESTIONS */
+/* SEARCH SUGGESTIONS */
 const input = document.getElementById("searchInput");
 const suggestionBox = document.createElement("div");
 suggestionBox.id = "suggestionBox";
-Object.assign(suggestionBox.style, {
-  position: "absolute",
-  background: "white",
-  width: "100%",
-  zIndex: "2000",
-  borderRadius: "6px",
-  boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
-});
+suggestionBox.style.position = "absolute";
+suggestionBox.style.background = "white";
+suggestionBox.style.width = "100%";
+suggestionBox.style.zIndex = "2000";
+suggestionBox.style.borderRadius = "6px";
+suggestionBox.style.boxShadow = "0 3px 10px rgba(0,0,0,0.2)";
 input.parentNode.appendChild(suggestionBox);
 
 let suggestTimer;
 
 input.addEventListener("input", () => {
   clearTimeout(suggestTimer);
-  const q = input.value.trim();
 
+  const q = input.value.trim();
   if (q.length < 2) {
     suggestionBox.innerHTML = "";
     return;
@@ -282,4 +267,61 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
+
+const masonry = document.getElementById("masonry");
+let cols = Array.from(masonry.children);
+
+function createImageCard(img) {
+  const card = document.createElement('div');
+  card.classList.add('image-card');
+
+  const fileToShow = img.thumbnailFileName || img.fileName;
+  const url = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
+  card.innerHTML = `
+    <div class="skeleton"></div>
+    <img 
+      data-src="${url}" 
+      class="lazy-img image-load" 
+      alt=""
+    >
+  `;
+
+  return card;
+}
+
+function addToShortestColumn(card) {
+  let shortest = cols[0];
+
+  cols.forEach(col => {
+    if (col.scrollHeight < shortest.scrollHeight) {
+      shortest = col;
+    }
+  });
+
+  shortest.appendChild(card);
+}
+
+async function loadImages() {
+  const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
+  const data = await res.json();
+  const images = data.images || [];
+
+  images.forEach(img => {
+    const card = createImageCard(img);
+    addToShortestColumn(card);
+
+    const lazyImg = card.querySelector("img");
+
+    lazyImg.onload = () => {
+      card.querySelector(".skeleton").remove();
+      lazyImg.classList.add("image-loaded");
+    };
+
+    lazyImg.src = lazyImg.dataset.src;
+  });
+
+  page++;
+}
+
 </script>
