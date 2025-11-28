@@ -12,7 +12,6 @@
   <meta property="og:title" content="Pixeora - Free Stock Images Search">
   <meta property="og:description" content="Explore free HD wallpapers and images for any category.">
   <meta property="og:type" content="website">
-
 </head>
 <body>
 
@@ -36,7 +35,6 @@
     <a href="legal.html" class="legal-link-header">Legal & Policies</a>
   </div>
 </header>
-
 
 <!-- Search Info -->
 <div class="search-info">
@@ -73,6 +71,7 @@ const PLACEHOLDER_SRC = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
 
 let lazyObserver = null;
 
+/* LAZY LOADING OBSERVER */
 function initLazyObserver() {
   if (!("IntersectionObserver" in window)) {
     document.querySelectorAll("img.lazy-img[data-src]").forEach(img => {
@@ -87,10 +86,19 @@ function initLazyObserver() {
   lazyObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
+
       const img = entry.target;
       const realSrc = img.dataset.src;
+
       if (realSrc) {
         img.src = realSrc;
+
+        img.onload = () => {
+          img.classList.add("image-loaded");
+          const skeleton = img.parentNode.parentNode.querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
+        };
+
         img.removeAttribute("data-src");
       }
       observer.unobserve(img);
@@ -105,11 +113,13 @@ function registerLazyImages(scope) {
   imgs.forEach(img => lazyObserver.observe(img));
 }
 
+/* INITIAL QUERY LOAD */
 if (query) {
   keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
   loadSearchImages(query);
 }
 
+/* SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById('searchInput').value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
@@ -121,6 +131,7 @@ function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
+/* LOAD SEARCH RESULTS */
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
@@ -144,9 +155,16 @@ async function loadSearchImages(q) {
       const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
 
       div.innerHTML = `
-        <a href="/photo/${img.slug}-${img._id}" title="${safeName}">
-          <img src="${PLACEHOLDER_SRC}" data-src="${fileUrl}" class="lazy-img" alt="${safeName}">
-        </a>
+        <div class="img-wrapper">
+          <div class="skeleton"></div>
+          <a href="/photo/${img.slug}-${img._id}" title="${safeName}">
+            <img 
+              src="${PLACEHOLDER_SRC}" 
+              data-src="${fileUrl}" 
+              class="lazy-img image-load" 
+              alt="${safeName}">
+          </a>
+        </div>
         <span class="download-icon"
           onclick="downloadImage('${(img.fileName || "").replace(/'/g, "\\'")}')">
           <img src="images/download-icon.png" alt="Download">
@@ -163,6 +181,7 @@ async function loadSearchImages(q) {
   }
 }
 
+/* LOAD RELATED IMAGES */
 async function loadRelatedImages(keyword) {
   try {
     relatedSection.style.display = "block";
@@ -179,9 +198,15 @@ async function loadRelatedImages(keyword) {
 
       relatedContainer.innerHTML += `
         <div class="related-item">
-          <a href="/photo/${img.slug}-${img._id}">
-            <img src="${PLACEHOLDER_SRC}" data-src="${fileUrl}" class="lazy-img">
-          </a>
+          <div class="img-wrapper">
+            <div class="skeleton"></div>
+            <a href="/photo/${img.slug}-${img._id}">
+              <img 
+                src="${PLACEHOLDER_SRC}" 
+                data-src="${fileUrl}" 
+                class="lazy-img image-load">
+            </a>
+          </div>
           <span class="download-overlay" onclick="window.location.href='${dlUrl}'"></span>
         </div>
       `;

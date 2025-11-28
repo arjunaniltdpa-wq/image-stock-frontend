@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- ⭐⭐ FIXED: Must be absolute path -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/css/download.css">
 
 </head>
@@ -32,24 +32,19 @@
 <header class="header">
   <div class="header-overlay">
 
-    <!-- ⭐⭐ FIXED -->
     <a href="/index.html" class="logo">Pixeora</a>
 
     <div class="search-bar-wrapper">
       <div class="search-bar-border">
         <form class="search-bar" onsubmit="return redirectSearch()">
           <input type="text" id="searchInput" placeholder="Search Image" required>
-
-          <!-- ⭐⭐ FIXED -->
           <button type="submit" class="search-icon">
             <img src="/images/search-icon.png" alt="Search" loading="lazy">
           </button>
-
         </form>
       </div>
     </div>
 
-    <!-- ⭐⭐ FIXED -->
     <a href="/legal.html" class="legal-link-header">Legal & Policies</a>
 
   </div>
@@ -60,7 +55,11 @@
   <main>
 
     <div class="image-section">
-      <img id="download-image" src="" alt="Selected Image" loading="lazy">
+
+      <!-- ⭐ Skeleton before image loads -->
+      <div id="main-skeleton" class="skeleton"></div>
+
+      <img id="download-image" src="" alt="Selected Image" loading="lazy" class="image-load">
       <h2 id="image-name">Loading...</h2>
 
       <div class="image-actions">
@@ -95,6 +94,7 @@
     </ul>
   </div>
 </div>
+
 <script>
 const API_BASE = "https://api.pixeora.com";
 
@@ -104,25 +104,13 @@ function redirectSearch() {
   return false;
 }
 
-/* ---------------------------------------------------
-   ⭐ FIXED CLEAN URL SLUG PARSING
-   URL format: /photo/slug-here-ObjectID
---------------------------------------------------- */
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
-
-// extract ID (last part after final "-")
-const id = fullSlug.split("-").pop();
-
-// extract slug (remove "-id" from end)
-const slug = fullSlug.replace("-" + id, "").trim();
 
 /* ---------------------------------------------------
    LOAD IMAGE DETAILS
 --------------------------------------------------- */
 async function loadImageDetails() {
   try {
-
-    /* ⭐⭐⭐ IMPORTANT FIX — use fullSlug instead of slug */
     const res = await fetch(`${API_BASE}/api/images/slug/${fullSlug}`);
 
     if (!res.ok) {
@@ -134,9 +122,17 @@ async function loadImageDetails() {
 
     const displayUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
-    document.getElementById("download-image").src = displayUrl;
-    document.getElementById("image-name").textContent = img.title || img.fileName;
+    const mainImg = document.getElementById("download-image");
 
+    /* ⭐ Apply fade animation once loaded */
+    mainImg.onload = () => {
+      document.getElementById("main-skeleton").style.display = "none";
+      mainImg.classList.add("image-loaded");
+    };
+
+    mainImg.src = displayUrl;
+
+    document.getElementById("image-name").textContent = img.title || img.fileName;
     document.getElementById("download-link").href =
       `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
@@ -150,7 +146,7 @@ async function loadImageDetails() {
     const category = img.category || (img.tags ? img.tags[0] : "");
     if (category) loadRelated(category);
 
-    /* ⭐⭐⭐ DYNAMIC SEO UPDATE ⭐⭐⭐ */
+    /* SEO Update */
     const seoTitle = `${img.title} | Free HD Image Download - Pixeora`;
     const seoDescription = img.description || `Download ${img.title} in high quality for free.`;
     const seoKeywords = (img.keywords || img.tags || []).join(", ");
@@ -175,10 +171,8 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------------------------
-   RELATED IMAGES
+   RELATED IMAGES WITH SKELETON
 --------------------------------------------------- */
-let relatedCount = 0;
-
 async function loadRelated(keyword) {
   try {
     const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
@@ -189,27 +183,30 @@ async function loadRelated(keyword) {
     related.innerHTML = "";
 
     images.slice(0, 50).forEach(img => {
-      relatedCount++;
+      const div = document.createElement("div");
+      div.classList.add("related-item");
 
       const fileToShow = img.thumbnailFileName || img.fileName;
       const thumbUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-      const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
-      related.innerHTML += `
-        <div class="related-item">
-          <a href="/photo/${img.slug}-${img._id}">
-            <img src="${thumbUrl}" loading="lazy">
-          </a>
-          <span class="download-overlay"
-            onclick="window.location.href='${dlUrl}'"></span>
-        </div>`;
+      div.innerHTML = `
+        <div class="skeleton related-skeleton"></div>
+        <a href="/photo/${img.slug}-${img._id}">
+          <img src="${thumbUrl}" loading="lazy" class="image-load"
+               onload="this.previousElementSibling.style.display='none'; this.classList.add('image-loaded');">
+        </a>
+        <span class="download-overlay"
+          onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'"></span>
+      `;
+
+      related.appendChild(div);
     });
 
   } catch (e) {}
 }
 
 /* ---------------------------------------------------
-   INFO MODAL
+   INFO MODAL (unchanged)
 --------------------------------------------------- */
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
@@ -249,8 +246,8 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 
-/* ---------------------------------------------------
-   START LOADING
---------------------------------------------------- */
 loadImageDetails();
 </script>
+
+</body>
+</html>
