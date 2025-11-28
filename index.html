@@ -114,40 +114,35 @@
       
   </section>
 
-</main>
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
 let loading = false;
 const limit = 20;
-
-// Instead of #image-container, we build REAL masonry columns like Pexels
 const container = document.getElementById("image-container");
 
-// CREATE 4 COLUMNS (like Pexels)
-let columns = [];
+/* ---- CREATE COLUMNS (Pexels layout) ---- */
+function createColumns() {
+  const numCols = getComputedStyle(container).columnCount;
+  container.innerHTML = "";
 
-function setupColumns() {
-  if (columns.length) return;
-
-  const colCount = window.innerWidth > 1200 ? 4 :
-                   window.innerWidth > 900 ? 3 :
-                   window.innerWidth > 600 ? 2 : 1;
-
-  for (let i = 0; i < colCount; i++) {
+  const cols = [];
+  for (let i = 0; i < numCols; i++) {
     const col = document.createElement("div");
-    col.className = "masonry-col";
-    col.style.width = (100 / colCount) + "%";
-    col.style.float = "left";
-    col.style.padding = "0 10px";
-    columns.push(col);
+    col.classList.add("masonry-col");
     container.appendChild(col);
+    cols.push(col);
   }
+  return cols;
 }
 
-setupColumns();
+let columns = createColumns();
 
-/* CREATE IMAGE CARD */
+window.addEventListener("resize", () => {
+  columns = createColumns();
+});
+
+/* ---- CREATE IMAGE CARD ---- */
 function createImageCard(img) {
   const card = document.createElement("div");
   card.classList.add("image-item");
@@ -158,29 +153,28 @@ function createImageCard(img) {
     <div class="image-wrapper">
       <div class="skeleton"></div>
       <a href="/photo/${img.slug}-${img._id}">
-        <img 
-          data-src="${fileUrl}" 
-          class="lazy-img image-load"
-          alt=""
-        >
+        <img data-src="${fileUrl}" class="lazy-img image-load" alt="">
       </a>
     </div>
   `;
+
   return card;
 }
 
-/* Add to shortest column (Pexels logic) */
+/* ---- PLACE INTO SHORTEST COLUMN ---- */
 function addToShortestColumn(card) {
   let shortest = columns[0];
 
   columns.forEach(col => {
-    if (col.scrollHeight < shortest.scrollHeight) shortest = col;
+    if (col.scrollHeight < shortest.scrollHeight) {
+      shortest = col;
+    }
   });
 
   shortest.appendChild(card);
 }
 
-/* LOAD IMAGES */
+/* ---- LOAD IMAGES ---- */
 async function loadImages() {
   if (loading) return;
   loading = true;
@@ -195,15 +189,18 @@ async function loadImages() {
       addToShortestColumn(card);
 
       const lazyImg = card.querySelector("img");
+
       lazyImg.onload = () => {
-        card.querySelector(".skeleton").remove();
         lazyImg.classList.add("image-loaded");
+        const skeleton = card.querySelector(".skeleton");
+        if (skeleton) skeleton.remove();
       };
 
       lazyImg.src = lazyImg.dataset.src;
     });
 
     page++;
+
   } catch (err) {
     console.error("IMAGE LOAD ERROR:", err);
   }
@@ -211,22 +208,25 @@ async function loadImages() {
   loading = false;
 }
 
-/* INFINITE SCROLL */
+/* ---- INFINITE SCROLL ---- */
 function onScroll() {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
     loadImages();
   }
 }
 window.addEventListener("scroll", onScroll);
 
-/* SEARCH EVENT */
+/* ---- INITIAL LOAD ---- */
+loadImages();
+
+/* ---- SEARCH ---- */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
   e.preventDefault();
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
 });
 
-/* SEARCH SUGGESTIONS */
+/* ---- SEARCH SUGGESTIONS (unchanged) ---- */
 const input = document.getElementById("searchInput");
 const suggestionBox = document.createElement("div");
 suggestionBox.id = "suggestionBox";
@@ -242,8 +242,8 @@ let suggestTimer;
 
 input.addEventListener("input", () => {
   clearTimeout(suggestTimer);
-  const q = input.value.trim();
 
+  const q = input.value.trim();
   if (q.length < 2) {
     suggestionBox.innerHTML = "";
     return;
@@ -265,7 +265,4 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
-
-/* INITIAL LOAD */
-loadImages();
 </script>

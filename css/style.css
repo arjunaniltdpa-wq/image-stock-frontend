@@ -503,10 +503,11 @@ transform: scale(1.1);
 
 /* --- PEXELS STYLE MASONRY --- */
 .masonry-grid {
+  column-count: unset !important;
   display: flex;
   gap: 20px;
-  padding: 0 20px;
 }
+
 .masonry-col {
   flex: 1;
   display: flex;
