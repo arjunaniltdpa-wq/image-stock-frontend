@@ -139,125 +139,113 @@ let loading = false;
 const limit = 20;
 const container = document.getElementById("image-container");
 
-/* DOWNLOAD */
 function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
 /* CREATE IMAGE CARD */
 function createImageDiv(img) {
-  const fileToShow = img.thumbnailFileName || img.fileName;
-  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-
   const div = document.createElement("div");
   div.classList.add("image-item");
 
+  const fileToShow = img.thumbnailFileName || img.fileName;
+  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
   div.innerHTML = `
     <div class="image-wrapper">
-      <div class="skeleton"></div>
+      <div class="skeleton dark-glass"></div>
       <a href="/photo/${img.slug}-${img._id}">
-        <img 
-          data-src="${fileUrl}" 
-          class="lazy-img image-load"
-          alt="${img.title || ''}">
+        <img data-src="${fileUrl}" class="lazy-img image-load" alt="">
       </a>
       <span class="download-overlay"
         onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
-    </div>`;
-  
+    </div>
+  `;
+
   container.appendChild(div);
 }
 
-/* LOAD IMAGES */
+/* LOAD IMAGES — FIXED (added await) */
 async function loadImages() {
   if (loading) return;
   loading = true;
 
   try {
     const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
-    const json = await res.json();
+    const data = await res.json();
 
-    const images = json.images || [];
+    const images = data.images || [];
 
-    images.forEach(createImageDiv);
+    images.forEach(img => createImageDiv(img));
     page++;
 
-    initLazyLoad();
+    lazyLoadInit();
+    applyImageLoadAnimation();
 
   } catch (err) {
-    console.error("Error:", err);
+    console.error("IMAGE LOAD ERROR:", err);
   }
 
   loading = false;
 }
 
+/* LAZY LOAD */
 function lazyLoadInit() {
-  const lazyImages = document.querySelectorAll("img.lazy-img[data-src]");
-
-  if (!("IntersectionObserver" in window)) {
-    // fallback: load immediately
-    lazyImages.forEach(img => {
-      img.src = img.dataset.src;
-      img.removeAttribute("data-src");
-      img.classList.add("image-loaded");
-      const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
-      if (skeleton) skeleton.remove();
-    });
-    return;
-  }
+  const lazyImages = document.querySelectorAll("img.lazy-img");
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const img = entry.target;
-      const realSrc = img.dataset.src;
-      if (!realSrc) { obs.unobserve(img); return; }
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
 
-      // small randomized stagger so images feel premium
-      const delay = Math.floor(Math.random() * 220); // 0 - 220ms
-      setTimeout(() => {
-        img.src = realSrc;
-
-        // once loaded => remove skeleton + animate
         img.onload = () => {
           img.classList.add("image-loaded");
-          // find skeleton in the wrapper and remove it
-          const wrapper = img.closest(".image-wrapper");
-          if (wrapper) {
-            const skeleton = wrapper.querySelector(".skeleton");
-            if (skeleton) skeleton.remove();
-          }
+
+          const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
         };
 
-        // cleanup
-        img.removeAttribute("data-src");
+        img.classList.remove("lazy-img");
         obs.unobserve(img);
-      }, delay);
+      }
     });
-  }, { rootMargin: "220px 0px" });
+  });
 
   lazyImages.forEach(img => observer.observe(img));
 }
 
+/* PREMIUM FADE-IN */
+function applyImageLoadAnimation() {
+  document.querySelectorAll(".image-load").forEach(img => {
+    img.onload = () => {
+      img.classList.add("image-loaded");
 
-/* SCROLL LOAD */
-window.addEventListener("scroll", () => {
+      const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+      if (skeleton) skeleton.remove();
+    };
+  });
+}
+
+/* INFINITE SCROLL */
+function onScroll() {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
     loadImages();
   }
-});
+}
+window.addEventListener("scroll", onScroll);
 
 /* INITIAL LOAD */
 loadImages();
 
-/* SEARCH */
+/* SEARCH EVENT */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
   e.preventDefault();
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
 });
 
-/* SUGGESTIONS */
+/* SEARCH SUGGESTIONS */
 const input = document.getElementById("searchInput");
 const suggestionBox = document.createElement("div");
 suggestionBox.id = "suggestionBox";
@@ -273,8 +261,12 @@ let suggestTimer;
 
 input.addEventListener("input", () => {
   clearTimeout(suggestTimer);
+
   const q = input.value.trim();
-  if (q.length < 2) return (suggestionBox.innerHTML = "");
+  if (q.length < 2) {
+    suggestionBox.innerHTML = "";
+    return;
+  }
 
   suggestTimer = setTimeout(async () => {
     const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
@@ -292,6 +284,4 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
-
-
 </script>
