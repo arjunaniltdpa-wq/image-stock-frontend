@@ -121,20 +121,25 @@ let page = 1;
 let loading = false;
 const limit = 20;
 
-/* ----- REAL PEXELS STYLE MASONRY COLUMNS ----- */
+/* Get masonry columns */
 const masonry = document.getElementById("masonry");
-const cols = Array.from(masonry.children);
+const cols = Array.from(document.querySelectorAll(".masonry-col"));
+
+let colIndex = 0; // for cycling columns (pexels style)
+
+function downloadImage(rawName) {
+  window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+}
 
 /* CREATE CARD */
 function createImageCard(img) {
-  const card = document.createElement("div");
-  card.classList.add("image-item");
+  const div = document.createElement("div");
+  div.classList.add("image-item");
 
-  const url = `https://cdn.pixeora.com/${encodeURIComponent(
-    img.thumbnailFileName || img.fileName
-  )}`;
+  const file = img.thumbnailFileName || img.fileName;
+  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
-  card.innerHTML = `
+  div.innerHTML = `
     <div class="image-wrapper">
       <div class="skeleton"></div>
       <a href="/photo/${img.slug}-${img._id}">
@@ -147,31 +152,13 @@ function createImageCard(img) {
     </div>
   `;
 
-  return card;
+  return div;
 }
 
-/* ADD TO SHORTEST COLUMN (PEXELS LOGIC) */
-function addToShortestColumn(card) {
-  let shortest = cols[0];
-
-  cols.forEach(col => {
-    if (col.offsetHeight < shortest.offsetHeight) {
-      shortest = col;
-    }
-  });
-
-  shortest.appendChild(card);
-}
-
-/* LAZY LOAD */
-function lazyLoadImage(img, card) {
-  img.src = img.dataset.src;
-
-  img.onload = () => {
-    img.classList.add("image-loaded");
-    const skeleton = card.querySelector(".skeleton");
-    if (skeleton) skeleton.remove();
-  };
+/* ADD CARD IN PEXELS ORDER: 1-2-3-4, 5-6-7-8 ... */
+function addToNextColumn(card) {
+  cols[colIndex].appendChild(card);
+  colIndex = (colIndex + 1) % cols.length; // move to next column
 }
 
 /* LOAD IMAGES */
@@ -180,63 +167,100 @@ async function loadImages() {
   loading = true;
 
   try {
-    const res = await fetch(
-      `${API_BASE}/api/images/popular?page=${page}&limit=${limit}`
-    );
+    const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
     const data = await res.json();
     const images = data.images || [];
 
     images.forEach(img => {
       const card = createImageCard(img);
-      addToShortestColumn(card);
-
-      const imgTag = card.querySelector("img");
-      lazyLoadImage(imgTag, card);
+      addToNextColumn(card);
     });
 
     page++;
-  } catch (err) {
-    console.error("IMAGE LOAD ERROR:", err);
+    lazyLoadInit();
+    applyImageLoadAnimation();
+
+  } catch (e) {
+    console.error(e);
   }
 
   loading = false;
 }
 
+/* LAZY LOAD */
+function lazyLoadInit() {
+  const lazyImages = document.querySelectorAll("img.lazy-img");
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const img = entry.target;
+      img.src = img.dataset.src;
+
+      img.onload = () => {
+        img.classList.add("image-loaded");
+        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+        if (skeleton) skeleton.remove();
+      };
+
+      img.classList.remove("lazy-img");
+      obs.unobserve(img);
+    });
+  });
+
+  lazyImages.forEach(img => observer.observe(img));
+}
+
+/* FADE-IN */
+function applyImageLoadAnimation() {
+  document.querySelectorAll(".image-load").forEach(img => {
+    img.onload = () => {
+      img.classList.add("image-loaded");
+      const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+      if (skeleton) skeleton.remove();
+    };
+  });
+}
+
 /* INFINITE SCROLL */
-window.addEventListener("scroll", () => {
+function onScroll() {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
     loadImages();
   }
-});
+}
+window.addEventListener("scroll", onScroll);
 
-/* INITIAL LOAD */
+/* INITIAL */
 loadImages();
 
-/* SEARCH EVENT */
+/* SEARCH */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
   e.preventDefault();
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
 });
 
-/* SEARCH SUGGESTIONS */
+/* SUGGESTIONS */
 const input = document.getElementById("searchInput");
 const suggestionBox = document.createElement("div");
 suggestionBox.id = "suggestionBox";
-suggestionBox.style.position = "absolute";
-suggestionBox.style.background = "white";
-suggestionBox.style.width = "100%";
-suggestionBox.style.zIndex = "2000";
-suggestionBox.style.borderRadius = "6px";
-suggestionBox.style.boxShadow = "0 3px 10px rgba(0,0,0,0.2)";
+Object.assign(suggestionBox.style, {
+  position: "absolute",
+  background: "white",
+  width: "100%",
+  zIndex: "2000",
+  borderRadius: "6px",
+  boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
+});
 input.parentNode.appendChild(suggestionBox);
 
 let suggestTimer;
 
 input.addEventListener("input", () => {
   clearTimeout(suggestTimer);
-
   const q = input.value.trim();
+
   if (q.length < 2) {
     suggestionBox.innerHTML = "";
     return;
