@@ -108,9 +108,27 @@
   </section>
 
   <!-- POPULAR IMAGES -->
-  <section class="popular-images" id="popular-images">
-    <div class="masonry-grid" id="image-container"></div>
-  </section>
+<section class="popular-images" id="popular-images">
+
+  <!-- Masonry Grid -->
+  <div class="masonry-grid" id="image-container">
+
+    <!-- Dark Glass Skeletons (show before JS loads images) -->
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+    <div class="glass-skeleton"></div>
+
+  </div>
+
+</section>
+
 
 </main>
 
@@ -173,29 +191,54 @@ async function loadImages() {
   loading = false;
 }
 
-/* LAZY LOADING */
-function initLazyLoad() {
-  const imgs = document.querySelectorAll("img.lazy-img");
+function lazyLoadInit() {
+  const lazyImages = document.querySelectorAll("img.lazy-img[data-src]");
+
+  if (!("IntersectionObserver" in window)) {
+    // fallback: load immediately
+    lazyImages.forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute("data-src");
+      img.classList.add("image-loaded");
+      const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
+      if (skeleton) skeleton.remove();
+    });
+    return;
+  }
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-
       const img = entry.target;
-      img.src = img.dataset.src;
+      const realSrc = img.dataset.src;
+      if (!realSrc) { obs.unobserve(img); return; }
 
-      img.onload = () => {
-        img.classList.add("image-loaded");
-        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (skeleton) skeleton.remove();
-      };
+      // small randomized stagger so images feel premium
+      const delay = Math.floor(Math.random() * 220); // 0 - 220ms
+      setTimeout(() => {
+        img.src = realSrc;
 
-      obs.unobserve(img);
+        // once loaded => remove skeleton + animate
+        img.onload = () => {
+          img.classList.add("image-loaded");
+          // find skeleton in the wrapper and remove it
+          const wrapper = img.closest(".image-wrapper");
+          if (wrapper) {
+            const skeleton = wrapper.querySelector(".skeleton");
+            if (skeleton) skeleton.remove();
+          }
+        };
+
+        // cleanup
+        img.removeAttribute("data-src");
+        obs.unobserve(img);
+      }, delay);
     });
-  });
+  }, { rootMargin: "220px 0px" });
 
-  imgs.forEach(img => observer.observe(img));
+  lazyImages.forEach(img => observer.observe(img));
 }
+
 
 /* SCROLL LOAD */
 window.addEventListener("scroll", () => {
@@ -249,4 +292,6 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
+
+
 </script>
