@@ -479,12 +479,13 @@ transform: scale(1.1);
   filter: blur(12px);
   transition: opacity .4s ease, filter .4s ease;
 }
+
 .image-loaded {
   opacity: 1;
   filter: blur(0);
 }
 
-/* --- Skeleton Loader --- */
+/* --- Skeleton Loader (Soft Grey Premium) --- */
 .skeleton {
   width: 100%;
   height: 100%;
@@ -505,7 +506,7 @@ transform: scale(1.1);
   100% { background-position: 100% 0; }
 }
 
-/* Fix: No forced aspect ratio */
+/* No forced aspect ratio */
 .image-wrapper {
   width: 100%;
   position: relative;
@@ -513,17 +514,19 @@ transform: scale(1.1);
   border-radius: 12px;
   background: rgba(0,0,0,0.04);
 }
+
 .image-wrapper img {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* Masonry Grid (Unsplash style) */
+/* --- Masonry Grid (Unsplash Style) --- */
 .masonry-grid {
   column-count: 4;
   column-gap: 20px;
 }
+
 @media (max-width: 1200px) {
   .masonry-grid { column-count: 3; }
 }
@@ -533,6 +536,7 @@ transform: scale(1.1);
 @media (max-width: 600px) {
   .masonry-grid { column-count: 1; }
 }
+
 .image-item {
   break-inside: avoid;
   margin-bottom: 20px;
