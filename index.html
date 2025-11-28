@@ -154,7 +154,7 @@ function createImageDiv(img) {
 }
 
 /* ============================================================
-   LOAD IMAGES  (FIXED: await fetch)
+   LOAD IMAGES  (FIXED)
 ============================================================ */
 async function loadImages() {
   if (loading) return;
@@ -164,7 +164,9 @@ async function loadImages() {
     const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
     const data = await res.json();
 
-    const images = data.images || [];
+    // ⭐ FIXED — read correct field
+    const images = data.results || data.images || [];
+
     if (images.length === 0) return;
 
     images.forEach(img => createImageDiv(img));
