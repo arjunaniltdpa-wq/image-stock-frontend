@@ -261,4 +261,61 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
+
+const masonry = document.getElementById("masonry");
+let cols = Array.from(masonry.children);
+
+function createImageCard(img) {
+  const card = document.createElement('div');
+  card.classList.add('image-card');
+
+  const fileToShow = img.thumbnailFileName || img.fileName;
+  const url = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+
+  card.innerHTML = `
+    <div class="skeleton"></div>
+    <img 
+      data-src="${url}" 
+      class="lazy-img image-load" 
+      alt=""
+    >
+  `;
+
+  return card;
+}
+
+function addToShortestColumn(card) {
+  let shortest = cols[0];
+
+  cols.forEach(col => {
+    if (col.scrollHeight < shortest.scrollHeight) {
+      shortest = col;
+    }
+  });
+
+  shortest.appendChild(card);
+}
+
+async function loadImages() {
+  const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
+  const data = await res.json();
+  const images = data.images || [];
+
+  images.forEach(img => {
+    const card = createImageCard(img);
+    addToShortestColumn(card);
+
+    const lazyImg = card.querySelector("img");
+
+    lazyImg.onload = () => {
+      card.querySelector(".skeleton").remove();
+      lazyImg.classList.add("image-loaded");
+    };
+
+    lazyImg.src = lazyImg.dataset.src;
+  });
+
+  page++;
+}
+
 </script>
