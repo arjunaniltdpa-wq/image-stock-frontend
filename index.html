@@ -52,7 +52,6 @@
     <nav class="nav-links">
       <ul class="nav-menu">
         <li><a href="legal.html" class="legal-link-header">Legal & Policies</a></li>
-
         <li class="dropdown">
           <a href="#">AI Tools</a>
           <ul class="dropdown-content">
@@ -72,8 +71,6 @@
   <!-- BANNER -->
   <section class="banner">
     <div class="banner-content">
-
-      <!-- Search Box -->
       <form class="search-bar-wrapper">
         <div class="search-bar-border">
           <div class="search-bar">
@@ -88,7 +85,6 @@
       <h2 class="banner-text">
         Explore Free HD Wallpapers & Images
       </h2>
-
     </div>
   </section>
 
@@ -109,30 +105,10 @@
 
   <!-- POPULAR IMAGES -->
   <section class="popular-images" id="popular-images">
-
-    <!-- Masonry Grid -->
     <div class="masonry-grid" id="image-container">
-
-      <!-- Soft Grey Skeletons (Visible before images load) -->
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-      <div class="image-item"><div class="image-wrapper"><div class="skeleton"></div></div></div>
-
-    </div>
   </section>
 
 </main>
-
-
-</main>
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
@@ -149,20 +125,20 @@ function createImageDiv(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const fileToShow = img.thumbnailFileName || img.fileName;
-  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
+  const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName || img.fileName)}`;
 
   div.innerHTML = `
     <div class="image-wrapper">
-      <div class="skeleton dark-glass"></div>
+      <div class="skeleton"></div>
       <a href="/photo/${img.slug}-${img._id}">
-        <img data-src="${fileUrl}" class="lazy-img image-load" alt="">
+        <img 
+          data-src="${fileUrl}" 
+          class="lazy-img image-load"
+          alt=""
+        >
       </a>
-      <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
     </div>
   `;
-
   container.appendChild(div);
 }
 
