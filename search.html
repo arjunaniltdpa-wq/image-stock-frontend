@@ -134,7 +134,7 @@ function downloadImage(rawName) {
 /* LOAD SEARCH RESULTS */
 async function loadSearchImages(q) {
   try {
-    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
+    const res = await fetch(`${API_BASE}/api/popular?page=${page}&limit=${limit}`)
     const images = await res.json();
 
     imageCountDiv.textContent = `${images.length} Images`;
@@ -186,7 +186,7 @@ async function loadRelatedImages(keyword) {
   try {
     relatedSection.style.display = "block";
 
-    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`)
     const images = await res.json();
 
     relatedContainer.innerHTML = "";

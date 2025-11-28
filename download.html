@@ -175,7 +175,7 @@ async function loadImageDetails() {
 --------------------------------------------------- */
 async function loadRelated(keyword) {
   try {
-    const res = await fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}`);
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`)
     const json = await res.json();
 
     let images = Array.isArray(json) ? json : json.images || [];
