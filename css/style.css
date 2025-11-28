@@ -472,26 +472,41 @@ transform: scale(1.1);
       font-size: 16px;
   }
 }
-
-/* --- Simple Blur Loading Animation --- */
+/* --- SIMPLE BLUR LOADING --- */
 .image-load {
   opacity: 0;
   filter: blur(12px);
   transition: opacity .4s ease, filter .4s ease;
 }
-
 .image-loaded {
   opacity: 1;
   filter: blur(0);
 }
 
-/* Columns */
-.masonry {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
+/* --- SOFT GREY SKELETON --- */
+.skeleton {
+  width: 100%;
+  padding-bottom: 70%; /* auto height placeholder */
+  border-radius: 12px;
+  background: linear-gradient(90deg,
+    rgba(220,220,220,0.15),
+    rgba(240,240,240,0.35),
+    rgba(220,220,220,0.15)
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.5s ease infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
 }
 
+/* --- PEXELS STYLE MASONRY --- */
+.masonry-grid {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+}
 .masonry-col {
   flex: 1;
   display: flex;
@@ -499,40 +514,21 @@ transform: scale(1.1);
   gap: 20px;
 }
 
-/* Skeleton */
-.skeleton {
+/* Images */
+.masonry-card img {
   width: 100%;
-  height: 250px;
-  border-radius: 12px;
-  background: linear-gradient(90deg,
-    rgba(200,200,200,0.15),
-    rgba(230,230,230,0.25),
-    rgba(200,200,200,0.15)
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.6s ease infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -100% 0; }
-  100% { background-position: 100% 0; }
-}
-
-/* Blur loading */
-.image-load {
-  opacity: 0;
-  filter: blur(12px);
-  transition: opacity .4s ease, filter .4s ease;
-}
-
-.image-loaded {
-  opacity: 1;
-  filter: blur(0);
-}
-
-.image-card img {
-  width: 100%;
-  height: auto;
   border-radius: 12px;
   display: block;
+}
+
+/* Responsive columns */
+@media (max-width: 1200px) { .masonry-grid { gap: 16px; } }
+@media (max-width: 900px)  { 
+  .masonry-grid { flex-direction: row; }
+  .masonry-col { display: none; }
+  .masonry-col:nth-child(-n+2) { display: flex; } /* 2 columns */
+}
+@media (max-width: 600px) { 
+  .masonry-col { display: none; }
+  .masonry-col:first-child { display: flex; } /* 1 column */
 }
