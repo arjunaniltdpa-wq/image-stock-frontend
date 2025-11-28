@@ -95,7 +95,6 @@
     </ul>
   </div>
 </div>
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 
@@ -122,7 +121,10 @@ const slug = fullSlug.replace("-" + id, "").trim();
 --------------------------------------------------- */
 async function loadImageDetails() {
   try {
-    const res = await fetch(`${API_BASE}/api/images/slug/${slug}`);
+
+    /* ⭐⭐⭐ IMPORTANT FIX — use fullSlug instead of slug */
+    const res = await fetch(`${API_BASE}/api/images/slug/${fullSlug}`);
+
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
