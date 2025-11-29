@@ -472,14 +472,17 @@ transform: scale(1.1);
       font-size: 16px;
   }
 }
-/* --- SIMPLE BLUR LOADING --- */
+/* --- Smooth Fade + Blur --- */
 .image-load {
   opacity: 0;
-  filter: blur(12px);
-  transition: opacity .4s ease, filter .4s ease;
+  transform: scale(0.97);
+  filter: blur(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
 }
+
 .image-loaded {
   opacity: 1;
+  transform: scale(1);
   filter: blur(0);
 }
 
@@ -489,9 +492,9 @@ transform: scale(1.1);
   padding-bottom: 70%; /* auto height placeholder */
   border-radius: 12px;
   background: linear-gradient(90deg,
-    rgba(220,220,220,0.15),
-    rgba(240,240,240,0.35),
-    rgba(220,220,220,0.15)
+    rgba(220, 220, 220, 0.21),
+    rgba(240, 240, 240, 0.663),
+    rgba(189, 189, 189, 0.15)
   );
   background-size: 400% 100%;
   animation: shimmer 1.5s ease infinite;
