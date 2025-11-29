@@ -44,9 +44,13 @@
 </div>
 
 <!-- Gallery -->
-<div class="layout-wrapper">
-  <div class="gallery" id="gallery"></div>
-</div>
+<section class="search-results">
+  <div class="masonry-grid" id="masonry">
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+  </div>
+</section>
 
 <!-- Related Section -->
 <div class="related-section" id="related-section" style="display:none;">
@@ -144,60 +148,78 @@ function downloadImage(rawName) {
 }
 
 /* ======================================================
-   LOAD SEARCH RESULTS (FIXED)
+   LOAD SEARCH RESULTS — NEW MASONRY VERSION
 ====================================================== */
+
+const masonry = document.getElementById("masonry");
+const cols = Array.from(document.querySelectorAll(".masonry-col"));
+let colIndex = 0;
+
+function addToNextColumn(card) {
+  cols[colIndex].appendChild(card);
+  colIndex = (colIndex + 1) % cols.length;
+}
+
+function createSearchCard(img) {
+  const div = document.createElement("div");
+  div.classList.add("image-item");
+
+  const url =
+    img.thumbnailUrl ||
+    `/api/images/file/${img.thumbnailFileName}`;
+
+  div.innerHTML = `
+    <div class="image-wrapper">
+      <div class="skeleton"></div>
+      <a href="/photo/${img.slug}-${img._id}">
+        <img
+          data-src="${url}"
+          class="lazy-img image-load"
+          alt="${img.alt || img.title || ''}"
+        >
+      </a>
+      <span class="download-overlay"
+        onclick="downloadImage('${img.fileName.replace(/'/g, '\\\'')}')">
+      </span>
+    </div>
+  `;
+
+  return div;
+}
+
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
     const images = await res.json();
 
     imageCountDiv.textContent = `${images.length} Images`;
-    gallery.innerHTML = "";
+
+    cols.forEach(c => (c.innerHTML = "")); // clear columns
+    colIndex = 0;
 
     if (!images.length) {
-      gallery.innerHTML = "<p>No images found.</p>";
+      masonry.innerHTML = "<p>No images found.</p>";
       loadRelatedImages(q);
       return;
     }
 
     images.forEach(img => {
-      const div = document.createElement('div');
-      div.classList.add('image-card');
-
-      const safeName = (img.name || img.fileName || "").replace(/"/g, '&quot;');
-      const fileToShow = img.thumbnailFileName || img.fileName;
-      const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-
-      div.innerHTML = `
-        <div class="img-wrapper">
-          <div class="skeleton"></div>
-          <a href="/photo/${img.slug}-${img._id}" title="${safeName}">
-            <img
-              src="${PLACEHOLDER_SRC}"
-              data-src="${fileUrl}"
-              class="lazy-img image-load"
-              alt="${safeName}">
-          </a>
-        </div>
-        <span class="download-icon"
-          onclick="downloadImage('${(img.fileName || "").replace(/'/g, "\\'")}')">
-          <img src="images/download-icon.png" alt="Download">
-        </span>
-      `;
-
-      gallery.appendChild(div);
+      const card = createSearchCard(img);
+      addToNextColumn(card);
     });
 
-    registerLazyImages(gallery);
+    lazyLoadInit();
+    applyImageLoadAnimation();
 
   } catch (err) {
-    gallery.innerHTML = "<p>Error loading images.</p>";
+    console.error(err);
   }
 }
 
 /* ======================================================
-   LOAD RELATED IMAGES
+   LOAD RELATED IMAGES — SAME MASONRY CARDS
 ====================================================== */
+
 async function loadRelatedImages(keyword) {
   try {
     relatedSection.style.display = "block";
@@ -208,28 +230,35 @@ async function loadRelatedImages(keyword) {
     relatedContainer.innerHTML = "";
 
     images.slice(0, 15).forEach(img => {
-      const fileToShow = img.thumbnailFileName || img.fileName;
-      const fileUrl = `https://cdn.pixeora.com/${encodeURIComponent(fileToShow)}`;
-      const dlUrl = `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
+      const url =
+        img.thumbnailUrl ||
+        `/api/images/file/${img.thumbnailFileName}`;
 
       relatedContainer.innerHTML += `
         <div class="related-item">
-          <div class="img-wrapper">
+          <div class="image-wrapper">
             <div class="skeleton"></div>
             <a href="/photo/${img.slug}-${img._id}">
               <img
-                src="${PLACEHOLDER_SRC}"
-                data-src="${fileUrl}"
-                class="lazy-img image-load">
+                data-src="${url}"
+                class="lazy-img image-load"
+                alt="${img.alt || ''}"
+              >
             </a>
+            <span class="download-overlay"
+              onclick="downloadImage('${img.fileName.replace(/'/g, '\\\'')}')">
+            </span>
           </div>
-          <span class="download-overlay" onclick="window.location.href='${dlUrl}'"></span>
         </div>
       `;
     });
 
-    registerLazyImages(relatedContainer);
+    lazyLoadInit();
+    applyImageLoadAnimation();
 
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 }
+
 </script>
