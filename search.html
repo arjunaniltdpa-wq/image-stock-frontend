@@ -49,6 +49,7 @@
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
   </div>
 </section>
 
@@ -64,7 +65,6 @@ const API_BASE = "https://api.pixeora.com";
 const params = new URLSearchParams(window.location.search);
 const query = params.get('query');
 
-const gallery = document.getElementById('gallery');
 const keywordSpan = document.querySelector('.keyword');
 const imageCountDiv = document.getElementById('image-count');
 
@@ -102,7 +102,7 @@ function initLazyObserver() {
 
         img.onload = () => {
           img.classList.add("image-loaded");
-          const skeleton = img.closest(".img-wrapper").querySelector(".skeleton");
+          const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
           if (skeleton) skeleton.remove();
         };
 
@@ -148,9 +148,8 @@ function downloadImage(rawName) {
 }
 
 /* ======================================================
-   LOAD SEARCH RESULTS — NEW MASONRY VERSION
+   NEW MASONRY GRID
 ====================================================== */
-
 const masonry = document.getElementById("masonry");
 const cols = Array.from(document.querySelectorAll(".masonry-col"));
 let colIndex = 0;
@@ -164,9 +163,7 @@ function createSearchCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const url =
-    img.thumbnailUrl ||
-    `/api/images/file/${img.thumbnailFileName}`;
+  const url = img.thumbnailUrl || `/api/images/file/${img.thumbnailFileName}`;
 
   div.innerHTML = `
     <div class="image-wrapper">
@@ -187,6 +184,9 @@ function createSearchCard(img) {
   return div;
 }
 
+/* ======================================================
+   LOAD SEARCH RESULTS
+====================================================== */
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
@@ -198,7 +198,6 @@ async function loadSearchImages(q) {
     colIndex = 0;
 
     if (!images.length) {
-      masonry.innerHTML = "<p>No images found.</p>";
       loadRelatedImages(q);
       return;
     }
@@ -208,8 +207,7 @@ async function loadSearchImages(q) {
       addToNextColumn(card);
     });
 
-    lazyLoadInit();
-    applyImageLoadAnimation();
+    registerLazyImages(document);
 
   } catch (err) {
     console.error(err);
@@ -217,9 +215,8 @@ async function loadSearchImages(q) {
 }
 
 /* ======================================================
-   LOAD RELATED IMAGES — SAME MASONRY CARDS
+   LOAD RELATED IMAGES
 ====================================================== */
-
 async function loadRelatedImages(keyword) {
   try {
     relatedSection.style.display = "block";
@@ -242,7 +239,6 @@ async function loadRelatedImages(keyword) {
               <img
                 data-src="${url}"
                 class="lazy-img image-load"
-                alt="${img.alt || ''}"
               >
             </a>
             <span class="download-overlay"
@@ -253,12 +249,9 @@ async function loadRelatedImages(keyword) {
       `;
     });
 
-    lazyLoadInit();
-    applyImageLoadAnimation();
+    registerLazyImages(document);
 
   } catch (e) {
     console.error(e);
   }
 }
-
-</script>
