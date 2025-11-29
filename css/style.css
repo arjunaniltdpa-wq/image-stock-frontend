@@ -526,7 +526,7 @@ transform: scale(1.1);
 }
 
 /* Responsive columns */
-@media (max-width: 1200px) { .masonry-grid { gap: 16px; } }
+@media (max-width: 1500px) { .masonry-grid { gap: 16px; } }
 @media (max-width: 900px)  { 
   .masonry-grid { flex-direction: row; }
   .masonry-col { display: none; }
