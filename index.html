@@ -127,7 +127,7 @@ const limit = 20;
 const masonry = document.getElementById("masonry");
 const cols = Array.from(document.querySelectorAll(".masonry-col"));
 
-let colIndex = 4; // cycle 1-2-3-4 like Pexels
+let colIndex = 0; // cycle 1-2-3-4 like Pexels
 
 function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
