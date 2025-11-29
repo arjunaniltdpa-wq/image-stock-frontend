@@ -207,7 +207,7 @@ async function loadRelatedImages(keyword) {
     images = shuffle(images).slice(0, 40);
 
     /* Setup related columns */
-    const relatedCols = relatedContainer.querySelectorAll(".related-col");
+    const relatedCols = relatedContainer.querySelectorAll(".related-col");  
     relatedCols.forEach(col => (col.innerHTML = ""));
     let rIndex = 0;
 
