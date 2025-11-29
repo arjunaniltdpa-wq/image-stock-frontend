@@ -270,32 +270,6 @@ color: white;
 
 
 /* ---------------- MASONRY GRID ---------------- */
-.masonry-grid {
-column-count: 4;
-column-gap: 15px;
-max-width: 1500px;
-margin: 0 auto 40px;
-padding: 0 40px;
-}
-
-.masonry-grid .image-item {
-break-inside: avoid;
--webkit-column-break-inside: avoid;
--moz-column-break-inside: avoid;
-margin-bottom: 20px;
-position: relative;
-overflow: hidden;
-border-radius: 8px;
-}
-
-.masonry-grid .image-item img {
-width: 100%;
-height: auto;
-display: block;
-border-radius: 8px;
-object-fit: cover;
-transition: transform 0.25s ease;
-}
 
 .masonry-grid .download-overlay {
 position: absolute;
@@ -504,35 +478,51 @@ transform: scale(1.1);
   100% { background-position: 100% 0; }
 }
 
-/* --- PEXELS STYLE MASONRY --- */
+/* --- PEXELS STYLE MASONRY FLEX GRID --- */
 .masonry-grid {
-  column-count: unset !important;
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .masonry-col {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px; /* equal vertical spacing */
 }
 
-/* Images */
-.masonry-card img {
-  width: 100%;
+.image-item {
+  position: relative;
+  overflow: hidden;
   border-radius: 12px;
-  display: block;
 }
 
-/* Responsive columns */
-@media (max-width: 1500px) { .masonry-grid { gap: 14px; } }
-@media (max-width: 900px)  { 
-  .masonry-grid { flex-direction: row; }
-  .masonry-col { display: none; }
-  .masonry-col:nth-child(-n+2) { display: flex; } /* 2 columns */
+/* Image styling */
+.image-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
 }
-@media (max-width: 600px) { 
-  .masonry-col { display: none; }
-  .masonry-col:first-child { display: flex; } /* 1 column */
+
+/* 4 columns desktop */
+@media (max-width: 1400px) { .masonry-grid { gap: 14px; } }
+
+/* 3 columns */
+@media (max-width: 1100px) {
+  .masonry-col:nth-child(4) { display: none; }
+}
+
+/* 2 columns */
+@media (max-width: 800px) {
+  .masonry-col:nth-child(3) { display: none; }
+}
+
+/* 1 column */
+@media (max-width: 500px) {
+  .masonry-col:nth-child(2) { display: none; }
 }
