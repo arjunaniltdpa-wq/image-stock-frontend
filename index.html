@@ -138,7 +138,7 @@ function createImageCard(img) {
   div.classList.add("image-item");
 
   // ✔ use backend thumbnail URL
-  const url = img.thumbnailUrl;
+  const url = img.thumbnailUrl || img.url;
 
   div.innerHTML = `
     <div class="image-wrapper">
