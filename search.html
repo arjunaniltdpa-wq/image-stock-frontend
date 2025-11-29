@@ -70,17 +70,17 @@
 const API_BASE = "https://api.pixeora.com";
 
 const params = new URLSearchParams(window.location.search);
-const query = params.get('query');
+const query = params.get("query");
 
-const keywordSpan = document.querySelector('.keyword');
-const imageCountDiv = document.getElementById('image-count');
+const keywordSpan = document.querySelector(".keyword");
+const imageCountDiv = document.getElementById("image-count");
 
 const relatedSection = document.getElementById("related-section");
 const relatedContainer = document.getElementById("related-images");
 
-/* Main masonry columns */
+/* MAIN MASONRY */
 const masonry = document.getElementById("masonry");
-const cols = Array.from(document.querySelectorAll(".masonry-col"));
+const cols = Array.from(masonry.querySelectorAll(".masonry-col"));
 let colIndex = 0;
 
 /* DOWNLOAD */
@@ -89,7 +89,7 @@ function downloadImage(rawName) {
     `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
-/* CARD BUILDER (same as homepage) */
+/* CARD */
 function createCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
@@ -100,19 +100,25 @@ function createCard(img) {
   div.innerHTML = `
     <div class="image-wrapper">
       <div class="skeleton"></div>
+
       <a href="/photo/${img.slug}-${img._id}">
-        <img data-src="${url}" class="lazy-img image-load"
-             alt="${img.alt || img.title || ''}">
+        <img 
+          data-src="${url}" 
+          class="lazy-img image-load"
+          alt="${img.alt || img.title || ""}"
+        >
       </a>
+
       <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')">
+        onclick="downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
       </span>
     </div>
   `;
+
   return div;
 }
 
-/* Add to next column */
+/* ADD MAIN COLUMN */
 function addToNextColumn(card) {
   cols[colIndex].appendChild(card);
   colIndex = (colIndex + 1) % cols.length;
@@ -125,13 +131,14 @@ function lazyLoadInit() {
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const img = entry.target;
 
+      const img = entry.target;
       img.src = img.dataset.src;
+
       img.onload = () => {
         img.classList.add("image-loaded");
-        const s = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (s) s.remove();
+        const sk = img.closest(".image-wrapper").querySelector(".skeleton");
+        if (sk) sk.remove();
       };
 
       img.classList.remove("lazy-img");
@@ -142,13 +149,12 @@ function lazyLoadInit() {
   lazyImages.forEach(img => observer.observe(img));
 }
 
-/* Fade animation */
 function applyImageLoadAnimation() {
   document.querySelectorAll(".image-load").forEach(img => {
     img.onload = () => {
       img.classList.add("image-loaded");
-      const s = img.closest(".image-wrapper")?.querySelector(".skeleton");
-      if (s) s.remove();
+      const sk = img.closest(".image-wrapper")?.querySelector(".skeleton");
+      if (sk) sk.remove();
     };
   });
 }
@@ -166,7 +172,7 @@ async function loadSearchImages(q) {
 
     if (!images.length) {
       masonry.innerHTML = "<p>No images found.</p>";
-      loadRelatedImages(q);
+      loadRelatedInitial(q);
       return;
     }
 
@@ -177,67 +183,87 @@ async function loadSearchImages(q) {
     lazyLoadInit();
     applyImageLoadAnimation();
 
-    loadRelatedImages(q);
+    loadRelatedInitial(q);
 
   } catch (err) {
     console.error(err);
   }
 }
 
-/* SHUFFLE ARRAY */
+/* SHUFFLE */
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
-/* LOAD RELATED IMAGES (random fallback) */
-async function loadRelatedImages(keyword) {
-  try {
-    relatedSection.style.display = "block";
+/* -------------------------
+   RELATED SECTION PAGINATION
+---------------------------*/
 
-    let res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
-    let images = await res.json();
+let relatedAll = [];       // STORE ALL images here  
+let relatedIndex = 0;      // POINTER  
+const RELATED_BATCH = 30;  // LOAD 30 each scroll  
 
-    /* If no results, fallback to POPULAR */
-    if (!images.length) {
-      res = await fetch(`${API_BASE}/api/images/popular?page=1&limit=50`);
-      images = (await res.json()).images || [];
-    }
+async function loadRelatedInitial(keyword) {
+  relatedSection.style.display = "block";
 
-    /* Shuffle every time */
-    images = shuffle(images).slice(0, 40);
+  const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
+  relatedAll = await res.json();
 
-    /* Setup related columns */
-    const relatedCols = relatedContainer.querySelectorAll(".related-col");  
-    relatedCols.forEach(col => (col.innerHTML = ""));
-    let rIndex = 0;
-
-    function addRelated(card) {
-      relatedCols[rIndex].appendChild(card);
-      rIndex = (rIndex + 1) % relatedCols.length;
-    }
-
-    images.forEach(img => addRelated(createCard(img)));
-
-    lazyLoadInit();
-    applyImageLoadAnimation();
-
-  } catch (e) {
-    console.error(e);
+  // fallback to POPULAR if empty
+  if (!relatedAll.length) {
+    const r = await fetch(`${API_BASE}/api/images/popular?page=1&limit=200`);
+    relatedAll = (await r.json()).images || [];
   }
+
+  // SHUFFLE ALL
+  relatedAll = shuffle(relatedAll);
+
+  loadNextRelatedBatch();
 }
 
-/* Redirect Search */
+/* LOAD NEXT 30 RELATED IMAGES */
+function loadNextRelatedBatch() {
+  const relatedCols = relatedContainer.querySelectorAll(".related-col");
+
+  let end = relatedIndex + RELATED_BATCH;
+  const batch = relatedAll.slice(relatedIndex, end);
+
+  // stop if no more images
+  if (!batch.length) return;
+
+  let col = 0;
+  batch.forEach(img => {
+    const card = createCard(img);
+    relatedCols[col].appendChild(card);
+    col = (col + 1) % relatedCols.length;
+  });
+
+  relatedIndex = end;
+
+  lazyLoadInit();
+  applyImageLoadAnimation();
+}
+
+/* INFINITY SCROLL */
+window.addEventListener("scroll", () => {
+  const rect = relatedSection.getBoundingClientRect();
+  const trigger = rect.bottom - window.innerHeight < 500;
+
+  if (trigger) {
+    loadNextRelatedBatch();
+  }
+});
+
+/* SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
-/* INITIAL LOAD */
+/* START */
 if (query) {
   keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
   loadSearchImages(query);
 }
 </script>
-
-
