@@ -267,9 +267,10 @@ async function loadRelatedInitial(keyword) {
     relatedAll = (await r.json()).images || [];
   }
 
-  // SHUFFLE ALL
+  // Shuffle for randomness
   relatedAll = shuffle(relatedAll);
 
+  relatedIndex = 0; // reset pointer  
   loadNextRelatedBatch();
 }
 
@@ -277,10 +278,7 @@ async function loadRelatedInitial(keyword) {
 function loadNextRelatedBatch() {
   const relatedCols = relatedContainer.querySelectorAll(".related-col");
 
-  let end = relatedIndex + RELATED_BATCH;
-  const batch = relatedAll.slice(relatedIndex, end);
-
-  // stop if no more images
+  const batch = relatedAll.slice(relatedIndex, relatedIndex + RELATED_BATCH);
   if (!batch.length) return;
 
   let col = 0;
@@ -290,19 +288,20 @@ function loadNextRelatedBatch() {
     col = (col + 1) % relatedCols.length;
   });
 
-  relatedIndex = end;
+  relatedIndex += RELATED_BATCH;
 
   lazyLoadInit();
   applyImageLoadAnimation();
 }
 
-/* INFINITY SCROLL */
+/* INFINITY SCROLL TRIGGER */
 window.addEventListener("scroll", () => {
-  const rect = relatedSection.getBoundingClientRect();
-  const trigger = rect.bottom - window.innerHeight < 500;
-
-  if (trigger) {
-    loadNextRelatedBatch();
+  // trigger when related section exists AND user scrolls near it
+  if (relatedSection.style.display === "block") {
+    const rect = relatedSection.getBoundingClientRect();
+    if (rect.bottom - window.innerHeight < 600) {
+      loadNextRelatedBatch();
+    }
   }
 });
 
