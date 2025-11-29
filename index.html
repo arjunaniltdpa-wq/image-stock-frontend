@@ -121,7 +121,7 @@
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
 let loading = false;
-const limit = 40;
+const limit = 36;
 
 /* Get masonry columns */
 const masonry = document.getElementById("masonry");
@@ -133,13 +133,11 @@ function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
-/* CREATE CARD — your original structure restored */
 function createImageCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const file = img.thumbnailFileName || img.fileName;
-  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+  const url = img.thumbnailUrl;  // ★ using thumbnail now
 
   div.innerHTML = `
     <div class="image-wrapper">
@@ -149,7 +147,7 @@ function createImageCard(img) {
         <img 
           data-src="${url}" 
           class="lazy-img image-load"
-          alt=""
+          alt="${img.alt || ''}"
         >
       </a>
 
