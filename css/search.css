@@ -160,54 +160,70 @@
     padding: 20px;
   }
 
+/* ============================================================
+   ⭐ NEW FLEX MASONRY GRID (same as homepage)
+============================================================ */
 
-  /* =============== Gallery =============== */
-  .gallery {
-    column-count: 4;
-    column-gap: 20px;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;       /* center it */
-    display: block;
-  }
+.masonry-grid {
+  display: flex;
+  gap: 16px;
+  padding: 0 30px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
 
-  .image-card {
-    position: relative;      /* ⭐ required for download icon */
-    break-inside: avoid;
-    margin-bottom: 20px;
-  }
+.masonry-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
+.image-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
 
-  .image-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    display: block;
-  }
+.image-item img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+}
 
+/* Hover download icon */
+.download-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 120px;
+  height: 40px;
+  background: url('../images/download-icon.png') center/cover no-repeat;
+  opacity: 0;
+  transition: 0.25s ease;
+  cursor: pointer;
+}
 
-  .image-card .download-icon {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 120px;
-    height: 40px;
-    opacity: 0;
-    cursor: pointer;
-    transition: transform 0.25s, opacity 0.25s;
-  }
+.image-item:hover .download-overlay {
+  opacity: 1;
+  transform: scale(1.15);
+}
 
-  .image-card:hover .download-icon {
-    opacity: 1;
-    transform: scale(1.1);
-  }
+/* Responsive Columns — HIDES certain flex columns */
+@media (max-width: 1200px) { 
+  .masonry-col:nth-child(4) { display: none; }
+}
 
-  .image-card .download-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
+@media (max-width: 900px)  { 
+  .masonry-col:nth-child(3) { display: none; }
+}
 
+@media (max-width: 600px)  { 
+  .masonry-col:nth-child(2),
+  .masonry-col:nth-child(3),
+  .masonry-col:nth-child(4) { display: none; }
+}
 
   .modal-overlay {
     position: fixed;
