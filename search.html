@@ -53,11 +53,18 @@
   </div>
 </section>
 
-<!-- Related Section -->
 <div class="related-section" id="related-section" style="display:none;">
   <h2>Related Images</h2>
-  <div id="related-images"></div>
+
+  <div class="related-masonry" id="related-images">
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div> <!-- ⭐ 5 columns -->
+  </div>
 </div>
+
 
 <script>
 const API_BASE = "https://api.pixeora.com";
@@ -71,68 +78,60 @@ const imageCountDiv = document.getElementById('image-count');
 const relatedSection = document.getElementById("related-section");
 const relatedContainer = document.getElementById("related-images");
 
-/* MASONRY SETUP — SAME AS INDEX */
+/* Main masonry columns */
 const masonry = document.getElementById("masonry");
 const cols = Array.from(document.querySelectorAll(".masonry-col"));
 let colIndex = 0;
 
 /* DOWNLOAD */
 function downloadImage(rawName) {
-  window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  window.location.href =
+    `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
 }
 
-/* CARD BUILDER — EXACTLY SAME AS HOMEPAGE */
-function createSearchCard(img) {
+/* CARD BUILDER (same as homepage) */
+function createCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  // USE CDN like homepage (fixed)
   const file = img.thumbnailFileName || img.fileName;
   const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
   div.innerHTML = `
     <div class="image-wrapper">
       <div class="skeleton"></div>
-
       <a href="/photo/${img.slug}-${img._id}">
-        <img 
-          data-src="${url}" 
-          class="lazy-img image-load"
-          alt="${img.alt || img.title || ''}"
-        >
+        <img data-src="${url}" class="lazy-img image-load"
+             alt="${img.alt || img.title || ''}">
       </a>
-
       <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
+        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')">
       </span>
     </div>
   `;
-
   return div;
 }
 
-
-/* COLUMN SEQUENCE */
+/* Add to next column */
 function addToNextColumn(card) {
   cols[colIndex].appendChild(card);
   colIndex = (colIndex + 1) % cols.length;
 }
 
-/* LAZY LOAD — EXACT COPY OF INDEX LOGIC */
+/* LAZY LOAD */
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-
       const img = entry.target;
-      img.src = img.dataset.src;
 
+      img.src = img.dataset.src;
       img.onload = () => {
         img.classList.add("image-loaded");
-        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (skeleton) skeleton.remove();
+        const s = img.closest(".image-wrapper").querySelector(".skeleton");
+        if (s) s.remove();
       };
 
       img.classList.remove("lazy-img");
@@ -143,26 +142,26 @@ function lazyLoadInit() {
   lazyImages.forEach(img => observer.observe(img));
 }
 
-/* PREMIUM ANIMATION */
+/* Fade animation */
 function applyImageLoadAnimation() {
   document.querySelectorAll(".image-load").forEach(img => {
     img.onload = () => {
       img.classList.add("image-loaded");
-      const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
-      if (skeleton) skeleton.remove();
+      const s = img.closest(".image-wrapper")?.querySelector(".skeleton");
+      if (s) s.remove();
     };
   });
 }
 
-/* LOAD SEARCH RESULTS (FIXED) */
+/* LOAD MAIN SEARCH RESULTS */
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
-    const images = await res.json();
+    let images = await res.json();
 
     imageCountDiv.textContent = `${images.length} Images`;
 
-    cols.forEach(c => c.innerHTML = "");
+    cols.forEach(c => (c.innerHTML = ""));
     colIndex = 0;
 
     if (!images.length) {
@@ -172,52 +171,52 @@ async function loadSearchImages(q) {
     }
 
     images.forEach(img => {
-      const card = createSearchCard(img);
-      addToNextColumn(card);
+      addToNextColumn(createCard(img));
     });
 
     lazyLoadInit();
     applyImageLoadAnimation();
+
+    loadRelatedImages(q);
 
   } catch (err) {
     console.error(err);
   }
 }
 
-/* RELATED IMAGES (FIXED) */
+/* SHUFFLE ARRAY */
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+/* LOAD RELATED IMAGES (random fallback) */
 async function loadRelatedImages(keyword) {
   try {
     relatedSection.style.display = "block";
 
-    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
-    const images = await res.json();
+    let res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
+    let images = await res.json();
 
-    relatedContainer.innerHTML = "";
+    /* If no results, fallback to POPULAR */
+    if (!images.length) {
+      res = await fetch(`${API_BASE}/api/images/popular?page=1&limit=50`);
+      images = (await res.json()).images || [];
+    }
 
-    images.slice(0, 15).forEach(img => {
-      const file = img.thumbnailFileName || img.fileName;
-      const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
-  
+    /* Shuffle every time */
+    images = shuffle(images).slice(0, 40);
 
-      relatedContainer.innerHTML += `
-        <div class="related-item">
-          <div class="image-wrapper">
-            <div class="skeleton"></div>
+    /* Setup related columns */
+    const relatedCols = relatedContainer.querySelectorAll(".related-col");
+    relatedCols.forEach(col => (col.innerHTML = ""));
+    let rIndex = 0;
 
-            <a href="/photo/${img.slug}-${img._id}">
-              <img 
-                data-src="${url}" 
-                class="lazy-img image-load"
-                alt="${img.alt || ''}"
-              >
-            </a>
+    function addRelated(card) {
+      relatedCols[rIndex].appendChild(card);
+      rIndex = (rIndex + 1) % relatedCols.length;
+    }
 
-            <span class="download-overlay"
-              onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
-          </div>
-        </div>
-      `;
-    });
+    images.forEach(img => addRelated(createCard(img)));
 
     lazyLoadInit();
     applyImageLoadAnimation();
@@ -227,9 +226,9 @@ async function loadRelatedImages(keyword) {
   }
 }
 
-/* SEARCH REDIRECT */
+/* Redirect Search */
 function redirectSearch() {
-  const q = document.getElementById('searchInput').value.trim();
+  const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
@@ -240,4 +239,5 @@ if (query) {
   loadSearchImages(query);
 }
 </script>
+
 

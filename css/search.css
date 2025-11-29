@@ -399,46 +399,6 @@
     ⭐ RELATED IMAGES (same style as search result image grid)
     ============================================================ */
 
-  .related-section {
-    max-width: 1400px;
-    margin: 40px auto 0;
-    padding: 0 20px;
-  }
-
-  .related-section h2 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-
-  /* ⭐ Use same masonry layout as gallery */
-  #related-images {
-    column-count: 4;
-    column-gap: 20px;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 1100px) { #related-images { column-count: 3; } }
-  @media (max-width: 700px) { #related-images { column-count: 2; } }
-  @media (max-width: 420px) { #related-images { column-count: 1; } }
-
-  /* ⭐ Related Image Card (same as image-card) */
-  .related-item {
-    position: relative;
-    break-inside: avoid;
-    margin-bottom: 20px;
-  }
-
-  .related-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
-    object-fit: cover;
-  }
-
   /* ⭐ Clean icon only (no background) */
   .download-overlay {
     position: absolute;
@@ -697,6 +657,68 @@
   opacity: 1;
   transform: scale(1);
   filter: blur(0);
+}
+
+/* =========================
+   RELATED SECTION 5-COLUMN
+========================= */
+
+.related-section {
+  max-width: 1700px;
+  margin: 40px auto;
+  padding: 0 40px;
+}
+
+/* Flex Masonry */
+.related-masonry {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.related-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Same card style as main grid */
+.related-col .image-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.related-col img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* ------------------------------
+   RESPONSIVE (5 → 4 → 3 → 2 → 1)
+-------------------------------- */
+
+@media (max-width: 1600px) {
+  .related-masonry .related-col:nth-child(5) { display: none; }
+}
+
+@media (max-width: 1300px) {
+  .related-masonry .related-col:nth-child(4) { display: none; }
+}
+
+@media (max-width: 1000px) {
+  .related-masonry .related-col:nth-child(3) { display: none; }
+}
+
+@media (max-width: 700px) {
+  .related-masonry .related-col:nth-child(2) { display: none; }
+}
+
+@media (max-width: 500px) {
+  .related-masonry .related-col:nth-child(1) { flex: 1; }
 }
 
 
