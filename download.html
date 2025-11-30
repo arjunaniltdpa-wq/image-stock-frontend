@@ -326,19 +326,17 @@ function displayRelated(images) {
           >
         </a>
 
-        <span class="download-overlay"
-              onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'">
-        </span>
+        <span class="download-overlay"></span>
       </div>
     `;
 
     cols[colIndex].appendChild(card);
-
     colIndex = (colIndex + 1) % cols.length;
   });
 
   lazyLoadInit();
 }
+
 
 /* ---------------------------------- */
 /* INFINITE SCROLL */

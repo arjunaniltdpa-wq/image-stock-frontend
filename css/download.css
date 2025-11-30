@@ -506,113 +506,68 @@ html, body {
 }
 
 /* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
-/* ================================================
-   ⭐ FINAL RELATED IMAGES (MATCHES SEARCH PAGE)
-================================================ */
-
-.related-section {
+/* Masonry container */
+.masonry-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
   width: 100%;
   max-width: 1500px;
   margin: 40px auto;
   padding: 0 20px;
 }
 
-.related-masonry {
-  display: flex;
-  justify-content: center;   /* CENTER like search page */
-  align-items: flex-start;
-  gap: 18px;
-  width: 100%;
-}
-
-/* Columns – EXACTLY like search.html */
-.related-col {
+/* Masonry columns */
+.masonry-col {
   flex: 1;
-  max-width: 260px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
+  max-width: 300px; /* keeps grid tight */
 }
 
-/* Image card */
+/* Items */
 .image-item {
   position: relative;
-  overflow: hidden;
-  border-radius: 14px;
+  width: 100%;
 }
 
-/* Image styling */
 .image-item img {
   width: 100%;
-  height: auto;
-  display: block;
+  border-radius: 12px;
   object-fit: cover;
-  border-radius: 14px;
-  transition: 0.3s ease;
 }
 
-/* Skeleton */
-.image-item .skeleton {
-  height: 100%;
-  width: 100%;
-  border-radius: 14px;
-}
-
-.image-wrapper {
-  position: relative;       /* ⭐ REQUIRED */
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 14px;
-}
-
+/* The overlay download icon */
 .download-overlay {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 130px;
-  height: 50px;
+  bottom: 12px;
+  right: 12px;
+  width: 120px;
+  height: 42px;
   background-image: url('../images/download-icon.png');
-  background-size: 120px;
+  background-size: 110px;
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0;
-  transition: opacity .25s ease, transform .25s ease;
+  transition: .25s ease;
   pointer-events: none;
 }
 
-.image-wrapper:hover .download-overlay {
+.image-item:hover .download-overlay {
   opacity: 1;
-  transform: scale(1.12);
+  transform: scale(1.05);
+  pointer-events: auto;
 }
 
-
-/* Remove spacing bug */
-.image-item {
-  margin: 0 !important;
-  padding: 0 !important;
+/* RESPONSIVE breakpoints */
+@media (max-width: 1400px) {
+  .masonry-col:nth-child(4) { display:none; }
 }
-
-/* ===============================
-   ⭐ RESPONSIVE — MATCH SEARCH PAGE
-================================ */
-
-@media (max-width: 1600px) {
-  .related-col:nth-child(5) { display: none; }
+@media (max-width: 1100px) {
+  .masonry-col:nth-child(3) { display:none; }
 }
-
-@media (max-width: 1200px) {
-  .related-col:nth-child(4) { display: none; }
-}
-
-@media (max-width: 1000px) {
-  .related-col:nth-child(3) { display: none; }
-}
-
 @media (max-width: 700px) {
-  .related-col:nth-child(2) { display: none; }
-}
-
-@media (max-width: 500px) {
-  .related-col:nth-child(1) { flex: 1; max-width: 100%; }
+  .masonry-col:nth-child(2) { display:none; }
 }
