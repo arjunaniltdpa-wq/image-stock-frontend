@@ -689,26 +689,3 @@
     .related-masonry .related-col:nth-child(1) { flex: 1; }
   }
 
-
-  /* REMOVE EVERY INNER SCROLLBAR */
-html, body {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-}
-
-/* Disable scrollbars for ALL inner containers */
-*::-webkit-scrollbar {
-    display: none !important;
-}
-
-* {
-    scrollbar-width: none !important;   /* Firefox */
-    -ms-overflow-style: none !important; /* IE/Edge */
-}
-
-/* Make sure no element forces scrolling */
-* {
-    overflow-y: visible !important;
-    max-height: none !important;
-    height: auto !important;
-}
