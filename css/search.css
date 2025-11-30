@@ -384,8 +384,8 @@
     width: 100%;
     column-count: 3;
     column-gap: 16px;
-    max-height: 600px;
-    overflow-y: auto;
+    max-height: none !important;      /* ✔ allow full height */
+    overflow-y: visible !important;   /* ✔ no inner scrollbar */
     padding: 0 10px;
   }
 
@@ -671,13 +671,6 @@
   max-width: 1700px;
   margin: 40px auto;
   padding: 0 40px;
-}
-
-/* Flex Masonry */
-.related-masonry {
-  display: flex;
-  gap: 16px;
-  width: 100%;
 }
 
 .related-col {
