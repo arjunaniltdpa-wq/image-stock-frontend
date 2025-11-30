@@ -566,17 +566,20 @@ html, body {
    RELATED SECTION 5-COLUMN
 ========================= */
 
+/* FIX: Center Related Section */
 .related-section {
-  max-width: 1700px;
+  max-width: 1400px;
   margin: 40px auto;
-  padding: 0 40px;
+  padding: 0;
 }
 
-/* Flex Masonry */
+/* Center inside columns */
 .related-masonry {
   display: flex;
+  justify-content: center;
   gap: 16px;
   width: 100%;
+  margin: 0 auto;
 }
 
 .related-col {
@@ -599,6 +602,14 @@ html, body {
   border-radius: 12px;
   object-fit: cover;
 }
+/* FIX: Make download icon show on hover */
+.image-item:hover .download-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1.15);
+}
+
+
 
 /* ------------------------------
    RESPONSIVE (5 → 4 → 3 → 2 → 1)
