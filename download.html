@@ -454,9 +454,11 @@ function displayRelated(images) {
         <a href="/photo/${img.slug}-${img._id}">
           <img 
             data-src="${thumb}"
-            class="lazy-img image-load"
+            class="lazy-img blur-load"
             alt="${img.alt || img.title}"
-          >
+            loading="lazy"
+            decoding="async"
+          />
         </a>
 
         <span class="download-overlay"></span>
@@ -469,6 +471,7 @@ function displayRelated(images) {
 
   lazyLoadInit();
 }
+
 
 /* ---------------------------------- */
 /* INFINITE SCROLL */
