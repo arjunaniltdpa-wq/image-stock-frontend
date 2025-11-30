@@ -630,9 +630,23 @@
     }
   }
 
+/* Remove nested scrollbars completely */
+* {
+  overscroll-behavior: none !important;
+}
+
+.masonry-grid,
+.masonry-col,
+.image-wrapper,
+.related-grid {
+  overflow: visible !important;
+}
+
+/* FIX: prevent skeleton from creating tall empty columns */
 .skeleton {
   width: 100%;
-  padding-bottom: 66%;   /* ⭐ keeps perfect aspect ratio, no height jump */
+  height: 0;
+  padding-bottom: 70%;   /* keeps ratio */
   border-radius: 12px;
   background: linear-gradient(90deg,
     rgba(220, 220, 220, 0.21),
@@ -642,6 +656,13 @@
   background-size: 400% 100%;
   animation: shimmer 1.5s ease infinite;
 }
+
+/* Remove any auto scroll from related section */
+.related-grid {
+  overflow-y: visible !important;
+  max-height: none !important;
+}
+
 
 @keyframes shimmer {
   0% { background-position: -100% 0; }
