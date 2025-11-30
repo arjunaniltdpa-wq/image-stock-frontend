@@ -225,39 +225,6 @@ body {
 }
 
 
-/* ======================================================
-   RELATED IMAGES
-====================================================== */
-.related-section {
-  max-width: 100%;
-  margin: 30px auto;
-  padding: 0 20px;
-}
-
-.related-section h2 {
-  margin-bottom: 20px;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-#related-images {
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
-  gap: 12px !important;
-}
-
-@media (max-width: 1024px) {
-  #related-images {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-}
-
-@media (max-width: 600px) {
-  #related-images {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-
 /* DOWNLOAD OVERLAY */
 .download-overlay {
   position: absolute;
