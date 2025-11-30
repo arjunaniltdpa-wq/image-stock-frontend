@@ -436,7 +436,7 @@ transform: scale(1.1);
       border-radius: 16px;
   }
 
-  .search-bar input {
+  .search-bar input { 
       font-size: 15px;
   }
 
@@ -463,7 +463,7 @@ transform: scale(1.1);
 /* --- SOFT GREY SKELETON --- */
 .skeleton {
   width: 100%;
-  padding-bottom: 70%; /* auto height placeholder */
+  min-height: 220px;   /* ← FIX */
   border-radius: 12px;
   background: linear-gradient(90deg,
     rgba(220, 220, 220, 0.21),
@@ -498,6 +498,7 @@ transform: scale(1.1);
   position: relative;
   overflow: hidden;
   border-radius: 12px;
+  min-height: 220px;   /* ← FIX */
 }
 
 /* Image styling */
