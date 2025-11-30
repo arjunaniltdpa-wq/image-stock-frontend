@@ -199,13 +199,13 @@ function createImageCard(img) {
         >
       </a>
 
-      <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
+      <span class="download-overlay" onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"></span>
     </div>
   `;
 
   return div;
 }
+
 
 function addToNextColumn(card) {
   cols[colIndex].appendChild(card);
