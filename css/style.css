@@ -431,6 +431,11 @@ color: white;
       padding-top: 90px;
   }
 
+  .search-bar-border {
+    border-radius: 17px !important;   /* match search bar */
+    padding: 2px !important;          /* keep gradient thickness */
+  }
+
   /* Search bar centered */
   .search-bar {
       height: 52px;
@@ -529,4 +534,25 @@ color: white;
 /* 1 column */
 @media (max-width: 500px) {
   .masonry-col:nth-child(2) { display: none; }
+}
+/* Make dropdown always appear above search bar */
+.nav-menu,
+.dropdown,
+.dropdown-content {
+    position: relative;
+    z-index: 9999 !important;
+}
+
+/* Dropdown itself highest layer */
+.dropdown-content {
+    position: absolute;
+    background: white;
+    z-index: 10000 !important;
+}
+
+/* Fix search bar stacking so it stays behind when dropdown opens */
+.search-bar-wrapper,
+.search-bar {
+    position: relative;
+    z-index: 10 !important;
 }
