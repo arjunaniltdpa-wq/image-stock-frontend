@@ -213,7 +213,7 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* IMAGE DETAILS — ULTRA FAST SYSTEM */
+/* IMAGE DETAILS — PERFECT 3-STAGE LOADER */
 /* ---------------------------------- */
 
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
@@ -227,10 +227,11 @@ async function loadImageDetails() {
     }
 
     const img = await res.json();
-
     const file = encodeURIComponent(img.fileName);
 
-    /* ⭐ SAME AS RELATED IMAGES — ALWAYS WORKS */
+    /* --------------------------------------------
+       REAL & SAFE IMAGE PATHS
+    ---------------------------------------------*/
     const thumbUrl =
       img.thumbnailUrl ||
       (img.thumbnailFileName
@@ -238,63 +239,95 @@ async function loadImageDetails() {
         : `https://cdn.pixeora.com/thumbs/${file}`);
 
     const lcpUrl = `https://cdn.pixeora.com/lcp/${file}`;
-    const originalUrl = `https://cdn.pixeora.com/${file}`;
+
+    /* ⭐ FIXED: Always use real original file path */
+    const originalUrl =
+      img.originalUrl ||
+      `https://cdn.pixeora.com/original/${file}`; // fallback path
 
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    /* Reserve space */
-    mainImg.style.aspectRatio = "16/10";
+    /* --------------------------------------------
+       INITIAL SAFE SPACE (no layout shift)
+    ---------------------------------------------*/
     mainImg.style.width = "100%";
+    mainImg.style.aspectRatio = "16/10";  // temporary safe ratio
 
-    /* STEP 1 → Thumbnail first (super fast) */
+    /* --------------------------------------------
+       STEP 1 — Show Thumbnail Instantly
+    ---------------------------------------------*/
     mainImg.src = thumbUrl;
     mainImg.style.filter = "blur(20px)";
-    mainImg.style.opacity = "0.7";
+    mainImg.style.opacity = "0.6";
     skeleton.style.display = "none";
 
-    /* STEP 2 → Load LCP (1200px) */
-    const lcp = new Image();
-    lcp.src = lcpUrl;
+    /* --------------------------------------------
+       STEP 2 — Load LCP (1200px)
+    ---------------------------------------------*/
+    const lcpImg = new Image();
+    lcpImg.src = lcpUrl;
 
-    lcp.onload = () => {
+    lcpImg.onload = () => {
       mainImg.src = lcpUrl;
       mainImg.style.transition = "filter .4s ease, opacity .3s ease";
       mainImg.style.filter = "blur(6px)";
       mainImg.style.opacity = "1";
 
-      /* Fix aspect ratio */
-      mainImg.style.aspectRatio = `${lcp.naturalWidth}/${lcp.naturalHeight}`;
+      /* Fix aspect ratio properly */
+      if (lcpImg.naturalWidth && lcpImg.naturalHeight) {
+        mainImg.style.aspectRatio =
+          `${lcpImg.naturalWidth}/${lcpImg.naturalHeight}`;
+      }
 
-      /* STEP 3 → Load FULL HD silently */
+      loadHD(); // Next stage
+    };
+
+    /* --------------------------------------------
+       STEP 3 — Load HD Image Silently
+    ---------------------------------------------*/
+    function loadHD() {
       const hd = new Image();
       hd.src = originalUrl;
+
       hd.onload = () => {
         setTimeout(() => {
           mainImg.src = originalUrl;
           mainImg.style.filter = "blur(0px)";
-        }, 200);
+        }, 150);
       };
-    };
 
-    /* ---- TITLE + KEYWORDS + RELATED ---- */
-    document.getElementById("image-name").textContent = img.title || img.fileName;
+      hd.onerror = () => {
+        console.warn("Original image not found:", originalUrl);
+      };
+    }
+
+    /* --------------------------------------------
+       TITLE + DOWNLOAD LINK
+    ---------------------------------------------*/
+    document.getElementById("image-name").textContent =
+      img.title || img.fileName;
 
     document.getElementById("download-link").href =
       `${API_BASE}/api/images/download/${file}`;
 
     window.__originalFileName = img.fileName;
 
-    const keywords = img.keywords?.length
-      ? img.keywords
-      : img.tags?.length
-      ? img.tags
-      : [];
+    /* --------------------------------------------
+       KEYWORDS
+    ---------------------------------------------*/
+    const keywords =
+      img.keywords?.length ? img.keywords :
+      img.tags?.length ? img.tags : [];
 
-    document.getElementById("keywords").innerHTML = keywords
-      .map(t => `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
-      .join("");
+    document.getElementById("keywords").innerHTML =
+      keywords.map(t =>
+        `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
+      ).join("");
 
+    /* --------------------------------------------
+       RELATED IMAGES
+    ---------------------------------------------*/
     const subject = detectMainSubject(img.title || "");
 
     startRelatedSystem([
@@ -304,10 +337,10 @@ async function loadImageDetails() {
     ].filter(Boolean));
 
   } catch (err) {
+    console.error(err);
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
-
 
 
 /* ---------------------------------- */
