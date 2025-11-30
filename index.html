@@ -2,82 +2,50 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- =========================
-       TITLE (High CTR + Long-Tail)
-  ========================== -->
   <title>Free HD Wallpapers, 4K Images & Royalty-Free Stock Photos | Pixeora</title>
 
-  <!-- =========================
-       TIER 1 & TIER 2 LONG-TAIL SEO
-  ========================== -->
-  <meta name="description" 
-    content="Download free HD wallpapers, 4K backgrounds, royalty-free stock images and commercial-use photos. Optimized for USA, UK, Canada, Australia, Germany, India & worldwide. Fast loading, clean UI, daily new premium-quality photos." />
-
-  <meta name="keywords" content="
-    free hd wallpapers, 4k wallpapers download, stock images free, royalty free images,
-    commercial use photos free, high resolution backgrounds, free wallpapers USA,
-    free stock photos UK, HD images Canada, free wallpapers Australia, HD stock photos Germany,
-    best free image download site, aesthetic wallpapers 4k, nature wallpapers 4k, 
-    business stock images free, trending wallpapers 2025, hd desktop backgrounds,
-    mobile wallpapers full hd, free images for designers, marketing images free, 
-    seo optimized stock photos, Pixeora images
-  " />
-
-  <!-- Canonical -->
+  <!-- SEO -->
+  <meta name="description" content="Download free HD wallpapers, 4K backgrounds, royalty-free stock images and commercial-use photos. Fast loading, clean UI, daily new premium-quality photos." />
+  <meta name="keywords" content="free hd wallpapers, 4k wallpapers download, stock images free, royalty free images, commercial use photos free, pixeora images" />
   <link rel="canonical" href="https://pixeora.com/" />
 
-  <!-- =========================
-       Performance Boost
-  ========================== -->
-
-  <!-- CDN -->
+  <!-- Preconnect (Top for maximum performance) -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
-
-  <!-- API -->
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://api.pixeora.com">
-
-  <!-- Google Fonts Optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- Preload Hero Banner for LCP -->
+  <!-- DNS Prefetch -->
+  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
+  <link rel="dns-prefetch" href="https://api.pixeora.com">
+
+  <!-- Preload LCP banner image -->
   <link rel="preload" href="images/banner.jpg" as="image">
 
-  <!-- =========================
-       Fonts
-  ========================== -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 
-  <!-- =========================
-      Social Sharing (OG/Twitter)
-  ========================== -->
+  <!-- OpenGraph & Twitter -->
   <meta property="og:title" content="Pixeora - Free HD Wallpapers & Royalty-Free Stock Images" />
-  <meta property="og:description" 
-    content="Browse & download free high-resolution wallpapers, 4K backgrounds, and royalty-free stock images. Updated daily. Fast loading for USA, UK, Canada, India & worldwide." />
+  <meta property="og:description" content="Browse & download free high-resolution wallpapers, 4K backgrounds, and royalty-free stock images." />
   <meta property="og:image" content="https://pixeora.com/images/og-image.jpg" />
   <meta property="og:url" content="https://pixeora.com/" />
   <meta property="og:type" content="website" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pixeora - Free HD Wallpapers & 4K Images" />
-  <meta name="twitter:description" 
-    content="Download premium HD wallpapers, 4K backgrounds and royalty-free stock photos for commercial use." />
+  <meta name="twitter:description" content="Download premium HD wallpapers, 4K backgrounds and royalty-free stock photos." />
   <meta name="twitter:image" content="https://pixeora.com/images/og-image.jpg" />
 
-  <!-- =========================
-       Structured Data (SEO Boost)
-  ========================== -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Pixeora",
     "url": "https://pixeora.com/",
-    "description": "Free HD wallpapers, 4K backgrounds and royalty-free stock photos for designers, bloggers, marketers and commercial use.",
-    "inLanguage": "en",
+    "description": "Free HD wallpapers, 4K backgrounds and royalty-free stock photos.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://pixeora.com/search.html?query={search_term}",
@@ -89,7 +57,6 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Cache Control (Best Practices) -->
   <meta http-equiv="Cache-Control" content="public, max-age=31536000" />
 </head>
 
@@ -97,13 +64,23 @@
 
 <header class="top-header">
   <div class="top-nav-container">
-    <div class="logo">Pixeora</div>
 
+    <!-- LOGO -->
+    <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
+
+    <!-- NAVIGATION -->
     <nav class="nav-links">
       <ul class="nav-menu">
-        <li><a href="legal.html" class="legal-link-header">Legal & Policies</a></li>
+
+        <!-- Legal Link -->
+        <li>
+          <a href="legal.html" class="legal-link-header">Legal & Policies</a>
+        </li>
+
+        <!-- AI Tools Dropdown -->
         <li class="dropdown">
-          <a href="#">AI Tools</a>
+          <button aria-label="AI Tools Menu" class="dropdown-btn">AI Tools</button>
+
           <ul class="dropdown-content">
             <li><a href="upscale.html">Upscale</a></li>
             <li><a href="bgremove.html">BG Remove</a></li>
@@ -111,35 +88,59 @@
             <li><a href="formatconverter.html">Format Converter</a></li>
           </ul>
         </li>
+
       </ul>
     </nav>
+
   </div>
 </header>
 
 <main class="container">
 
-  <!-- BANNER -->
-  <section class="banner">
+  <!-- HERO BANNER -->
+  <section class="banner" role="banner">
     <div class="banner-content">
-      <form class="search-bar-wrapper">
+
+      <!-- SEARCH BAR -->
+      <form class="search-bar-wrapper" role="search" aria-label="Image Search">
         <div class="search-bar-border">
           <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search Images" required>
-            <button type="submit" class="search-icon">
-              <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
+
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="Search Images" 
+              required 
+              aria-label="Search Images"
+            >
+
+            <button 
+              type="submit" 
+              class="search-icon" 
+              aria-label="Submit Search"
+            >
+              <img 
+                src="images/search-icon.png" 
+                alt="Search Icon" 
+                width="20" 
+                height="20"
+              >
             </button>
+
           </div>
         </div>
       </form>
 
-      <h2 class="banner-text">
+      <!-- HERO TITLE -->
+      <h1 class="banner-text">
         Explore Free HD Wallpapers & Images
-      </h2>
+      </h1>
+
     </div>
   </section>
 
   <!-- CATEGORIES -->
-  <section class="categories">
+  <section class="categories" aria-label="Image Categories">
     <div class="category-grid">
       <a href="search.html?query=nature" class="category">Nature</a>
       <a href="search.html?query=business" class="category">Business</a>
@@ -154,17 +155,20 @@
   </section>
 
   <!-- POPULAR IMAGES -->
-  <section class="popular-images">
+  <section class="popular-images" aria-labelledby="popular-images-title">
+    <h2 id="popular-images-title" class="visually-hidden">Popular Images</h2>
+
     <div class="masonry-grid" id="masonry">
       <div class="masonry-col"></div>
       <div class="masonry-col"></div>
       <div class="masonry-col"></div>
-      <div class="masonry-col"></div>      
+      <div class="masonry-col"></div>
     </div>
-      
+
   </section>
 
 </main>
+
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
