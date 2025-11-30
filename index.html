@@ -64,23 +64,13 @@
 
 <header class="top-header">
   <div class="top-nav-container">
+    <div class="logo">Pixeora</div>
 
-    <!-- LOGO -->
-    <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
-
-    <!-- NAVIGATION -->
     <nav class="nav-links">
       <ul class="nav-menu">
-
-        <!-- Legal Link -->
-        <li>
-          <a href="legal.html" class="legal-link-header">Legal & Policies</a>
-        </li>
-
-        <!-- AI Tools Dropdown -->
+        <li><a href="legal.html" class="legal-link-header">Legal & Policies</a></li>
         <li class="dropdown">
-          <button aria-label="AI Tools Menu" class="dropdown-btn">AI Tools</button>
-
+          <a href="#">AI Tools</a>
           <ul class="dropdown-content">
             <li><a href="upscale.html">Upscale</a></li>
             <li><a href="bgremove.html">BG Remove</a></li>
@@ -88,59 +78,35 @@
             <li><a href="formatconverter.html">Format Converter</a></li>
           </ul>
         </li>
-
       </ul>
     </nav>
-
   </div>
 </header>
 
 <main class="container">
 
-  <!-- HERO BANNER -->
-  <section class="banner" role="banner">
+  <!-- BANNER -->
+  <section class="banner">
     <div class="banner-content">
-
-      <!-- SEARCH BAR -->
-      <form class="search-bar-wrapper" role="search" aria-label="Image Search">
+      <form class="search-bar-wrapper">
         <div class="search-bar-border">
           <div class="search-bar">
-
-            <input 
-              type="text" 
-              id="searchInput" 
-              placeholder="Search Images" 
-              required 
-              aria-label="Search Images"
-            >
-
-            <button 
-              type="submit" 
-              class="search-icon" 
-              aria-label="Submit Search"
-            >
-              <img 
-                src="images/search-icon.png" 
-                alt="Search Icon" 
-                width="20" 
-                height="20"
-              >
+            <input type="text" id="searchInput" placeholder="Search Images" required>
+            <button type="submit" class="search-icon">
+              <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
             </button>
-
           </div>
         </div>
       </form>
 
-      <!-- HERO TITLE -->
-      <h1 class="banner-text">
+      <h2 class="banner-text">
         Explore Free HD Wallpapers & Images
-      </h1>
-
+      </h2>
     </div>
   </section>
 
   <!-- CATEGORIES -->
-  <section class="categories" aria-label="Image Categories">
+  <section class="categories">
     <div class="category-grid">
       <a href="search.html?query=nature" class="category">Nature</a>
       <a href="search.html?query=business" class="category">Business</a>
@@ -155,20 +121,17 @@
   </section>
 
   <!-- POPULAR IMAGES -->
-  <section class="popular-images" aria-labelledby="popular-images-title">
-    <h2 id="popular-images-title" class="visually-hidden">Popular Images</h2>
-
+  <section class="popular-images">
     <div class="masonry-grid" id="masonry">
       <div class="masonry-col"></div>
       <div class="masonry-col"></div>
       <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
+      <div class="masonry-col"></div>      
     </div>
-
+      
   </section>
 
 </main>
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
