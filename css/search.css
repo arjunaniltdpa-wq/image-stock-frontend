@@ -164,6 +164,7 @@
    ⭐ NEW FLEX MASONRY GRID (same as homepage)
 ============================================================ */
 
+/* Desktop – 5 columns */
 .masonry-grid {
   display: flex;
   gap: 16px;
@@ -177,6 +178,23 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* Remove columns based on screen width */
+@media (max-width: 1200px) { 
+  .masonry-col:nth-child(5) { display: none; }
+}
+
+@media (max-width: 1000px)  { 
+  .masonry-col:nth-child(4) { display: none; }
+}
+
+@media (max-width: 800px)  { 
+  .masonry-col:nth-child(3) { display: none; }
+}
+
+@media (max-width: 600px)  { 
+  .masonry-col:nth-child(2) { display: none; }
 }
 
 .image-wrapper {
@@ -428,12 +446,6 @@
     transform: scale(1.15);
   }
 
-
-  /* ================= Responsive Masonry Columns ================= */
-  @media (max-width: 1400px) { .masonry-grid { column-count: 5; } }
-  @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
-  @media (max-width: 700px)  { .masonry-grid { column-count: 1; } }
-  @media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
 
   /* ================= Tablet ================= */
   @media (max-width: 1200px) and (min-width: 601px) {
