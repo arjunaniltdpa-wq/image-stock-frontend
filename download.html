@@ -244,11 +244,11 @@ function startRelatedSystem(keywords) {
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
   `;
 
   loadNextKeywordBatch();
 }
+
 
 async function loadNextKeywordBatch() {
   if (relatedKeywordIndex >= relatedKeywordList.length) return;
@@ -297,15 +297,14 @@ async function loadMoreRelated(keyword) {
   }
 }
 
-/* ---------------------------------- */
-/* DISPLAY RELATED (SEARCH STYLE) */
-/* ---------------------------------- */
-
 function displayRelated(images) {
-  const cols = document.querySelectorAll("#related-grid .related-col");
+  const cols = document.querySelectorAll("#related-grid .masonry-col");
+  if (!cols.length) return;
+
   let colIndex = 0;
 
   images.forEach((img) => {
+
     const thumb =
       img.thumbnailUrl ||
       (img.thumbnailFileName
@@ -316,22 +315,25 @@ function displayRelated(images) {
     card.classList.add("image-item");
 
     card.innerHTML = `
-      <div class="image-wrapper">
+      <div class="image-wrapper" style="position:relative;">
         <div class="skeleton"></div>
 
         <a href="/photo/${img.slug}-${img._id}">
-          <img
+          <img 
             data-src="${thumb}"
             class="lazy-img image-load"
             alt="${img.alt || img.title}"
           >
         </a>
 
-        <span class="download-overlay"></span>
+        <span class="download-overlay"
+              onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'">
+        </span>
       </div>
     `;
 
     cols[colIndex].appendChild(card);
+
     colIndex = (colIndex + 1) % cols.length;
   });
 
