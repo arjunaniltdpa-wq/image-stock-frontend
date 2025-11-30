@@ -158,7 +158,7 @@
 const API_BASE = "https://api.pixeora.com";
 
 /* ---------------------------------- */
-/* FIXED SEARCH REDIRECT */
+/* FIXED SEARCH REDIRECT (FINAL) */
 /* ---------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -168,7 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const q = document.getElementById("searchInput").value.trim();
       if (q.length > 0) {
-        window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+        /* ⭐ FIXED — Use absolute path */
+        window.location.href = `/search.html?query=${encodeURIComponent(q)}`;
       }
     });
   }
@@ -215,7 +216,7 @@ async function loadImageDetails() {
 
     document.getElementById("keywords").innerHTML =
       wordList.map(t =>
-        `<span onclick="location.href='search.html?query=${encodeURIComponent(t)}'">${t}</span>`
+        `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
     const category = img.category || wordList[0];
