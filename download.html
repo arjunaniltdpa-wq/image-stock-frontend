@@ -428,20 +428,14 @@ function displayRelated(images) {
     card.classList.add("image-item");
 
     card.innerHTML = `
-      <div class="image-wrapper" style="position:relative; overflow:hidden;">
-        
-        <!-- Skeleton -->
+      <div class="image-wrapper" style="position:relative;">
         <div class="skeleton"></div>
 
-        <!-- Blur-up Lazy Image -->
         <a href="/photo/${img.slug}-${img._id}">
           <img 
             data-src="${thumb}"
-            src="${thumb}"                   <!-- instant tiny preview -->
-            class="lazy-img blur-load"
-            alt="${img.alt || img.title || 'HD Image'}"
-            loading="lazy"
-            decoding="async"
+            class="lazy-img image-load"
+            alt="${img.alt || img.title}"
           >
         </a>
 
