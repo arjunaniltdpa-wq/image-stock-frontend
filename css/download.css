@@ -575,62 +575,94 @@ html, body {
 }
 
 /* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
-/* Make columns tight like Pinterest */
-.masonry-grid {
-  display: flex;
-  gap: 20px; /* reduce spacing */
-  align-items: flex-start;
+
+/* =========================
+   RELATED SECTION 5-COLUMN
+========================= */
+
+.related-section {
+  max-width: 1700px;
+  margin: 40px auto;
+  padding: 0 40px;
 }
 
-.masonry-col {
-  width: 25%;
+/* Flex Masonry */
+.related-masonry {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.related-col {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* reduce vertical spacing */
+  gap: 16px;
 }
 
-/* Card wrapper */
-.image-wrapper {
+/* Same card style as main grid */
+.related-col .image-item {
   position: relative;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 12px;
 }
 
-/* The image */
-.image-wrapper img {
+.related-col img {
   width: 100%;
-  height: auto;
-  border-radius: 14px;
   display: block;
+  border-radius: 12px;
+  object-fit: cover;
 }
 
-/* DOWNLOAD ICON OVERLAY */
-.download-overlay {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 38px;
-  height: 38px;
-  background: rgba(0, 0, 0, 0.55);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: 0.3s ease;
+/* ------------------------------
+   RESPONSIVE (5 → 4 → 3 → 2 → 1)
+-------------------------------- */
+@media (max-width: 1600px) {
+  .related-masonry .related-col:nth-child(5) { display: none; }
 }
 
-.download-overlay i {
-  color: white;
-  font-size: 18px;
+@media (max-width: 1200px) {
+  .related-masonry .related-col:nth-child(4) { display: none; }
 }
 
-/* Show icon on hover */
-.image-wrapper:hover .download-overlay {
-  opacity: 1;
-  transform: scale(1.05);
+@media (max-width: 1000px) {
+  .related-masonry .related-col:nth-child(3) { display: none; }
 }
+
+@media (max-width: 700px) {
+  .related-masonry .related-col:nth-child(2) { display: none; }
+}
+
+@media (max-width: 500px) {
+  .related-masonry .related-col:nth-child(1) { flex: 1; }
+}
+
+  /* ⭐ Clean icon only (no background) */
+  .download-overlay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+    width: 130px;
+    height: 50px;
+
+    background-image: url('../images/download-icon.png');
+    background-size: 120px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  /* Show on hover */
+  .related-item:hover .download-overlay {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1.15);
+  }
+  
 
 /* Remove giant white space */
 .image-item {
