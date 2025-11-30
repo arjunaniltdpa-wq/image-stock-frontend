@@ -160,67 +160,78 @@
       padding: 20px;
     }
 
-  /* ============================================================
-    ⭐ NEW FLEX MASONRY GRID (same as homepage)
-  ============================================================ */
+/* ============================================================
+   ⭐ UPDATED FLEX MASONRY GRID — PERFECT CENTER + NO SCROLL ⭐
+   Same behavior as RELATED section
+============================================================ */
 
-/* ⭐ MAKE SEARCH RESULTS BEHAVE EXACTLY LIKE RELATED IMAGES ⭐ */
-
-/* Search Results Wrapper */
+/* Search Results Outer Wrapper */
 .search-results {
     width: 100% !important;
-    max-width: 1700px !important;
+    max-width: 1400px !important;     /* same as related */
     margin: 0 auto !important;
-    padding: 0 40px !important;
+    padding: 0 30px !important;
 
-    /* REMOVE ALL internal scroll */
+    overflow: visible !important;
     height: auto !important;
     max-height: none !important;
-    overflow: visible !important;
 }
 
-/* Flex Masonry same as RELATED */
+/* Flex Masonry Container */
 .masonry-grid {
+    width: fit-content !important;     /* ⭐ keeps grid centered */
+    max-width: 100% !important;
+
+    margin-left: auto !important;       /* ⭐ PERFECT CENTER */
+    margin-right: auto !important;
+
     display: flex !important;
     gap: 16px !important;
-    width: 100% !important;
+
     padding: 0 !important;
     overflow: visible !important;
+    justify-content: center !important;
 }
 
-/* Columns same as RELATED columns */
+/* Masonry Columns */
 .masonry-col {
-    flex: 1 !important;
+    flex: 0 0 auto !important;   /* ⭐ prevents auto-stretch */
+    width: 25% !important;       /* 4 columns desktop */
+
     display: flex !important;
     flex-direction: column !important;
     gap: 16px !important;
 
     overflow: visible !important;
-    height: auto !important;
+    contain: none !important;
 }
 
-/* Same card behavior as related */
+/* Image card */
 .masonry-col .image-item {
     position: relative !important;
     overflow: hidden !important;
     border-radius: 12px !important;
 }
 
-/* Remove ANY scrollbar that browser tries to create */
+/* Image proper scaling */
+.masonry-col .image-item img {
+    width: 100% !important;
+    height: auto !important;       /* ⭐ prevents distortion */
+    object-fit: cover !important;
+    border-radius: 12px !important;
+}
+
+/* Hide scrollbars */
 .search-results::-webkit-scrollbar,
 .masonry-grid::-webkit-scrollbar,
 .masonry-col::-webkit-scrollbar {
     display: none !important;
 }
 
-/* Stop Chrome from wrapping items in scroll containers */
-.masonry-grid,
-.masonry-col {
-    contain: none !important;
-}
-
-  /* Hover download icon */
-  .download-overlay {
+/* ============================================================
+   ⭐ DOWNLOAD OVERLAY
+============================================================ */
+.download-overlay {
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -230,27 +241,37 @@
     opacity: 0;
     transition: 0.25s ease;
     cursor: pointer;
-  }
+}
 
-  .image-item:hover .download-overlay {
+.image-item:hover .download-overlay {
     opacity: 1;
     transform: scale(1.15);
-  }
+}
 
-  /* Responsive Columns — HIDES certain flex columns */
-  @media (max-width: 1200px) { 
-    .masonry-col:nth-child(4) { display: none; }
-  }
+/* ============================================================
+   ⭐ RESPONSIVE COLUMNS — EXACT SAME AS RELATED
+============================================================ */
 
-  @media (max-width: 900px)  { 
-    .masonry-col:nth-child(3) { display: none; }
-  }
+/* Desktop → Tablet */
+@media (max-width: 1200px) { 
+    .masonry-col:nth-child(4) { display: none !important; }
+    .masonry-col { width: 33.33% !important; }   /* 3 columns */
+}
 
-  @media (max-width: 600px)  { 
+/* Tablet → Mobile Large */
+@media (max-width: 900px)  { 
+    .masonry-col:nth-child(3) { display: none !important; }
+    .masonry-col { width: 50% !important; }      /* 2 columns */
+}
+
+/* Mobile */
+@media (max-width: 600px)  { 
     .masonry-col:nth-child(2),
     .masonry-col:nth-child(3),
-    .masonry-col:nth-child(4) { display: none; }
-  }
+    .masonry-col:nth-child(4) { display: none !important; }
+
+    .masonry-col { width: 100% !important; }     /* full width */
+}
 
     .modal-overlay {
       position: fixed;
