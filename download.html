@@ -217,7 +217,6 @@ function detectMainSubject(title) {
 /* ---------------------------------- */
 
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
-
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/slug/${fullSlug}`);
@@ -228,50 +227,73 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    /* ⭐ STEP 1 — Instant tiny thumbnail (LCP takes this!) */
-    const thumbUrl = `https://cdn.pixeora.com/thumbs/${encodeURIComponent(img.fileName)}`;
+    const file = encodeURIComponent(img.fileName);
 
-    /* ⭐ STEP 2 — 1200px LCP version (loads fast) */
-    const lcpUrl = `https://cdn.pixeora.com/lcp/${encodeURIComponent(img.fileName)}`;
-
-    /* ⭐ STEP 3 — Full original HD version */
-    const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+    /* REAL paths */
+    const thumbUrl    = `https://cdn.pixeora.com/thumbs/${file}`;
+    const lcpUrl      = `https://cdn.pixeora.com/lcp/${file}`;
+    const originalUrl = `https://cdn.pixeora.com/${file}`;
 
     const mainImg = document.getElementById("download-image");
+    const skeleton = document.getElementById("main-skeleton");
 
-    /* ⭐ Preload LCP (faster LCP paint) */
-    const preload = document.createElement("link");
-    preload.rel = "preload";
-    preload.as = "image";
-    preload.fetchPriority = "high";
-    preload.href = lcpUrl;
-    document.head.appendChild(preload);
+    /* --------------------------------------------
+       PREVENT PAGE COLLAPSE — Default aspect ratio
+    ---------------------------------------------*/
+    mainImg.style.display = "block";
+    mainImg.style.width = "100%";
+    mainImg.style.aspectRatio = "16/10";  // temporary safe space
+    skeleton.style.display = "block";
 
-    /* ⭐ STAGE 1: Show tiny thumbnail immediately */
-    mainImg.src = thumbUrl;
-    mainImg.style.filter = "blur(20px)";
-    mainImg.style.opacity = "0.7";
 
-    /* Remove skeleton now (thumbnail visible instantly) */
-    document.getElementById("main-skeleton").style.display = "none";
+    /* --------------------------------------------
+       STEP 1 — Try Thumbnail FIRST (SUPER FAST)
+    ---------------------------------------------*/
+    const thumb = new Image();
+    thumb.src = thumbUrl;
 
-    /* ⭐ STAGE 2: Load 1200px LCP image */
-    const lcpImage = new Image();
-    lcpImage.src = lcpUrl;
+    thumb.onload = () => {
+      mainImg.src = thumbUrl;
+      mainImg.style.filter = "blur(20px)";
+      mainImg.style.opacity = "0.6";
+      skeleton.style.display = "none";
 
-    lcpImage.onload = () => {
-      /* Swap thumbnail → LCP */
-      mainImg.src = lcpUrl;
-      mainImg.style.transition = "filter .5s ease, opacity .5s ease";
-      mainImg.style.filter = "blur(4px)";
-      mainImg.style.opacity = "1";
+      loadLCP();  // Continue
+    };
 
-      /* Fix CLS using aspect ratio */
-      if (lcpImage.naturalWidth && lcpImage.naturalHeight) {
-        mainImg.style.aspectRatio = `${lcpImage.naturalWidth} / ${lcpImage.naturalHeight}`;
-      }
+    thumb.onerror = () => {
+      loadLCP();  // Skip thumbnail, go to LCP
+    };
 
-      /* ⭐ STAGE 3: After LCP loads, load the original HD */
+
+    /* --------------------------------------------
+       STEP 2 — Load LCP (1200px)
+    ---------------------------------------------*/
+    function loadLCP() {
+      const lcp = new Image();
+      lcp.src = lcpUrl;
+
+      lcp.onload = () => {
+        mainImg.src = lcpUrl;
+        mainImg.style.transition = "filter .4s ease";
+        mainImg.style.filter = "blur(6px)";
+
+        /* Fix aspect ratio properly */
+        mainImg.style.aspectRatio = `${lcp.naturalWidth}/${lcp.naturalHeight}`;
+
+        loadHD();
+      };
+
+      lcp.onerror = () => {
+        loadHD(); // fallback
+      };
+    }
+
+
+    /* --------------------------------------------
+       STEP 3 — Load Full HD
+    ---------------------------------------------*/
+    function loadHD() {
       const hd = new Image();
       hd.src = originalUrl;
 
@@ -281,41 +303,39 @@ async function loadImageDetails() {
           mainImg.style.filter = "blur(0px)";
         }, 200);
       };
-    };
+    }
 
-    /* TITLE */
+
+    /* --------------------------------------------
+       TITLE + KEYWORDS + RELATED
+    ---------------------------------------------*/
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
 
-    /* DOWNLOAD LINK */
     document.getElementById("download-link").href =
-      `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
+      `${API_BASE}/api/images/download/${file}`;
 
     window.__originalFileName = img.fileName;
 
-    /* KEYWORDS */
     const keywords =
       img.keywords?.length ? img.keywords :
-      img.tags?.length ? img.tags :
-      [];
+      img.tags?.length ? img.tags : [];
 
     document.getElementById("keywords").innerHTML =
       keywords.map(t =>
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
-    /* SUBJECT DETECTION + Related Images */
-    const mainSubject = detectMainSubject(img.title || "");
-    const bestKeywords = [
-      mainSubject,
+    const subject = detectMainSubject(img.title || "");
+
+    startRelatedSystem([
+      subject,
       img.category,
-      ...keywords.filter(k => mainSubject && k.toLowerCase().includes(mainSubject)),
-      ...keywords.slice(0, 5)
-    ].filter(Boolean);
+      ...keywords.slice(0, 6)
+    ].filter(Boolean));
 
-    startRelatedSystem(bestKeywords);
 
-  } catch (e) {
+  } catch (err) {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
