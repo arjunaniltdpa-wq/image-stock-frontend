@@ -213,130 +213,69 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* IMAGE DETAILS — PERFECT 3-STAGE LOADER */
+/* FIXED SLUG */
 /* ---------------------------------- */
+const fullSlugRaw = window.location.pathname.split("/photo/")[1] || "";
+const slug = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
 
-const fullSlug = window.location.pathname.split("/photo/")[1] || "";
-
+/* ---------------------------------- */
+/* IMAGE DETAILS */
+/* ---------------------------------- */
 async function loadImageDetails() {
   try {
-    const res = await fetch(`${API_BASE}/api/images/slug/${fullSlug}`);
+    const res = await fetch(`${API_BASE}/api/images/slug/${slug}`);
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
     }
 
     const img = await res.json();
+
+    if (!img.fileName) {
+      console.error("Missing fileName:", img);
+      document.getElementById("image-name").textContent = "Image Not Found.";
+      return;
+    }
+
     const file = encodeURIComponent(img.fileName);
 
-    /* --------------------------------------------
-       REAL & SAFE IMAGE PATHS
-    ---------------------------------------------*/
     const thumbUrl =
-      img.thumbnailUrl ||
-      (img.thumbnailFileName
+      img.thumbnailFileName
         ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-        : `https://cdn.pixeora.com/thumbs/${file}`);
+        : `https://cdn.pixeora.com/thumbs/${file}`;
 
     const lcpUrl = `https://cdn.pixeora.com/lcp/${file}`;
-
-    /* ⭐ FIXED: Always use REAL original image root folder */
     const originalUrl = `https://cdn.pixeora.com/${file}`;
 
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    /* --------------------------------------------
-       INITIAL SAFE SPACE (no layout shift)
-    ---------------------------------------------*/
-    mainImg.style.width = "100%";
-    mainImg.style.aspectRatio = "16/10";  // temporary safety ratio
-
-    /* --------------------------------------------
-       STEP 1 — Show Thumbnail Instantly
-    ---------------------------------------------*/
     mainImg.src = thumbUrl;
     mainImg.style.filter = "blur(20px)";
     mainImg.style.opacity = "0.6";
     skeleton.style.display = "none";
 
-    /* --------------------------------------------
-       STEP 2 — Load LCP (1200px)
-    ---------------------------------------------*/
-    const lcpImg = new Image();
-    lcpImg.src = lcpUrl;
+    const lcp = new Image();
+    lcp.src = lcpUrl;
 
-    lcpImg.onload = () => {
+    lcp.onload = () => {
       mainImg.src = lcpUrl;
       mainImg.style.transition = "filter .4s ease, opacity .3s ease";
       mainImg.style.filter = "blur(6px)";
       mainImg.style.opacity = "1";
 
-      /* Fix aspect ratio properly */
-      if (lcpImg.naturalWidth && lcpImg.naturalHeight) {
-        mainImg.style.aspectRatio =
-          `${lcpImg.naturalWidth}/${lcpImg.naturalHeight}`;
-      }
-
-      loadHD(); // go to next stage
+      loadHD();
     };
 
-    /* --------------------------------------------
-       STEP 3 — Load FULL HD silently
-    ---------------------------------------------*/
     function loadHD() {
       const hd = new Image();
       hd.src = originalUrl;
 
       hd.onload = () => {
-        setTimeout(() => {
-          mainImg.src = originalUrl;
-          mainImg.style.filter = "blur(0px)";
-        }, 150);
-      };
-
-      hd.onerror = () => {
-        console.warn("HD image not found:", originalUrl);
+        mainImg.src = originalUrl;
+        mainImg.style.filter = "blur(0px)";
       };
     }
-
-    /* --------------------------------------------
-       TITLE + DOWNLOAD LINK
-    ---------------------------------------------*/
-    document.getElementById("image-name").textContent =
-      img.title || img.fileName;
-
-    document.getElementById("download-link").href =
-      `${API_BASE}/api/images/download/${file}`;
-
-    window.__originalFileName = img.fileName;
-
-    /* --------------------------------------------
-       KEYWORDS
-    ---------------------------------------------*/
-    const keywords =
-      img.keywords?.length
-        ? img.keywords
-        : img.tags?.length
-        ? img.tags
-        : [];
-
-    document.getElementById("keywords").innerHTML = keywords
-      .map(t =>
-        `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
-      )
-      .join("");
-
-    /* --------------------------------------------
-       RELATED IMAGES
-    ---------------------------------------------*/
-    const subject = detectMainSubject(img.title || "");
-
-    startRelatedSystem([
-      subject,
-      img.category,
-      ...keywords.slice(0, 6)
-    ].filter(Boolean));
 
   } catch (err) {
     console.error(err);
