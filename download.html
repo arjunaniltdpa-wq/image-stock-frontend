@@ -211,36 +211,43 @@ function detectMainSubject(title) {
 
   return "";
 }
+/* ---------------------------------- */
+/* FIXED CLEAN SLUG SYSTEM (FINAL)   */
+/* ---------------------------------- */
 
-/* ---------------------------------- */
-/* FIXED CLEAN SLUG SYSTEM            */
-/* ---------------------------------- */
 const fullSlugRaw = window.location.pathname.split("/photo/")[1] || "";
 
-/* Remove MongoDB 24-character ID */
-let cleaned = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
+/* Remove MongoDB 24-character ID at end */
+const noId = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
 
-/* If slug contains undefined → remove it */
-if (!cleaned || cleaned === "undefined" || cleaned.startsWith("undefined")) {
-    cleaned = "";
+/* Cleanup undefined cases */
+let cleaned = noId.trim();
+if (
+    cleaned === "" ||
+    cleaned === "undefined" ||
+    cleaned.startsWith("undefined")
+) {
+    cleaned = null;
 }
 
 /* Final slug for API */
 const finalSlug =
-    cleaned ||
-    fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "") || 
-    fullSlugRaw;
+    cleaned ||      // best clean version
+    noId ||         // fallback without ID
+    fullSlugRaw;    // fallback full string
+
+console.log("🔎 Final Slug Used:", finalSlug);
+
 
 /* ---------------------------------- */
 /* IMAGE DETAILS — Thumbnail → HD     */
 /* ---------------------------------- */
+
 async function loadImageDetails() {
   try {
-
     const apiSlug = finalSlug;
 
     const res = await fetch(`${API_BASE}/api/images/slug/${apiSlug}`);
-
 
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
@@ -249,7 +256,6 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    /* Safety for missing fileName */
     if (!img.fileName) {
       console.error("❌ Missing fileName in record:", img);
       document.getElementById("image-name").textContent = "Image Not Found.";
@@ -258,9 +264,7 @@ async function loadImageDetails() {
 
     const file = encodeURIComponent(img.fileName);
 
-    /* ----------------------------------------
-       REAL PATHS FROM CDN
-    -----------------------------------------*/
+    /* CDN URLs */
     const thumbUrl = img.thumbnailFileName
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
       : `https://cdn.pixeora.com/thumbs/${file}`;
@@ -270,39 +274,32 @@ async function loadImageDetails() {
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    /* ----------------------------------------
-       STEP 1 — thumbnail blurred
-    -----------------------------------------*/
+    /* STEP 1 — show thumbnail blurred */
     mainImg.src = thumbUrl;
     mainImg.style.filter = "blur(15px)";
     mainImg.style.opacity = "0.7";
     skeleton.style.display = "none";
 
-    /* ----------------------------------------
-       STEP 2 — load HD image
-    -----------------------------------------*/
+    /* STEP 2 — load HD image */
     const hd = new Image();
     hd.src = originalUrl;
 
     hd.onload = () => {
       mainImg.src = originalUrl;
       mainImg.style.transition = "filter .4s ease, opacity .3s ease";
-      mainImg.style.filter = "blur(0px)";
+      mainImg.style.filter = "blur(0)";
       mainImg.style.opacity = "1";
 
-      /* fix aspect ratio */
       if (hd.naturalWidth && hd.naturalHeight) {
         mainImg.style.aspectRatio = `${hd.naturalWidth}/${hd.naturalHeight}`;
       }
     };
 
     hd.onerror = () => {
-      console.warn("❌ HD image missing:", originalUrl);
+      console.warn("❌ HD missing:", originalUrl);
     };
 
-    /* ----------------------------------------
-       SET TITLE + DOWNLOAD
-    -----------------------------------------*/
+    /* Title + Download */
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
 
@@ -311,15 +308,12 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* ----------------------------------------
-       KEYWORDS
-    -----------------------------------------*/
-    const keywords =
-      img.keywords?.length
-        ? img.keywords
-        : img.tags?.length
-        ? img.tags
-        : [];
+    /* KEYWORDS */
+    const keywords = img.keywords?.length
+      ? img.keywords
+      : img.tags?.length
+      ? img.tags
+      : [];
 
     document.getElementById("keywords").innerHTML = keywords
       .map(
@@ -330,9 +324,7 @@ async function loadImageDetails() {
       )
       .join("");
 
-    /* ----------------------------------------
-       RELATED IMAGES
-    -----------------------------------------*/
+    /* RELATED IMAGES */
     const subject = detectMainSubject(img.title || "");
     startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
 
@@ -341,8 +333,6 @@ async function loadImageDetails() {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
-
-
 
 /* ---------------------------------- */
 /* RELATED SYSTEM — UPDATED */
