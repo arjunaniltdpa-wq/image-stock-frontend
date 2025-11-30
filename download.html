@@ -217,28 +217,30 @@ function detectMainSubject(title) {
 /* ---------------------------------- */
 const fullSlugRaw = window.location.pathname.split("/photo/")[1] || "";
 
-/* Remove Mongo ID */
+/* Remove MongoDB 24-character ID */
 let cleaned = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
 
-/* If slug starts with or equals undefined → fix */
+/* If slug contains undefined → remove it */
 if (!cleaned || cleaned === "undefined" || cleaned.startsWith("undefined")) {
-    cleaned = "";  // force clean
+    cleaned = "";
 }
 
-const apiSlug = cleaned || fullSlugRaw.split("-").slice(0, -1).join("-");
+/* Final slug for API */
+const finalSlug =
+    cleaned ||
+    fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "") || 
+    fullSlugRaw;
 
 /* ---------------------------------- */
 /* IMAGE DETAILS — Thumbnail → HD     */
 /* ---------------------------------- */
 async function loadImageDetails() {
   try {
-    /* ----------------------------------------
-       1) FIX API CALL
-       If clean slug fails → fallback to full slug
-    -----------------------------------------*/
-    const apiSlug = slug || fullSlugRaw;
+
+    const apiSlug = finalSlug;
 
     const res = await fetch(`${API_BASE}/api/images/slug/${apiSlug}`);
+
 
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
