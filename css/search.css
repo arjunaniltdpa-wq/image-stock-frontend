@@ -630,44 +630,6 @@
     }
   }
 
-/* Remove nested scrollbars completely */
-* {
-  overscroll-behavior: none !important;
-}
-
-.masonry-grid,
-.masonry-col,
-.image-wrapper,
-.related-grid {
-  overflow: visible !important;
-}
-
-/* FIX: prevent skeleton from creating tall empty columns */
-.skeleton {
-  width: 100%;
-  height: 0;
-  padding-bottom: 70%;   /* keeps ratio */
-  border-radius: 12px;
-  background: linear-gradient(90deg,
-    rgba(220, 220, 220, 0.21),
-    rgba(240, 240, 240, 0.663),
-    rgba(189, 189, 189, 0.15)
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.5s ease infinite;
-}
-
-/* Remove any auto scroll from related section */
-.related-grid {
-  overflow-y: visible !important;
-  max-height: none !important;
-}
-
-
-@keyframes shimmer {
-  0% { background-position: -100% 0; }
-  100% { background-position: 100% 0; }
-}
 
 /* --- Smooth Fade + Blur --- */
 .image-load {
@@ -735,6 +697,38 @@
 
 @media (max-width: 500px) {
   .related-masonry .related-col:nth-child(1) { flex: 1; }
+}
+/* Remove nested scrollbars completely */
+* {
+  overscroll-behavior: none !important;
+}
+
+.masonry-grid,
+.masonry-col,
+.image-wrapper,
+.related-grid {
+  overflow: visible !important;
+}
+
+/* FIX: prevent skeleton from creating tall empty columns */
+.skeleton {
+  width: 100%;
+  height: 0;
+  padding-bottom: 70%;   /* keeps ratio */
+  border-radius: 12px;
+  background: linear-gradient(90deg,
+    rgba(220, 220, 220, 0.21),
+    rgba(240, 240, 240, 0.663),
+    rgba(189, 189, 189, 0.15)
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.5s ease infinite;
+}
+
+/* Remove any auto scroll from related section */
+.related-grid {
+  overflow-y: visible !important;
+  max-height: none !important;
 }
 
     
