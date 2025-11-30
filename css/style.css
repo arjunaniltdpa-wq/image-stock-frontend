@@ -484,7 +484,7 @@ color: white;
 .masonry-grid {
   display: flex;
   gap: 16px;
-  max-width: 1500px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 40px;
 }
@@ -510,7 +510,7 @@ color: white;
   border-radius: 12px;
   display: block;
 }
-
+      
 
 /* 4 columns desktop */
 @media (max-width: 1400px) { .masonry-grid { gap: 14px; } }

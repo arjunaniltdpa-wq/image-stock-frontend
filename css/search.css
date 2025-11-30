@@ -167,7 +167,7 @@
 /* Outer wrapper */
 .search-results {
     width: 100%;
-    max-width: 1400px;       /* Perfect center size */
+    max-width:100%;       /* Perfect center size */
     margin: 0 auto;
     padding: 0 16px;         /* Smaller padding -> fixes tablet */
     box-sizing: border-box;
