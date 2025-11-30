@@ -164,37 +164,61 @@
     ⭐ NEW FLEX MASONRY GRID (same as homepage)
   ============================================================ */
 
-  .masonry-grid {
-    display: flex;
-    gap: 16px;
-    padding: 0 30px;
-    max-width: 1500px;
-    margin: 0 auto;
-  }
+/* ⭐ MAKE SEARCH RESULTS BEHAVE EXACTLY LIKE RELATED IMAGES ⭐ */
 
-  .masonry-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+/* Search Results Wrapper */
+.search-results {
+    width: 100% !important;
+    max-width: 1700px !important;
+    margin: 0 auto !important;
+    padding: 0 40px !important;
 
-  .image-wrapper {
-    position: relative;   /* ✔ FIX: allows absolute button positioning */
-    overflow: hidden;
-    min-height: 220px;
-    border-radius: 12px;
-  }
+    /* REMOVE ALL internal scroll */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
 
+/* Flex Masonry same as RELATED */
+.masonry-grid {
+    display: flex !important;
+    gap: 16px !important;
+    width: 100% !important;
+    padding: 0 !important;
+    overflow: visible !important;
+}
 
-  .image-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-    display: block;
-  }
-    
+/* Columns same as RELATED columns */
+.masonry-col {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+
+    overflow: visible !important;
+    height: auto !important;
+}
+
+/* Same card behavior as related */
+.masonry-col .image-item {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+}
+
+/* Remove ANY scrollbar that browser tries to create */
+.search-results::-webkit-scrollbar,
+.masonry-grid::-webkit-scrollbar,
+.masonry-col::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Stop Chrome from wrapping items in scroll containers */
+.masonry-grid,
+.masonry-col {
+    contain: none !important;
+}
+
   /* Hover download icon */
   .download-overlay {
     position: absolute;
@@ -686,18 +710,25 @@
   @media (max-width: 500px) {
     .related-masonry .related-col:nth-child(1) { flex: 1; }
   }
-/* ⭐ FIX SEARCH RESULT INTERNAL SCROLLING ⭐ */
-.search-results {
-    height: auto !important;
-    overflow: visible !important;
-}
 
-.masonry-grid {
-    height: auto !important;
-    overflow: visible !important;
-}
+/* ⭐ PERMANENT FIX: Remove all internal scrollbars from search page ⭐ */
 
+.search-results,
+.masonry-grid,
 .masonry-col {
+    height: auto !important;
+    max-height: none !important;
     overflow: visible !important;
+    overscroll-behavior: none !important; 
 }
 
+.masonry-col::-webkit-scrollbar,
+.search-results::-webkit-scrollbar,
+.masonry-grid::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Prevent Chrome from creating temporary scroll containers */
+.masonry-col {
+    contain: none !important;
+}
