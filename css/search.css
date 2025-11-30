@@ -183,6 +183,8 @@
   position: relative;
   border-radius: 12px;
   overflow: hidden;
+  min-height: 220px;   /* ← FIX */
+
 }
 
 .image-item img {
@@ -630,7 +632,7 @@
 /* --- SOFT GREY SKELETON --- */
 .skeleton {
   width: 100%;
-  padding-bottom: 70%; /* auto height placeholder */
+  min-height: 220px;   /* ← FIX */
   border-radius: 12px;
   background: linear-gradient(90deg,
     rgba(220, 220, 220, 0.21),
@@ -640,6 +642,7 @@
   background-size: 400% 100%;
   animation: shimmer 1.5s ease infinite;
 }
+
 @keyframes shimmer {
   0% { background-position: -100% 0; }
   100% { background-position: 100% 0; }

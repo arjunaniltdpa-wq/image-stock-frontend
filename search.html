@@ -177,29 +177,26 @@ function addToNextColumn(card) {
 }
 
 /* LAZY LOAD */
-function lazyLoadInit() {
-  const lazyImages = document.querySelectorAll("img.lazy-img");
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+    const img = entry.target;
+    img.src = img.dataset.src;
 
-      const img = entry.target;
-      img.src = img.dataset.src;
+    img.onload = () => {
+      img.classList.add("image-loaded");
+      const sk = img.closest(".image-wrapper").querySelector(".skeleton");
+      if (sk) sk.remove();
+    };
 
-      img.onload = () => {
-        img.classList.add("image-loaded");
-        const sk = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (sk) sk.remove();
-      };
-
-      img.classList.remove("lazy-img");
-      obs.unobserve(img);
-    });
+    obs.unobserve(img);
   });
+}, {
+  rootMargin: "300px 0px 300px 0px",  // ⭐ loads earlier
+  threshold: 0.01
+});
 
-  lazyImages.forEach(img => observer.observe(img));
-}
 
 function applyImageLoadAnimation() {
   document.querySelectorAll(".image-load").forEach(img => {
