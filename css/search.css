@@ -382,7 +382,6 @@
 
   .related-grid {
     width: 100%;
-    column-count: 3;
     column-gap: 16px;
     max-height: none !important;      /* ✔ allow full height */
     overflow-y: visible !important;   /* ✔ no inner scrollbar */
@@ -535,24 +534,7 @@
       display: none !important;
     }
   }
-  /* GRID FIX */
-  @media (max-width: 600px) {
-    .gallery {
-      column-count: 1 !important;
-    }
-  }
 
-  @media (max-width: 1140px) and (min-width: 601px) {
-    .gallery {
-      column-count: 3 !important;
-    }
-  }
-
-  @media (min-width: 1140px) {
-    .gallery {
-      column-count: 4 !important;
-    }
-  }
 
   /* ============================================================
     ⭐ FINAL FIX — REMOVE RIGHT GAP ON MOBILE & TABLET ⭐
@@ -611,17 +593,6 @@
           margin: 0 !important;
           box-sizing: border-box !important;
       }
-  }
-
-
-  /* FORCE MOBILE = 1 COLUMN */
-  @media (max-width: 600px) {
-    .gallery {
-      column-count: 1 !important;
-    }
-    #related-images {
-      column-count: 1 !important;
-    }
   }
 
 /* --- SOFT GREY SKELETON --- */
