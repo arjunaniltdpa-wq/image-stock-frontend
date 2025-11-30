@@ -216,7 +216,33 @@ function addToNextColumn(card) {
   colIndex = (colIndex + 1) % cols.length;
 }
 
-/* LOAD IMAGES */
+/* ⭐⭐⭐ INITIAL IMAGE LOAD (12 images instantly) ⭐⭐⭐ */
+async function loadInitialImages() {
+  try {
+    loading = true;
+
+    const res = await fetch(`${API_BASE}/api/images/popular?page=1&limit=12`);
+    const data = await res.json();
+    const images = data.images || [];
+
+    images.forEach(img => {
+      const card = createImageCard(img);
+      addToNextColumn(card);
+    });
+
+    lazyLoadInit();
+    applyImageLoadAnimation();
+
+    // After initial load → start from page=2
+    page = 2;
+    loading = false;
+
+  } catch (err) {
+    console.error("INITIAL LOAD ERROR:", err);
+  }
+}
+
+/* LOAD IMAGES (infinite scroll) */
 async function loadImages() {
   if (loading) return;
   loading = true;
@@ -287,8 +313,8 @@ function onScroll() {
 }
 window.addEventListener("scroll", onScroll);
 
-/* INITIAL LOAD */
-loadImages();
+/* ⭐ Call instant initial load ⭐ */
+loadInitialImages();
 
 /* SEARCH EVENT */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
@@ -339,3 +365,4 @@ input.addEventListener("input", () => {
   }, 200);
 });
 </script>
+
