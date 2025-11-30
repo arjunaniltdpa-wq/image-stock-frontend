@@ -508,39 +508,57 @@ html, body {
 /* ---------- RELATED SECTION TITLE ---------- */
 .related-wrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* ⭐ Centers the grid */
+  justify-content: center;
   margin-top: 30px;
 }
 
 .related-wrapper h2 {
+  width: 100%;
   max-width: 1500px;
-  margin: 0 auto 18px;
   padding: 0 20px;
   font-size: 22px;
+  margin-bottom: 18px;
 }
 
-/* ---------- MASONRY GRID FULL WIDTH ---------- */
+/* Override masonry full width */
+.masonry-grid {
+  width: auto;              /* ⭐ Prevent full expansion */
+  max-width: 1500px;
+  display: flex;
+  justify-content: center;  /* ⭐ Center all columns */
+  gap: 16px;
+  padding: 0 20px;
+}
+
+/* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
+
+/* ---------- RELATED FULL-WIDTH GRID ---------- */
 .masonry-grid {
   display: flex;
-  justify-content: center;   /* centers grid content */
+  justify-content: center;
   align-items: flex-start;
   gap: 16px;
 
-  width: 100%;               /* ⭐ full screen width */
-  max-width: 1700px;         /* wide but still controlled */
+  width: 100%;
+  max-width: 100%;       /* ⭐ FULL WIDTH */
+  padding: 0 10px;        /* small left-right space */
   margin: 0 auto 40px;
-  padding: 0 20px;
 }
 
-/* Masonry columns */
+/* Dynamic full-width columns */
 .masonry-col {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
 
-  min-width: 220px;          /* ⭐ allows columns to expand */
-  max-width: 320px;          /* keeps nice card width */
+  min-width: 260px;       /* cards grow wider */
+  max-width: 500px;       /* allow big wide cards */
 }
+
 
 /* Image card */
 .image-item {
@@ -548,6 +566,7 @@ html, body {
   width: 100%;
 }
 
+/* Images */
 .image-item img {
   width: 100%;
   border-radius: 12px;
@@ -576,19 +595,21 @@ html, body {
   pointer-events: auto;
 }
 
-/* ---------- RESPONSIVE BREAKPOINTS ---------- */
+/* ---------- RESPONSIVE BREAKPOINTS (5→4→3→2 columns) ---------- */
 @media (max-width: 1400px) {
-  .masonry-col:nth-child(5) { display:none; }
+  .masonry-col:nth-child(4) {
+    display: none;
+  }
 }
 
 @media (max-width: 1100px) {
-  .masonry-col:nth-child(4) { display:none; }
+  .masonry-col:nth-child(3) {
+    display: none;
+  }
 }
 
 @media (max-width: 700px) {
-  .masonry-col:nth-child(3) { display:none; }
-}
-
-@media (max-width: 500px) {
-  .masonry-col:nth-child(2) { display:none; }
+  .masonry-col:nth-child(2) {
+    display: none;
+  }
 }
