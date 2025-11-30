@@ -208,19 +208,21 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* ⭐ KEYWORDS FIX */
-    const wordList =
+    /* ⭐ KEYWORDS FIX — multi-keyword */
+    const keywords =
       img.keywords?.length ? img.keywords :
       img.tags?.length ? img.tags :
       [];
 
     document.getElementById("keywords").innerHTML =
-      wordList.map(t =>
+      keywords.map(t =>
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
-    const category = img.category || wordList[0];
-    if (category) startRelated(category);
+    const category = img.category || keywords[0] || "wallpaper";
+
+    /* ⭐ NEW — Smart multi-keyword related images */
+    startRelatedForAllKeywords(keywords, category);
 
   } catch (e) {
     document.getElementById("image-name").textContent = "Image Not Found.";
@@ -228,67 +230,50 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED IMAGES — INFINITE SCROLL */
+/* RELATED IMAGES — SMART MULTI-KEYWORD SYSTEM */
 /* ---------------------------------- */
 
+let relatedKeywords = [];
 let relatedPage = 1;
-let relatedKeyword = "";
 let relatedLoading = false;
+let loadedImageIds = new Set(); // avoid duplicates
 
-function startRelated(keyword) {
-  relatedKeyword = keyword;
+function startRelatedForAllKeywords(keywords, category) {
+  relatedKeywords = [...new Set([category, ...keywords])]; // merge + unique
   relatedPage = 1;
+  loadedImageIds.clear();
+
   document.querySelectorAll("#related-grid .masonry-col").forEach(c => c.innerHTML = "");
-  loadMoreRelated();
+
+  loadMoreRelatedSmart();
 }
 
-async function loadMoreRelated() {
+async function loadMoreRelatedSmart() {
   if (relatedLoading) return;
   relatedLoading = true;
 
   try {
-    const res = await fetch(
-      `${API_BASE}/api/search?q=${encodeURIComponent(relatedKeyword)}&page=${relatedPage}&limit=40`
-    );
-    const json = await res.json();
+    let combinedResults = [];
 
-    const images = Array.isArray(json) ? json : json.images || [];
-    const cols = document.querySelectorAll("#related-grid .masonry-col");
-    let colIndex = 0;
+    // Fetch for each keyword
+    for (const word of relatedKeywords) {
+      const res = await fetch(
+        `${API_BASE}/api/search?q=${encodeURIComponent(word)}&page=${relatedPage}&limit=20`
+      );
 
-    images.forEach((img) => {
-      const thumb =
-        img.thumbnailUrl ||
-        (img.thumbnailFileName
-          ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-          : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
+      const json = await res.json();
+      const imgs = Array.isArray(json) ? json : json.images || [];
 
-      const card = document.createElement("div");
-      card.classList.add("image-item");
+      // Filter unique images
+      imgs.forEach(img => {
+        if (!loadedImageIds.has(img._id)) {
+          combinedResults.push(img);
+          loadedImageIds.add(img._id);
+        }
+      });
+    }
 
-      card.innerHTML = `
-        <div class="image-wrapper">
-          <div class="skeleton"></div>
-
-          <a href="/photo/${img.slug}-${img._id}">
-            <img 
-              data-src="${thumb}"
-              class="lazy-img image-load"
-              alt="${img.alt || img.title}"
-            >
-          </a>
-
-          <span class="download-overlay"
-            onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'">
-          </span>
-        </div>
-      `;
-
-      cols[colIndex].appendChild(card);
-      colIndex = (colIndex + 1) % cols.length;
-    });
-
-    lazyLoadInit();
+    displayRelatedImages(combinedResults);
     relatedPage++;
     relatedLoading = false;
 
@@ -297,12 +282,52 @@ async function loadMoreRelated() {
   }
 }
 
-/* Infinite scroll trigger */
+function displayRelatedImages(images) {
+  const cols = document.querySelectorAll("#related-grid .masonry-col");
+  let colIndex = 0;
+
+  images.forEach((img) => {
+    const thumb =
+      img.thumbnailUrl ||
+      (img.thumbnailFileName
+        ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
+        : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
+
+    const card = document.createElement("div");
+    card.classList.add("image-item");
+
+    card.innerHTML = `
+      <div class="image-wrapper">
+        <div class="skeleton"></div>
+
+        <a href="/photo/${img.slug}-${img._id}">
+          <img 
+            data-src="${thumb}"
+            class="lazy-img image-load"
+            alt="${img.alt || img.title}"
+          >
+        </a>
+
+        <span class="download-overlay"
+          onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'">
+        </span>
+      </div>
+    `;
+
+    cols[colIndex].appendChild(card);
+    colIndex = (colIndex + 1) % cols.length;
+  });
+
+  lazyLoadInit();
+}
+
+/* Infinite scroll */
 window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
-    loadMoreRelated();
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+    loadMoreRelatedSmart();
   }
 });
+
 
 /* ---------------------------------- */
 /* LAZY LOAD INIT */
