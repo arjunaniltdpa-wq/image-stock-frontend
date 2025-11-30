@@ -72,6 +72,14 @@ color: #222;
 .dropdown {
     position: relative;
 }
+.dropdown-btn {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
 
 /* NAV LINKS - default */
 .nav-links a {
