@@ -161,67 +161,53 @@
     }
 
 /* ============================================================
-   ⭐ UPDATED FLEX MASONRY GRID — PERFECT CENTER + NO SCROLL ⭐
-   Same behavior as RELATED section
+   ⭐ FLEX MASONRY GRID — DESKTOP + TABLET + MOBILE FIXED
 ============================================================ */
 
-/* Search Results Outer Wrapper */
+/* Outer wrapper */
 .search-results {
-    width: 100% !important;
-    max-width: 1400px !important;     /* same as related */
-    margin: 0 auto !important;
-    padding: 0 30px !important;
-
-    overflow: visible !important;
-    height: auto !important;
-    max-height: none !important;
+    width: 100%;
+    max-width: 1400px;       /* Perfect center size */
+    margin: 0 auto;
+    padding: 0 16px;         /* Smaller padding -> fixes tablet */
+    box-sizing: border-box;
 }
 
-/* Flex Masonry Container */
+/* Masonry container */
 .masonry-grid {
-    width: fit-content !important;     /* ⭐ keeps grid centered */
-    max-width: 100% !important;
-
-    margin-left: auto !important;       /* ⭐ PERFECT CENTER */
-    margin-right: auto !important;
-
-    display: flex !important;
-    gap: 16px !important;
-
-    padding: 0 !important;
-    overflow: visible !important;
-    justify-content: center !important;
+    display: flex;
+    gap: 16px;
+    justify-content: center; 
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
 }
 
-/* Masonry Columns */
+/* Columns */
 .masonry-col {
-    flex: 0 0 auto !important;   /* ⭐ prevents auto-stretch */
-    width: 25% !important;       /* 4 columns desktop */
-
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 16px !important;
-
-    overflow: visible !important;
-    contain: none !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
 }
 
 /* Image card */
 .masonry-col .image-item {
-    position: relative !important;
-    overflow: hidden !important;
-    border-radius: 12px !important;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
-/* Image proper scaling */
+/* Image fit */
 .masonry-col .image-item img {
-    width: 100% !important;
-    height: auto !important;       /* ⭐ prevents distortion */
-    object-fit: cover !important;
-    border-radius: 12px !important;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
-/* Hide scrollbars */
+/* Remove scrollbars */
 .search-results::-webkit-scrollbar,
 .masonry-grid::-webkit-scrollbar,
 .masonry-col::-webkit-scrollbar {
@@ -249,29 +235,41 @@
 }
 
 /* ============================================================
-   ⭐ RESPONSIVE COLUMNS — EXACT SAME AS RELATED
+   ⭐ RESPONSIVE COLUMN LAYOUT
 ============================================================ */
 
-/* Desktop → Tablet */
-@media (max-width: 1200px) { 
-    .masonry-col:nth-child(4) { display: none !important; }
-    .masonry-col { width: 33.33% !important; }   /* 3 columns */
+/* Desktop = 4 columns */
+@media (min-width: 1201px) {
+    .masonry-col {
+        display: flex;
+    }
 }
 
-/* Tablet → Mobile Large */
-@media (max-width: 900px)  { 
-    .masonry-col:nth-child(3) { display: none !important; }
-    .masonry-col { width: 50% !important; }      /* 2 columns */
+/* Tablet = 3 columns */
+@media (max-width: 1200px) {
+    .masonry-col:nth-child(4) { display: none; }
+    .search-results { max-width: 1100px; padding: 0 14px; }
 }
 
-/* Mobile */
-@media (max-width: 600px)  { 
+/* Small Tablet = 2 columns */
+@media (max-width: 900px) {
+    .masonry-col:nth-child(3) { display: none; }
+    .search-results { max-width: 750px; padding: 0 12px; }
+}
+
+/* Mobile = 1 column */
+@media (max-width: 600px) {
     .masonry-col:nth-child(2),
     .masonry-col:nth-child(3),
-    .masonry-col:nth-child(4) { display: none !important; }
-
-    .masonry-col { width: 100% !important; }     /* full width */
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
+    .search-results {
+        max-width: 500px;
+        padding: 0 10px;
+    }
 }
+
 
     .modal-overlay {
       position: fixed;
@@ -725,7 +723,7 @@
   }
 
   @media (max-width: 700px) {
-    .related-masonry .related-col:nth-child(2) { display: none; }
+    .related-masonry .related-col:nth-child(2) { display: none; } 
   }
 
   @media (max-width: 500px) {
