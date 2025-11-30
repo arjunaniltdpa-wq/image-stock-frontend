@@ -213,7 +213,7 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* IMAGE DETAILS — SUPER OPTIMIZED */
+/* IMAGE DETAILS — ULTRA FAST SYSTEM */
 /* ---------------------------------- */
 
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
@@ -228,45 +228,59 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    /* ⭐ 1200px LCP version for instant load */
-    const displayUrl = `https://cdn.pixeora.com/lcp/${encodeURIComponent(img.fileName)}`;
+    /* ⭐ STEP 1 — Instant tiny thumbnail (LCP takes this!) */
+    const thumbUrl = `https://cdn.pixeora.com/thumbs/${encodeURIComponent(img.fileName)}`;
 
-    /* ⭐ Original full HD version (for modal & background swap) */
+    /* ⭐ STEP 2 — 1200px LCP version (loads fast) */
+    const lcpUrl = `https://cdn.pixeora.com/lcp/${encodeURIComponent(img.fileName)}`;
+
+    /* ⭐ STEP 3 — Full original HD version */
     const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     const mainImg = document.getElementById("download-image");
 
-    /* ⭐ PRELOAD (Highest priority) */
+    /* ⭐ Preload LCP (faster LCP paint) */
     const preload = document.createElement("link");
     preload.rel = "preload";
     preload.as = "image";
     preload.fetchPriority = "high";
-    preload.href = displayUrl;
+    preload.href = lcpUrl;
     document.head.appendChild(preload);
 
-    /* ⭐ Immediate LCP load */
-    mainImg.loading = "eager";
-    mainImg.decoding = "async";
-    mainImg.src = displayUrl;
+    /* ⭐ STAGE 1: Show tiny thumbnail immediately */
+    mainImg.src = thumbUrl;
+    mainImg.style.filter = "blur(20px)";
+    mainImg.style.opacity = "0.7";
 
-    /* ⭐ When the 1200px LCP loads */
-    mainImg.onload = () => {
-      document.getElementById("main-skeleton").style.display = "none";
+    /* Remove skeleton now (thumbnail visible instantly) */
+    document.getElementById("main-skeleton").style.display = "none";
 
-      /* ⭐ Perfect CLS fix using aspect-ratio */
-      const w = mainImg.naturalWidth;
-      const h = mainImg.naturalHeight;
+    /* ⭐ STAGE 2: Load 1200px LCP image */
+    const lcpImage = new Image();
+    lcpImage.src = lcpUrl;
 
-      if (w && h) {
-        mainImg.style.aspectRatio = `${w} / ${h}`;
+    lcpImage.onload = () => {
+      /* Swap thumbnail → LCP */
+      mainImg.src = lcpUrl;
+      mainImg.style.transition = "filter .5s ease, opacity .5s ease";
+      mainImg.style.filter = "blur(4px)";
+      mainImg.style.opacity = "1";
+
+      /* Fix CLS using aspect ratio */
+      if (lcpImage.naturalWidth && lcpImage.naturalHeight) {
+        mainImg.style.aspectRatio = `${lcpImage.naturalWidth} / ${lcpImage.naturalHeight}`;
       }
 
-      mainImg.classList.add("image-loaded");
+      /* ⭐ STAGE 3: After LCP loads, load the original HD */
+      const hd = new Image();
+      hd.src = originalUrl;
 
-      /* ⭐ Silent HD swap after render (Google-approved) */
-      setTimeout(() => {
-        mainImg.src = originalUrl;
-      }, 250);
+      hd.onload = () => {
+        setTimeout(() => {
+          mainImg.src = originalUrl;
+          mainImg.style.filter = "blur(0px)";
+        }, 200);
+      };
     };
 
     /* TITLE */
@@ -286,25 +300,19 @@ async function loadImageDetails() {
       [];
 
     document.getElementById("keywords").innerHTML =
-      keywords
-        .map(t =>
-          `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
-        )
-        .join("");
+      keywords.map(t =>
+        `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
+      ).join("");
 
-    /* SUBJECT DETECTION */
+    /* SUBJECT DETECTION + Related Images */
     const mainSubject = detectMainSubject(img.title || "");
-
     const bestKeywords = [
       mainSubject,
       img.category,
-      ...keywords.filter(k =>
-        mainSubject && k.toLowerCase().includes(mainSubject)
-      ),
+      ...keywords.filter(k => mainSubject && k.toLowerCase().includes(mainSubject)),
       ...keywords.slice(0, 5)
     ].filter(Boolean);
 
-    /* RELATED SYSTEM */
     startRelatedSystem(bestKeywords);
 
   } catch (e) {
