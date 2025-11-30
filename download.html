@@ -239,7 +239,35 @@ let relatedLoading = false;
 let loadedIds = new Set();
 
 function startRelatedSystem(keywords) {
-  relatedKeywordList = [...new Set(keywords)];
+  if (!keywords || keywords.length === 0) return;
+
+  const mainCategory = keywords[0]?.toLowerCase() || "";
+
+  const strongWords = ["tiger","lion","cat","dog","bird","fish","bridge",
+    "architecture","mountain","river","waterfall","portrait","face","people"];
+
+  const strongMatches = [];
+  const mediumMatches = [];
+  const weakMatches = [];
+
+  keywords.forEach(k => {
+    const low = k.toLowerCase();
+
+    if (low.includes(mainCategory)) {
+      strongMatches.push(k);
+    } else if (strongWords.some(sw => low.includes(sw))) {
+      mediumMatches.push(k);
+    } else {
+      weakMatches.push(k);
+    }
+  });
+
+  relatedKeywordList = [...new Set([
+    ...strongMatches,
+    ...mediumMatches,
+    ...weakMatches
+  ])];
+
   relatedKeywordIndex = 0;
   relatedPage = 1;
   loadedIds.clear();
