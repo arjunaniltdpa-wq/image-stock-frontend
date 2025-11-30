@@ -505,7 +505,22 @@ html, body {
   filter: blur(0);
 }
 
+/* ---------- RELATED SECTION TITLE ---------- */
+.related-section {
+  width: 100%;
+  max-width: 1500px;
+  margin: 40px auto 20px;
+  padding: 0 20px;
+}
+
+.related-section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
 /* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
+
 /* Masonry container */
 .masonry-grid {
   display: flex;
@@ -514,7 +529,7 @@ html, body {
   gap: 16px;
   width: 100%;
   max-width: 1500px;
-  margin: 40px auto;
+  margin: 0 auto 40px;
   padding: 0 20px;
 }
 
@@ -524,22 +539,23 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 300px; /* keeps grid tight */
+  max-width: 300px;  /* keeps grid tight */
 }
 
-/* Items */
+/* Image card */
 .image-item {
   position: relative;
   width: 100%;
 }
 
+/* Images */
 .image-item img {
   width: 100%;
   border-radius: 12px;
   object-fit: cover;
 }
 
-/* The overlay download icon */
+/* Download overlay */
 .download-overlay {
   position: absolute;
   bottom: 12px;
@@ -561,13 +577,21 @@ html, body {
   pointer-events: auto;
 }
 
-/* RESPONSIVE breakpoints */
+/* ---------- RESPONSIVE BREAKPOINTS (5→4→3→2 columns) ---------- */
 @media (max-width: 1400px) {
-  .masonry-col:nth-child(4) { display:none; }
+  .masonry-col:nth-child(4) {
+    display: none;
+  }
 }
+
 @media (max-width: 1100px) {
-  .masonry-col:nth-child(3) { display:none; }
+  .masonry-col:nth-child(3) {
+    display: none;
+  }
 }
+
 @media (max-width: 700px) {
-  .masonry-col:nth-child(2) { display:none; }
+  .masonry-col:nth-child(2) {
+    display: none;
+  }
 }
