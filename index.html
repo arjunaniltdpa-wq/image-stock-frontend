@@ -165,8 +165,6 @@
   </section>
 
 </main>
-
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
@@ -187,7 +185,6 @@ function createImageCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  // Fallback to /file route if thumbnailUrl missing
   const url = img.thumbnailUrl || `/api/images/file/${img.thumbnailFileName}`;
 
   div.innerHTML = `
@@ -210,7 +207,6 @@ function createImageCard(img) {
   return div;
 }
 
-/* ADD CARD TO COLUMN IN SEQUENCE (1-2-3-4 like Pexels) */
 function addToNextColumn(card) {
   cols[colIndex].appendChild(card);
   colIndex = (colIndex + 1) % cols.length;
@@ -233,7 +229,6 @@ async function loadInitialImages() {
     lazyLoadInit();
     applyImageLoadAnimation();
 
-    // After initial load → start from page=2
     page = 2;
     loading = false;
 
@@ -268,27 +263,33 @@ async function loadImages() {
   loading = false;
 }
 
-/* LAZY LOAD */
+/* ⭐⭐⭐ UPDATED LAZY LOAD FIX — loads before entering viewport ⭐⭐⭐ */
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-      const img = entry.target;
-      img.src = img.dataset.src;
+        const img = entry.target;
+        img.src = img.dataset.src;
 
-      img.onload = () => {
-        img.classList.add("image-loaded");
-        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (skeleton) skeleton.remove();
-      };
+        img.onload = () => {
+          img.classList.add("image-loaded");
+          const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
+        };
 
-      img.classList.remove("lazy-img");
-      obs.unobserve(img);
-    });
-  });
+        img.classList.remove("lazy-img");
+        obs.unobserve(img);
+      });
+    },
+    {
+      rootMargin: "300px 0px 300px 0px",   // ⭐ KEY FIX
+      threshold: 0
+    }
+  );
 
   lazyImages.forEach(img => observer.observe(img));
 }
@@ -365,4 +366,3 @@ input.addEventListener("input", () => {
   }, 200);
 });
 </script>
-
