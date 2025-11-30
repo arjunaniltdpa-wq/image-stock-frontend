@@ -502,14 +502,13 @@ html, body {
 .image-load {
   opacity: 0;
   transform: scale(0.97);
-  filter: blur(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+  filter: blur(0);                 /* 🟢 NO BLUR FOR MAIN IMAGE */
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .image-loaded {
   opacity: 1;
   transform: scale(1);
-  filter: blur(0);
 }
 
 /* ---------- RELATED SECTION TITLE ---------- */
