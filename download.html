@@ -240,10 +240,8 @@ async function loadImageDetails() {
 
     const lcpUrl = `https://cdn.pixeora.com/lcp/${file}`;
 
-    /* ⭐ FIXED: Always use real original file path */
-    const originalUrl =
-      img.originalUrl ||
-      `https://cdn.pixeora.com/original/${file}`; // fallback path
+    /* ⭐ FIXED: Always use REAL original image root folder */
+    const originalUrl = `https://cdn.pixeora.com/${file}`;
 
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
@@ -252,7 +250,7 @@ async function loadImageDetails() {
        INITIAL SAFE SPACE (no layout shift)
     ---------------------------------------------*/
     mainImg.style.width = "100%";
-    mainImg.style.aspectRatio = "16/10";  // temporary safe ratio
+    mainImg.style.aspectRatio = "16/10";  // temporary safety ratio
 
     /* --------------------------------------------
        STEP 1 — Show Thumbnail Instantly
@@ -280,11 +278,11 @@ async function loadImageDetails() {
           `${lcpImg.naturalWidth}/${lcpImg.naturalHeight}`;
       }
 
-      loadHD(); // Next stage
+      loadHD(); // go to next stage
     };
 
     /* --------------------------------------------
-       STEP 3 — Load HD Image Silently
+       STEP 3 — Load FULL HD silently
     ---------------------------------------------*/
     function loadHD() {
       const hd = new Image();
@@ -298,7 +296,7 @@ async function loadImageDetails() {
       };
 
       hd.onerror = () => {
-        console.warn("Original image not found:", originalUrl);
+        console.warn("HD image not found:", originalUrl);
       };
     }
 
@@ -317,13 +315,17 @@ async function loadImageDetails() {
        KEYWORDS
     ---------------------------------------------*/
     const keywords =
-      img.keywords?.length ? img.keywords :
-      img.tags?.length ? img.tags : [];
+      img.keywords?.length
+        ? img.keywords
+        : img.tags?.length
+        ? img.tags
+        : [];
 
-    document.getElementById("keywords").innerHTML =
-      keywords.map(t =>
+    document.getElementById("keywords").innerHTML = keywords
+      .map(t =>
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
-      ).join("");
+      )
+      .join("");
 
     /* --------------------------------------------
        RELATED IMAGES
