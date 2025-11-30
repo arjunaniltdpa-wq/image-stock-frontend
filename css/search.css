@@ -630,10 +630,9 @@
     }
   }
 
-/* --- SOFT GREY SKELETON --- */
 .skeleton {
   width: 100%;
-  min-height: 220px;   /* ← FIX */
+  padding-bottom: 66%;   /* ⭐ keeps perfect aspect ratio, no height jump */
   border-radius: 12px;
   background: linear-gradient(90deg,
     rgba(220, 220, 220, 0.21),
