@@ -164,20 +164,18 @@
     ⭐ NEW FLEX MASONRY GRID (same as homepage)
   ============================================================ */
 
-  .masonry-grid {
-    display: flex;
-    gap: 16px;
-    padding: 0 30px;
-    max-width: 1500px;
-    margin: 0 auto;
-  }
+.masonry-grid {
+    padding: 0 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
 
-  .masonry-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.masonry-col {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+}
 
   .image-wrapper {
     position: relative;   /* ✔ FIX: allows absolute button positioning */
@@ -187,13 +185,11 @@
   }
 
 
-  .image-item img {
+.image-item img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-    display: block;
-  }
+    height: auto !important;
+}
+
     
   /* Hover download icon */
   .download-overlay {
