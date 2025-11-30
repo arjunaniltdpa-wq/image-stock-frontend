@@ -1,10 +1,12 @@
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
   <title>Free HD Wallpapers, 4K Images & Royalty-Free Stock Photos | Pixeora</title>
 
   <!-- SEO -->
+  <meta name="robots" content="index, follow">
+
   <meta name="description" content="Download free HD wallpapers, 4K backgrounds, royalty-free stock images and commercial-use photos. Fast loading, clean UI, daily new premium-quality photos." />
   <meta name="keywords" content="free hd wallpapers, 4k wallpapers download, stock images free, royalty free images, commercial use photos free, pixeora images" />
   <link rel="canonical" href="https://pixeora.com/" />
@@ -164,6 +166,9 @@ function createImageCard(img) {
           data-src="${url}" 
           class="lazy-img image-load"
           alt="${img.alt || ''}"
+          width="400"
+          height="260"
+          loading="lazy"
         >
       </a>
 
