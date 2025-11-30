@@ -688,18 +688,3 @@
   @media (max-width: 500px) {
     .related-masonry .related-col:nth-child(1) { flex: 1; }
   }
-
-  /* FULL FIX — REMOVE INTERNAL SCROLLBARS */
-  html, body {
-      overflow-x: hidden !important;
-  }
-
-  /* Remove vertical scroll from ALL elements except body */
-  * {
-      overflow-y: visible !important;
-  }
-
-  /* But keep scroll only on the body */
-  body {
-      overflow-y: auto !important;
-  }
