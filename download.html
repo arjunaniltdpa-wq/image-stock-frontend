@@ -163,7 +163,6 @@ const API_BASE = "https://api.pixeora.com";
 /* ---------------------------------- */
 /* FIXED SEARCH REDIRECT */
 /* ---------------------------------- */
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("searchForm");
   if (form) {
@@ -180,7 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ---------------------------------- */
 /* IMAGE DETAILS */
 /* ---------------------------------- */
-
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
 
 async function loadImageDetails() {
@@ -209,7 +207,7 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* ⭐ Clean keywords */
+    /* Clean keywords */
     const keywords =
       img.keywords?.length ? img.keywords :
       img.tags?.length ? img.tags :
@@ -220,7 +218,7 @@ async function loadImageDetails() {
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
-    /* ⭐ CATEGORY + top 5 keywords only */
+    /* Category + top 5 keywords */
     const bestKeywords = [
       img.category,
       ...keywords.slice(0, 5)
@@ -234,7 +232,7 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED IMAGES — SUPER FAST VERSION */
+/* RELATED IMAGES — ULTRA FAST SYSTEM */
 /* ---------------------------------- */
 
 let relatedKeywordList = [];
@@ -278,6 +276,7 @@ async function loadMoreRelated(keyword) {
     const json = await res.json();
     const images = Array.isArray(json) ? json : json.images || [];
 
+    /* Remove duplicates */
     const unique = images.filter(img => {
       if (!loadedIds.has(img._id)) {
         loadedIds.add(img._id);
@@ -356,9 +355,8 @@ window.addEventListener("scroll", async () => {
 });
 
 /* ---------------------------------- */
-/* LAZY LOAD INIT */
+/* LAZY LOAD */
 /* ---------------------------------- */
-
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
 
@@ -388,7 +386,6 @@ function lazyLoadInit() {
 /* ---------------------------------- */
 /* INFO MODAL */
 /* ---------------------------------- */
-
 const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
