@@ -576,8 +576,8 @@ html, body {
 /* Download overlay */
 .download-overlay {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 10px;
+  right: 10px;
   width: 120px;
   height: 42px;
   background-image: url('../images/download-icon.png');
