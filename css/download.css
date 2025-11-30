@@ -165,12 +165,17 @@ body {
   padding: 15px;
   border-radius: 35px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+  min-height: 350px;
 }
 
 .image-section img {
   width: 100%;
   border-radius: 30px;
   margin-bottom: 15px;
+  display: block;
+  aspect-ratio: 16 / 10;  /* ⭐ DEFAULT FIXED HEIGHT BEFORE IMAGE LOAD */
+  object-fit: cover;
 }
 
 .image-actions {
@@ -519,7 +524,10 @@ html, body {
   flex-direction: column;
   align-items: center;      /* ⭐ Centers the grid */
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 40px !important;
+  padding-top: 20px !important;
+  z-index: 1;
+  position: relative;
 }
 
 .related-wrapper h2 {
@@ -548,11 +556,13 @@ html, body {
   justify-content: center;
   align-items: flex-start;
   gap: 16px;
-
   width: 100%;
   max-width: 100%;       /* ⭐ FULL WIDTH */
   padding: 0 10px;        /* small left-right space */
   margin: 0 auto 40px;
+  margin-top: 20px !important;
+  position: relative;
+  z-index: 1;
 }
 
 /* Dynamic full-width columns */
