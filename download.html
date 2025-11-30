@@ -1,74 +1,76 @@
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- =========================
-      DYNAMIC SEO (Controlled by JS)
-  ========================== -->
-  <title id="seo-title">Pixeora Photo</title>
+    <!-- =========================
+        DYNAMIC SEO (Controlled by JS)
+    ========================== -->
+    <title id="seo-title">Pixeora Photo</title>
 
-  <meta id="seo-desc" name="description" content="Download high-quality HD wallpapers & royalty-free stock images for free.">
-  <meta id="seo-keywords" name="keywords"
-        content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use photos, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
+    <meta id="seo-desc" name="description" content="Download high-quality HD wallpapers & royalty-free stock images for free.">
+    <meta id="seo-keywords" name="keywords"
+          content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use photos, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
 
-  <!-- Canonical (dynamic by JS) -->
-  <link id="canonical-link" rel="canonical" href="">
+    <!-- Canonical (dynamic by JS) -->
+    <link id="canonical-link" rel="canonical" href="">
 
-  <!-- =========================
-      PERFORMANCE BOOST
-  ========================== -->
-  <link rel="preload" href="/css/download.css" as="style">
-  <link rel="stylesheet" href="/css/download.css">
+    <!-- =========================
+        PERFORMANCE BOOST
+    ========================== -->
+    <link rel="preload" href="/css/download.css" as="style">
+    <link rel="stylesheet" href="/css/download.css">
 
-  <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
+    <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.pixeora.com">
 
-  <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://api.pixeora.com">
+    <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.pixeora.com">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- =========================
-      SOCIAL SHARING (Dynamic)
-  ========================== -->
-  <meta id="og-title" property="og:title" content="Pixeora Image">
-  <meta id="og-desc" property="og:description" content="Download full HD wallpapers & royalty-free stock images.">
-  <meta id="og-image" property="og:image" content="">
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Pixeora">
+    <!-- =========================
+        SOCIAL SHARING (Dynamic OG Tags)
+    ========================== -->
+    <meta id="og-title" property="og:title" content="Pixeora Image">
+    <meta id="og-desc" property="og:description" content="Download full HD wallpapers & royalty-free stock images.">
+    <meta id="og-image" property="og:image" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Pixeora">
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta id="twitter-title" name="twitter:title" content="Pixeora Image Download">
-  <meta id="twitter-desc" name="twitter:description" content="Download high-quality wallpapers, 4K backgrounds, and stock images.">
-  <meta id="twitter-image" name="twitter:image" content="">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="twitter-title" name="twitter:title" content="Pixeora Image Download">
+    <meta id="twitter-desc" name="twitter:description" content="Download high-quality wallpapers, 4K backgrounds, and stock images.">
+    <meta id="twitter-image" name="twitter:image" content="">
 
-  <!-- =========================
-      STRUCTURED DATA
-  ========================== -->
-  <script type="application/ld+json" id="ld-json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ImageObject",
-    "name": "",
-    "description": "",
-    "contentUrl": "",
-    "thumbnailUrl": "",
-    "creator": {
-      "@type": "Organization",
-      "name": "Pixeora"
-    },
-    "license": "https://pixeora.com/license"
-  }
-  </script>
-</head>
+    <!-- =========================
+        STRUCTURED DATA (Dynamic ImageObject)
+        Boosts Google Image ranking!
+    ========================== -->
+    <script type="application/ld+json" id="ld-json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ImageObject",
+      "name": "",
+      "description": "",
+      "contentUrl": "",
+      "thumbnailUrl": "",
+      "creator": {
+        "@type": "Organization",
+        "name": "Pixeora"
+      },
+      "license": "https://pixeora.com/license"
+    }
+    </script>
+
+  </head>
 
 <body>
 
@@ -82,7 +84,7 @@
         <form class="search-bar" id="searchForm">
           <input type="text" id="searchInput" placeholder="Search Image" required>
           <button type="submit" class="search-icon">
-            <img src="/images/search-icon.png" alt="Search">
+            <img src="/images/search-icon.png" alt="Search" loading="lazy">
           </button>
         </form>
       </div>
@@ -93,23 +95,16 @@
   </div>
 </header>
 
+
 <div class="page-wrapper">
+
   <main>
 
     <div class="image-section">
 
       <div id="main-skeleton" class="skeleton"></div>
 
-      <!-- ⭐ FIXED LCP IMAGE ⭐ -->
-      <img 
-        id="download-image"
-        src=""
-        alt="Selected Image"
-        loading="eager"
-        decoding="async"
-        class="image-load"
-      >
-
+      <img id="download-image" src="" alt="Selected Image" loading="lazy" class="image-load">
       <h2 id="image-name">Loading...</h2>
 
       <div class="image-actions">
@@ -121,23 +116,25 @@
       </div>
     </div>
 
+    <!-- ⭐ Updated Keywords Block -->
     <div class="keywords" id="keywords"></div>
 
   </main>
 </div>
 
 <div class="related-wrapper">
-  <h2>Related Images</h2>
+    <h2>Related Images</h2>
 
-  <div class="masonry-grid" id="related-grid">
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
-  </div>
+    <div class="masonry-grid" id="related-grid">
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>
+    </div>
 </div>
 
+<!-- INFO MODAL -->
 <div id="infoModal" class="info-modal">
   <div class="info-content">
     <span class="close-btn">&times;</span>
@@ -151,7 +148,6 @@
     </ul>
   </div>
 </div>
-
 
 <script>
 /* ---------------------------------- */
