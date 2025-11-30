@@ -160,88 +160,73 @@
       padding: 20px;
     }
 
-/* ============================================================
-   ⭐ FLEX MASONRY GRID — FINAL FIX VERSION
-   (Same layout as homepage, NO SCROLLBARS)
-============================================================ */
+  /* ============================================================
+    ⭐ NEW FLEX MASONRY GRID (same as homepage)
+  ============================================================ */
 
-/* Main container */
-.masonry-grid {
+  .masonry-grid {
     display: flex;
     gap: 16px;
-    padding: 0 20px;
-    width: 100%;
+    padding: 0 30px;
     max-width: 1500px;
     margin: 0 auto;
-    box-sizing: border-box;
-    overflow-x: hidden !important;   /* ← FIX: no horizontal scroll */
-}
+  }
 
-/* Masonry columns */
-.masonry-col {
+  .masonry-col {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-width: 0 !important;        /* ← FIX: prevent column overflow */
-    overflow: visible !important;   /* ← FIX: prevents scrollbars */
-}
+  }
 
-/* Image wrapper */
-.image-wrapper {
-    position: relative;
+  .image-wrapper {
+    position: relative;   /* ✔ FIX: allows absolute button positioning */
     overflow: hidden;
+    min-height: 220px;
     border-radius: 12px;
-    width: 100%;
-    height: auto;
-}
+  }
 
-/* Image styling */
-.image-item img {
+
+  .image-item img {
     width: 100%;
-    height: auto;                   /* ← FIX: DO NOT USE height:100% */
+    height: 100%;
     object-fit: cover;
     border-radius: 12px;
     display: block;
-}
-
-/* Hover download icon */
-.download-overlay {
+  }
+    
+  /* Hover download icon */
+  .download-overlay {
     position: absolute;
     bottom: 10px;
     right: 10px;
-
-    width: 130px;
-    height: 50px;
-
+    width: 120px;
+    height: 40px;
     background: url('../images/download-icon.png') center/cover no-repeat;
     opacity: 0;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: 0.25s ease;
     cursor: pointer;
-    pointer-events: none;
-}
+  }
 
-.image-item:hover .download-overlay {
+  .image-item:hover .download-overlay {
     opacity: 1;
     transform: scale(1.15);
-    pointer-events: auto;
-}
+  }
 
-/* RESPONSIVE COLUMNS */
-@media (max-width: 1200px) {
+  /* Responsive Columns — HIDES certain flex columns */
+  @media (max-width: 1200px) { 
     .masonry-col:nth-child(4) { display: none; }
-}
+  }
 
-@media (max-width: 900px) {
+  @media (max-width: 900px)  { 
     .masonry-col:nth-child(3) { display: none; }
-}
+  }
 
-@media (max-width: 600px) {
+  @media (max-width: 600px)  { 
     .masonry-col:nth-child(2),
     .masonry-col:nth-child(3),
     .masonry-col:nth-child(4) { display: none; }
-}
-
+  }
 
     .modal-overlay {
       position: fixed;
@@ -701,4 +686,18 @@
   @media (max-width: 500px) {
     .related-masonry .related-col:nth-child(1) { flex: 1; }
   }
+/* ⭐ FIX SEARCH RESULT INTERNAL SCROLLING ⭐ */
+.search-results {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.masonry-grid {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.masonry-col {
+    overflow: visible !important;
+}
 
