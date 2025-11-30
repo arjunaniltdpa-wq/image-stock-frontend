@@ -179,13 +179,13 @@
   gap: 16px;
 }
 
-.image-item {
-  position: relative;
-  border-radius: 12px;
+.image-wrapper {
+  position: relative;   /* ✔ FIX: allows absolute button positioning */
   overflow: hidden;
-  min-height: 220px;   /* ← FIX */
-
+  min-height: 220px;
+  border-radius: 12px;
 }
+
 
 .image-item img {
   width: 100%;

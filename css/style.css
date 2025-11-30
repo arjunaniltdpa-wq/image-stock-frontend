@@ -271,23 +271,24 @@ color: white;
 
 /* ---------------- MASONRY GRID ---------------- */
 
-.masonry-grid .download-overlay {
-position: absolute;
-bottom: 10px;
-right: 10px;
-width: 120px;
-height: 40px;
-background: url('../images/download-icon.png') no-repeat center center;
-background-size: cover;
-opacity: 0;
-transition: opacity 0.25s ease, transform 0.25s ease;
-cursor: pointer;
+.download-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 120px;
+  height: 40px;
+  background: url('../images/download-icon.png') no-repeat center center;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
 }
 
-.masonry-grid .image-item:hover .download-overlay {
-opacity: 1;
-transform: scale(1.1);
+.image-wrapper:hover .download-overlay {
+  opacity: 1;
+  transform: scale(1.1);
 }
+
 
 /* FIX: Header overlay blocking typing */
 .header-overlay {
@@ -494,11 +495,11 @@ transform: scale(1.1);
   gap: 16px; /* equal vertical spacing */
 }
 
-.image-item {
-  position: relative;
+.image-wrapper {
+  position: relative;   /* ✔ FIX: allows absolute button positioning */
   overflow: hidden;
+  min-height: 220px;
   border-radius: 12px;
-  min-height: 220px;   /* ← FIX */
 }
 
 /* Image styling */
