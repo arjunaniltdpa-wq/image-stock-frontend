@@ -271,10 +271,10 @@ color: white;
 
 /* ---------------- MASONRY GRID ---------------- */
 
-.image-wrapper .download-overlay {
+.image-item .image-wrapper .download-overlay {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 12px;
+  right: 12px;
   width: 120px;
   height: 40px;
   background: url('../images/download-icon.png') no-repeat center center;
@@ -282,10 +282,10 @@ color: white;
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
   cursor: pointer;
-  z-index: 20;
+  z-index: 5; /* stays above image */
 }
 
-.image-wrapper:hover .download-overlay {
+.image-item .image-wrapper:hover .download-overlay {
   opacity: 1;
   transform: scale(1.1);
 }
@@ -503,14 +503,14 @@ color: white;
   border-radius: 12px;
 }
 
-/* Image styling */
 .image-item img {
-  display: block;
   width: 100%;
-  height: auto;
-  border-radius: 12px;
+  height: 100%;
   object-fit: cover;
+  border-radius: 12px;
+  display: block;
 }
+
 
 /* 4 columns desktop */
 @media (max-width: 1400px) { .masonry-grid { gap: 14px; } }
