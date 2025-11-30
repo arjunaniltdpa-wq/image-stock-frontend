@@ -213,17 +213,19 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* SLUG FIX — CLEAN + SAFE VERSION   */
+/* FIXED CLEAN SLUG SYSTEM            */
 /* ---------------------------------- */
 const fullSlugRaw = window.location.pathname.split("/photo/")[1] || "";
 
-/* Remove Mongo ID at end */
-let slug = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
+/* Remove Mongo ID */
+let cleaned = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
 
-/* Handle undefined / empty */
-if (!slug || slug === "undefined" || slug.trim() === "") {
-  slug = null;
+/* If slug starts with or equals undefined → fix */
+if (!cleaned || cleaned === "undefined" || cleaned.startsWith("undefined")) {
+    cleaned = "";  // force clean
 }
+
+const apiSlug = cleaned || fullSlugRaw.split("-").slice(0, -1).join("-");
 
 /* ---------------------------------- */
 /* IMAGE DETAILS — Thumbnail → HD     */
