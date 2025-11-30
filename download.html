@@ -220,7 +220,7 @@ const fullSlugRaw = window.location.pathname.split("/photo/")[1] || "";
 /* Remove Mongo ID at end */
 let slug = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
 
-/* If slug missing or 'undefined', mark as invalid */
+/* Handle undefined / empty */
 if (!slug || slug === "undefined" || slug.trim() === "") {
   slug = null;
 }
@@ -232,7 +232,7 @@ async function loadImageDetails() {
   try {
     /* ----------------------------------------
        1) FIX API CALL
-       If slug is null → fallback to raw string
+       If clean slug fails → fallback to full slug
     -----------------------------------------*/
     const apiSlug = slug || fullSlugRaw;
 
@@ -255,7 +255,7 @@ async function loadImageDetails() {
     const file = encodeURIComponent(img.fileName);
 
     /* ----------------------------------------
-       REAL PATHS FROM YOUR CDN
+       REAL PATHS FROM CDN
     -----------------------------------------*/
     const thumbUrl = img.thumbnailFileName
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
@@ -267,7 +267,7 @@ async function loadImageDetails() {
     const skeleton = document.getElementById("main-skeleton");
 
     /* ----------------------------------------
-       STEP 1 — Show THUMBNAIL with blur
+       STEP 1 — thumbnail blurred
     -----------------------------------------*/
     mainImg.src = thumbUrl;
     mainImg.style.filter = "blur(15px)";
@@ -275,7 +275,7 @@ async function loadImageDetails() {
     skeleton.style.display = "none";
 
     /* ----------------------------------------
-       STEP 2 — Load REAL HD IMAGE
+       STEP 2 — load HD image
     -----------------------------------------*/
     const hd = new Image();
     hd.src = originalUrl;
@@ -286,6 +286,7 @@ async function loadImageDetails() {
       mainImg.style.filter = "blur(0px)";
       mainImg.style.opacity = "1";
 
+      /* fix aspect ratio */
       if (hd.naturalWidth && hd.naturalHeight) {
         mainImg.style.aspectRatio = `${hd.naturalWidth}/${hd.naturalHeight}`;
       }
@@ -296,7 +297,7 @@ async function loadImageDetails() {
     };
 
     /* ----------------------------------------
-       TITLE + DOWNLOAD BUTTON
+       SET TITLE + DOWNLOAD
     -----------------------------------------*/
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
@@ -330,6 +331,7 @@ async function loadImageDetails() {
     -----------------------------------------*/
     const subject = detectMainSubject(img.title || "");
     startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
+
   } catch (err) {
     console.error("Loader Error:", err);
     document.getElementById("image-name").textContent = "Image Not Found.";
