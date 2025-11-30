@@ -561,54 +561,63 @@ html, body {
 }
 
 /* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
+/* ============================
+   FINAL FIX — CENTER RELATED GRID
+============================ */
 
-/* =========================
-   RELATED SECTION 5-COLUMN
-========================= */
-
-/* FIX: Center Related Section */
 .related-section {
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1500px;
   margin: 40px auto;
-  padding: 0;
+  padding: 0 20px;
 }
 
-/* Center inside columns */
+/* Flex Masonry layout */
 .related-masonry {
   display: flex;
-  justify-content: center;
+  justify-content: center;      /* ⭐ CENTER GRID */
+  align-items: flex-start;
   gap: 16px;
   width: 100%;
-  margin: 0 auto;
 }
 
+/* Each column */
 .related-col {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-width: 260px;             /* ⭐ Prevent extra wide columns */
 }
 
-/* Same card style as main grid */
-.related-col .image-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-}
-
-.related-col img {
+/* Image card */
+.related-col .image-item img {
   width: 100%;
-  display: block;
-  border-radius: 12px;
   object-fit: cover;
+  border-radius: 12px;
 }
-/* FIX: Make download icon show on hover */
+
+/* Hover download icon */
+.download-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 130px;
+  height: 50px;
+  background-image: url('../images/download-icon.png');
+  background-size: 120px;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+}
+
 .image-item:hover .download-overlay {
   opacity: 1;
-  pointer-events: auto;
   transform: scale(1.15);
+  pointer-events: auto;
 }
-
 
 
 /* ------------------------------
