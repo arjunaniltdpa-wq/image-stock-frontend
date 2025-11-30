@@ -152,6 +152,8 @@
     </ul>
   </div>
 </div>
+
+
 <script>
 /* ---------------------------------- */
 /* GLOBAL SETTINGS */
@@ -159,7 +161,7 @@
 const API_BASE = "https://api.pixeora.com";
 
 /* ---------------------------------- */
-/* FIXED SEARCH REDIRECT (FINAL) */
+/* FIXED SEARCH REDIRECT */
 /* ---------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -169,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const q = document.getElementById("searchInput").value.trim();
       if (q.length > 0) {
-        /* ⭐ FIXED — Use absolute path */
         window.location.href = `/search.html?query=${encodeURIComponent(q)}`;
       }
     });
@@ -185,7 +186,6 @@ const fullSlug = window.location.pathname.split("/photo/")[1] || "";
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/slug/${fullSlug}`);
-
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
@@ -209,7 +209,7 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* ⭐ KEYWORDS FIX — multi-keyword */
+    /* ⭐ Clean keywords */
     const keywords =
       img.keywords?.length ? img.keywords :
       img.tags?.length ? img.tags :
@@ -220,10 +220,13 @@ async function loadImageDetails() {
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
-    const category = img.category || keywords[0] || "wallpaper";
+    /* ⭐ CATEGORY + top 5 keywords only */
+    const bestKeywords = [
+      img.category,
+      ...keywords.slice(0, 5)
+    ].filter(Boolean);
 
-    /* ⭐ NEW — Smart multi-keyword related images */
-    startRelatedForAllKeywords(keywords, category);
+    startRelatedSystem(bestKeywords);
 
   } catch (e) {
     document.getElementById("image-name").textContent = "Image Not Found.";
@@ -231,59 +234,76 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED IMAGES — SMART MULTI-KEYWORD SYSTEM */
+/* RELATED IMAGES — SUPER FAST VERSION */
 /* ---------------------------------- */
 
-let relatedKeywords = [];
+let relatedKeywordList = [];
+let relatedKeywordIndex = 0;
 let relatedPage = 1;
 let relatedLoading = false;
-let loadedImageIds = new Set(); // avoid duplicates
+let loadedIds = new Set();
 
-function startRelatedForAllKeywords(keywords, category) {
-  relatedKeywords = [...new Set([category, ...keywords])]; // merge + unique
+function startRelatedSystem(keywords) {
+  relatedKeywordList = [...new Set(keywords)];
+  relatedKeywordIndex = 0;
   relatedPage = 1;
-  loadedImageIds.clear();
+  loadedIds.clear();
 
-  document.querySelectorAll("#related-grid .masonry-col").forEach(c => c.innerHTML = "");
+  document.querySelectorAll("#related-grid .masonry-col")
+    .forEach(c => c.innerHTML = "");
 
-  loadMoreRelatedSmart();
+  loadNextKeywordBatch();
 }
 
-async function loadMoreRelatedSmart() {
-  if (relatedLoading) return;
+async function loadNextKeywordBatch() {
+  if (relatedKeywordIndex >= relatedKeywordList.length) return;
+
+  const keyword = relatedKeywordList[relatedKeywordIndex];
+  relatedPage = 1;
+
+  await loadMoreRelated(keyword);
+
+  relatedKeywordIndex++;
+}
+
+async function loadMoreRelated(keyword) {
+  if (relatedLoading) return true;
   relatedLoading = true;
 
   try {
-    let combinedResults = [];
+    const res = await fetch(
+      `${API_BASE}/api/search?q=${encodeURIComponent(keyword)}&page=${relatedPage}&limit=20`
+    );
 
-    // Fetch for each keyword
-    for (const word of relatedKeywords) {
-      const res = await fetch(
-        `${API_BASE}/api/search?q=${encodeURIComponent(word)}&page=${relatedPage}&limit=20`
-      );
+    const json = await res.json();
+    const images = Array.isArray(json) ? json : json.images || [];
 
-      const json = await res.json();
-      const imgs = Array.isArray(json) ? json : json.images || [];
+    const unique = images.filter(img => {
+      if (!loadedIds.has(img._id)) {
+        loadedIds.add(img._id);
+        return true;
+      }
+      return false;
+    });
 
-      // Filter unique images
-      imgs.forEach(img => {
-        if (!loadedImageIds.has(img._id)) {
-          combinedResults.push(img);
-          loadedImageIds.add(img._id);
-        }
-      });
+    if (unique.length === 0) {
+      relatedLoading = false;
+      return false;
     }
 
-    displayRelatedImages(combinedResults);
+    displayRelated(unique);
+
     relatedPage++;
     relatedLoading = false;
+    return true;
 
   } catch (e) {
     relatedLoading = false;
+    return false;
   }
 }
 
-function displayRelatedImages(images) {
+function displayRelated(images) {
   const cols = document.querySelectorAll("#related-grid .masonry-col");
   let colIndex = 0;
 
@@ -311,6 +331,7 @@ function displayRelatedImages(images) {
 
         <span class="download-overlay"
           onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'">
+          <i class="fa fa-download"></i>
         </span>
       </div>
     `;
@@ -323,12 +344,16 @@ function displayRelatedImages(images) {
 }
 
 /* Infinite scroll */
-window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-    loadMoreRelatedSmart();
+window.addEventListener("scroll", async () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
+    const keyword = relatedKeywordList[relatedKeywordIndex - 1];
+    const more = await loadMoreRelated(keyword);
+
+    if (!more) {
+      loadNextKeywordBatch();
+    }
   }
 });
-
 
 /* ---------------------------------- */
 /* LAZY LOAD INIT */
