@@ -149,7 +149,6 @@
   </div>
 </div>
 
-
 <script>
 /* ---------------------------------- */
 /* GLOBAL SETTINGS */
@@ -171,6 +170,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+/* ---------------------------------- */
+/* SUBJECT DETECTION FROM TITLE */
+/* ---------------------------------- */
+function detectMainSubject(title) {
+  if (!title) return "";
+
+  const t = title.toLowerCase();
+
+  const map = [
+    ["tiger", "tiger"], ["lion", "lion"], ["cat", "cat"], ["dog", "dog"],
+    ["elephant", "elephant"], ["wolf", "wolf"], ["bear", "bear"],
+    ["horse", "horse"],
+
+    // birds
+    ["bird", "bird"], ["duck", "bird"], ["eagle", "bird"],
+    ["sparrow", "bird"], ["parrot", "bird"],
+
+    // fish & ocean
+    ["fish", "fish"], ["ocean", "fish"], ["underwater", "fish"],
+    ["sea", "fish"], ["coral", "fish"],
+
+    // city / architecture
+    ["bridge", "bridge"], ["building", "architecture"],
+    ["architecture", "architecture"], ["city", "architecture"],
+
+    // landscape
+    ["mountain", "mountain"], ["river", "river"], ["lake", "lake"],
+    ["waterfall", "waterfall"], ["forest", "forest"],
+
+    // people / portraits
+    ["girl", "portrait"], ["woman", "portrait"], ["man", "portrait"],
+    ["kid", "portrait"],  ["face", "portrait"], ["people", "portrait"],
+  ];
+
+  for (let [word, subject] of map) {
+    if (t.includes(word)) return subject;
+  }
+
+  return "";
+}
 
 /* ---------------------------------- */
 /* IMAGE DETAILS */
@@ -215,9 +255,17 @@ async function loadImageDetails() {
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
-    /* ⭐ Category + top 5 keywords */
+    /* ---------------------------------
+       ⭐ NEW — Strong subject detection 
+    --------------------------------- */
+    const mainSubject = detectMainSubject(img.title || "");
+
     const bestKeywords = [
+      mainSubject,
       img.category,
+      ...keywords.filter(k =>
+        mainSubject && k.toLowerCase().includes(mainSubject)
+      ),
       ...keywords.slice(0, 5)
     ].filter(Boolean);
 
@@ -229,7 +277,7 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED IMAGES — SAME STYLE AS SEARCH */
+/* RELATED SYSTEM — UPDATED */
 /* ---------------------------------- */
 
 let relatedKeywordList = [];
@@ -241,24 +289,29 @@ let loadedIds = new Set();
 function startRelatedSystem(keywords) {
   if (!keywords || keywords.length === 0) return;
 
-  const mainCategory = keywords[0]?.toLowerCase() || "";
+  const mainSubject = keywords[0]?.toLowerCase() || "";
 
-  const strongWords = ["tiger","lion","cat","dog","bird","fish","bridge",
-    "architecture","mountain","river","waterfall","portrait","face","people"];
+  const strongWords = [
+    "tiger","lion","cat","dog","elephant","wolf","bear","horse",
+    "bird","fish","bridge","architecture","mountain","river",
+    "waterfall","forest","portrait","face","people"
+  ];
 
   const strongMatches = [];
   const mediumMatches = [];
   const weakMatches = [];
 
   keywords.forEach(k => {
-    const low = k.toLowerCase();
+    const kw = k.toLowerCase();
 
-    if (low.includes(mainCategory)) {
-      strongMatches.push(k);
-    } else if (strongWords.some(sw => low.includes(sw))) {
-      mediumMatches.push(k);
-    } else {
-      weakMatches.push(k);
+    if (mainSubject && kw.includes(mainSubject)) {
+      strongMatches.push(k);   // PERFECT MATCH
+    }
+    else if (strongWords.some(sw => kw.includes(sw))) {
+      mediumMatches.push(k);   // GOOD MATCH
+    }
+    else {
+      weakMatches.push(k);     // OTHER
     }
   });
 
@@ -283,10 +336,12 @@ function startRelatedSystem(keywords) {
   loadNextKeywordBatch();
 }
 
+/* ---------------------------------- */
+/* LOADING RELATED IMAGES */
+/* ---------------------------------- */
 
 async function loadNextKeywordBatch() {
   if (relatedKeywordIndex >= relatedKeywordList.length) return;
-
   const keyword = relatedKeywordList[relatedKeywordIndex];
   relatedPage = 1;
 
@@ -338,7 +393,6 @@ function displayRelated(images) {
   let colIndex = 0;
 
   images.forEach((img) => {
-
     const thumb =
       img.thumbnailUrl ||
       (img.thumbnailFileName
@@ -370,7 +424,6 @@ function displayRelated(images) {
 
   lazyLoadInit();
 }
-
 
 /* ---------------------------------- */
 /* INFINITE SCROLL */
