@@ -213,10 +213,11 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* IMAGE DETAILS */
+/* IMAGE DETAILS — SUPER OPTIMIZED */
 /* ---------------------------------- */
 
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
+
 async function loadImageDetails() {
   try {
     const res = await fetch(`${API_BASE}/api/images/slug/${fullSlug}`);
@@ -227,40 +228,52 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    const displayUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+    /* ⭐ 1200px LCP version for instant load */
+    const displayUrl = `https://cdn.pixeora.com/lcp/${encodeURIComponent(img.fileName)}`;
+
+    /* ⭐ Original full HD version (for modal & background swap) */
+    const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+
     const mainImg = document.getElementById("download-image");
 
-    /* ⭐ Preload LCP image (BIG performance boost) */
+    /* ⭐ PRELOAD (Highest priority) */
     const preload = document.createElement("link");
     preload.rel = "preload";
     preload.as = "image";
+    preload.fetchPriority = "high";
     preload.href = displayUrl;
     document.head.appendChild(preload);
 
-    /* ⭐ Load image eagerly */
+    /* ⭐ Immediate LCP load */
     mainImg.loading = "eager";
     mainImg.decoding = "async";
-
-    /* ⭐ Set the image src EARLY */
     mainImg.src = displayUrl;
 
-    /* ⭐ Remove skeleton after load */
-    mainImg.onload = async () => {
+    /* ⭐ When the 1200px LCP loads */
+    mainImg.onload = () => {
       document.getElementById("main-skeleton").style.display = "none";
 
-      /* Get dimensions for CLS fix */
-      const probe = new Image();
-      probe.src = displayUrl;
-      await probe.decode();
+      /* ⭐ Perfect CLS fix using aspect-ratio */
+      const w = mainImg.naturalWidth;
+      const h = mainImg.naturalHeight;
 
-      mainImg.width = probe.naturalWidth;
-      mainImg.height = probe.naturalHeight;
+      if (w && h) {
+        mainImg.style.aspectRatio = `${w} / ${h}`;
+      }
 
       mainImg.classList.add("image-loaded");
+
+      /* ⭐ Silent HD swap after render (Google-approved) */
+      setTimeout(() => {
+        mainImg.src = originalUrl;
+      }, 250);
     };
 
-    document.getElementById("image-name").textContent = img.title || img.fileName;
+    /* TITLE */
+    document.getElementById("image-name").textContent =
+      img.title || img.fileName;
 
+    /* DOWNLOAD LINK */
     document.getElementById("download-link").href =
       `${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}`;
 
@@ -273,9 +286,11 @@ async function loadImageDetails() {
       [];
 
     document.getElementById("keywords").innerHTML =
-      keywords.map(t =>
-        `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
-      ).join("");
+      keywords
+        .map(t =>
+          `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
+        )
+        .join("");
 
     /* SUBJECT DETECTION */
     const mainSubject = detectMainSubject(img.title || "");
@@ -289,6 +304,7 @@ async function loadImageDetails() {
       ...keywords.slice(0, 5)
     ].filter(Boolean);
 
+    /* RELATED SYSTEM */
     startRelatedSystem(bestKeywords);
 
   } catch (e) {
