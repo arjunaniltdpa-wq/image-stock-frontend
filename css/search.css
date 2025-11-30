@@ -689,14 +689,17 @@
   .related-masonry .related-col:nth-child(1) { flex: 1; }
 }
 
-/* FINAL FIX — No nested scrollbars */
-.masonry-grid,
-.masonry-col {
-  overflow: visible !important;
-  height: auto !important;
-  max-height: none !important;
+/* FULL FIX — REMOVE INTERNAL SCROLLBARS */
+html, body {
+    overflow-x: hidden !important;
 }
+
+/* Remove vertical scroll from ALL elements except body */
+* {
+    overflow-y: visible !important;
+}
+
+/* But keep scroll only on the body */
 body {
-  overflow-y: auto !important;
+    overflow-y: auto !important;
 }
-    
