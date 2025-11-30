@@ -157,7 +157,6 @@
 </div>
 
 
-
 <script>
 /* ---------------------------------- */
 /* GLOBAL SETTINGS */
@@ -165,7 +164,7 @@
 const API_BASE = "https://api.pixeora.com";
 
 /* ---------------------------------- */
-/* SEARCH FIX */
+/* SEARCH FIX (corrected) */
 /* ---------------------------------- */
 
 document.getElementById("searchForm").addEventListener("submit", (e) => {
@@ -173,7 +172,6 @@ document.getElementById("searchForm").addEventListener("submit", (e) => {
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
 });
-
 
 /* ---------------------------------- */
 /* IMAGE DETAILS */
@@ -227,7 +225,6 @@ async function loadImageDetails() {
   }
 }
 
-
 /* ---------------------------------- */
 /* RELATED IMAGES — MASONRY GRID */
 /* ---------------------------------- */
@@ -245,9 +242,12 @@ async function loadRelated(keyword) {
 
     images.slice(0, 40).forEach((img) => {
 
+      /* ⭐ FIXED — FULL Thumbnail fallback */
       const thumb =
         img.thumbnailUrl ||
-        `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+        (img.thumbnailFileName
+          ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
+          : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
 
       const card = document.createElement("div");
       card.classList.add("image-item");
@@ -274,13 +274,15 @@ async function loadRelated(keyword) {
       colIndex = (colIndex + 1) % cols.length;
     });
 
-    lazyLoadInit(); // homepage lazy loader
+    lazyLoadInit();
 
   } catch (e) {}
 }
 
-
+/* ---------------------------------- */
 /* LAZY LOAD INIT */
+/* ---------------------------------- */
+
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
 
@@ -307,10 +309,8 @@ function lazyLoadInit() {
   lazyImages.forEach(img => observer.observe(img));
 }
 
-
-
 /* ---------------------------------- */
-/* INFO MODAL (UNCHANGED) */
+/* INFO MODAL */
 /* ---------------------------------- */
 
 const modal = document.getElementById("infoModal");
@@ -353,4 +353,3 @@ window.onclick = (e) => { if (e.target === modal) modal.classList.remove("active
 
 loadImageDetails();
 </script>
-
