@@ -271,7 +271,7 @@ color: white;
 
 /* ---------------- MASONRY GRID ---------------- */
 
-.download-overlay {
+.image-wrapper .download-overlay {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -282,6 +282,7 @@ color: white;
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
   cursor: pointer;
+  z-index: 20;
 }
 
 .image-wrapper:hover .download-overlay {
