@@ -222,20 +222,24 @@ async function loadSearchImages(q) {
     cols.forEach(c => (c.innerHTML = ""));
     colIndex = 0;
 
+    // If NO results → show related section
     if (!images.length) {
       masonry.innerHTML = "<p>No images found.</p>";
+      relatedSection.style.display = "block";
       loadRelatedInitial(q);
       return;
     }
 
+    // If results exist → hide related section
+    relatedSection.style.display = "none";
+
+    // Show main results
     images.forEach(img => {
       addToNextColumn(createCard(img));
     });
 
     lazyLoadInit();
     applyImageLoadAnimation();
-
-    loadRelatedInitial(q);
 
   } catch (err) {
     console.error(err);
