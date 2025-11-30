@@ -122,16 +122,11 @@
   </main>
 </div>
 
-<div class="related-section">
-  <h2>Related Images</h2>
-
-  <div class="related-masonry" id="related-grid">
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-  </div>
+<div class="masonry-grid" id="related-grid">
+   <div class="masonry-col"></div>
+   <div class="masonry-col"></div>
+   <div class="masonry-col"></div>
+   <div class="masonry-col"></div>
 </div>
 
 <!-- INFO MODAL -->
@@ -245,11 +240,11 @@ function startRelatedSystem(keywords) {
   loadedIds.clear();
 
   document.querySelector("#related-grid").innerHTML = `
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
   `;
 
   loadNextKeywordBatch();
@@ -325,7 +320,7 @@ function displayRelated(images) {
         <div class="skeleton"></div>
 
         <a href="/photo/${img.slug}-${img._id}">
-          <img 
+          <img
             data-src="${thumb}"
             class="lazy-img image-load"
             alt="${img.alt || img.title}"

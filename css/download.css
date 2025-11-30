@@ -225,28 +225,6 @@ body {
 }
 
 
-/* DOWNLOAD OVERLAY */
-.download-overlay {
-  position: absolute;
-  bottom: 5px;
-  right: 3px;
-  width: 130px;
-  height: 50px;
-  background-image: url('../images/download-icon.png');
-  background-size: 120px;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-.related-item:hover .download-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-
 /* ======================================================
    INFO MODAL
 ====================================================== */
@@ -528,9 +506,9 @@ html, body {
 }
 
 /* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
-/* ============================
-   FINAL FIX — CENTER RELATED GRID
-============================ */
+/* ================================================
+   ⭐ FINAL RELATED IMAGES (MATCHES SEARCH PAGE)
+================================================ */
 
 .related-section {
   width: 100%;
@@ -539,32 +517,55 @@ html, body {
   padding: 0 20px;
 }
 
-/* Flex Masonry layout */
 .related-masonry {
   display: flex;
-  justify-content: center;      /* ⭐ CENTER GRID */
+  justify-content: center;   /* CENTER like search page */
   align-items: flex-start;
-  gap: 16px;
+  gap: 18px;
   width: 100%;
 }
 
-/* Each column */
+/* Columns – EXACTLY like search.html */
 .related-col {
   flex: 1;
+  max-width: 260px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 260px;             /* ⭐ Prevent extra wide columns */
+  gap: 18px;
 }
 
 /* Image card */
-.related-col .image-item img {
-  width: 100%;
-  object-fit: cover;
-  border-radius: 12px;
+.image-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
 }
 
-/* Hover download icon */
+/* Image styling */
+.image-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 14px;
+  transition: 0.3s ease;
+}
+
+/* Skeleton */
+.image-item .skeleton {
+  height: 100%;
+  width: 100%;
+  border-radius: 14px;
+}
+
+.image-wrapper {
+  position: relative;       /* ⭐ REQUIRED */
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
 .download-overlay {
   position: absolute;
   bottom: 10px;
@@ -576,42 +577,42 @@ html, body {
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0;
-  transition: opacity .25s, transform .25s;
+  transition: opacity .25s ease, transform .25s ease;
   pointer-events: none;
 }
 
-.image-item:hover .download-overlay {
+.image-wrapper:hover .download-overlay {
   opacity: 1;
-  transform: scale(1.15);
-  pointer-events: auto;
+  transform: scale(1.12);
 }
 
 
-/* ------------------------------
-   RESPONSIVE (5 → 4 → 3 → 2 → 1)
--------------------------------- */
+/* Remove spacing bug */
+.image-item {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ===============================
+   ⭐ RESPONSIVE — MATCH SEARCH PAGE
+================================ */
+
 @media (max-width: 1600px) {
-  .related-masonry .related-col:nth-child(5) { display: none; }
+  .related-col:nth-child(5) { display: none; }
 }
 
 @media (max-width: 1200px) {
-  .related-masonry .related-col:nth-child(4) { display: none; }
+  .related-col:nth-child(4) { display: none; }
 }
 
 @media (max-width: 1000px) {
-  .related-masonry .related-col:nth-child(3) { display: none; }
+  .related-col:nth-child(3) { display: none; }
 }
 
 @media (max-width: 700px) {
-  .related-masonry .related-col:nth-child(2) { display: none; }
+  .related-col:nth-child(2) { display: none; }
 }
 
 @media (max-width: 500px) {
-  .related-masonry .related-col:nth-child(1) { flex: 1; }
-}
-
-/* Remove giant white space */
-.image-item {
-  margin: 0; /* remove unwanted spacing */
-  padding: 0;
+  .related-col:nth-child(1) { flex: 1; max-width: 100%; }
 }
