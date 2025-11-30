@@ -122,21 +122,17 @@
   </main>
 </div>
 
-
-<!-- ⭐⭐⭐ NEW MASONRY RELATED ⭐⭐⭐ -->
 <div class="related-section">
   <h2>Related Images</h2>
 
-  <div class="masonry-grid" id="related-grid">
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
+  <div class="related-masonry" id="related-grid">
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
   </div>
-
 </div>
-
 
 <!-- INFO MODAL -->
 <div id="infoModal" class="info-modal">
@@ -179,6 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ---------------------------------- */
 /* IMAGE DETAILS */
 /* ---------------------------------- */
+
 const fullSlug = window.location.pathname.split("/photo/")[1] || "";
 
 async function loadImageDetails() {
@@ -207,7 +204,7 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* Clean keywords */
+    /* ⭐ Clean keywords */
     const keywords =
       img.keywords?.length ? img.keywords :
       img.tags?.length ? img.tags :
@@ -218,7 +215,7 @@ async function loadImageDetails() {
         `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`
       ).join("");
 
-    /* Category + top 5 keywords */
+    /* ⭐ Category + top 5 keywords */
     const bestKeywords = [
       img.category,
       ...keywords.slice(0, 5)
@@ -232,7 +229,7 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED IMAGES — ULTRA FAST SYSTEM */
+/* RELATED IMAGES — SAME STYLE AS SEARCH */
 /* ---------------------------------- */
 
 let relatedKeywordList = [];
@@ -247,8 +244,13 @@ function startRelatedSystem(keywords) {
   relatedPage = 1;
   loadedIds.clear();
 
-  document.querySelectorAll("#related-grid .masonry-col")
-    .forEach(c => c.innerHTML = "");
+  document.querySelector("#related-grid").innerHTML = `
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+  `;
 
   loadNextKeywordBatch();
 }
@@ -260,7 +262,6 @@ async function loadNextKeywordBatch() {
   relatedPage = 1;
 
   await loadMoreRelated(keyword);
-
   relatedKeywordIndex++;
 }
 
@@ -276,7 +277,6 @@ async function loadMoreRelated(keyword) {
     const json = await res.json();
     const images = Array.isArray(json) ? json : json.images || [];
 
-    /* Remove duplicates */
     const unique = images.filter(img => {
       if (!loadedIds.has(img._id)) {
         loadedIds.add(img._id);
@@ -302,8 +302,12 @@ async function loadMoreRelated(keyword) {
   }
 }
 
+/* ---------------------------------- */
+/* DISPLAY RELATED (SEARCH STYLE) */
+/* ---------------------------------- */
+
 function displayRelated(images) {
-  const cols = document.querySelectorAll("#related-grid .masonry-col");
+  const cols = document.querySelectorAll("#related-grid .related-col");
   let colIndex = 0;
 
   images.forEach((img) => {
@@ -328,10 +332,7 @@ function displayRelated(images) {
           >
         </a>
 
-        <span class="download-overlay"
-          onclick="window.location.href='${API_BASE}/api/images/download/${encodeURIComponent(img.fileName)}'">
-          <i class="fa fa-download"></i>
-        </span>
+        <span class="download-overlay"></span>
       </div>
     `;
 
@@ -342,9 +343,11 @@ function displayRelated(images) {
   lazyLoadInit();
 }
 
-/* Infinite scroll */
+/* ---------------------------------- */
+/* INFINITE SCROLL */
+/* ---------------------------------- */
 window.addEventListener("scroll", async () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 400) {
     const keyword = relatedKeywordList[relatedKeywordIndex - 1];
     const more = await loadMoreRelated(keyword);
 
@@ -355,7 +358,7 @@ window.addEventListener("scroll", async () => {
 });
 
 /* ---------------------------------- */
-/* LAZY LOAD */
+/* LAZY LOAD INIT */
 /* ---------------------------------- */
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
@@ -377,7 +380,7 @@ function lazyLoadInit() {
         obs.unobserve(img);
       });
     },
-    { rootMargin: "300px 0px" }
+    { rootMargin: "400px 0px" }
   );
 
   lazyImages.forEach(img => observer.observe(img));
