@@ -155,8 +155,6 @@
     </ul>
   </div>
 </div>
-
-
 <script>
 /* ---------------------------------- */
 /* GLOBAL SETTINGS */
@@ -164,13 +162,20 @@
 const API_BASE = "https://api.pixeora.com";
 
 /* ---------------------------------- */
-/* SEARCH FIX (corrected) */
+/* FIXED SEARCH REDIRECT */
 /* ---------------------------------- */
 
-document.getElementById("searchForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const q = document.getElementById("searchInput").value.trim();
-  if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("searchForm");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = document.getElementById("searchInput").value.trim();
+      if (q.length > 0) {
+        window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+      }
+    });
+  }
 });
 
 /* ---------------------------------- */
@@ -218,7 +223,7 @@ async function loadImageDetails() {
       ).join("");
 
     const category = img.category || wordList[0];
-    if (category) loadRelated(category);
+    if (category) startRelated(category);
 
   } catch (e) {
     document.getElementById("image-name").textContent = "Image Not Found.";
@@ -226,23 +231,35 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED IMAGES — MASONRY GRID */
+/* RELATED IMAGES — INFINITE SCROLL */
 /* ---------------------------------- */
 
-async function loadRelated(keyword) {
+let relatedPage = 1;
+let relatedKeyword = "";
+let relatedLoading = false;
+
+function startRelated(keyword) {
+  relatedKeyword = keyword;
+  relatedPage = 1;
+  document.querySelectorAll("#related-grid .masonry-col").forEach(c => c.innerHTML = "");
+  loadMoreRelated();
+}
+
+async function loadMoreRelated() {
+  if (relatedLoading) return;
+  relatedLoading = true;
+
   try {
-    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(keyword)}`);
+    const res = await fetch(
+      `${API_BASE}/api/search?q=${encodeURIComponent(relatedKeyword)}&page=${relatedPage}&limit=40`
+    );
     const json = await res.json();
 
-    let images = Array.isArray(json) ? json : json.images || [];
+    const images = Array.isArray(json) ? json : json.images || [];
     const cols = document.querySelectorAll("#related-grid .masonry-col");
-
-    cols.forEach(col => (col.innerHTML = ""));
     let colIndex = 0;
 
-    images.slice(0, 40).forEach((img) => {
-
-      /* ⭐ FIXED — FULL Thumbnail fallback */
+    images.forEach((img) => {
       const thumb =
         img.thumbnailUrl ||
         (img.thumbnailFileName
@@ -275,9 +292,20 @@ async function loadRelated(keyword) {
     });
 
     lazyLoadInit();
+    relatedPage++;
+    relatedLoading = false;
 
-  } catch (e) {}
+  } catch (e) {
+    relatedLoading = false;
+  }
 }
+
+/* Infinite scroll trigger */
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
+    loadMoreRelated();
+  }
+});
 
 /* ---------------------------------- */
 /* LAZY LOAD INIT */
