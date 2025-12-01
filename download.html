@@ -213,6 +213,34 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
+/* UNIVERSAL ID + SLUG EXTRACTOR     */
+/* ---------------------------------- */
+
+const rawSlug = window.location.pathname.split("/photo/")[1] || "";
+
+/* Extract MongoID (last 24 hex chars) */
+const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
+const imageId = idMatch ? idMatch[1] : null;
+
+/* Extract slug part before ID */
+let slug = rawSlug.replace(/-[a-f0-9]{24}$/i, "");
+
+/* Handle old 'undefined-<id>' cases */
+if (
+  !slug ||
+  slug.trim() === "" ||
+  slug === "undefined" ||
+  slug === "null"
+) {
+  slug = null;
+}
+
+console.log("Slug =", slug);
+console.log("ImageID =", imageId);
+console.log("RawSlug =", rawSlug);
+
+
+/* ---------------------------------- */
 /* IMAGE DETAILS — Thumbnail → HD     */
 /* ---------------------------------- */
 async function loadImageDetails() {
@@ -266,8 +294,8 @@ async function loadImageDetails() {
     /* THUMBNAIL → BLUR → HD IMAGE              */
     /* ---------------------------------------- */
     mainImg.src = thumbUrl;
-    mainImg.style.filter = "blur(10px)";
-    mainImg.style.opacity = "0.4";
+    mainImg.style.filter = "blur(15px)";
+    mainImg.style.opacity = "0.7";
     skeleton.style.display = "none";
 
     const hd = new Image();
@@ -327,7 +355,6 @@ async function loadImageDetails() {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
-
 
 
 /* ---------------------------------- */
