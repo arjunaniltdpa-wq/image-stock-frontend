@@ -213,39 +213,28 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* UNIVERSAL SLUG FIX (OLD + NEW URL) */
-/* ---------------------------------- */
-
-const rawSlug = window.location.pathname.split("/photo/")[1] || "";
-
-/* 1️⃣ Remove file extensions */
-let cleaned = rawSlug.replace(/\.(jpg|jpeg|png|webp)$/i, "");
-
-/* 2️⃣ Remove MongoID if present (24 hex chars) */
-cleaned = cleaned.replace(/-[a-f0-9]{24}$/i, "");
-
-/* 3️⃣ Handle old "undefined-<id>" filenames */
-if (cleaned.startsWith("undefined")) {
-  cleaned = cleaned.replace(/^undefined-/, "");
-}
-
-/* 4️⃣ If still empty → fallback to rawSlug */
-let slug = cleaned.trim().length > 0 ? cleaned : rawSlug.trim();
-
-console.log("FINAL CLEAN SLUG =", slug);
-
-/* ---------------------------------- */
 /* IMAGE DETAILS — Thumbnail → HD     */
 /* ---------------------------------- */
 async function loadImageDetails() {
   try {
-    /* ----------------------------------------
-       1) FIX API CALL
-       If slug is null → fallback to raw string
-    -----------------------------------------*/
-    const apiSlug = slug || fullSlugRaw;
+    let apiUrl;
 
-    const res = await fetch(`${API_BASE}/api/images/slug/${apiSlug}`);
+    /* Priority:
+       1️⃣ New URLs → use clean slug
+       2️⃣ Old URLs (undefined-slug) → use ID fallback
+       3️⃣ Last fallback → full rawSlug
+    */
+    if (slug) {
+      apiUrl = `${API_BASE}/api/images/slug/${slug}`;
+    } else if (imageId) {
+      apiUrl = `${API_BASE}/api/images/slug/${imageId}`;
+    } else {
+      apiUrl = `${API_BASE}/api/images/slug/${rawSlug}`;
+    }
+
+    console.log("Fetching:", apiUrl);
+
+    const res = await fetch(apiUrl);
 
     if (!res.ok) {
       document.getElementById("image-name").textContent = "Image Not Found.";
@@ -254,18 +243,16 @@ async function loadImageDetails() {
 
     const img = await res.json();
 
-    /* Safety for missing fileName */
     if (!img.fileName) {
-      console.error("❌ Missing fileName in record:", img);
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
     }
 
     const file = encodeURIComponent(img.fileName);
 
-    /* ----------------------------------------
-       REAL PATHS FROM YOUR CDN
-    -----------------------------------------*/
+    /* ---------------------------------------- */
+    /* CDN PATHS                                */
+    /* ---------------------------------------- */
     const thumbUrl = img.thumbnailFileName
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
       : `https://cdn.pixeora.com/thumbs/${file}`;
@@ -275,17 +262,14 @@ async function loadImageDetails() {
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    /* ----------------------------------------
-       STEP 1 — Show THUMBNAIL with blur
-    -----------------------------------------*/
+    /* ---------------------------------------- */
+    /* THUMBNAIL → BLUR → HD IMAGE              */
+    /* ---------------------------------------- */
     mainImg.src = thumbUrl;
-    mainImg.style.filter = "blur(15px)";
-    mainImg.style.opacity = "0.7";
+    mainImg.style.filter = "blur(10px)";
+    mainImg.style.opacity = "0.4";
     skeleton.style.display = "none";
 
-    /* ----------------------------------------
-       STEP 2 — Load REAL HD IMAGE
-    -----------------------------------------*/
     const hd = new Image();
     hd.src = originalUrl;
 
@@ -300,13 +284,11 @@ async function loadImageDetails() {
       }
     };
 
-    hd.onerror = () => {
-      console.warn("❌ HD image missing:", originalUrl);
-    };
+    hd.onerror = () => console.warn("❌ HD image missing:", originalUrl);
 
-    /* ----------------------------------------
-       TITLE + DOWNLOAD BUTTON
-    -----------------------------------------*/
+    /* ---------------------------------------- */
+    /* TITLE + DOWNLOAD BUTTON                  */
+    /* ---------------------------------------- */
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
 
@@ -315,9 +297,9 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* ----------------------------------------
-       KEYWORDS
-    -----------------------------------------*/
+    /* ---------------------------------------- */
+    /* KEYWORDS                                 */
+    /* ---------------------------------------- */
     const keywords =
       img.keywords?.length
         ? img.keywords
@@ -334,11 +316,12 @@ async function loadImageDetails() {
       )
       .join("");
 
-    /* ----------------------------------------
-       RELATED IMAGES
-    -----------------------------------------*/
+    /* ---------------------------------------- */
+    /* RELATED SYSTEM                           */
+    /* ---------------------------------------- */
     const subject = detectMainSubject(img.title || "");
     startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
+
   } catch (err) {
     console.error("Loader Error:", err);
     document.getElementById("image-name").textContent = "Image Not Found.";
