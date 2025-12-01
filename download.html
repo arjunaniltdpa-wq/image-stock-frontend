@@ -245,33 +245,37 @@ console.log("RawSlug =", rawSlug);
 /* ---------------------------------- */
 async function loadImageDetails() {
   try {
-    let apiUrl;
+    let apiList = [];
 
-    /* Priority:
-       1️⃣ New URLs → use clean slug
-       2️⃣ Old URLs (undefined-slug) → use ID fallback
-       3️⃣ Last fallback → full rawSlug
-    */
+    // Priority 1: slug-ID full (always correct)
+    if (rawSlug) {
+      apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
+    }
+
+    // Priority 2: ID only
+    if (imageId) {
+      apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
+    }
+
+    // Priority 3: slug only (rarely needed)
     if (slug) {
-      apiUrl = `${API_BASE}/api/images/slug/${slug}`;
-    } else if (imageId) {
-      apiUrl = `${API_BASE}/api/images/slug/${imageId}`;
-    } else {
-      apiUrl = `${API_BASE}/api/images/slug/${rawSlug}`;
+      apiList.push(`${API_BASE}/api/images/slug/${slug}`);
     }
 
-    console.log("Fetching:", apiUrl);
+    console.log("Trying API List:", apiList);
 
-    const res = await fetch(apiUrl);
+    let img = null;
 
-    if (!res.ok) {
-      document.getElementById("image-name").textContent = "Image Not Found.";
-      return;
+    for (let url of apiList) {
+      const res = await fetch(url);
+      if (res.ok) {
+        img = await res.json();
+        console.log("Loaded From:", url);
+        break;
+      }
     }
 
-    const img = await res.json();
-
-    if (!img.fileName) {
+    if (!img) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
     }
