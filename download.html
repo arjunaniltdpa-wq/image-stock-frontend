@@ -213,17 +213,26 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* SLUG FIX — CLEAN + SAFE VERSION   */
+/* UNIVERSAL SLUG FIX (OLD + NEW URL) */
 /* ---------------------------------- */
-const fullSlugRaw = window.location.pathname.split("/photo/")[1] || "";
 
-/* Remove Mongo ID at end */
-let slug = fullSlugRaw.replace(/-[a-f0-9]{24}$/i, "");
+const rawSlug = window.location.pathname.split("/photo/")[1] || "";
 
-/* If slug missing or 'undefined', mark as invalid */
-if (!slug || slug === "undefined" || slug.trim() === "") {
-  slug = null;
+/* 1️⃣ Remove file extensions */
+let cleaned = rawSlug.replace(/\.(jpg|jpeg|png|webp)$/i, "");
+
+/* 2️⃣ Remove MongoID if present (24 hex chars) */
+cleaned = cleaned.replace(/-[a-f0-9]{24}$/i, "");
+
+/* 3️⃣ Handle old "undefined-<id>" filenames */
+if (cleaned.startsWith("undefined")) {
+  cleaned = cleaned.replace(/^undefined-/, "");
 }
+
+/* 4️⃣ If still empty → fallback to rawSlug */
+let slug = cleaned.trim().length > 0 ? cleaned : rawSlug.trim();
+
+console.log("FINAL CLEAN SLUG =", slug);
 
 /* ---------------------------------- */
 /* IMAGE DETAILS — Thumbnail → HD     */
