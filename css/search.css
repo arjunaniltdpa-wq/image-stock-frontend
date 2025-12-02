@@ -225,23 +225,37 @@ body {
     transform: scale(1.15);
 }
 
-/* RESPONSIVE COLUMNS */
-@media (max-width: 1200px) {
-  .masonry-col:nth-child(4) { display: none; }
-  .search-results { max-width: 1100px; padding: 0 14px; }
+/* ⭐ Force exactly 3 columns on iPad and tablets */
+@media (min-width: 700px) and (max-width: 1024px) {
+
+  .masonry-grid {
+      display: flex !important;
+      justify-content: center !important;
+  }
+
+  .masonry-col {
+      display: flex !important;
+      flex-direction: column !important;
+  }
+
+  /* Hide extra columns so only 3 stay */
+  .masonry-col:nth-child(4),
+  .masonry-col:nth-child(5) {
+      display: none !important;
+  }
 }
 
-@media (max-width: 900px) {
-  .masonry-col:nth-child(3) { display: none; }
-  .search-results { max-width: 750px; padding: 0 12px; }
-}
 
 @media (max-width: 600px) {
-  .masonry-col:nth-child(2),
-  .masonry-col:nth-child(3),
-  .masonry-col:nth-child(4) { display: none; }
-  .search-results { max-width: 500px; padding: 0 10px; }
+  .masonry-grid {
+    flex-direction: column !important;
+  }
+  .masonry-col {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
+
 
 
 /* ============================================================
@@ -427,22 +441,138 @@ body {
 /* ============================================================
   Remove Inner Scrollbars
 ============================================================ */
+/* -------------------------
+   FIX MOBILE GRID CUT ISSUE
+-------------------------- */
 
-.search-results,
-.masonry-grid,
-.masonry-col {
-  height: auto !important;
-  max-height: none !important;
-  overflow: visible !important;
-  overscroll-behavior: none !important; 
+@media (max-width: 600px) {
+  
+  /* force grid to expand vertically */
+  .search-results,
+  .masonry-grid,
+  .masonry-col {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* allow images to stack properly */
+  .masonry-col {
+    min-width: 100% !important;
+  }
+
+  /* ensure container expands */
+  .layout-wrapper {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
 }
 
-.masonry-col::-webkit-scrollbar,
-.search-results::-webkit-scrollbar,
-.masonry-grid::-webkit-scrollbar {
-  display: none !important;
+/* ================= Tablet ================= */
+@media (max-width: 1200px) and (min-width: 601px) {
+
+  .header {
+    height: 130px;
+    border-bottom-left-radius: 55px;
+    border-bottom-right-radius: 55px;
+  }
+
+  .header-overlay {
+    padding: 0 20px !important;       /* ✔ same as search page */
+    align-items: flex-start !important; /* ✔ match search page */
+    margin-top: 4% !important;         /* ✔ same as desktop */
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 36px;
+    position: relative;
+  }
+
+  .search-bar-wrapper {
+    width: auto;
+    margin: 0;
+    justify-content: flex-end;
+  }
+
+  .search-bar {
+    width: 260px;
+    height: 45px;
+  }
+
+  .search-bar input {
+    font-size: 16px;
+  }
+
+  .search-bar .search-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  /* Hide legal on mobile */
+  .legal-link-header {
+    display: none !important;
+  }
 }
 
-.masonry-col {
-  contain: none !important;
+
+/* ================= Mobile ================= */
+@media (max-width: 600px) {
+
+  /* Header smaller on mobile */
+  .header {
+    height: 110px;
+    border-bottom-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+  }
+
+  /* Proper left-right layout */
+  .header-overlay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 15px;
+  }
+
+  /* Mobile Logo */
+  .logo {
+    position: relative;
+    font-size: 30px;
+    margin: 0;
+  }
+
+  /* Right side search bar */
+  .search-bar-wrapper {
+    width: auto;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .search-bar {
+    width: 180px;
+    height: 38px;
+    border-radius: 16px;
+  }
+
+  .search-bar input {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .search-bar .search-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .search-bar .search-icon img {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Hide legal on mobile */
+  .legal-link-header {
+    display: none !important;
+  }
 }
