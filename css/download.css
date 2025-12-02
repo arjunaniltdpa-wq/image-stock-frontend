@@ -590,7 +590,8 @@ html, body {
   object-fit: cover;
 }
 
-.related-download-overlay {
+/* Download overlay */
+.download-overlay {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -601,14 +602,14 @@ html, body {
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0;
+  transition: .25s ease;
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.related-item:hover .related-download-overlay {
+.image-item:hover .download-overlay {
   opacity: 1;
-  pointer-events: auto;
   transform: scale(1.15);
+  pointer-events: auto;
 }
 
 /* ---------- RESPONSIVE BREAKPOINTS (5→4→3→2 columns) ---------- */
