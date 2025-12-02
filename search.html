@@ -117,7 +117,6 @@
   </div>
 </div>
 
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 
@@ -138,55 +137,51 @@ let colIndex = 0;
 /* DOWNLOAD */
 function downloadImage(rawName) {
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  // Using location.href so browser handles download response / content-disposition
   window.location.href = url;
 }
 
-/* BLOCK ANCHOR CLICK WHEN CLICKING DOWNLOAD ICON */
-document.addEventListener("click", (ev) => {
-  if (ev.target.classList.contains("download-overlay")) {
-    ev.stopPropagation();
+/* DELEGATED CAPTURED CLICK: intercept download-overlay BEFORE anchors */
+document.addEventListener('click', (ev) => {
+  // Use closest to allow clicks on inner elements (if any)
+  const overlay = ev.target.closest && ev.target.closest('.download-overlay');
+  if (overlay) {
+    // Prevent any navigation/upstream handlers
+    ev.stopImmediatePropagation();
     ev.preventDefault();
+
+    const raw = overlay.getAttribute('data-file');
+    if (raw) {
+      downloadImage(raw);
+    }
+    return;
   }
-}, true);
-
-/* FIX: Ensure clicking the image still opens photo page */
-document.addEventListener("click", (ev) => {
-  const img = ev.target;
-
-  // Only handle image clicks inside image-wrapper
-  if (img.tagName === "IMG" && img.closest(".image-wrapper")) {
-
-    // If user clicked the download icon → ignore
-    if (img.classList.contains("download-overlay")) return;
-
-    // PHOTO PAGE NAVIGATION HANDLED BY <a> (default)
-    // No blocking required
-  }
-}, true);
+}, true); // capture = true so it runs before bubble handlers
 
 /* UNIVERSAL CARD (Search + Related) */
 function createCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const file = img.thumbnailFileName || img.fileName;
+  const file = img.thumbnailFileName || img.fileName || "";
   const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+
+  // put original file name into data-file attribute on the overlay (escape ' handled by attr)
+  const safeFileAttr = String(img.fileName || "").replace(/"/g, '&quot;');
 
   div.innerHTML = `
     <div class="image-wrapper" style="position:relative;">
       <div class="skeleton"></div>
 
-      <a href="/photo/${img.slug}-${img._id}" class="image-link">
+      <a href="/photo/${img.slug || ''}-${img._id || ''}" class="image-link">
         <img 
           data-src="${url}" 
           class="lazy-img image-load"
-          alt="${img.alt || img.title || ""}"
+          alt="${(img.alt || img.title || "")}"
         >
       </a>
 
-      <span class="download-overlay"
-        onclick="event.stopImmediatePropagation(); event.preventDefault(); downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
-      </span>
+      <span class="download-overlay" data-file="${safeFileAttr}"></span>
     </div>
   `;
 
@@ -212,14 +207,14 @@ function lazyLoadInit() {
 
       img.onload = () => {
         img.classList.add("image-loaded");
-        const sk = img.closest(".image-wrapper").querySelector(".skeleton");
+        const sk = img.closest(".image-wrapper")?.querySelector(".skeleton");
         if (sk) sk.remove();
       };
 
       img.classList.remove("lazy-img");
       obs.unobserve(img);
     });
-  });
+  }, { rootMargin: "400px 0px" });
 
   lazyImages.forEach(img => observer.observe(img));
 }
@@ -305,7 +300,7 @@ function loadNextRelatedBatch() {
 
   let col = 0;
   batch.forEach(img => {
-    const card = createCard(img); 
+    const card = createCard(img);
     relatedCols[col].appendChild(card);
     col = (col + 1) % relatedCols.length;
   });
