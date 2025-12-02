@@ -137,9 +137,10 @@ let colIndex = 0;
 
 /* DOWNLOAD */
 function downloadImage(rawName) {
-  window.location.href =
-    `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  window.location.href = url;
 }
+
 
 /* CARD */
 function createCard(img) {
@@ -150,10 +151,10 @@ function createCard(img) {
   const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
   div.innerHTML = `
-    <div class="image-wrapper">
+    <div class="image-wrapper" style="position:relative;">
       <div class="skeleton"></div>
 
-      <a href="/photo/${img.slug}-${img._id}">
+      <a href="/photo/${img.slug}-${img._id}" class="image-link">
         <img 
           data-src="${url}" 
           class="lazy-img image-load"
@@ -162,13 +163,14 @@ function createCard(img) {
       </a>
 
       <span class="download-overlay"
-        onclick="event.stopPropagation(); event.preventDefault(); downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
+        onclick="event.stopImmediatePropagation(); event.preventDefault(); downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
       </span>
     </div>
   `;
 
   return div;
 }
+
 
 /* ADD MAIN COLUMN */
 function addToNextColumn(card) {

@@ -171,6 +171,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+function downloadImage(rawName) {
+  const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  window.location.href = url;
+}
+
 /* ---------------------------------- */
 /* SUBJECT DETECTION FROM TITLE */
 /* ---------------------------------- */
@@ -491,7 +496,7 @@ function displayRelated(images) {
       <div class="image-wrapper" style="position:relative;">
         <div class="skeleton"></div>
 
-        <a href="/photo/${img.slug}-${img._id}">
+        <a href="/photo/${img.slug}-${img._id}" class="image-link">
           <img 
             data-src="${thumb}"
             class="lazy-img blur-load"
@@ -502,7 +507,7 @@ function displayRelated(images) {
         </a>
 
         <span class="download-overlay"
-          onclick="event.stopPropagation(); event.preventDefault(); downloadRelatedImage('${img.fileName.replace(/'/g, "\\'")}')">
+          onclick="event.stopImmediatePropagation(); event.preventDefault(); downloadImage('${img.fileName.replace(/'/g, "\\'")}')">
         </span>
       </div>
     `;
@@ -513,6 +518,7 @@ function displayRelated(images) {
 
   lazyLoadInit();
 }
+
 
 
 /* ---------------------------------- */
