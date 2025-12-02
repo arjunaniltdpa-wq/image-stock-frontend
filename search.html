@@ -140,6 +140,13 @@ function downloadImage(rawName) {
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
   window.location.href = url;
 }
+// Block image navigation when clicking the download overlay
+document.addEventListener("click", (ev) => {
+  if (ev.target.classList.contains("download-overlay")) {
+    ev.stopPropagation();
+    ev.preventDefault();
+  }
+}, true);
 
 /* UNIVERSAL CARD (Search + Related) */
 function createCard(img) {
