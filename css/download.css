@@ -590,6 +590,14 @@ html, body {
   object-fit: cover;
 }
 
+.image-wrapper a {
+  pointer-events: none !important;
+}
+
+.image-wrapper img {
+  pointer-events: auto !important;
+}
+
 /* Download overlay */
 .download-overlay {
   position: absolute;
@@ -603,7 +611,10 @@ html, body {
   background-position: center;
   opacity: 0;
   transition: .25s ease;
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto !important;
+  z-index: 5;
+
 }
 
 .image-item:hover .download-overlay {
