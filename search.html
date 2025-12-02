@@ -140,11 +140,27 @@ function downloadImage(rawName) {
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
   window.location.href = url;
 }
-// Block image navigation when clicking the download overlay
+
+/* BLOCK ANCHOR CLICK WHEN CLICKING DOWNLOAD ICON */
 document.addEventListener("click", (ev) => {
   if (ev.target.classList.contains("download-overlay")) {
     ev.stopPropagation();
     ev.preventDefault();
+  }
+}, true);
+
+/* FIX: Ensure clicking the image still opens photo page */
+document.addEventListener("click", (ev) => {
+  const img = ev.target;
+
+  // Only handle image clicks inside image-wrapper
+  if (img.tagName === "IMG" && img.closest(".image-wrapper")) {
+
+    // If user clicked the download icon → ignore
+    if (img.classList.contains("download-overlay")) return;
+
+    // PHOTO PAGE NAVIGATION HANDLED BY <a> (default)
+    // No blocking required
   }
 }, true);
 
@@ -289,7 +305,7 @@ function loadNextRelatedBatch() {
 
   let col = 0;
   batch.forEach(img => {
-    const card = createCard(img);  // ← SAME universal card
+    const card = createCard(img); 
     relatedCols[col].appendChild(card);
     col = (col + 1) % relatedCols.length;
   });
