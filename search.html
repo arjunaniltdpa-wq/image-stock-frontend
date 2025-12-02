@@ -162,7 +162,7 @@ function createCard(img) {
       </a>
 
       <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
+        onclick="event.stopPropagation(); event.preventDefault(); downloadImage('${img.fileName.replace(/'/g,"\\'")}')">
       </span>
     </div>
   `;

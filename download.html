@@ -298,8 +298,8 @@ async function loadImageDetails() {
     /* THUMBNAIL → BLUR → HD IMAGE              */
     /* ---------------------------------------- */
     mainImg.src = thumbUrl;
-    mainImg.style.filter = "blur(15px)";
-    mainImg.style.opacity = "0.7";
+    mainImg.style.filter = "blur(8px)";
+    mainImg.style.opacity = "0.9";
     skeleton.style.display = "none";
 
     const hd = new Image();
@@ -501,7 +501,9 @@ function displayRelated(images) {
           />
         </a>
 
-        <span class="download-overlay"></span>
+        <span class="download-overlay"
+          onclick="event.stopPropagation(); event.preventDefault(); downloadRelatedImage('${img.fileName.replace(/'/g, "\\'")}')">
+        </span>
       </div>
     `;
 
