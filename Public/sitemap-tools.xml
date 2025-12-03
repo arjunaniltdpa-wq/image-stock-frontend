@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+    <!-- AI Image Upscaler -->
     <url>
         <loc>https://pixeora.com/upscale.html</loc>
+        <lastmod>2025-01-01</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.7</priority>
     </url>
 
+    <!-- Background Remover -->
     <url>
         <loc>https://pixeora.com/bgremove.html</loc>
+        <lastmod>2025-01-01</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.7</priority>
     </url>
 
+    <!-- Compressor -->
     <url>
         <loc>https://pixeora.com/imagecompressor.html</loc>
+        <lastmod>2025-01-01</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.7</priority>
     </url>
 
+    <!-- Format Converter -->
     <url>
         <loc>https://pixeora.com/formatconverter.html</loc>
+        <lastmod>2025-01-01</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.7</priority>
     </url>
 
 </urlset>

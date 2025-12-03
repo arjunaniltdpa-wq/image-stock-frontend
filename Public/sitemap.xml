@@ -11,7 +11,7 @@
         <loc>https://pixeora.com/sitemap-tools.xml</loc>
     </sitemap>
 
-    <!-- Backend-generated image sitemap -->
+    <!-- Dynamic backend image sitemap index -->
     <sitemap>
         <loc>https://api.pixeora.com/sitemap.xml</loc>
     </sitemap>

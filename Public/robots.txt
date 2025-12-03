@@ -1,16 +1,13 @@
 User-agent: *
 Allow: /
 
-# Block internal backend API from indexing
-Disallow: /api/
+# Block backend API directory (frontend does not have /api/, safe to keep or remove)
 Disallow: /uploads/
-
-# Block useless technical files
 Disallow: /vercel.json
 
-# Allow searching & clean URLs
+# Allow important pages
 Allow: /photo/
 Allow: /search.html
 
-# Main Sitemap Index
+# Main Sitemap for Google
 Sitemap: https://pixeora.com/sitemap.xml
