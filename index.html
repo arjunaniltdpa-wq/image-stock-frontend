@@ -1,4 +1,3 @@
-<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -9,7 +8,7 @@
   <meta name="robots" content="index, follow">
   <meta name="description" content="Download free HD wallpapers, 4K backgrounds, royalty-free stock images and commercial-use photos. Fast loading, clean UI, daily new premium-quality photos." />
   <meta name="keywords" content="free hd wallpapers, 4k wallpapers download, stock images free, royalty free images, commercial use photos free, pixeora images" />
-  <link rel="canonical" href="https://pixeora.com/" />
+  <link rel="canonical" href="https://pixeora.com/">
 
   <!-- Preconnect (Performance) -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
@@ -21,27 +20,45 @@
   <link rel="dns-prefetch" href="https://cdn.pixeora.com">
   <link rel="dns-prefetch" href="https://api.pixeora.com">
 
-  <!-- Preload LCP image (Correct way) -->
-  <link rel="preload" href="images/banner.jpg" as="image" type="image/jpeg">
-  <link rel="stylesheet" href="css/cookie.css">
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#000000">
 
+  <!-- Preload LCP image -->
+  <link rel="preload" href="images/banner.jpg" as="image" type="image/jpeg">
+
+  <link rel="stylesheet" href="css/cookie.css">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="Pixeora - Free HD Wallpapers & Royalty-Free Stock Images" />
-  <meta property="og:description" content="Browse & download free high-resolution wallpapers, 4K backgrounds, and royalty-free stock images." />
-  <meta property="og:image" content="https://pixeora.com/images/og-image.jpg" />
-  <meta property="og:url" content="https://pixeora.com/" />
-  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Pixeora - Free HD Wallpapers & Royalty-Free Stock Images">
+  <meta property="og:description" content="Browse & download free high-resolution wallpapers, 4K backgrounds, and royalty-free stock images.">
+  <meta property="og:image" content="https://pixeora.com/images/og-image.jpg">
+  <meta property="og:url" content="https://pixeora.com/">
+  <meta property="og:type" content="website">
 
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Pixeora - Free HD Wallpapers & 4K Images" />
-  <meta name="twitter:description" content="Download premium HD wallpapers, 4K backgrounds and royalty-free stock photos." />
-  <meta name="twitter:image" content="https://pixeora.com/images/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pixeora - Free HD Wallpapers & 4K Images">
+  <meta name="twitter:description" content="Download premium HD wallpapers, 4K backgrounds and royalty-free stock photos.">
+  <meta name="twitter:image" content="https://pixeora.com/images/og-image.jpg">
+
+  <!-- Structured Data: Organization Logo -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": "https://pixeora.com/",
+    "name": "Pixeora",
+    "logo": "https://pixeora.com/images/logo.png"
+  }
+  </script>
 
   <!-- Structured Data: Website Schema -->
   <script type="application/ld+json">
@@ -59,7 +76,7 @@
   }
   </script>
 
-  <!-- Structured Data: Homepage FAQ (SEO Boost) -->
+  <!-- Structured Data: Homepage FAQ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -101,315 +118,319 @@
   }
   </script>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" />
-
-  <meta http-equiv="Cache-Control" content="public, max-age=31536000" />
 </head>
 
-<body>
+    
 
-<header class="top-header">
-  <div class="top-nav-container">
-    <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
 
-    <nav class="nav-links">
-      <ul class="nav-menu">
-        <a href="legal.html" class="legal-link-header">Legal & Policies</a></li>
-        <li class="dropdown">
-          <button class="dropdown-btn" aria-label="AI Tools Menu">AI Tools</button>
-          <ul class="dropdown-content">
-            <li><a href="upscale.html">Upscale</a></li>
-            <li><a href="bgremove.html">BG Remove</a></li>
-            <li><a href="imagecompressor.html">Image Compressor</a></li>
-            <li><a href="formatconverter.html">Format Converter</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000" />
+  </head>
 
-<main class="container">
+  <body>
 
-  <!-- BANNER -->
-  <section class="banner">
-    <div class="banner-content">
-      <form class="search-bar-wrapper">
-        <div class="search-bar-border">
-          <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search Images" required>
-            <button type="submit" class="search-icon">
-              <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
-            </button>
+  <header class="top-header">
+    <div class="top-nav-container">
+      <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
+
+      <nav class="nav-links">
+        <ul class="nav-menu">
+          <a href="legal.html" class="legal-link-header">Legal & Policies</a></li>
+          <li class="dropdown">
+            <button class="dropdown-btn" aria-label="AI Tools Menu">AI Tools</button>
+            <ul class="dropdown-content">
+              <li><a href="upscale.html">Upscale</a></li>
+              <li><a href="bgremove.html">BG Remove</a></li>
+              <li><a href="imagecompressor.html">Image Compressor</a></li>
+              <li><a href="formatconverter.html">Format Converter</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- BANNER -->
+    <section class="banner">
+      <div class="banner-content">
+        <form class="search-bar-wrapper">
+          <div class="search-bar-border">
+            <div class="search-bar">
+              <input type="text" id="searchInput" placeholder="Search Images" required>
+              <button type="submit" class="search-icon">
+                <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
 
-      <h1 class="banner-text">Explore Free HD Wallpapers & Images</h1>
+        <h1 class="banner-text">Explore Free HD Wallpapers & Images</h1>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="categories">
+      <div class="category-grid">
+        <a href="search.html?query=nature" class="category">Nature</a>
+        <a href="search.html?query=business" class="category">Business</a>
+        <a href="search.html?query=technology" class="category">Technology</a>
+        <a href="search.html?query=travel" class="category">Travel</a>
+        <a href="search.html?query=food" class="category">Food</a>
+        <a href="search.html?query=architecture" class="category">Architecture</a>
+        <a href="search.html?query=fashion" class="category">Fashion</a>
+        <a href="search.html?query=abstract" class="category">Abstract</a>
+        <a href="search.html?query=anime" class="category">Anime</a>
+      </div>
+    </section>
+
+    <!-- POPULAR IMAGES -->
+    <section class="popular-images">
+      <div class="masonry-grid" id="masonry">
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>
+        <div class="masonry-col"></div>      
+      </div>
+        
+    </section>
+
+  </main>
+
+  <div id="cookie-banner" class="premium-cookie">
+    <div class="cookie-content">
+      <p class="cookie-message">
+        We use cookies to enhance your browsing experience and analyze traffic.
+      </p>
+      <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
     </div>
-  </section>
-
-  <!-- CATEGORIES -->
-  <section class="categories">
-    <div class="category-grid">
-      <a href="search.html?query=nature" class="category">Nature</a>
-      <a href="search.html?query=business" class="category">Business</a>
-      <a href="search.html?query=technology" class="category">Technology</a>
-      <a href="search.html?query=travel" class="category">Travel</a>
-      <a href="search.html?query=food" class="category">Food</a>
-      <a href="search.html?query=architecture" class="category">Architecture</a>
-      <a href="search.html?query=fashion" class="category">Fashion</a>
-      <a href="search.html?query=abstract" class="category">Abstract</a>
-      <a href="search.html?query=anime" class="category">Anime</a>
-    </div>
-  </section>
-
-  <!-- POPULAR IMAGES -->
-  <section class="popular-images">
-    <div class="masonry-grid" id="masonry">
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>
-      <div class="masonry-col"></div>      
-    </div>
-      
-  </section>
-
-</main>
-
-<div id="cookie-banner" class="premium-cookie">
-  <div class="cookie-content">
-    <p class="cookie-message">
-      We use cookies to enhance your browsing experience and analyze traffic.
-    </p>
-    <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
-</div>
 
 
-<script>
-const API_BASE = "https://api.pixeora.com";
-let page = 1;
-let loading = false;
-const limit = 36;
+  <script>
+  const API_BASE = "https://api.pixeora.com";
+  let page = 1;
+  let loading = false;
+  const limit = 36;
 
-/* Get masonry columns */
-const masonry = document.getElementById("masonry");
-const cols = Array.from(document.querySelectorAll(".masonry-col"));
+  /* Get masonry columns */
+  const masonry = document.getElementById("masonry");
+  const cols = Array.from(document.querySelectorAll(".masonry-col"));
 
-let colIndex = 0; // cycle 1-2-3-4 like Pexels
+  let colIndex = 0; // cycle 1-2-3-4 like Pexels
 
-function downloadImage(rawName) {
-  window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
-}
+  function downloadImage(rawName) {
+    window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+  }
 
-function createImageCard(img) {
-  const div = document.createElement("div");
-  div.classList.add("image-item");
+  function createImageCard(img) {
+    const div = document.createElement("div");
+    div.classList.add("image-item");
 
-  const url = img.thumbnailUrl || `/api/images/file/${img.thumbnailFileName}`;
+    const url = img.thumbnailUrl || `/api/images/file/${img.thumbnailFileName}`;
 
-  div.innerHTML = `
-    <div class="image-wrapper">
-      
-      <div class="skeleton"></div>
+    div.innerHTML = `
+      <div class="image-wrapper">
+        
+        <div class="skeleton"></div>
 
-      <a href="/photo/${img.slug}-${img._id}">
-        <img 
-          data-src="${url}" 
-          class="lazy-img image-load"
-          alt="${img.alt || ''}"
-          width="400"
-          height="260"
-          loading="lazy"
-        >
-      </a>
+        <a href="/photo/${img.slug}-${img._id}">
+          <img 
+            data-src="${url}" 
+            class="lazy-img image-load"
+            alt="${img.alt || ''}"
+            width="400"
+            height="260"
+            loading="lazy"
+          >
+        </a>
 
-      <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')
-      "></span>
+        <span class="download-overlay"
+          onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')
+        "></span>
 
-    </div>
-  `;
+      </div>
+    `;
 
-  return div;
-}
+    return div;
+  }
 
 
-function addToNextColumn(card) {
-  cols[colIndex].appendChild(card);
-  colIndex = (colIndex + 1) % cols.length;
-}
+  function addToNextColumn(card) {
+    cols[colIndex].appendChild(card);
+    colIndex = (colIndex + 1) % cols.length;
+  }
 
-/* ⭐⭐⭐ INITIAL IMAGE LOAD (12 images instantly) ⭐⭐⭐ */
-async function loadInitialImages() {
-  try {
+  /* ⭐⭐⭐ INITIAL IMAGE LOAD (12 images instantly) ⭐⭐⭐ */
+  async function loadInitialImages() {
+    try {
+      loading = true;
+
+      const res = await fetch(`${API_BASE}/api/images/popular?page=1&limit=12`);
+      const data = await res.json();
+      const images = data.images || [];
+
+      images.forEach(img => {
+        const card = createImageCard(img);
+        addToNextColumn(card);
+      });
+
+      lazyLoadInit();
+      applyImageLoadAnimation();
+
+      page = 2;
+      loading = false;
+
+    } catch (err) {
+      console.error("INITIAL LOAD ERROR:", err);
+    }
+  }
+
+  /* LOAD IMAGES (infinite scroll) */
+  async function loadImages() {
+    if (loading) return;
     loading = true;
 
-    const res = await fetch(`${API_BASE}/api/images/popular?page=1&limit=12`);
-    const data = await res.json();
-    const images = data.images || [];
+    try {
+      const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
+      const data = await res.json();
+      const images = data.images || [];
 
-    images.forEach(img => {
-      const card = createImageCard(img);
-      addToNextColumn(card);
-    });
-
-    lazyLoadInit();
-    applyImageLoadAnimation();
-
-    page = 2;
-    loading = false;
-
-  } catch (err) {
-    console.error("INITIAL LOAD ERROR:", err);
-  }
-}
-
-/* LOAD IMAGES (infinite scroll) */
-async function loadImages() {
-  if (loading) return;
-  loading = true;
-
-  try {
-    const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
-    const data = await res.json();
-    const images = data.images || [];
-
-    images.forEach(img => {
-      const card = createImageCard(img);
-      addToNextColumn(card);
-    });
-
-    page++;
-    lazyLoadInit();
-    applyImageLoadAnimation();
-
-  } catch (e) {
-    console.error("LOAD ERROR:", e);
-  }
-
-  loading = false;
-}
-
-/* ⭐⭐⭐ UPDATED LAZY LOAD FIX — loads before entering viewport ⭐⭐⭐ */
-function lazyLoadInit() {
-  const lazyImages = document.querySelectorAll("img.lazy-img");
-
-  const observer = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-
-        const img = entry.target;
-        img.src = img.dataset.src;
-
-        img.onload = () => {
-          img.classList.add("image-loaded");
-          const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
-          if (skeleton) skeleton.remove();
-        };
-
-        img.classList.remove("lazy-img");
-        obs.unobserve(img);
+      images.forEach(img => {
+        const card = createImageCard(img);
+        addToNextColumn(card);
       });
-    },
-    {
-      rootMargin: "300px 0px 300px 0px",   // ⭐ KEY FIX
-      threshold: 0
+
+      page++;
+      lazyLoadInit();
+      applyImageLoadAnimation();
+
+    } catch (e) {
+      console.error("LOAD ERROR:", e);
     }
-  );
 
-  lazyImages.forEach(img => observer.observe(img));
-}
-
-/* PREMIUM FADE-IN */
-function applyImageLoadAnimation() {
-  document.querySelectorAll(".image-load").forEach(img => {
-    img.onload = () => {
-      img.classList.add("image-loaded");
-
-      const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-      if (skeleton) skeleton.remove();
-    };
-  });
-}
-
-/* INFINITE SCROLL */
-function onScroll() {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
-    loadImages();
-  }
-}
-window.addEventListener("scroll", onScroll);
-
-/* ⭐ Call instant initial load ⭐ */
-loadInitialImages();
-
-/* SEARCH EVENT */
-document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
-  e.preventDefault();
-  const q = document.getElementById("searchInput").value.trim();
-  if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
-});
-
-/* SUGGESTIONS */
-const input = document.getElementById("searchInput");
-const suggestionBox = document.createElement("div");
-suggestionBox.id = "suggestionBox";
-Object.assign(suggestionBox.style, {
-  position: "absolute",
-  background: "white",
-  width: "100%",
-  zIndex: "2000",
-  borderRadius: "6px",
-  boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
-});
-input.parentNode.appendChild(suggestionBox);
-
-let suggestTimer;
-
-input.addEventListener("input", () => {
-  clearTimeout(suggestTimer);
-  const q = input.value.trim();
-
-  if (q.length < 2) {
-    suggestionBox.innerHTML = "";
-    return;
+    loading = false;
   }
 
-  suggestTimer = setTimeout(async () => {
-    const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
-    const suggestions = await res.json();
+  /* ⭐⭐⭐ UPDATED LAZY LOAD FIX — loads before entering viewport ⭐⭐⭐ */
+  function lazyLoadInit() {
+    const lazyImages = document.querySelectorAll("img.lazy-img");
 
-    suggestionBox.innerHTML = suggestions
-      .map(s => `<div class="suggest-item" style="padding:10px;cursor:pointer">${s}</div>`)
-      .join("");
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
 
-    document.querySelectorAll(".suggest-item").forEach(item => {
-      item.onclick = () => {
-        input.value = item.innerText;
-        suggestionBox.innerHTML = "";
+          const img = entry.target;
+          img.src = img.dataset.src;
+
+          img.onload = () => {
+            img.classList.add("image-loaded");
+            const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
+            if (skeleton) skeleton.remove();
+          };
+
+          img.classList.remove("lazy-img");
+          obs.unobserve(img);
+        });
+      },
+      {
+        rootMargin: "300px 0px 300px 0px",   // ⭐ KEY FIX
+        threshold: 0
+      }
+    );
+
+    lazyImages.forEach(img => observer.observe(img));
+  }
+
+  /* PREMIUM FADE-IN */
+  function applyImageLoadAnimation() {
+    document.querySelectorAll(".image-load").forEach(img => {
+      img.onload = () => {
+        img.classList.add("image-loaded");
+
+        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+        if (skeleton) skeleton.remove();
       };
     });
-  }, 200);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const banner = document.getElementById("cookie-banner");
-  const acceptBtn = document.getElementById("cookie-accept");
-
-  if (!localStorage.getItem("cookieConsent")) {
-    setTimeout(() => {
-      banner.classList.add("show");
-    }, 500);
   }
 
-  acceptBtn.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", "true");
-    banner.classList.remove("show");
-  });
-});
+  /* INFINITE SCROLL */
+  function onScroll() {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+      loadImages();
+    }
+  }
+  window.addEventListener("scroll", onScroll);
 
-</script>
+  /* ⭐ Call instant initial load ⭐ */
+  loadInitialImages();
+
+  /* SEARCH EVENT */
+  document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
+    e.preventDefault();
+    const q = document.getElementById("searchInput").value.trim();
+    if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+  });
+
+  /* SUGGESTIONS */
+  const input = document.getElementById("searchInput");
+  const suggestionBox = document.createElement("div");
+  suggestionBox.id = "suggestionBox";
+  Object.assign(suggestionBox.style, {
+    position: "absolute",
+    background: "white",
+    width: "100%",
+    zIndex: "2000",
+    borderRadius: "6px",
+    boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
+  });
+  input.parentNode.appendChild(suggestionBox);
+
+  let suggestTimer;
+
+  input.addEventListener("input", () => {
+    clearTimeout(suggestTimer);
+    const q = input.value.trim();
+
+    if (q.length < 2) {
+      suggestionBox.innerHTML = "";
+      return;
+    }
+
+    suggestTimer = setTimeout(async () => {
+      const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
+      const suggestions = await res.json();
+
+      suggestionBox.innerHTML = suggestions
+        .map(s => `<div class="suggest-item" style="padding:10px;cursor:pointer">${s}</div>`)
+        .join("");
+
+      document.querySelectorAll(".suggest-item").forEach(item => {
+        item.onclick = () => {
+          input.value = item.innerText;
+          suggestionBox.innerHTML = "";
+        };
+      });
+    }, 200);
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const banner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("cookie-accept");
+
+    if (!localStorage.getItem("cookieConsent")) {
+      setTimeout(() => {
+        banner.classList.add("show");
+      }, 500);
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      localStorage.setItem("cookieConsent", "true");
+      banner.classList.remove("show");
+    });
+  });
+
+  </script>

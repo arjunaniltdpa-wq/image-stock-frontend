@@ -1,16 +1,18 @@
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
   <!-- =========================
-       SEO + TITLE
+       BASIC SEO
   ========================== -->
   <title>Search Free HD Wallpapers & Stock Images | Pixeora</title>
 
-  <meta name="description" 
+  <meta name="robots" content="index, follow">
+
+  <meta name="description"
         content="Search millions of free HD wallpapers, 4K backgrounds, and royalty-free stock images. Fast results for USA, UK, Canada, Australia, Germany, India and more.">
 
-  <meta name="keywords" 
+  <meta name="keywords"
         content="search free images, hd wallpapers search, 4k wallpaper search, stock photos search, royalty free image search, commercial use photos, nature wallpapers, business images, technology wallpapers, travel stock photos, free image search engine, Pixeora search">
 
   <link rel="canonical" href="https://pixeora.com/search.html">
@@ -18,28 +20,32 @@
   <!-- =========================
        PERFORMANCE BOOST
   ========================== -->
-  <!-- Preload CSS -->
   <link rel="preload" href="css/search.css" as="style">
   <link rel="stylesheet" href="css/search.css">
   <link rel="stylesheet" href="css/cookie.css">
 
-
-
-  <!-- CDN -->
+  <!-- Preconnect -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
-
-  <!-- API -->
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://api.pixeora.com">
-
-  <!-- Google Fonts Optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- DNS Prefetch -->
+  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
+  <link rel="dns-prefetch" href="https://api.pixeora.com">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
+
+  <!-- =========================
+       FAVICONS + LOGO
+  ========================== -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#000000">
 
   <!-- =========================
        SOCIAL SHARING TAGS
@@ -56,7 +62,20 @@
   <meta name="twitter:image" content="https://pixeora.com/images/og-image.jpg">
 
   <!-- =========================
-       STRUCTURED DATA (SEO BOOST)
+       STRUCTURED DATA (LOGO)
+  ========================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": "https://pixeora.com/",
+    "name": "Pixeora",
+    "logo": "https://pixeora.com/images/logo.png"
+  }
+  </script>
+
+  <!-- =========================
+       STRUCTURED DATA (Search Page)
   ========================== -->
   <script type="application/ld+json">
   {
