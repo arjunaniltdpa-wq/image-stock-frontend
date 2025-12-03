@@ -602,7 +602,6 @@ color: white;
     object-fit: contain !important;  /* ✔ shows full image */
   }
 }
-
 /* ===== Premium Cookie Banner ===== */
 .premium-cookie {
   position: fixed;
