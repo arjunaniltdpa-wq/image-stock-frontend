@@ -175,6 +175,16 @@
   </section>
 
 </main>
+
+<div id="cookie-banner" class="cookie-banner">
+  <div class="cookie-text">
+    We use cookies to improve your experience and analyze site traffic. 
+    <a href="/legal.html" class="cookie-link">Learn more</a>
+  </div>
+
+  <button id="cookie-accept" class="cookie-btn">Got it</button>
+</div>
+
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
@@ -382,4 +392,21 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const banner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("cookie-accept");
+
+  if (!localStorage.getItem("cookieConsent")) {
+    setTimeout(() => {
+      banner.classList.add("show");
+    }, 500);
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "true");
+    banner.classList.remove("show");
+  });
+});
+
 </script>

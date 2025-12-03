@@ -21,6 +21,8 @@
   <!-- Preload CSS -->
   <link rel="preload" href="css/search.css" as="style">
   <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/style.css">
+
 
   <!-- CDN -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
@@ -115,6 +117,13 @@
     <div class="related-col"></div>
     <div class="related-col"></div> <!-- ⭐ 5 columns -->
   </div>
+</div>
+
+<div id="cookie-banner" class="cookie-banner">
+  <div class="cookie-text">
+    We use cookies to improve your experience and analyze site traffic.
+  </div>
+  <button id="cookie-accept" class="cookie-btn">Got it</button>
 </div>
 
 <script>
@@ -333,4 +342,22 @@ if (query) {
   keywordSpan.textContent = `"${query.charAt(0).toUpperCase() + query.slice(1)}"`;
   loadSearchImages(query);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const banner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("cookie-accept");
+
+  if (!localStorage.getItem("cookieConsent")) {
+    setTimeout(() => {
+      banner.classList.add("show");
+    }, 300);
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "true");
+    banner.classList.remove("show");
+  });
+});
+
+
 </script>
