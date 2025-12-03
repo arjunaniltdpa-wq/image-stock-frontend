@@ -19,7 +19,7 @@
     ========================== -->
     <link rel="preload" href="/css/download.css" as="style">
     <link rel="stylesheet" href="/css/download.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cookie.css">
 
     <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.pixeora.com">
@@ -150,16 +150,15 @@
   </div>
 </div>
 
-<div id="cookie-banner" class="cookie-banner premium-cookie">
+<div id="cookie-banner" class="premium-cookie">
   <div class="cookie-content">
     <p class="cookie-message">
       We use cookies to enhance your browsing experience and analyze traffic.
     </p>
-    <button id="cookie-accept" class="cookie-btn-premium">
-      Got it
-    </button>
+    <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
 </div>
+
 
 <script>
 /* ---------------------------------- */
@@ -635,6 +634,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const banner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("cookie-accept");
+
+  if (!localStorage.getItem("cookieConsent")) {
+    setTimeout(() => {
+      banner.classList.add("show");
+    }, 500);
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "true");
+    banner.classList.remove("show");
+  });
+});
 
 </script>
 

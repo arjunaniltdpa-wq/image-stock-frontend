@@ -23,6 +23,8 @@
 
   <!-- Preload LCP image (Correct way) -->
   <link rel="preload" href="images/banner.jpg" as="image" type="image/jpeg">
+  <link rel="stylesheet" href="css/cookie.css">
+
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
@@ -176,14 +178,15 @@
 
 </main>
 
-<div id="cookie-banner" class="cookie-banner">
-  <div class="cookie-text">
-    We use cookies to improve your experience and analyze site traffic. 
-    <a href="/legal.html" class="cookie-link">Learn more</a>
+<div id="cookie-banner" class="premium-cookie">
+  <div class="cookie-content">
+    <p class="cookie-message">
+      We use cookies to enhance your browsing experience and analyze traffic.
+    </p>
+    <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
-
-  <button id="cookie-accept" class="cookie-btn">Got it</button>
 </div>
+
 
 <script>
 const API_BASE = "https://api.pixeora.com";

@@ -13,7 +13,8 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/legal.css" />
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cookie.css">
+
 
   <!-- SEO -->
   <meta name="description" content="Read Pixeora's Privacy Policy, Terms & Conditions, Cookies & Analytics usage, and DMCA Policy." />
@@ -248,18 +249,16 @@
     <p>© 2025 <span>Pixeora</span> — All rights reserved.</p>
   </footer>
 
-<div id="cookie-banner" class="cookie-banner premium-cookie">
+<div id="cookie-banner" class="premium-cookie">
   <div class="cookie-content">
     <p class="cookie-message">
       We use cookies to enhance your browsing experience and analyze traffic.
     </p>
-    <button id="cookie-accept" class="cookie-btn-premium">
-      Got it
-    </button>
+    <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
 </div>
 
-  <script>
+<script>
     // Simple front-end handler (you can replace this with your real backend call)
     document.getElementById("legalContactForm").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -267,7 +266,7 @@
       this.reset();
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
   const banner = document.getElementById("cookie-banner");
   const acceptBtn = document.getElementById("cookie-accept");
 
@@ -283,7 +282,7 @@
   });
 });
 
-  </script>
+</script>
 
 </body>
 </html>
