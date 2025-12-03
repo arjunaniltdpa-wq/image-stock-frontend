@@ -541,14 +541,15 @@ html, body {
   justify-content: center;
   gap: 16px;
   width: 100%;
-  max-width: 1200px;
-  padding: 0 15px;
+  max-width: 100% !important;   /* allow full width */
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 /* Up to 5 columns (auto) */
 .masonry-col {
   flex: 1;
-  min-width: 250px;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
   gap: 16px;
