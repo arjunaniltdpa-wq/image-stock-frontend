@@ -274,11 +274,6 @@ body {
   cursor: pointer;
 }
 
-/* ================= Responsive Masonry Columns ================= */
-@media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
-@media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
-@media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
-@media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
 
 /* ================= Tablet ================= */
 @media (max-width: 1200px) and (min-width: 601px) {
@@ -431,13 +426,6 @@ html, body {
     }
 }
 
-/* GRID FIX: Related images */
-#related-images {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    overflow-x: hidden !important;
-}
 
 /* REMOVE DESKTOP SIDEBAR SPACE ON MOBILE / TABLET */
 @media (max-width: 1024px) {
@@ -518,115 +506,104 @@ html, body {
 }
 
 /* ---------- RELATED SECTION TITLE ---------- */
+
+
+/* ===== RELATED SECTION WRAPPER ===== */
 .related-wrapper {
   width: 100%;
+  margin-top: 40px;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* ⭐ Centers the grid */
-  justify-content: center;
-  margin-top: 40px !important;
-  padding-top: 20px !important;
-  z-index: 1;
-  position: relative;
+  align-items: center;
 }
 
 .related-wrapper h2 {
   width: 100%;
-  max-width: 1500px;
-  padding: 0 20px;
+  max-width: 1200px;
+  padding: 0 15px;
   font-size: 22px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
-/* Override masonry full width */
-.masonry-grid {
-  width: auto;              /* ⭐ Prevent full expansion */
-  max-width: 1500px;
-  display: flex;
-  justify-content: center;  /* ⭐ Center all columns */
-  gap: 16px;
-  padding: 0 20px;
-}
-
-/* ---------- RELATED MASONRY GRID (same as homepage) ---------- */
-
-/* ---------- RELATED FULL-WIDTH GRID ---------- */
+/* ===== RELATED MASONRY GRID ===== */
 .masonry-grid {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
   gap: 16px;
   width: 100%;
-  max-width: 100%;       /* ⭐ FULL WIDTH */
-  padding: 0 10px;        /* small left-right space */
-  margin: 0 auto 40px;
-  margin-top: 20px !important;
-  position: relative;
-  z-index: 1;
+  max-width: 1200px;
+  padding: 0 15px;
 }
 
-/* Dynamic full-width columns */
+/* Up to 5 columns (auto) */
 .masonry-col {
   flex: 1;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-
-  min-width: 260px;       /* cards grow wider */
-  max-width: 500px;       /* allow big wide cards */
 }
 
-
-/* Image card */
+/* ===== IMAGE CARD ===== */
 .image-item {
-  position: relative;
   width: 100%;
+  position: relative;
 }
 
-/* Images */
 .image-item img {
   width: 100%;
+  height: auto;
   border-radius: 12px;
-  object-fit: cover;
+  object-fit: cover;   /* avoid cropping */
 }
 
-/* Download overlay */
+/* ===== DOWNLOAD OVERLAY ===== */
 .download-overlay {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 130px;
-  height: 50px;
+  bottom: 8px;
+  right: 8px;
+  width: 110px;
+  height: 40px;
   background-image: url('../images/download-icon.png');
-  background-size: 120px;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0;
   transition: .25s ease;
-  pointer-events: none;
 }
 
 .image-item:hover .download-overlay {
   opacity: 1;
-  transform: scale(1.15);
-  pointer-events: auto;
+  transform: scale(1.1);
 }
 
-/* ---------- RESPONSIVE BREAKPOINTS (5→4→3→2 columns) ---------- */
+/* ===== RESPONSIVE COLUMN CONTROL ===== */
+
+/* 4 columns */
 @media (max-width: 1400px) {
-  .masonry-col:nth-child(4) {
-    display: none;
-  }
+  .masonry-col:nth-child(5) { display: none; }
 }
 
+/* 3 columns */
 @media (max-width: 1100px) {
-  .masonry-col:nth-child(3) {
-    display: none;
-  }
+  .masonry-col:nth-child(4) { display: none; }
 }
 
-@media (max-width: 700px) {
-  .masonry-col:nth-child(2) {
-    display: none;
+/* 2 columns */
+@media (max-width: 800px) {
+  .masonry-col:nth-child(3) { display: none; }
+}
+
+/* 1 column (mobile) */
+@media (max-width: 500px) {
+  .masonry-col:nth-child(2) { display: none; }
+
+  .masonry-grid {
+    padding: 0 8px;
+  }
+
+  .image-item img {
+    object-fit: contain !important; /* full image, no crop */
   }
 }
