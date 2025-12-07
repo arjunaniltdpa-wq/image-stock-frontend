@@ -35,7 +35,7 @@ color: #222;
 .logo {
     font-family: 'Marck Script', cursive;
     font-size: 45px;
-    color: #ffffff; /* FIX: white on banner */
+    color: #242424; /* FIX: white on banner */
     letter-spacing: -0.08em;
     text-decoration: none !important;
   }
@@ -43,7 +43,7 @@ color: #222;
 /* LEGAL LINK */
 .legal-link-header {
     font-size: 16px;
-    color: #ffffff; /* FIX: white on banner */
+    color: #242424; /* FIX: white on banner */
     text-decoration: none;
     padding: 8px 12px;
     border-radius: 6px;
