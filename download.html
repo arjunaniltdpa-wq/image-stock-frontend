@@ -45,20 +45,23 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- =========================
-      SOCIAL SHARING (Dynamic OG Tags)
-  ========================== -->
-  <meta id="og-title" property="og:title" content="Pixeora Image">
+
+<!-- =========================
+    SOCIAL SHARING (Dynamic OG Tags)
+========================== -->
+  <meta id="og-title" property="og:title" content="Pixeora – Free HD Image">
   <meta id="og-desc" property="og:description" content="Download full HD wallpapers & royalty-free stock images.">
-  <meta id="og-image" property="og:image" content="">
+  <meta id="og-image" property="og:image" content="https://pixeora.com/images/logo.png">
+  <meta property="og:url" id="og-url" content="">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Pixeora">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta id="twitter-title" name="twitter:title" content="Pixeora Image Download">
+  <meta id="twitter-title" name="twitter:title" content="Pixeora – Free HD Image Download">
   <meta id="twitter-desc" name="twitter:description" content="Download high-quality wallpapers, 4K backgrounds, and stock images.">
-  <meta id="twitter-image" name="twitter:image" content="">
+  <meta id="twitter-image" name="twitter:image" content="https://pixeora.com/images/logo.png">
+
 
   <!-- =========================
       STRUCTURED DATA (Dynamic ImageObject)
@@ -95,6 +98,7 @@
   </script>
 
 </head>
+
 <body>
 
 
@@ -367,6 +371,38 @@ async function loadImageDetails() {
       `${API_BASE}/api/images/download/${file}`;
 
     window.__originalFileName = img.fileName;
+
+    /* ---------------------------------------- */
+    /* ⚡ UPDATE OG + TWITTER + CANONICAL TAGS  */
+    /* ---------------------------------------- */
+    document.getElementById("og-title").setAttribute("content", img.title || img.fileName);
+    document.getElementById("og-desc").setAttribute("content", img.description || "Download full HD wallpapers & royalty-free stock images.");
+    document.getElementById("og-image").setAttribute("content", originalUrl);
+    document.getElementById("og-url").setAttribute("content", window.location.href);
+
+    document.getElementById("twitter-title").setAttribute("content", img.title || img.fileName);
+    document.getElementById("twitter-desc").setAttribute("content", img.description || "Download full HD wallpapers & royalty-free stock images.");
+    document.getElementById("twitter-image").setAttribute("content", originalUrl);
+
+    document.getElementById("canonical-link").setAttribute("href", window.location.href);
+
+    /* ---------------------------------------- */
+    /* ⚡ UPDATE SCHEMA JSON-LD                 */
+    /* ---------------------------------------- */
+    const ld = document.getElementById("ld-json");
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ImageObject",
+      "name": img.title || img.fileName,
+      "description": img.description || "Free HD image download",
+      "contentUrl": originalUrl,
+      "thumbnailUrl": thumbUrl,
+      "creator": {
+        "@type": "Organization",
+        "name": "Pixeora"
+      },
+      "license": "https://pixeora.com/license"
+    });
 
     /* ---------------------------------------- */
     /* KEYWORDS                                 */
