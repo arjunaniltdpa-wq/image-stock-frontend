@@ -209,228 +209,223 @@
   </div>
 
 
-  <script>
-  const API_BASE = "https://api.pixeora.com";
-  let page = 1;
-  let loading = false;
-  const limit = 36;
+<script>
+const API_BASE = "https://api.pixeora.com";
+let page = 1;
+let loading = false;
+const limit = 36;
 
-  /* Get masonry columns */
-  const masonry = document.getElementById("masonry");
-  const cols = Array.from(document.querySelectorAll(".masonry-col"));
+/* Get masonry columns */
+const masonry = document.getElementById("masonry");
+const cols = Array.from(document.querySelectorAll(".masonry-col"));
 
-  let colIndex = 0; // cycle 1-2-3-4 like Pexels
+let colIndex = 0;
 
-  function downloadImage(rawName) {
-    window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
-  }
+function downloadImage(rawName) {
+  window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+}
 
-  function createImageCard(img) {
-    const div = document.createElement("div");
-    div.classList.add("image-item");
+function createImageCard(img) {
+  const div = document.createElement("div");
+  div.classList.add("image-item");
 
-    const url = img.thumbnailUrl || `/api/images/file/${img.thumbnailFileName}`;
+  const url = img.thumbnailUrl || `/api/images/file/${img.thumbnailFileName}`;
 
-    div.innerHTML = `
-      <div class="image-wrapper">
-        
-        <div class="skeleton"></div>
+  div.innerHTML = `
+    <div class="image-wrapper">
+      <div class="skeleton"></div>
 
-        <a href="/photo/${img.slug}-${img._id}">
-          <img 
-            data-src="${url}" 
-            class="lazy-img image-load"
-            alt="${img.alt || ''}"
-            width="400"
-            height="260"
-            loading="lazy"
-          >
-        </a>
+      <a href="/photo/${img.slug}-${img._id}">
+        <img 
+          data-src="${url}" 
+          class="lazy-img image-load"
+          alt="${img.alt || ''}"
+          width="400"
+          height="260"
+          loading="lazy"
+        >
+      </a>
 
-        <span class="download-overlay"
-          onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')
-        "></span>
+      <span class="download-overlay"
+        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')
+      "></span>
+    </div>
+  `;
+  return div;
+}
 
-      </div>
-    `;
+function addToNextColumn(card) {
+  cols[colIndex].appendChild(card);
+  colIndex = (colIndex + 1) % cols.length;
+}
 
-    return div;
-  }
-
-
-  function addToNextColumn(card) {
-    cols[colIndex].appendChild(card);
-    colIndex = (colIndex + 1) % cols.length;
-  }
-
-  /* ⭐⭐⭐ INITIAL IMAGE LOAD (12 images instantly) ⭐⭐⭐ */
-  async function loadInitialImages() {
-    try {
-      loading = true;
-
-      const res = await fetch(`${API_BASE}/api/images/popular?page=1&limit=12`);
-      const data = await res.json();
-      const images = data.images || [];
-
-      images.forEach(img => {
-        const card = createImageCard(img);
-        addToNextColumn(card);
-      });
-
-      lazyLoadInit();
-      applyImageLoadAnimation();
-
-      page = 2;
-      loading = false;
-
-    } catch (err) {
-      console.error("INITIAL LOAD ERROR:", err);
-    }
-  }
-
-  /* LOAD IMAGES (infinite scroll) */
-  async function loadImages() {
-    if (loading) return;
+/* ⭐⭐⭐ INITIAL LOAD ⭐⭐⭐ */
+async function loadInitialImages() {
+  try {
     loading = true;
+    const res = await fetch(`${API_BASE}/api/images/popular-latest?page=1&limit=12`);
+    const data = await res.json();
+    const images = data.images || [];
 
-    try {
-      const res = await fetch(`${API_BASE}/api/images/popular?page=${page}&limit=${limit}`);
-      const data = await res.json();
-      const images = data.images || [];
+    images.forEach(img => {
+      const card = createImageCard(img);
+      addToNextColumn(card);
+    });
 
-      images.forEach(img => {
-        const card = createImageCard(img);
-        addToNextColumn(card);
-      });
+    lazyLoadInit();
+    applyImageLoadAnimation();
 
-      page++;
-      lazyLoadInit();
-      applyImageLoadAnimation();
-
-    } catch (e) {
-      console.error("LOAD ERROR:", e);
-    }
-
+    page = 2;
     loading = false;
+
+  } catch (err) {
+    console.error("INITIAL LOAD ERROR:", err);
+  }
+}
+
+/* ⭐⭐⭐ LOAD NEXT IMAGES ⭐⭐⭐ */
+async function loadImages() {
+  if (loading) return;
+  loading = true;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/images/popular-latest?page=${page}&limit=${limit}`);
+    const data = await res.json();
+    const images = data.images || [];
+
+    images.forEach(img => {
+      const card = createImageCard(img);
+      addToNextColumn(card);
+    });
+
+    page++;
+    lazyLoadInit();
+    applyImageLoadAnimation();
+
+  } catch (e) {
+    console.error("LOAD ERROR:", e);
   }
 
-  /* ⭐⭐⭐ UPDATED LAZY LOAD FIX — loads before entering viewport ⭐⭐⭐ */
-  function lazyLoadInit() {
-    const lazyImages = document.querySelectorAll("img.lazy-img");
+  loading = false;
+}
 
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
+/* LAZY LOAD */
+function lazyLoadInit() {
+  const lazyImages = document.querySelectorAll("img.lazy-img");
 
-          const img = entry.target;
-          img.src = img.dataset.src;
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
-          img.onload = () => {
-            img.classList.add("image-loaded");
-            const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
-            if (skeleton) skeleton.remove();
-          };
+        const img = entry.target;
+        img.src = img.dataset.src;
 
-          img.classList.remove("lazy-img");
-          obs.unobserve(img);
-        });
-      },
-      {
-        rootMargin: "300px 0px 300px 0px",   // ⭐ KEY FIX
-        threshold: 0
-      }
-    );
+        img.onload = () => {
+          img.classList.add("image-loaded");
+          const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
+          if (skeleton) skeleton.remove();
+        };
 
-    lazyImages.forEach(img => observer.observe(img));
+        img.classList.remove("lazy-img");
+        obs.unobserve(img);
+      });
+    },
+    {
+      rootMargin: "300px 0px 300px 0px",
+      threshold: 0
+    }
+  );
+
+  lazyImages.forEach(img => observer.observe(img));
+}
+
+/* FADE-IN */
+function applyImageLoadAnimation() {
+  document.querySelectorAll(".image-load").forEach(img => {
+    img.onload = () => {
+      img.classList.add("image-loaded");
+
+      const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
+      if (skeleton) skeleton.remove();
+    };
+  });
+}
+
+/* INFINITE SCROLL */
+function onScroll() {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+    loadImages();
+  }
+}
+window.addEventListener("scroll", onScroll);
+
+/* CALL FIRST LOAD */
+loadInitialImages();
+
+/* SEARCH */
+document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
+  e.preventDefault();
+  const q = document.getElementById("searchInput").value.trim();
+  if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+});
+
+/* SUGGESTIONS */
+const input = document.getElementById("searchInput");
+const suggestionBox = document.createElement("div");
+suggestionBox.id = "suggestionBox";
+Object.assign(suggestionBox.style, {
+  position: "absolute",
+  background: "white",
+  width: "100%",
+  zIndex: "2000",
+  borderRadius: "6px",
+  boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
+});
+input.parentNode.appendChild(suggestionBox);
+
+let suggestTimer;
+
+input.addEventListener("input", () => {
+  clearTimeout(suggestTimer);
+  const q = input.value.trim();
+
+  if (q.length < 2) {
+    suggestionBox.innerHTML = "";
+    return;
   }
 
-  /* PREMIUM FADE-IN */
-  function applyImageLoadAnimation() {
-    document.querySelectorAll(".image-load").forEach(img => {
-      img.onload = () => {
-        img.classList.add("image-loaded");
+  suggestTimer = setTimeout(async () => {
+    const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
+    const suggestions = await res.json();
 
-        const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-        if (skeleton) skeleton.remove();
+    suggestionBox.innerHTML = suggestions
+      .map(s => `<div class="suggest-item" style="padding:10px;cursor:pointer">${s}</div>`)
+      .join("");
+
+    document.querySelectorAll(".suggest-item").forEach(item => {
+      item.onclick = () => {
+        input.value = item.innerText;
+        suggestionBox.innerHTML = "";
       };
     });
+  }, 200);
+});
+
+/* COOKIE */
+document.addEventListener("DOMContentLoaded", function () {
+  const banner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("cookie-accept");
+
+  if (!localStorage.getItem("cookieConsent")) {
+    setTimeout(() => {
+      banner.classList.add("show");
+    }, 500);
   }
 
-  /* INFINITE SCROLL */
-  function onScroll() {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
-      loadImages();
-    }
-  }
-  window.addEventListener("scroll", onScroll);
-
-  /* ⭐ Call instant initial load ⭐ */
-  loadInitialImages();
-
-  /* SEARCH EVENT */
-  document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
-    e.preventDefault();
-    const q = document.getElementById("searchInput").value.trim();
-    if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "true");
+    banner.classList.remove("show");
   });
-
-  /* SUGGESTIONS */
-  const input = document.getElementById("searchInput");
-  const suggestionBox = document.createElement("div");
-  suggestionBox.id = "suggestionBox";
-  Object.assign(suggestionBox.style, {
-    position: "absolute",
-    background: "white",
-    width: "100%",
-    zIndex: "2000",
-    borderRadius: "6px",
-    boxShadow: "0 3px 10px rgba(0,0,0,0.2)"
-  });
-  input.parentNode.appendChild(suggestionBox);
-
-  let suggestTimer;
-
-  input.addEventListener("input", () => {
-    clearTimeout(suggestTimer);
-    const q = input.value.trim();
-
-    if (q.length < 2) {
-      suggestionBox.innerHTML = "";
-      return;
-    }
-
-    suggestTimer = setTimeout(async () => {
-      const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
-      const suggestions = await res.json();
-
-      suggestionBox.innerHTML = suggestions
-        .map(s => `<div class="suggest-item" style="padding:10px;cursor:pointer">${s}</div>`)
-        .join("");
-
-      document.querySelectorAll(".suggest-item").forEach(item => {
-        item.onclick = () => {
-          input.value = item.innerText;
-          suggestionBox.innerHTML = "";
-        };
-      });
-    }, 200);
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const banner = document.getElementById("cookie-banner");
-    const acceptBtn = document.getElementById("cookie-accept");
-
-    if (!localStorage.getItem("cookieConsent")) {
-      setTimeout(() => {
-        banner.classList.add("show");
-      }, 500);
-    }
-
-    acceptBtn.addEventListener("click", () => {
-      localStorage.setItem("cookieConsent", "true");
-      banner.classList.remove("show");
-    });
-  });
-
-  </script>
+});
+</script>
