@@ -576,3 +576,27 @@ body {
     display: none !important;
   }
 }
+
+
+
+.load-more-wrapper {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.load-more-btn {
+  background: #333333;
+  color: #ffffff;
+  padding: 11px 70px;
+  font-size: 15px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  transition: 0.2s ease-in-out;
+}
+
+.load-more-btn:hover {
+  background: #1f1f1f;
+}
+

@@ -139,6 +139,11 @@
   </div>
 </div>
 
+<div class="load-more-wrapper" id="loadMoreSection" style="display:none;">
+  <button class="load-more-btn" onclick="loadMoreImages()">Load More</button>
+</div>
+
+
 <div id="cookie-banner" class="premium-cookie">
   <div class="cookie-content">
     <p class="cookie-message">
@@ -166,39 +171,36 @@ const masonry = document.getElementById("masonry");
 const cols = Array.from(masonry.querySelectorAll(".masonry-col"));
 let colIndex = 0;
 
+/* LOAD MORE CONFIG */
+let allImages = [];
+let imageIndex = 0;
+const BATCH_SIZE = 50;
+
 /* DOWNLOAD */
 function downloadImage(rawName) {
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
-  // Using location.href so browser handles download response / content-disposition
   window.location.href = url;
 }
 
-/* DELEGATED CAPTURED CLICK: intercept download-overlay BEFORE anchors */
+/* DELEGATED DOWNLOAD */
 document.addEventListener('click', (ev) => {
-  // Use closest to allow clicks on inner elements (if any)
   const overlay = ev.target.closest && ev.target.closest('.download-overlay');
   if (overlay) {
-    // Prevent any navigation/upstream handlers
     ev.stopImmediatePropagation();
     ev.preventDefault();
-
     const raw = overlay.getAttribute('data-file');
-    if (raw) {
-      downloadImage(raw);
-    }
+    if (raw) downloadImage(raw);
     return;
   }
-}, true); // capture = true so it runs before bubble handlers
+}, true);
 
-/* UNIVERSAL CARD (Search + Related) */
+/* CARD TEMPLATE */
 function createCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
   const file = img.thumbnailFileName || img.fileName || "";
   const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
-
-  // put original file name into data-file attribute on the overlay (escape ' handled by attr)
   const safeFileAttr = String(img.fileName || "").replace(/"/g, '&quot;');
 
   div.innerHTML = `
@@ -216,11 +218,10 @@ function createCard(img) {
       <span class="download-overlay" data-file="${safeFileAttr}"></span>
     </div>
   `;
-
   return div;
 }
 
-/* ADD MAIN COLUMN */
+/* COLUMN INSERT */
 function addToNextColumn(card) {
   cols[colIndex].appendChild(card);
   colIndex = (colIndex + 1) % cols.length;
@@ -229,7 +230,6 @@ function addToNextColumn(card) {
 /* LAZY LOAD */
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
-
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -261,7 +261,33 @@ function applyImageLoadAnimation() {
   });
 }
 
-/* LOAD MAIN SEARCH RESULTS */
+/* SHOW NEXT BATCH */
+function showNextBatch() {
+  const batch = allImages.slice(imageIndex, imageIndex + BATCH_SIZE);
+  if (!batch.length) return;
+
+  batch.forEach(img => {
+    addToNextColumn(createCard(img));
+  });
+
+  imageIndex += BATCH_SIZE;
+  lazyLoadInit();
+  applyImageLoadAnimation();
+
+  const loadMoreSection = document.getElementById("loadMoreSection");
+
+  if (imageIndex >= allImages.length) {
+    loadMoreSection.style.display = "none";
+  } else {
+    loadMoreSection.style.display = "block";
+  }
+}
+
+function loadMoreImages() {
+  showNextBatch();
+}
+
+/* LOAD SEARCH IMAGES */
 async function loadSearchImages(q) {
   try {
     const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}`);
@@ -281,12 +307,10 @@ async function loadSearchImages(q) {
 
     relatedSection.style.display = "none";
 
-    images.forEach(img => {
-      addToNextColumn(createCard(img));
-    });
-
-    lazyLoadInit();
-    applyImageLoadAnimation();
+    /** STORE AND LOAD FIRST 50 */
+    allImages = images;
+    imageIndex = 0;
+    showNextBatch();
 
   } catch (err) {
     console.error(err);
@@ -298,10 +322,7 @@ function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
-/* -------------------------
-   RELATED SECTION PAGINATION
----------------------------*/
-
+/* RELATED PAGINATION */
 let relatedAll = [];
 let relatedIndex = 0;
 const RELATED_BATCH = 30;
@@ -318,15 +339,12 @@ async function loadRelatedInitial(keyword) {
   }
 
   relatedAll = shuffle(relatedAll);
-
   relatedIndex = 0;
   loadNextRelatedBatch();
 }
 
-/* LOAD NEXT 30 RELATED IMAGES */
 function loadNextRelatedBatch() {
   const relatedCols = relatedContainer.querySelectorAll(".related-col");
-
   const batch = relatedAll.slice(relatedIndex, relatedIndex + RELATED_BATCH);
   if (!batch.length) return;
 
@@ -338,12 +356,10 @@ function loadNextRelatedBatch() {
   });
 
   relatedIndex += RELATED_BATCH;
-
   lazyLoadInit();
   applyImageLoadAnimation();
 }
 
-/* INFINITY SCROLL TRIGGER */
 window.addEventListener("scroll", () => {
   if (relatedSection.style.display === "block") {
     const rect = relatedSection.getBoundingClientRect();
@@ -366,6 +382,7 @@ if (query) {
   loadSearchImages(query);
 }
 
+/* COOKIE */
 document.addEventListener("DOMContentLoaded", function () {
   const banner = document.getElementById("cookie-banner");
   const acceptBtn = document.getElementById("cookie-accept");
@@ -381,7 +398,4 @@ document.addEventListener("DOMContentLoaded", function () {
     banner.classList.remove("show");
   });
 });
-
-
-
 </script>
