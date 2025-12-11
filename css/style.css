@@ -499,10 +499,9 @@ color: white;
   filter: blur(0);
 }
 
-/* --- SOFT GREY SKELETON --- */
 .skeleton {
   width: 100%;
-  min-height: 220px;   /* ← FIX */
+  min-height: 220px;
   border-radius: 12px;
   background: linear-gradient(90deg,
     rgba(220, 220, 220, 0.21),
@@ -512,26 +511,62 @@ color: white;
   background-size: 400% 100%;
   animation: shimmer 1.5s ease infinite;
 }
+
 @keyframes shimmer {
   0% { background-position: -100% 0; }
   100% { background-position: 100% 0; }
 }
 
-/* --- PEXELS STYLE MASONRY FLEX GRID --- */
-.masonry-grid {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 40px;
+.image-load {
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
 }
 
-.masonry-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px; /* equal vertical spacing */
+.image-loaded {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.masonry-grid {
+  column-count: 4;         /* desktop default */
+  column-gap: 16px;
+  padding: 0 16px;
+}
+
+.image-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  display: block;
+  width: 100%;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 1200px) {
+  .masonry-grid { column-count: 3; }
+}
+
+@media (max-width: 900px) {
+  .masonry-grid { column-count: 2; }
+}
+
+@media (max-width: 600px) {
+  .masonry-grid { column-count: 1; }
+}
+
+
+.image-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
 }
 
 .image-wrapper {
@@ -551,23 +586,7 @@ color: white;
   display: block;
 }
 
-/* 4 columns desktop */
-@media (max-width: 1400px) { .masonry-grid { gap: 14px; } }
 
-/* 3 columns */
-@media (max-width: 1100px) {
-  .masonry-col:nth-child(4) { display: none; }
-}
-
-/* 2 columns */
-@media (max-width: 800px) {
-  .masonry-col:nth-child(3) { display: none; }
-}
-
-/* 1 column */
-@media (max-width: 500px) {
-  .masonry-col:nth-child(2) { display: none; }
-}
 /* Make dropdown always appear above search bar */
 .nav-menu,
 .dropdown,
