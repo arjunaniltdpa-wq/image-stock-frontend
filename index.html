@@ -208,7 +208,6 @@
     </div>
   </div>
 
-
 <script>
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
@@ -217,7 +216,12 @@ const limit = 36;
 
 /* Get masonry columns */
 const masonry = document.getElementById("masonry");
-const cols = Array.from(document.querySelectorAll(".masonry-col"));
+
+/* ⭐ NEW: detect visible columns only */
+function getVisibleColumns() {
+  return Array.from(document.querySelectorAll(".masonry-col"))
+    .filter(col => getComputedStyle(col).display !== "none");
+}
 
 let colIndex = 0;
 
@@ -247,16 +251,20 @@ function createImageCard(img) {
       </a>
 
       <span class="download-overlay"
-        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')
-      "></span>
+        onclick="downloadImage('${img.fileName.replace(/'/g, "\\'")}')"
+      ></span>
     </div>
   `;
   return div;
 }
 
+/* ⭐ FIX: distribute using visible columns only */
 function addToNextColumn(card) {
-  cols[colIndex].appendChild(card);
-  colIndex = (colIndex + 1) % cols.length;
+  const visibleCols = getVisibleColumns();
+  if (visibleCols.length === 0) return;
+
+  visibleCols[colIndex].appendChild(card);
+  colIndex = (colIndex + 1) % visibleCols.length;
 }
 
 /* ⭐⭐⭐ INITIAL LOAD ⭐⭐⭐ */
@@ -278,8 +286,21 @@ async function loadInitialImages() {
     page = 2;
     loading = false;
 
+    /* ⭐ NEW AUTO-LOAD FIX FOR TABLET */
+    setTimeout(checkPageHeight, 500);
+
   } catch (err) {
     console.error("INITIAL LOAD ERROR:", err);
+  }
+}
+
+/* ⭐ AUTO-LOAD MORE IMAGES IF PAGE IS TOO SHORT (tablet mode fix) */
+function checkPageHeight() {
+  const tooSmall = document.body.offsetHeight < window.innerHeight + 200;
+
+  if (tooSmall && !loading) {
+    loadImages();
+    setTimeout(checkPageHeight, 700);
   }
 }
 
@@ -352,9 +373,9 @@ function applyImageLoadAnimation() {
   });
 }
 
-/* INFINITE SCROLL */
+/* INFINITE SCROLL — improved trigger */
 function onScroll() {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
     loadImages();
   }
 }

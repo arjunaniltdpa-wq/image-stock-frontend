@@ -3,7 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- =========================
-      DYNAMIC SEO (Controlled by JS)
+      DYNAMIC SEO (JS Updates after load)
   ========================== -->
   <title id="seo-title">Pixeora Photo</title>
 
@@ -12,11 +12,11 @@
   <meta id="seo-keywords" name="keywords"
         content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use photos, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
 
-  <!-- Canonical (dynamic by JS) -->
+  <!-- Canonical -->
   <link id="canonical-link" rel="canonical" href="">
 
   <!-- =========================
-      FAVICONS + LOGO (Added)
+      FAVICONS
   ========================== -->
   <link rel="icon" type="image/png" sizes="192x192" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
@@ -47,9 +47,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
-<!-- =========================
-    SOCIAL SHARING (Dynamic OG Tags)
-========================== -->
+  <!-- =========================
+      SOCIAL SHARING META
+  ========================== -->
   <meta id="og-title" property="og:title" content="Pixeora – Free HD Image">
   <meta id="og-desc" property="og:description" content="Download full HD wallpapers & royalty-free stock images.">
   <meta id="og-image" property="og:image" content="https://pixeora.com/images/logo.png">
@@ -66,7 +66,6 @@
 
   <!-- =========================
       STRUCTURED DATA (Dynamic ImageObject)
-      Boosts Google Image ranking!
   ========================== -->
   <script type="application/ld+json" id="ld-json">
   {
@@ -85,8 +84,7 @@
   </script>
 
   <!-- =========================
-      NEW: ORGANIZATION LOGO SCHEMA
-      (Google uses this logo in search results)
+      LOGO SCHEMA
   ========================== -->
   <script type="application/ld+json">
   {
@@ -98,7 +96,34 @@
   }
   </script>
 
+
+  <!-- =========================
+      🚀 PINTEREST / SOCIAL PREVIEW FIX
+      Loads BEFORE Pinterest crawler runs
+  ========================== -->
+  <script>
+  (function () {
+    const path = window.location.pathname;
+    const slug = path.split("/photo/")[1];
+    if (!slug) return;
+
+    const idMatch = slug.match(/([a-f0-9]{24})$/i);
+    const imageId = idMatch ? idMatch[1] : null;
+
+    if (!imageId) return;
+
+    // This URL will work with your CDN file structure
+    const cdnUrl = `https://cdn.pixeora.com/${imageId}.jpg`;
+
+    // Update OG tags BEFORE Pinterest loads
+    document.getElementById("og-image")?.setAttribute("content", cdnUrl);
+    document.getElementById("twitter-image")?.setAttribute("content", cdnUrl);
+    document.getElementById("og-url")?.setAttribute("content", window.location.href);
+  })();
+  </script>
+
 </head>
+
 
 <body>
 
@@ -133,7 +158,21 @@
 
       <div id="main-skeleton" class="skeleton"></div>
 
-      <img id="download-image" src="" alt="Selected Image" loading="lazy" class="image-load">
+      <!-- 🔒 PROTECTED IMAGE WRAPPER -->
+      <div class="protected-wrapper" style="position:relative; display:inline-block; width:100%;">
+
+        <img id="download-image"
+             src=""
+             alt="Selected Image"
+             loading="lazy"
+             class="image-load protected-img">
+
+        <!-- Invisible Click-Blocker -->
+        <div id="image-protect-overlay"></div>
+
+      </div>
+      <!-- END PROTECTED WRAPPER -->
+
       <h2 id="image-name">Loading...</h2>
 
       <div class="image-actions">
@@ -147,6 +186,18 @@
 
     <!-- ⭐ Updated Keywords Block -->
     <div class="keywords" id="keywords"></div>
+    <!-- ⭐ Attribution / Backlink Box -->
+    <div class="attribution-box" id="attributionBox"></div>
+      <p>Free Image by <strong>Pixeora</strong></p>
+
+      <textarea id="attributionText" readonly></textarea>
+    Image by Pixeora – https://pixeora.com/photo/
+      </textarea>
+      <button id="copyAttributionBtn"></button>
+        <i class="fas fa-copy"></i> Copy Attribution
+      </button>
+    </div>
+      
 
   </main>
 </div>
@@ -195,118 +246,58 @@
 const API_BASE = "https://api.pixeora.com";
 
 /* ---------------------------------- */
-/* FIXED SEARCH REDIRECT */
+/* SUBJECT DETECTION */
 /* ---------------------------------- */
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("searchForm");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const q = document.getElementById("searchInput").value.trim();
-      if (q.length > 0) {
-        window.location.href = `/search.html?query=${encodeURIComponent(q)}`;
-      }
-    });
-  }
-});
+function detectMainSubject(title) {
+  if (!title) return "";
+  const t = title.toLowerCase();
 
+  const map = [
+    ["tiger","tiger"],["lion","lion"],["cat","cat"],["dog","dog"],
+    ["elephant","elephant"],["wolf","wolf"],["bear","bear"],["horse","horse"],
+    ["bird","bird"],["duck","bird"],["eagle","bird"],["sparrow","bird"],["parrot","bird"],
+    ["fish","fish"],["ocean","fish"],["underwater","fish"],["sea","fish"],["coral","fish"],
+    ["bridge","bridge"],["building","architecture"],["architecture","architecture"],["city","architecture"],
+    ["mountain","mountain"],["river","river"],["lake","lake"],["waterfall","waterfall"],["forest","forest"],
+    ["girl","portrait"],["woman","portrait"],["man","portrait"],["kid","portrait"],["face","portrait"],["people","portrait"],
+  ];
+
+  for (let [word, subject] of map) {
+    if (t.includes(word)) return subject;
+  }
+  return "";
+}
+
+/* ---------------------------------- */
+/* UNIVERSAL ID + SLUG */
+/* ---------------------------------- */
+const rawSlug = window.location.pathname.split("/photo/")[1] || "";
+const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
+const imageId = idMatch ? idMatch[1] : null;
+let slug = rawSlug.replace(/-[a-f0-9]{24}$/i, "");
+
+if (!slug || slug.trim() === "" || slug === "undefined" || slug === "null") {
+  slug = null;
+}
+
+/* ---------------------------------- */
+/* DOWNLOAD HELPER */
+/* ---------------------------------- */
 function downloadImage(rawName) {
   const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
   window.location.href = url;
 }
 
 /* ---------------------------------- */
-/* SUBJECT DETECTION FROM TITLE */
-/* ---------------------------------- */
-function detectMainSubject(title) {
-  if (!title) return "";
-
-  const t = title.toLowerCase();
-
-  const map = [
-    ["tiger", "tiger"], ["lion", "lion"], ["cat", "cat"], ["dog", "dog"],
-    ["elephant", "elephant"], ["wolf", "wolf"], ["bear", "bear"],
-    ["horse", "horse"],
-
-    // birds
-    ["bird", "bird"], ["duck", "bird"], ["eagle", "bird"],
-    ["sparrow", "bird"], ["parrot", "bird"],
-
-    // fish & ocean
-    ["fish", "fish"], ["ocean", "fish"], ["underwater", "fish"],
-    ["sea", "fish"], ["coral", "fish"],
-
-    // city / architecture
-    ["bridge", "bridge"], ["building", "architecture"],
-    ["architecture", "architecture"], ["city", "architecture"],
-
-    // landscape
-    ["mountain", "mountain"], ["river", "river"], ["lake", "lake"],
-    ["waterfall", "waterfall"], ["forest", "forest"],
-
-    // people / portraits
-    ["girl", "portrait"], ["woman", "portrait"], ["man", "portrait"],
-    ["kid", "portrait"],  ["face", "portrait"], ["people", "portrait"],
-  ];
-
-  for (let [word, subject] of map) {
-    if (t.includes(word)) return subject;
-  }
-
-  return "";
-}
-
-/* ---------------------------------- */
-/* UNIVERSAL ID + SLUG EXTRACTOR     */
-/* ---------------------------------- */
-
-const rawSlug = window.location.pathname.split("/photo/")[1] || "";
-
-/* Extract MongoID (last 24 hex chars) */
-const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
-const imageId = idMatch ? idMatch[1] : null;
-
-/* Extract slug part before ID */
-let slug = rawSlug.replace(/-[a-f0-9]{24}$/i, "");
-
-/* Handle old 'undefined-<id>' cases */
-if (
-  !slug ||
-  slug.trim() === "" ||
-  slug === "undefined" ||
-  slug === "null"
-) {
-  slug = null;
-}
-
-console.log("Slug =", slug);
-console.log("ImageID =", imageId);
-console.log("RawSlug =", rawSlug);
-
-
-/* ---------------------------------- */
-/* IMAGE DETAILS — Thumbnail → HD     */
+/* LOAD IMAGE DETAILS */
 /* ---------------------------------- */
 async function loadImageDetails() {
   try {
     let apiList = [];
 
-    // Priority 1: slug-ID full (always correct)
-    if (rawSlug) {
-      apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
-    }
-
-    // Priority 2: ID only
-    if (imageId) {
-      apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
-    }
-
-    // Priority 3: slug only (rarely needed)
-    if (slug) {
-      apiList.push(`${API_BASE}/api/images/slug/${slug}`);
-    }
-
-    console.log("Trying API List:", apiList);
+    if (rawSlug) apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
+    if (imageId) apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
+    if (slug) apiList.push(`${API_BASE}/api/images/slug/${slug}`);
 
     let img = null;
 
@@ -314,7 +305,6 @@ async function loadImageDetails() {
       const res = await fetch(url);
       if (res.ok) {
         img = await res.json();
-        console.log("Loaded From:", url);
         break;
       }
     }
@@ -324,11 +314,8 @@ async function loadImageDetails() {
       return;
     }
 
+    /* CDN URLs */
     const file = encodeURIComponent(img.fileName);
-
-    /* ---------------------------------------- */
-    /* CDN PATHS                                */
-    /* ---------------------------------------- */
     const thumbUrl = img.thumbnailFileName
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
       : `https://cdn.pixeora.com/thumbs/${file}`;
@@ -338,9 +325,7 @@ async function loadImageDetails() {
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    /* ---------------------------------------- */
-    /* THUMBNAIL → BLUR → HD IMAGE              */
-    /* ---------------------------------------- */
+    /* Show blurred thumbnail first */
     mainImg.src = thumbUrl;
     mainImg.style.filter = "blur(3px)";
     mainImg.style.opacity = "0.2";
@@ -360,11 +345,7 @@ async function loadImageDetails() {
       }
     };
 
-    hd.onerror = () => console.warn("❌ HD image missing:", originalUrl);
-
-    /* ---------------------------------------- */
-    /* TITLE + DOWNLOAD BUTTON                  */
-    /* ---------------------------------------- */
+    /* Update title + download */
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
 
@@ -373,60 +354,40 @@ async function loadImageDetails() {
 
     window.__originalFileName = img.fileName;
 
-    /* ---------------------------------------- */
-    /* ⚡ UPDATE OG + TWITTER + CANONICAL TAGS  */
-    /* ---------------------------------------- */
-    document.getElementById("og-title").setAttribute("content", img.title || img.fileName);
-    document.getElementById("og-desc").setAttribute("content", img.description || "Download full HD wallpapers & royalty-free stock images.");
+    /* OG / Twitter Meta */
+    document.getElementById("og-title").setAttribute("content", img.title);
+    document.getElementById("og-desc").setAttribute("content", img.description);
     document.getElementById("og-image").setAttribute("content", originalUrl);
     document.getElementById("og-url").setAttribute("content", window.location.href);
 
-    document.getElementById("twitter-title").setAttribute("content", img.title || img.fileName);
-    document.getElementById("twitter-desc").setAttribute("content", img.description || "Download full HD wallpapers & royalty-free stock images.");
+    document.getElementById("twitter-title").setAttribute("content", img.title);
+    document.getElementById("twitter-desc").setAttribute("content", img.description);
     document.getElementById("twitter-image").setAttribute("content", originalUrl);
 
     document.getElementById("canonical-link").setAttribute("href", window.location.href);
 
-    /* ---------------------------------------- */
-    /* ⚡ UPDATE SCHEMA JSON-LD                 */
-    /* ---------------------------------------- */
-    const ld = document.getElementById("ld-json");
-    ld.textContent = JSON.stringify({
+    /* Schema */
+    document.getElementById("ld-json").textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ImageObject",
-      "name": img.title || img.fileName,
-      "description": img.description || "Free HD image download",
+      "name": img.title,
+      "description": img.description,
       "contentUrl": originalUrl,
       "thumbnailUrl": thumbUrl,
-      "creator": {
-        "@type": "Organization",
-        "name": "Pixeora"
-      },
+      "creator": { "@type": "Organization", "name": "Pixeora" },
       "license": "https://pixeora.com/license"
     });
 
-    /* ---------------------------------------- */
-    /* KEYWORDS                                 */
-    /* ---------------------------------------- */
+    /* Keywords */
     const keywords =
-      img.keywords?.length
-        ? img.keywords
-        : img.tags?.length
-        ? img.tags
-        : [];
+      img.keywords?.length ? img.keywords :
+      img.tags?.length ? img.tags : [];
 
     document.getElementById("keywords").innerHTML = keywords
-      .map(
-        (t) =>
-          `<span onclick="location.href='/search.html?query=${encodeURIComponent(
-            t
-          )}'">${t}</span>`
-      )
+      .map(t => `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
       .join("");
 
-    /* ---------------------------------------- */
-    /* RELATED SYSTEM                           */
-    /* ---------------------------------------- */
+    /* RELATED IMAGES */
     const subject = detectMainSubject(img.title || "");
     startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
 
@@ -436,11 +397,9 @@ async function loadImageDetails() {
   }
 }
 
-
 /* ---------------------------------- */
-/* RELATED SYSTEM — UPDATED */
+/* RELATED SYSTEM – CLEANED */
 /* ---------------------------------- */
-
 let relatedKeywordList = [];
 let relatedKeywordIndex = 0;
 let relatedPage = 1;
@@ -450,43 +409,32 @@ let loadedIds = new Set();
 function startRelatedSystem(keywords) {
   if (!keywords || keywords.length === 0) return;
 
-  const mainSubject = keywords[0]?.toLowerCase() || "";
-
   const strongWords = [
     "tiger","lion","cat","dog","elephant","wolf","bear","horse",
     "bird","fish","bridge","architecture","mountain","river",
     "waterfall","forest","portrait","face","people"
   ];
 
-  const strongMatches = [];
-  const mediumMatches = [];
-  const weakMatches = [];
+  const main = keywords[0]?.toLowerCase() || "";
+
+  const strong = [];
+  const medium = [];
+  const weak = [];
 
   keywords.forEach(k => {
     const kw = k.toLowerCase();
-
-    if (mainSubject && kw.includes(mainSubject)) {
-      strongMatches.push(k);   // PERFECT MATCH
-    }
-    else if (strongWords.some(sw => kw.includes(sw))) {
-      mediumMatches.push(k);   // GOOD MATCH
-    }
-    else {
-      weakMatches.push(k);     // OTHER
-    }
+    if (main && kw.includes(main)) strong.push(k);
+    else if (strongWords.some(sw => kw.includes(sw))) medium.push(k);
+    else weak.push(k);
   });
 
-  relatedKeywordList = [...new Set([
-    ...strongMatches,
-    ...mediumMatches,
-    ...weakMatches
-  ])];
-
+  relatedKeywordList = [...new Set([...strong, ...medium, ...weak])];
   relatedKeywordIndex = 0;
   relatedPage = 1;
   loadedIds.clear();
 
-  document.querySelector("#related-grid").innerHTML = `
+  const grid = document.querySelector("#related-grid");
+  grid.innerHTML = `
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
@@ -494,18 +442,15 @@ function startRelatedSystem(keywords) {
     <div class="masonry-col"></div>
   `;
 
+  window.relatedCols = Array.from(grid.querySelectorAll(".masonry-col"));
+
   loadNextKeywordBatch();
 }
-
-/* ---------------------------------- */
-/* LOADING RELATED IMAGES */
-/* ---------------------------------- */
 
 async function loadNextKeywordBatch() {
   if (relatedKeywordIndex >= relatedKeywordList.length) return;
   const keyword = relatedKeywordList[relatedKeywordIndex];
   relatedPage = 1;
-
   await loadMoreRelated(keyword);
   relatedKeywordIndex++;
 }
@@ -536,8 +481,8 @@ async function loadMoreRelated(keyword) {
     }
 
     displayRelated(unique);
-
     relatedPage++;
+
     relatedLoading = false;
     return true;
 
@@ -548,14 +493,13 @@ async function loadMoreRelated(keyword) {
 }
 
 function displayRelated(images) {
-  const cols = document.querySelectorAll("#related-grid .masonry-col");
+  const cols = window.relatedCols;
   if (!cols.length) return;
 
   let colIndex = 0;
 
   images.forEach((img) => {
-    const thumb =
-      img.thumbnailUrl ||
+    const thumb = img.thumbnailUrl ||
       (img.thumbnailFileName
         ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
         : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
@@ -590,8 +534,6 @@ function displayRelated(images) {
   lazyLoadInit();
 }
 
-
-
 /* ---------------------------------- */
 /* INFINITE SCROLL */
 /* ---------------------------------- */
@@ -599,15 +541,12 @@ window.addEventListener("scroll", async () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 400) {
     const keyword = relatedKeywordList[relatedKeywordIndex - 1];
     const more = await loadMoreRelated(keyword);
-
-    if (!more) {
-      loadNextKeywordBatch();
-    }
+    if (!more) loadNextKeywordBatch();
   }
 });
 
 /* ---------------------------------- */
-/* LAZY LOAD INIT */
+/* LAZY LOADING */
 /* ---------------------------------- */
 function lazyLoadInit() {
   const lazyImages = document.querySelectorAll("img.lazy-img");
@@ -676,40 +615,71 @@ infoBtn.onclick = async () => {
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = (e) => { if (e.target === modal) modal.classList.remove("active"); };
 
-loadImageDetails();
+/* ---------------------------------- */
+/* IMAGE PROTECTION */
+/* ---------------------------------- */
+document.addEventListener("contextmenu", function(e) {
+  if (e.target.id === "image-protect-overlay" || e.target.id === "download-image") {
+    e.preventDefault();
+  }
+});
 
+/* ---------------------------------- */
+/* COOKIE + IMAGE LOAD + SEARCH — SINGLE CLEAN DOM READY */
+/* ---------------------------------- */
 document.addEventListener("DOMContentLoaded", function () {
+
+  /* SEARCH FORM */
+  const form = document.getElementById("searchForm");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = document.getElementById("searchInput").value.trim();
+      if (q.length > 0) {
+        window.location.href = `/search.html?query=${encodeURIComponent(q)}`;
+      }
+    });
+  }
+
+  /* LOAD IMAGE DETAILS */
+  loadImageDetails();
+
+  /* COOKIE BANNER */
   const banner = document.getElementById("cookie-banner");
   const acceptBtn = document.getElementById("cookie-accept");
 
   if (!localStorage.getItem("cookieConsent")) {
-    setTimeout(() => {
-      banner.classList.add("show");
-    }, 500);
+    setTimeout(() => banner.classList.add("show"), 500);
   }
 
   acceptBtn.addEventListener("click", () => {
     localStorage.setItem("cookieConsent", "true");
     banner.classList.remove("show");
   });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-  const banner = document.getElementById("cookie-banner");
-  const acceptBtn = document.getElementById("cookie-accept");
-
-  if (!localStorage.getItem("cookieConsent")) {
-    setTimeout(() => {
-      banner.classList.add("show");
-    }, 500);
-  }
-
-  acceptBtn.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", "true");
-    banner.classList.remove("show");
+  /* TOUCH PROTECTION */
+  const overlay = document.getElementById("image-protect-overlay");
+  overlay.addEventListener("touchstart", (e) => {
+    e.preventDefault();
   });
+
 });
 
+/* ---------------------------------- */
+/* ATTRIBUTION COPY */
+/* ---------------------------------- */
+document.getElementById("copyAttributionBtn").addEventListener("click", () => {
+  const txt = document.getElementById("attributionText");
+  txt.select();
+  txt.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(txt.value);
+
+  document.getElementById("copyAttributionBtn").innerHTML =
+    "<i class='fas fa-check'></i> Copied!";
+
+  setTimeout(() => {
+    document.getElementById("copyAttributionBtn").innerHTML =
+      "<i class='fas fa-copy'></i> Copy Attribution";
+  }, 1500);
+});
 </script>
-
-  

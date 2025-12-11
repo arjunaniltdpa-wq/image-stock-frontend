@@ -340,11 +340,6 @@ color: white;
 }
 
 
-/* Responsive columns */
-@media (max-width: 1400px) { .masonry-grid { column-count: 4; } }
-@media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
-@media (max-width: 700px)  { .masonry-grid { column-count: 2; } }
-@media (max-width: 420px)  { .masonry-grid { column-count: 1; } }
 
 /* ===========================================
    ✅ MOBILE & TABLET HEADER FIX (Option B)
@@ -529,61 +524,91 @@ color: white;
   transform: scale(1);
   filter: blur(0);
 }
+/* now regular grid */
 
+/* Masonry Container */
 .masonry-grid {
-  column-count: 4;         /* desktop default */
-  column-gap: 16px;
-  padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
+/* Masonry Columns */
+.masonry-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;   /* IMPORTANT for responsive */
+}
+
+/* Image Item */
 .image-item {
-  break-inside: avoid;
-  margin-bottom: 16px;
-  display: block;
-  width: 100%;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
 }
 
+/* Image inside item */
 .image-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  display: block;
-  object-fit: cover;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    object-fit: cover;
 }
 
-@media (max-width: 1200px) {
-  .masonry-grid { column-count: 3; }
+/* ⭐ DOWNLOAD OVERLAY */
+.download-overlay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 120px;
+    height: 40px;
+    background: url('../images/download-icon.png') center/cover no-repeat;
+    opacity: 0;
+    transition: 0.25s ease;
 }
 
-@media (max-width: 900px) {
-  .masonry-grid { column-count: 2; }
+.image-item:hover .download-overlay {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
-@media (max-width: 600px) {
-  .masonry-grid { column-count: 1; }
+/* ============================
+   ⭐ RESPONSIVE BREAKPOINTS
+================================ */
+
+/* Tablet – 3 columns */
+@media (max-width: 1024px) {
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
 }
 
-
-.image-item {
-  break-inside: avoid;
-  margin-bottom: 16px;
+/* Large Mobile – 2 columns */
+@media (max-width: 700px) {
+    .masonry-col:nth-child(3),
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
 }
 
-.image-wrapper {
-  width: 100%;
-  height: auto !important;   /* ✔ Let height grow naturally */
-  min-height: auto !important; 
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-}
+/* Small Mobile – 1 column */
+@media (max-width: 450px) {
+    .masonry-col:nth-child(2),
+    .masonry-col:nth-child(3),
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
 
-.image-item img {
-  width: 100%;
-  height: auto !important;       /* ✔ No cropping on mobile */
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
+    .masonry-col:nth-child(1) {
+        flex: 1 !important;
+    }
 }
 
 
