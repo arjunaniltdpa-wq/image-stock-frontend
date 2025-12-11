@@ -113,7 +113,7 @@
     if (!imageId) return;
 
     // This URL will work with your CDN file structure
-    const cdnUrl = `https://cdn.pixeora.com/${imageId}.jpg`;
+    const cdnUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     // Update OG tags BEFORE Pinterest loads
     document.getElementById("og-image")?.setAttribute("content", cdnUrl);
@@ -186,18 +186,7 @@
 
     <!-- ⭐ Updated Keywords Block -->
     <div class="keywords" id="keywords"></div>
-    <!-- ⭐ Attribution / Backlink Box -->
-    <div class="attribution-box" id="attributionBox"></div>
-      <p>Free Image by <strong>Pixeora</strong></p>
 
-      <textarea id="attributionText" readonly></textarea>
-    Image by Pixeora – https://pixeora.com/photo/
-      </textarea>
-      <button id="copyAttributionBtn"></button>
-        <i class="fas fa-copy"></i> Copy Attribution
-      </button>
-    </div>
-      
 
   </main>
 </div>
@@ -541,7 +530,14 @@ window.addEventListener("scroll", async () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 400) {
     const keyword = relatedKeywordList[relatedKeywordIndex - 1];
     const more = await loadMoreRelated(keyword);
-    if (!more) loadNextKeywordBatch();
+    if (!more) {
+      // Try next keyword until something loads
+      while (relatedKeywordIndex < relatedKeywordList.length) {
+        const nextKeyword = relatedKeywordList[relatedKeywordIndex++];
+        const loaded = await loadMoreRelated(nextKeyword);
+        if (loaded) break;
+      }
+    } 
   }
 });
 
@@ -665,21 +661,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-/* ---------------------------------- */
-/* ATTRIBUTION COPY */
-/* ---------------------------------- */
-document.getElementById("copyAttributionBtn").addEventListener("click", () => {
-  const txt = document.getElementById("attributionText");
-  txt.select();
-  txt.setSelectionRange(0, 99999);
-  navigator.clipboard.writeText(txt.value);
-
-  document.getElementById("copyAttributionBtn").innerHTML =
-    "<i class='fas fa-check'></i> Copied!";
-
-  setTimeout(() => {
-    document.getElementById("copyAttributionBtn").innerHTML =
-      "<i class='fas fa-copy'></i> Copy Attribution";
-  }, 1500);
-});
 </script>
