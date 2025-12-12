@@ -357,36 +357,20 @@ async function loadImageDetails() {
     const downloadAnchor = document.getElementById("download-link");
 
     if (downloadAnchor) {
-      downloadAnchor.href = originalUrl;
+      // Use backend download route (ensures Content-Disposition)
+      const apiDownloadUrl = `${API_BASE}/api/images/download/${file}`;
+      downloadAnchor.href = apiDownloadUrl;
       downloadAnchor.setAttribute("download", img.fileName || "");
       downloadAnchor.removeAttribute("rel");
 
-      /* Extra: Force download fallback for mobile browsers */
-      downloadAnchor.onclick = async (e) => {
-        e.preventDefault();
-
+      /* Click handler: track and let browser handle download via backend route */
+      downloadAnchor.onclick = (e) => {
+        // do not prevent default — allow normal navigation to backend download URL
         try {
-          const response = await fetch(originalUrl);
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = img.fileName || "image.jpg";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          window.URL.revokeObjectURL(url);
-
-          /* Tracking (non-blocking) */
-          navigator.sendBeacon?.(
-            `${API_BASE}/api/images/track-download/${file}`
-          );
-
-        } catch (err) {
-          /* Fallback to normal href */
-          window.location.href = originalUrl;
-        }
+          navigator.sendBeacon?.(`${API_BASE}/api/images/track-download/${file}`);
+        } catch (er) {}
+        // Let the anchor navigate — backend should respond with Content-Disposition: attachment
+        // For older mobile browsers that ignore download attribute, backend route is the most reliable
       };
     }
 
@@ -529,13 +513,19 @@ async function loadMoreRelated(keyword) {
         ? json.images
         : json.data
         ? json.data
+        : json.results
+        ? json.results
         : [];
 
-    // Filter duplicates
+    // Filter duplicates and ensure id exists
     const unique = images.filter(img => {
-      if (!img || !img._id) return false;
-      if (loadedIds.has(img._id)) return false;
-      loadedIds.add(img._id);
+      if (!img) return false;
+      const id = img._id || img.id;
+      if (!id) return false;
+      if (loadedIds.has(id)) return false;
+      loadedIds.add(id);
+      // attach normalized _id for consistent usage later
+      if (!img._id) img._id = id;
       return true;
     });
 
@@ -592,7 +582,7 @@ function displayRelated(images) {
         </a>
 
         <span class="download-overlay"
-          onclick="event.stopImmediatePropagation(); event.preventDefault(); downloadImage('${img.fileName.replace(/'/g, "\\'")}')">
+          onclick="event.stopImmediatePropagation(); event.preventDefault(); downloadImage('${(img.fileName||"").replace(/'/g, "\\'")}')">
         </span>
       </div>
     `;
