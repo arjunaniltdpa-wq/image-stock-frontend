@@ -473,97 +473,119 @@ html, body {
   opacity: 1;
 }
 
-/* ------------------------------------------------
-   RELATED IMAGES — SAME STYLE AS SEARCH PAGE
--------------------------------------------------- */
+/* --- Skeleton Loader --- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e6e6e6 37%,
+    #f0f0f0 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+/* --- Smooth Fade + Blur --- */
+.image-load {
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+
+.image-loaded {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* ---------- RELATED SECTION TITLE ---------- */
+
+
+/* ===== RELATED SECTION WRAPPER ===== */
+.related-masonry {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;       /* ensure it stretches fully */
+  justify-content: center;
+  margin: 0 auto;
+}
 
 .related-wrapper {
   width: 100%;
-  max-width: 1600px;
-  margin: 40px auto;
-  padding: 0 20px;
+  margin-top: 40px;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .related-wrapper h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 25px;
-  color: #222;
-}
-
-/* Masonry system used in SEARCH PAGE */
-.masonry-grid,
-.related-masonry {
-  display: flex;
-  gap: 20px;
   width: 100%;
+  max-width: 1200px;
+  padding: 0 15px;
+  font-size: 22px;
+  margin-bottom: 16px;
 }
 
-.masonry-col,
-.related-col {
+/* ===== RELATED MASONRY GRID ===== */
+.masonry-grid {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 100% !important;   /* allow full width */
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Up to 5 columns (auto) */
+.masonry-col {
   flex: 1;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  min-width: 0;
+  gap: 16px;
 }
 
-/* Card Container */
+/* ===== IMAGE CARD ===== */
 .image-item {
-  break-inside: avoid;
-  position: relative;
-}
-
-/* Image Wrapper */
-.image-wrapper {
-  position: relative;
   width: 100%;
-  overflow: hidden;
-  border-radius: 14px;
-  background: #f2f2f2;
+  position: relative;
 }
 
-/* Image styles */
-.image-wrapper img {
+.image-item img {
   width: 100%;
   height: auto;
-  display: block;
-  border-radius: 14px;
-  transition: transform .3s ease, opacity .3s ease;
+  border-radius: 12px;
+  object-fit: cover;   /* avoid cropping */
 }
 
-/* Skeleton Loader */
-.skeleton {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
-  background-size: 200% 100%;
-  animation: skeleton-load 1.4s infinite linear;
-  border-radius: 14px;
-}
-
-@keyframes skeleton-load {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Lazy Image Loaded */
-.image-loaded {
-  opacity: 1 !important;
-  filter: blur(0px) !important;
-}
-
-/* Download overlay */
+/* ===== DOWNLOAD OVERLAY ===== */
 .download-overlay {
   position: absolute;
-  inset: 0;
-  cursor: pointer;
-  background: rgba(0,0,0,0);
-  transition: background .2s ease;
+  bottom: 8px;
+  right: 8px;
+  width: 110px;
+  height: 40px;
+  background-image: url('../images/download-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: .25s ease;
 }
 
-.download-overlay:hover {
-  background: rgba(0,0,0,0.12);
+.image-item:hover .download-overlay {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 /* ===== RESPONSIVE COLUMN CONTROL ===== */
@@ -601,7 +623,6 @@ html, body {
   user-select: none;
   -webkit-user-drag: none;
 }
-
 #image-protect-overlay {
   position: absolute;
   top: 0;
