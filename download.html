@@ -534,7 +534,7 @@ function startRelatedSystem(keywords) {
   loadedIds.clear();
 
   /* ⭐ IMPORTANT FIX → Use related-images + related-col (same as search page) */
-  const grid = document.querySelector("#related-images");
+  const grid = document.querySelector("#related-grid");
   grid.innerHTML = `
     <div class="related-col"></div>
     <div class="related-col"></div>
@@ -543,7 +543,7 @@ function startRelatedSystem(keywords) {
     <div class="related-col"></div>
   `;
 
-  window.relatedCols = Array.from(grid.querySelectorAll(".related-col"));
+  window.relatedCols = Array.from(grid.querySelectorAll(".masonry-col"));
 
   loadNextKeywordBatch();
 }
