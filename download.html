@@ -504,7 +504,6 @@ function slugify(text = "") {
 
 function startRelatedSystem(keywords) {
 
-  /* ⭐ If no keywords → fallback (same as search page Explore More) */
   if (!keywords || keywords.length === 0) {
     loadRelatedFallback();
     return;
@@ -533,20 +532,24 @@ function startRelatedSystem(keywords) {
   relatedPage = 1;
   loadedIds.clear();
 
-  /* ⭐ IMPORTANT FIX → Use related-images + related-col (same as search page) */
-  const grid = document.querySelector("#related-grid");
+  // FIX 1: USE CORRECT HTML ID
+  const grid = document.querySelector("#related-images");
+
+  // FIX 2: USE masonry-col (matches HTML)
   grid.innerHTML = `
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
-    <div class="related-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
   `;
 
+  // FIX 3: Query correctly
   window.relatedCols = Array.from(grid.querySelectorAll(".masonry-col"));
 
   loadNextKeywordBatch();
 }
+
 
 async function loadNextKeywordBatch() {
   if (relatedKeywordIndex >= relatedKeywordList.length) return;
