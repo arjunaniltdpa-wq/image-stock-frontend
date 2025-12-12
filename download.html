@@ -198,7 +198,7 @@
 <div class="related-wrapper">
     <h2>Related Images</h2>
 
-    <div class="masonry-grid" id="related-grid">
+    <div class="masonry-grid" id="related-images">
         <div class="masonry-col"></div>
         <div class="masonry-col"></div>
         <div class="masonry-col"></div>
@@ -291,7 +291,7 @@ async function downloadImage(rawName) {
 }
 
 /* ---------------------------------- */
-/* LOAD IMAGE DETAILS (UPDATED) */
+/* LOAD IMAGE DETAILS (robust version) */
 /* ---------------------------------- */
 async function loadImageDetails() {
   try {
@@ -308,137 +308,181 @@ async function loadImageDetails() {
     /* Try ID-only (fallback) */
     if (imageId) {
       apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
-    }    
+    }
 
     let img = null;
 
     for (let url of apiList) {
-      const res = await fetch(url);
-      if (res.ok) {
-        img = await res.json();
-        break;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) continue;
+        const j = await res.json();
+
+        // Normalize common response shapes
+        if (j.image) img = j.image;
+        else if (j.data) img = j.data;
+        else if (j.result) img = j.result;
+        else if (j.images && Array.isArray(j.images) && j.images.length === 1) img = j.images[0];
+        else img = j;
+
+        // if we got an array by mistake, pick first object
+        if (Array.isArray(img) && img.length) img = img[0];
+
+        // ensure we at least have an id / filename to consider this a valid object
+        if (img && (img._id || img.id || img.fileName)) break;
+        else img = null; // continue to next endpoint
+      } catch (e) {
+        // ignore and try next URL
+        console.warn("loadImageDetails: endpoint parse error", e);
+        continue;
       }
     }
 
     if (!img) {
+      // No usable image metadata from API — still try to show something sensible
       document.getElementById("image-name").textContent = "Image Not Found.";
+      // also clear metadata to avoid stale meta
+      document.getElementById("og-title").setAttribute("content", "Pixeora – Free HD Image");
+      document.getElementById("og-desc").setAttribute("content", "");
       return;
     }
 
+    /* Ensure consistent id field */
+    if (!img._id && img.id) img._id = img.id;
+
     /* CDN URLs */
-    const file = encodeURIComponent(img.fileName);
+    const file = encodeURIComponent(img.fileName || img.file || "");
     const thumbUrl = img.thumbnailFileName
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-      : `https://cdn.pixeora.com/thumbs/${file}`;
+      : (file ? `https://cdn.pixeora.com/thumbs/${file}` : "");
 
-    const originalUrl = `https://cdn.pixeora.com/${file}`;
+    const originalUrl = file ? `https://cdn.pixeora.com/${file}` : (img.url || "");
 
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    /* Show blurred thumbnail first */
-    mainImg.src = thumbUrl;
-    mainImg.style.filter = "blur(3px)";
-    mainImg.style.opacity = "0.2";
+    /* Show blurred thumbnail first (if available) */
+    if (thumbUrl) {
+      mainImg.src = thumbUrl;
+      mainImg.style.filter = "blur(3px)";
+      mainImg.style.opacity = "0.2";
+    } else if (originalUrl) {
+      mainImg.src = originalUrl;
+      mainImg.style.filter = "blur(3px)";
+      mainImg.style.opacity = "0.2";
+    }
     skeleton.style.display = "none";
 
-    const hd = new Image();
-    hd.src = originalUrl;
+    /* Preload HD original if we have it */
+    if (originalUrl) {
+      const hd = new Image();
+      hd.src = originalUrl;
+      hd.onload = () => {
+        mainImg.src = originalUrl;
+        mainImg.style.transition = "filter .4s ease, opacity .3s ease";
+        mainImg.style.filter = "blur(0px)";
+        mainImg.style.opacity = "1";
 
-    hd.onload = () => {
-      mainImg.src = originalUrl;
+        if (hd.naturalWidth && hd.naturalHeight) {
+          mainImg.style.aspectRatio = `${hd.naturalWidth}/${hd.naturalHeight}`;
+        }
+      };
+    } else {
+      // no originalUrl: just reveal the thumbnail
       mainImg.style.transition = "filter .4s ease, opacity .3s ease";
       mainImg.style.filter = "blur(0px)";
       mainImg.style.opacity = "1";
-
-      if (hd.naturalWidth && hd.naturalHeight) {
-        mainImg.style.aspectRatio = `${hd.naturalWidth}/${hd.naturalHeight}`;
-      }
-    };
-
-    /* Update title */
-    document.getElementById("image-name").textContent =
-      img.title || img.fileName;
-
-    /* ---------------------------------- */
-    /* DOWNLOAD BUTTON — FULL FIX */
-    /* ---------------------------------- */
-    const downloadAnchor = document.getElementById("download-link");
-
-    if (downloadAnchor) {
-      // Use backend download route (ensures Content-Disposition)
-      const apiDownloadUrl = `${API_BASE}/api/images/download/${file}`;
-      downloadAnchor.href = apiDownloadUrl;
-      downloadAnchor.setAttribute("download", img.fileName || "");
-      downloadAnchor.removeAttribute("rel");
-
-      /* Click handler: track and let browser handle download via backend route */
-      downloadAnchor.onclick = (e) => {
-        // do not prevent default — allow normal navigation to backend download URL
-        try {
-          navigator.sendBeacon?.(`${API_BASE}/api/images/track-download/${file}`);
-        } catch (er) {}
-        // Let the anchor navigate — backend should respond with Content-Disposition: attachment
-        // For older mobile browsers that ignore download attribute, backend route is the most reliable
-      };
     }
 
-    /* Save filename for info modal */
-    window.__originalFileName = img.fileName;
+    /* --- Title handling: robust fallbacks --- */
+    const safeTitle = (img.title && img.title.trim())
+      ? img.title.trim()
+      : (img.fileName && img.fileName.trim())
+        ? img.fileName.trim()
+        : (img.slug && img.slug.trim())
+          ? img.slug.trim()
+          : "Untitled Image";
 
-    /* ---------------------------------- */
-    /* OG / Twitter — fix Pinterest issue */
-    /* ---------------------------------- */
+    // Visible heading
+    const nameEl = document.getElementById("image-name");
+    if (nameEl) nameEl.textContent = safeTitle;
 
-    document.getElementById("og-image").setAttribute("content", originalUrl);
-    document.getElementById("twitter-image").setAttribute("content", originalUrl);
-    document.getElementById("og-title").setAttribute("content", img.title);
-    document.getElementById("og-desc").setAttribute("content", img.description);
-    document.getElementById("og-url").setAttribute("content", window.location.href);
+    // Browser tab + meta
+    document.title = `${safeTitle} — Pixeora`;
+    document.getElementById("og-title")?.setAttribute("content", safeTitle);
+    document.getElementById("og-desc")?.setAttribute("content", img.description || "");
+    document.getElementById("twitter-title")?.setAttribute("content", safeTitle);
+    document.getElementById("twitter-desc")?.setAttribute("content", img.description || "");
 
-    /* These two tags fix Pinterest preview */
-    document.querySelector("meta[property='og:image']")?.setAttribute("content", originalUrl);
-    document.querySelector("meta[name='twitter:image']")?.setAttribute("content", originalUrl);
+    /* --------- DOWNLOAD anchor (backend route to force attachment) --------- */
+    const downloadAnchor = document.getElementById("download-link");
+    if (downloadAnchor) {
+      if (file) {
+        const apiDownloadUrl = `${API_BASE}/api/images/download/${file}`;
+        downloadAnchor.href = apiDownloadUrl;
+        downloadAnchor.setAttribute("download", img.fileName || "");
+        downloadAnchor.removeAttribute("rel");
+        downloadAnchor.onclick = () => {
+          try { navigator.sendBeacon?.(`${API_BASE}/api/images/track-download/${file}`); } catch (er) {}
+          // Let the anchor navigate, backend should return Content-Disposition
+        };
+      } else if (originalUrl) {
+        downloadAnchor.href = originalUrl;
+        downloadAnchor.setAttribute("download", img.fileName || "");
+      } else {
+        downloadAnchor.removeAttribute("href");
+      }
+    }
 
-    /* ---------------------------------- */
-    /* Canonical URL */
-    /* ---------------------------------- */
-    document.getElementById("canonical-link").setAttribute("href", window.location.href);
+    window.__originalFileName = img.fileName || img.file || "";
 
-    /* ---------------------------------- */
-    /* Schema Update */
-    /* ---------------------------------- */
-    document.getElementById("ld-json").textContent = JSON.stringify({
+    /* OG / Twitter image fix */
+    if (originalUrl) {
+      document.getElementById("og-image")?.setAttribute("content", originalUrl);
+      document.getElementById("twitter-image")?.setAttribute("content", originalUrl);
+      document.querySelector("meta[property='og:image']")?.setAttribute("content", originalUrl);
+      document.querySelector("meta[name='twitter:image']")?.setAttribute("content", originalUrl);
+    }
+
+    /* Canonical */
+    document.getElementById("canonical-link")?.setAttribute("href", window.location.href);
+
+    /* Schema */
+    const ld = {
       "@context": "https://schema.org",
       "@type": "ImageObject",
-      "name": img.title,
-      "description": img.description,
-      "contentUrl": originalUrl,
-      "thumbnailUrl": thumbUrl,
+      "name": safeTitle,
+      "description": img.description || "",
+      "contentUrl": originalUrl || "",
+      "thumbnailUrl": thumbUrl || "",
       "creator": { "@type": "Organization", "name": "Pixeora" },
       "license": "https://pixeora.com/license"
-    });
+    };
+    document.getElementById("ld-json").textContent = JSON.stringify(ld);
 
-    /* ---------------------------------- */
     /* Keywords */
-    /* ---------------------------------- */
     const keywords =
-      img.keywords?.length ? img.keywords :
-      img.tags?.length ? img.tags : [];
+      (img.keywords && img.keywords.length) ? img.keywords :
+      (img.tags && img.tags.length) ? img.tags : [];
 
-    document.getElementById("keywords").innerHTML = keywords
-      .map(t => `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
-      .join("");
+    const kwEl = document.getElementById("keywords");
+    if (kwEl) {
+      kwEl.innerHTML = keywords
+        .map(t => `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
+        .join("");
+    }
 
     /* RELATED IMAGES */
-    const subject = detectMainSubject(img.title || "");
+    const subject = detectMainSubject(img.title || img.fileName || "");
     startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
 
   } catch (err) {
     console.error("Loader Error:", err);
-    document.getElementById("image-name").textContent = "Image Not Found.";
+    const nameEl = document.getElementById("image-name");
+    if (nameEl) nameEl.textContent = "Image Not Found.";
   }
 }
+
 
 /* ---------------------------------- */
 /* RELATED SYSTEM – FIXED TO MATCH SEARCH PAGE */
