@@ -528,16 +528,19 @@ color: white;
 
 /* Masonry Container */
 .masonry-grid {
+    max-width: 1600px;
     display: flex;
     justify-content: center;
     gap: 16px;
     width: 100%;
     padding: 0 16px;
     box-sizing: border-box;
+    margin: 0 auto;
 }
 
 /* Masonry Columns */
 .masonry-col {
+    max-width: 380px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -555,6 +558,7 @@ color: white;
 
 /* Image inside item */
 .image-item img {
+    min-height: 200px;
     width: 100%;
     height: auto;
     display: block;
@@ -582,6 +586,14 @@ color: white;
 /* ============================
    ⭐ RESPONSIVE BREAKPOINTS
 ================================ */
+/* Desktop – 4 columns max */
+@media (min-width: 1401px) {
+    .masonry-col {
+        flex-basis: 25%;
+        max-width: 25%;
+    }
+}
+
 
 /* Tablet – 3 columns */
 @media (max-width: 1024px) {

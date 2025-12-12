@@ -171,9 +171,6 @@
              loading="lazy"
              class="image-load protected-img">
 
-        <!-- Invisible Click-Blocker -->
-        <div id="image-protect-overlay"></div>
-
       </div>
       <!-- END PROTECTED WRAPPER -->
 
@@ -792,15 +789,6 @@ infoBtn.onclick = async () => {
 
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = (e) => { if (e.target === modal) modal.classList.remove("active"); };
-
-/* ---------------------------------- */
-/* IMAGE PROTECTION */
-/* ---------------------------------- */
-document.addEventListener("contextmenu", function(e) {
-  if (e.target.id === "image-protect-overlay" || e.target.id === "download-image") {
-    e.preventDefault();
-  }
-});
 
 /* ---------------------------------- */
 /* COOKIE + IMAGE LOAD + SEARCH — SINGLE CLEAN DOM READY */
