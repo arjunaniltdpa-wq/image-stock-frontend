@@ -432,14 +432,16 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED SYSTEM – FIXED & ROBUST */
+/* RELATED SYSTEM – FIXED TO MATCH SEARCH PAGE */
 /* ---------------------------------- */
+
 let relatedKeywordList = [];
 let relatedKeywordIndex = 0;
 let relatedPage = 1;
 let relatedLoading = false;
 let loadedIds = new Set();
 
+/* Helper slug */
 function slugify(text = "") {
   return text.toString().toLowerCase()
     .replace(/[^\w ]+/g, "")
@@ -448,7 +450,12 @@ function slugify(text = "") {
 }
 
 function startRelatedSystem(keywords) {
-  if (!keywords || keywords.length === 0) return;
+
+  /* ⭐ If no keywords → fallback (same as search page Explore More) */
+  if (!keywords || keywords.length === 0) {
+    loadRelatedFallback();
+    return;
+  }
 
   const strongWords = [
     "tiger","lion","cat","dog","elephant","wolf","bear","horse",
@@ -473,16 +480,17 @@ function startRelatedSystem(keywords) {
   relatedPage = 1;
   loadedIds.clear();
 
-  const grid = document.querySelector("#related-grid");
+  /* ⭐ IMPORTANT FIX → Use related-images + related-col (same as search page) */
+  const grid = document.querySelector("#related-images");
   grid.innerHTML = `
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
   `;
 
-  window.relatedCols = Array.from(grid.querySelectorAll(".masonry-col"));
+  window.relatedCols = Array.from(grid.querySelectorAll(".related-col"));
 
   loadNextKeywordBatch();
 }
@@ -496,6 +504,7 @@ async function loadNextKeywordBatch() {
 }
 
 async function loadMoreRelated(keyword) {
+
   if (relatedLoading) return true;
   relatedLoading = true;
 
@@ -505,7 +514,6 @@ async function loadMoreRelated(keyword) {
     );
     const json = await res.json();
 
-    // FIX: support all API shapes
     const images =
       Array.isArray(json)
         ? json
@@ -517,14 +525,12 @@ async function loadMoreRelated(keyword) {
         ? json.results
         : [];
 
-    // Filter duplicates and ensure id exists
     const unique = images.filter(img => {
       if (!img) return false;
       const id = img._id || img.id;
       if (!id) return false;
       if (loadedIds.has(id)) return false;
       loadedIds.add(id);
-      // attach normalized _id for consistent usage later
       if (!img._id) img._id = id;
       return true;
     });
@@ -553,7 +559,7 @@ function displayRelated(images) {
   let colIndex = 0;
 
   images.forEach(img => {
-    // FIX: fallback slug
+
     let safeSlug =
       img.slug ||
       slugify(img.title || img.fileName || "image");
@@ -574,7 +580,7 @@ function displayRelated(images) {
         <a href="/photo/${safeSlug}-${img._id}" class="image-link">
           <img
             data-src="${thumb}"
-            class="lazy-img blur-load"
+            class="lazy-img image-load"
             alt="${img.alt || img.title || 'Image'}"
             loading="lazy"
             decoding="async"
@@ -592,6 +598,54 @@ function displayRelated(images) {
   });
 
   lazyLoadInit();
+}
+
+/* ---------------------------------- */
+/* FALLBACK (same as search Explore More) */
+/* ---------------------------------- */
+
+async function loadRelatedFallback() {
+  const wrapper = document.querySelector(".related-wrapper");
+  wrapper.style.display = "block";
+
+  const container = document.getElementById("related-images");
+  const cols = container.querySelectorAll(".related-col");
+
+  const r = await fetch(`${API_BASE}/api/images/popular-latest?limit=200`);
+  const pop = await r.json();
+  let images = pop.images || [];
+
+  images = images.sort(() => Math.random() - 0.5);
+
+  let col = 0;
+
+  images.slice(0, 50).forEach(img => {
+    const card = createRelatedCard(img);
+    cols[col].appendChild(card);
+    col = (col + 1) % cols.length;
+  });
+
+  lazyLoadInit();
+}
+
+function createRelatedCard(img) {
+  const div = document.createElement("div");
+  div.classList.add("image-item");
+
+  const file = img.thumbnailFileName || img.fileName;
+  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+
+  div.innerHTML = `
+    <div class="image-wrapper">
+      <div class="skeleton"></div>
+      <a href="/photo/${img.slug}-${img._id}">
+        <img data-src="${url}" class="lazy-img image-load" alt="${img.title}">
+      </a>
+      <span class="download-overlay" onclick="downloadImage('${img.fileName}')"></span>
+    </div>
+  `;
+
+  return div;
 }
 
 /* ---------------------------------- */
