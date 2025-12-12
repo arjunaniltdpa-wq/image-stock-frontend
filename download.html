@@ -665,7 +665,8 @@ async function loadRelatedFallback() {
   wrapper.style.display = "block";
 
   const container = document.getElementById("related-images");
-  const cols = container.querySelectorAll(".related-col");
+  const cols = container.querySelectorAll(".masonry-col");
+
 
   const r = await fetch(`${API_BASE}/api/images/popular-latest?limit=200`);
   const pop = await r.json();
