@@ -297,9 +297,18 @@ async function loadImageDetails() {
   try {
     let apiList = [];
 
-    if (rawSlug) apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
-    if (imageId) apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
-    if (slug) apiList.push(`${API_BASE}/api/images/slug/${slug}`);
+    /* Try full slug (slug + id) — most accurate */
+    if (slug && imageId) {
+      apiList.push(`${API_BASE}/api/images/slug/${slug}-${imageId}`);
+    }
+    /* Try rawSlug exactly as URL contains */
+    if (rawSlug) {
+      apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
+    }
+    /* Try ID-only (fallback) */
+    if (imageId) {
+      apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
+    }    
 
     let img = null;
 
