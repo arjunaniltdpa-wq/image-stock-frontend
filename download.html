@@ -3,17 +3,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- =========================
-      DYNAMIC SEO (JS Updates after load)
+      SEO + INDEXING (corrected)
   ========================== -->
+  <meta name="robots" content="index, follow">
+
   <title id="seo-title">Pixeora Photo</title>
 
   <meta name="pinterest-rich-pin" content="false" />
   <meta id="seo-desc" name="description" content="Download high-quality HD wallpapers & royalty-free stock images for free.">
   <meta id="seo-keywords" name="keywords"
-        content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use photos, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
+        content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use images, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
 
-  <!-- Canonical -->
-  <link id="canonical-link" rel="canonical" href="">
+  <!-- Canonical (dynamic update later) -->
+  <link id="canonical-link" rel="canonical" href="https://pixeora.com/photo/">
 
   <!-- =========================
       FAVICONS
@@ -98,35 +100,35 @@
 
 
   <!-- =========================
-      🚀 PINTEREST / SOCIAL PREVIEW FIX
-      Loads BEFORE Pinterest crawler runs
+      FIXED PINTEREST / SOCIAL PREVIEW
+      (removed buggy img.fileName reference)
   ========================== -->
   <script>
   (function () {
-    const path = window.location.pathname;
-    const slug = path.split("/photo/")[1];
+    const slug = window.location.pathname.split("/photo/")[1];
     if (!slug) return;
 
     const idMatch = slug.match(/([a-f0-9]{24})$/i);
-    const imageId = idMatch ? idMatch[1] : null;
+    if (!idMatch) return;
 
-    if (!imageId) return;
-
-    // This URL will work with your CDN file structure
-    const cdnUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
-
-    // Update OG tags BEFORE Pinterest loads
-    document.getElementById("og-image")?.setAttribute("content", cdnUrl);
-    document.getElementById("twitter-image")?.setAttribute("content", cdnUrl);
+    // OG URL must always update first
     document.getElementById("og-url")?.setAttribute("content", window.location.href);
   })();
   </script>
 
+  <!-- =========================
+      NOSCRIPT FALLBACK (SEO + users)
+  ========================== -->
+  <noscript>
+    <meta name="robots" content="index, follow">
+    <div style="padding:10px;background:#111;color:#fff;text-align:center;font-size:14px;">
+      JavaScript is disabled. Image preview may not load, but you can still access files.
+    </div>
+  </noscript>
+
 </head>
 
-
 <body>
-
 
 <header class="header">
   <div class="header-overlay">
@@ -227,7 +229,6 @@
   </div>
 </div>
 
-
 <script>
 /* ---------------------------------- */
 /* GLOBAL SETTINGS */
@@ -270,11 +271,24 @@ if (!slug || slug.trim() === "" || slug === "undefined" || slug === "null") {
 }
 
 /* ---------------------------------- */
-/* DOWNLOAD HELPER */
+/* DOWNLOAD HELPER (CDN-first, non-blocking tracking) */
 /* ---------------------------------- */
-function downloadImage(rawName) {
-  const url = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
-  window.location.href = url;
+async function downloadImage(rawName) {
+  try {
+    const file = encodeURIComponent(rawName);
+    const cdn = `https://cdn.pixeora.com/${file}`;
+
+    // Fire-and-forget tracking (do not block navigation)
+    fetch(`${API_BASE}/api/images/track-download/${file}`, { method: 'POST' })
+      .catch(() => { /* ignore errors */ });
+
+    // Navigate to CDN (this is crawlable behavior equivalent to anchor href)
+    window.location.href = cdn;
+  } catch (e) {
+    // fallback to API route if something unexpected happens
+    const fallback = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
+    window.location.href = fallback;
+  }
 }
 
 /* ---------------------------------- */
@@ -338,19 +352,42 @@ async function loadImageDetails() {
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
 
-    document.getElementById("download-link").href =
-      `${API_BASE}/api/images/download/${file}`;
+    /* --------- IMPORTANT: set direct CDN anchor (crawlable) --------- */
+    const downloadAnchor = document.getElementById("download-link");
+    if (downloadAnchor) {
+      downloadAnchor.setAttribute("href", originalUrl);
+      // Suggest filename on save
+      downloadAnchor.setAttribute("download", img.fileName || "");
+      // Ensure crawler sees a normal link
+      downloadAnchor.removeAttribute("rel");
+    }
 
     window.__originalFileName = img.fileName;
 
+    /* Add a non-blocking tracking handler to visible button (does not change anchor behavior) */
+    const downloadBtn = document.querySelector(".download-btn");
+    if (downloadBtn) {
+      // remove any existing handler to avoid duplicates
+      downloadBtn.onclick = null;
+      downloadBtn.addEventListener("click", function () {
+        // Track click but do not prevent default anchor navigation
+        try {
+          navigator.sendBeacon
+            ? navigator.sendBeacon(`${API_BASE}/api/images/track-click/${encodeURIComponent(img._id)}`)
+            : fetch(`${API_BASE}/api/images/track-click/${encodeURIComponent(img._id)}`, { method: "POST" }).catch(()=>{});
+        } catch (e) { /* ignore tracking errors */ }
+        // Allow normal anchor click/navigation to proceed
+      }, { passive: true });
+    }
+
     /* OG / Twitter Meta */
-    document.getElementById("og-title").setAttribute("content", img.title);
-    document.getElementById("og-desc").setAttribute("content", img.description);
+    document.getElementById("og-title").setAttribute("content", img.title || "");
+    document.getElementById("og-desc").setAttribute("content", img.description || "");
     document.getElementById("og-image").setAttribute("content", originalUrl);
     document.getElementById("og-url").setAttribute("content", window.location.href);
 
-    document.getElementById("twitter-title").setAttribute("content", img.title);
-    document.getElementById("twitter-desc").setAttribute("content", img.description);
+    document.getElementById("twitter-title").setAttribute("content", img.title || "");
+    document.getElementById("twitter-desc").setAttribute("content", img.description || "");
     document.getElementById("twitter-image").setAttribute("content", originalUrl);
 
     document.getElementById("canonical-link").setAttribute("href", window.location.href);
