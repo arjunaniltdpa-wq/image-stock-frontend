@@ -182,8 +182,8 @@
       <div class="image-actions">
         <button class="info-btn"><i class="fas fa-info-circle"></i> Info</button>
 
-        <a id="download-link" class="download-btn" href="#" download>
-          <i class="fas fa-download"></i> Download
+        <a id="download-link" href="#" download>
+          <button class="download-btn"><i class="fas fa-download"></i> Download</button>
         </a>
       </div>
     </div>
@@ -273,28 +273,25 @@ if (!slug || slug.trim() === "" || slug === "undefined" || slug === "null") {
 }
 
 /* ---------------------------------- */
-/* DOWNLOAD HELPER (CDN-first, non-blocking tracking) */
+/* DOWNLOAD HELPER — FORCED DOWNLOAD */
 /* ---------------------------------- */
 async function downloadImage(rawName) {
+  const file = encodeURIComponent(rawName);
+  const apiURL = `${API_BASE}/api/images/download/${file}`;
+
+  // Non-blocking tracking
   try {
-    const file = encodeURIComponent(rawName);
-    const cdn = `https://cdn.pixeora.com/${file}`;
+    navigator.sendBeacon
+      ? navigator.sendBeacon(`${API_BASE}/api/images/track-download/${file}`)
+      : fetch(`${API_BASE}/api/images/track-download/${file}`, { method: "POST" });
+  } catch (e) {}
 
-    // Fire-and-forget tracking (do not block navigation)
-    fetch(`${API_BASE}/api/images/track-download/${file}`, { method: 'POST' })
-      .catch(() => { /* ignore errors */ });
-
-    // Navigate to CDN (this is crawlable behavior equivalent to anchor href)
-    window.location.href = cdn;
-  } catch (e) {
-    // fallback to API route if something unexpected happens
-    const fallback = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
-    window.location.href = fallback;
-  }
+  // Force download using backend (works on all devices)
+  window.location.href = apiURL;
 }
 
 /* ---------------------------------- */
-/* LOAD IMAGE DETAILS */
+/* LOAD IMAGE DETAILS (UPDATED) */
 /* ---------------------------------- */
 async function loadImageDetails() {
   try {
@@ -350,51 +347,74 @@ async function loadImageDetails() {
       }
     };
 
-    /* Update title + download */
+    /* Update title */
     document.getElementById("image-name").textContent =
       img.title || img.fileName;
 
-    /* --------- IMPORTANT: set direct CDN anchor (crawlable) --------- */
+    /* ---------------------------------- */
+    /* DOWNLOAD BUTTON — FULL FIX */
+    /* ---------------------------------- */
     const downloadAnchor = document.getElementById("download-link");
+
     if (downloadAnchor) {
-      downloadAnchor.setAttribute("href", originalUrl);
-      // Suggest filename on save
+      downloadAnchor.href = originalUrl;
       downloadAnchor.setAttribute("download", img.fileName || "");
-      // Ensure crawler sees a normal link
       downloadAnchor.removeAttribute("rel");
+
+      /* Extra: Force download fallback for mobile browsers */
+      downloadAnchor.onclick = async (e) => {
+        e.preventDefault();
+
+        try {
+          const response = await fetch(originalUrl);
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = img.fileName || "image.jpg";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+
+          /* Tracking (non-blocking) */
+          navigator.sendBeacon?.(
+            `${API_BASE}/api/images/track-download/${file}`
+          );
+
+        } catch (err) {
+          /* Fallback to normal href */
+          window.location.href = originalUrl;
+        }
+      };
     }
 
+    /* Save filename for info modal */
     window.__originalFileName = img.fileName;
 
-    /* Add a non-blocking tracking handler to visible button (does not change anchor behavior) */
-    const downloadBtn = document.querySelector(".download-btn");
-    if (downloadBtn) {
-      // remove any existing handler to avoid duplicates
-      downloadBtn.onclick = null;
-      downloadBtn.addEventListener("click", function () {
-        // Track click but do not prevent default anchor navigation
-        try {
-          navigator.sendBeacon
-            ? navigator.sendBeacon(`${API_BASE}/api/images/track-click/${encodeURIComponent(img._id)}`)
-            : fetch(`${API_BASE}/api/images/track-click/${encodeURIComponent(img._id)}`, { method: "POST" }).catch(()=>{});
-        } catch (e) { /* ignore tracking errors */ }
-        // Allow normal anchor click/navigation to proceed
-      }, { passive: true });
-    }
+    /* ---------------------------------- */
+    /* OG / Twitter — fix Pinterest issue */
+    /* ---------------------------------- */
 
-    /* OG / Twitter Meta */
-    document.getElementById("og-title").setAttribute("content", img.title || "");
-    document.getElementById("og-desc").setAttribute("content", img.description || "");
     document.getElementById("og-image").setAttribute("content", originalUrl);
+    document.getElementById("twitter-image").setAttribute("content", originalUrl);
+    document.getElementById("og-title").setAttribute("content", img.title);
+    document.getElementById("og-desc").setAttribute("content", img.description);
     document.getElementById("og-url").setAttribute("content", window.location.href);
 
-    document.getElementById("twitter-title").setAttribute("content", img.title || "");
-    document.getElementById("twitter-desc").setAttribute("content", img.description || "");
-    document.getElementById("twitter-image").setAttribute("content", originalUrl);
+    /* These two tags fix Pinterest preview */
+    document.querySelector("meta[property='og:image']")?.setAttribute("content", originalUrl);
+    document.querySelector("meta[name='twitter:image']")?.setAttribute("content", originalUrl);
 
+    /* ---------------------------------- */
+    /* Canonical URL */
+    /* ---------------------------------- */
     document.getElementById("canonical-link").setAttribute("href", window.location.href);
 
-    /* Schema */
+    /* ---------------------------------- */
+    /* Schema Update */
+    /* ---------------------------------- */
     document.getElementById("ld-json").textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ImageObject",
@@ -406,7 +426,9 @@ async function loadImageDetails() {
       "license": "https://pixeora.com/license"
     });
 
+    /* ---------------------------------- */
     /* Keywords */
+    /* ---------------------------------- */
     const keywords =
       img.keywords?.length ? img.keywords :
       img.tags?.length ? img.tags : [];
@@ -426,13 +448,20 @@ async function loadImageDetails() {
 }
 
 /* ---------------------------------- */
-/* RELATED SYSTEM – CLEANED */
+/* RELATED SYSTEM – FIXED & ROBUST */
 /* ---------------------------------- */
 let relatedKeywordList = [];
 let relatedKeywordIndex = 0;
 let relatedPage = 1;
 let relatedLoading = false;
 let loadedIds = new Set();
+
+function slugify(text = "") {
+  return text.toString().toLowerCase()
+    .replace(/[^\w ]+/g, "")
+    .replace(/\s+/g, "-")
+    .trim();
+}
 
 function startRelatedSystem(keywords) {
   if (!keywords || keywords.length === 0) return;
@@ -444,7 +473,6 @@ function startRelatedSystem(keywords) {
   ];
 
   const main = keywords[0]?.toLowerCase() || "";
-
   const strong = [];
   const medium = [];
   const weak = [];
@@ -491,16 +519,24 @@ async function loadMoreRelated(keyword) {
     const res = await fetch(
       `${API_BASE}/api/search?q=${encodeURIComponent(keyword)}&page=${relatedPage}&limit=20`
     );
-
     const json = await res.json();
-    const images = Array.isArray(json) ? json : json.images || [];
 
+    // FIX: support all API shapes
+    const images =
+      Array.isArray(json)
+        ? json
+        : json.images
+        ? json.images
+        : json.data
+        ? json.data
+        : [];
+
+    // Filter duplicates
     const unique = images.filter(img => {
-      if (!loadedIds.has(img._id)) {
-        loadedIds.add(img._id);
-        return true;
-      }
-      return false;
+      if (!img || !img._id) return false;
+      if (loadedIds.has(img._id)) return false;
+      loadedIds.add(img._id);
+      return true;
     });
 
     if (unique.length === 0) {
@@ -510,11 +546,11 @@ async function loadMoreRelated(keyword) {
 
     displayRelated(unique);
     relatedPage++;
-
     relatedLoading = false;
     return true;
 
   } catch (e) {
+    console.log("Related error:", e);
     relatedLoading = false;
     return false;
   }
@@ -526,8 +562,14 @@ function displayRelated(images) {
 
   let colIndex = 0;
 
-  images.forEach((img) => {
-    const thumb = img.thumbnailUrl ||
+  images.forEach(img => {
+    // FIX: fallback slug
+    let safeSlug =
+      img.slug ||
+      slugify(img.title || img.fileName || "image");
+
+    const thumb =
+      img.thumbnailUrl ||
       (img.thumbnailFileName
         ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
         : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
@@ -539,11 +581,11 @@ function displayRelated(images) {
       <div class="image-wrapper" style="position:relative;">
         <div class="skeleton"></div>
 
-        <a href="/photo/${img.slug}-${img._id}" class="image-link">
-          <img 
+        <a href="/photo/${safeSlug}-${img._id}" class="image-link">
+          <img
             data-src="${thumb}"
             class="lazy-img blur-load"
-            alt="${img.alt || img.title}"
+            alt="${img.alt || img.title || 'Image'}"
             loading="lazy"
             decoding="async"
           />
