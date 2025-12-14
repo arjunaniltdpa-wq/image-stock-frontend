@@ -537,18 +537,15 @@ html, body {
   width: 100%;
   max-width: 1280px;
   padding-inline: 16px;
-  margin-inline: auto;
+  margin-inline: auto;   /* 🔥 centers grid */
   box-sizing: border-box;
 }
 
 /* =====================================================
    MASONRY COLUMNS (AUTO STABLE)
 ===================================================== */
-
 #related-images .masonry-col {
-  flex: 1;
-  min-width: 220px; /* slightly smaller for better fit */
-  max-width: 1fr;
+  flex: 0 0 calc((100% - 64px) / 5); /* 5 columns, 4 gaps */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -600,39 +597,37 @@ html, body {
 /* =====================================================
    RESPONSIVE COLUMN CONTROL (MATCH SEARCH PAGE)
 ===================================================== */
-
 /* 4 columns */
 @media (max-width: 1400px) {
-  #related-images .masonry-col:nth-child(5) {
-    display: none;
+  #related-images .masonry-col {
+    flex: 0 0 calc((100% - 48px) / 4);
   }
+  #related-images .masonry-col:nth-child(5) { display: none; }
 }
 
 /* 3 columns */
 @media (max-width: 1100px) {
-  #related-images .masonry-col:nth-child(4) {
-    display: none;
+  #related-images .masonry-col {
+    flex: 0 0 calc((100% - 32px) / 3);
   }
+  #related-images .masonry-col:nth-child(4) { display: none; }
 }
 
 /* 2 columns */
 @media (max-width: 800px) {
-  #related-images .masonry-col:nth-child(3) {
-    display: none;
+  #related-images .masonry-col {
+    flex: 0 0 calc((100% - 16px) / 2);
   }
+  #related-images .masonry-col:nth-child(3) { display: none; }
 }
 
-/* 1 column (mobile) */
+/* 1 column */
 @media (max-width: 500px) {
   #related-images {
     padding-inline: 12px;
   }
-
   #related-images .masonry-col {
-    min-width: 100%;
+    flex: 0 0 100%;
   }
-
-  #related-images .masonry-col:nth-child(2) {
-    display: none;
-  }
+  #related-images .masonry-col:nth-child(2) { display: none; }
 }
