@@ -193,15 +193,15 @@
 </div>
 
 <div class="related-wrapper">
-    <h2>Related Images</h2>
+  <h2>Related Images</h2>
 
-    <div class="related-masonry" id="related-images">
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-    </div>
+  <div class="related-masonry" id="related-images">
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+    <div class="related-col"></div>
+  </div>
 </div>
 
 <!-- INFO MODAL -->
@@ -481,9 +481,8 @@ async function loadImageDetails() {
   }
 }
 
-
 /* ---------------------------------- */
-/* RELATED SYSTEM – FIXED TO MATCH SEARCH PAGE */
+/* RELATED SYSTEM – STABLE + SEARCH MATCH */
 /* ---------------------------------- */
 
 let relatedKeywordList = [];
@@ -491,6 +490,7 @@ let relatedKeywordIndex = 0;
 let relatedPage = 1;
 let relatedLoading = false;
 let loadedIds = new Set();
+let relatedColIndex = 0;
 
 /* Helper slug */
 function slugify(text = "") {
@@ -500,13 +500,32 @@ function slugify(text = "") {
     .trim();
 }
 
-function startRelatedSystem(keywords) {
+/* START RELATED */
+function startRelatedSystem(keywords = []) {
 
-  if (!keywords || keywords.length === 0) {
+  relatedColIndex = 0;
+  relatedKeywordIndex = 0;
+  relatedPage = 1;
+  relatedLoading = false;
+  loadedIds.clear();
+
+  const grid = document.querySelector("#related-images");
+  if (!grid) return;
+
+  /* Reset grid */
+  grid.innerHTML = `
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+  `;
+
+  /* If keywords missing → fallback immediately */
+  if (!keywords.length) {
     loadRelatedFallback();
     return;
   }
-  relatedColIndex = 0;
 
   const strongWords = [
     "tiger","lion","cat","dog","elephant","wolf","bear","horse",
@@ -527,37 +546,27 @@ function startRelatedSystem(keywords) {
   });
 
   relatedKeywordList = [...new Set([...strong, ...medium, ...weak])];
-  relatedKeywordIndex = 0;
-  relatedPage = 1;
-  loadedIds.clear();
 
-  // FIX 1: USE CORRECT HTML ID
-  const grid = document.querySelector("#related-images");
-
-  // FIX 2: USE masonry-col (matches HTML)
-  grid.innerHTML = `
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-  `;
+  if (!relatedKeywordList.length) {
+    loadRelatedFallback();
+    return;
+  }
 
   loadNextKeywordBatch();
 }
 
-
+/* LOAD FIRST KEYWORD */
 async function loadNextKeywordBatch() {
   if (relatedKeywordIndex >= relatedKeywordList.length) return;
-  const keyword = relatedKeywordList[relatedKeywordIndex];
+  const keyword = relatedKeywordList[relatedKeywordIndex++];
   relatedPage = 1;
   await loadMoreRelated(keyword);
-  relatedKeywordIndex++;
 }
 
+/* LOAD MORE */
 async function loadMoreRelated(keyword) {
 
-  if (relatedLoading) return true;
+  if (relatedLoading) return false;
   relatedLoading = true;
 
   try {
@@ -567,27 +576,17 @@ async function loadMoreRelated(keyword) {
     const json = await res.json();
 
     const images =
-      Array.isArray(json)
-        ? json
-        : json.images
-        ? json.images
-        : json.data
-        ? json.data
-        : json.results
-        ? json.results
-        : [];
+      json.images || json.data || json.results || [];
 
     const unique = images.filter(img => {
-      if (!img) return false;
-      const id = img._id || img.id;
-      if (!id) return false;
-      if (loadedIds.has(id)) return false;
+      const id = img?._id || img?.id;
+      if (!id || loadedIds.has(id)) return false;
       loadedIds.add(id);
-      if (!img._id) img._id = id;
+      img._id = id;
       return true;
     });
 
-    if (unique.length === 0) {
+    if (!unique.length) {
       relatedLoading = false;
       return false;
     }
@@ -604,8 +603,7 @@ async function loadMoreRelated(keyword) {
   }
 }
 
-let relatedColIndex = 0;
-
+/* DISPLAY */
 function displayRelated(images) {
 
   const cols = Array.from(
@@ -620,10 +618,9 @@ function displayRelated(images) {
       img.slug || slugify(img.title || img.fileName || "image");
 
     const thumb =
-      img.thumbnailUrl ||
-      (img.thumbnailFileName
+      img.thumbnailFileName
         ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-        : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
+        : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
     const card = document.createElement("div");
     card.className = "image-item";
@@ -631,16 +628,9 @@ function displayRelated(images) {
     card.innerHTML = `
       <div class="image-wrapper">
         <div class="skeleton"></div>
-
         <a href="/photo/${safeSlug}-${img._id}">
-          <img
-            data-src="${thumb}"
-            class="lazy-img image-load"
-            alt="${img.alt || img.title || 'Image'}"
-            loading="lazy"
-          />
+          <img data-src="${thumb}" class="lazy-img image-load" alt="${img.title || ''}">
         </a>
-
         <span class="download-overlay"
           onclick="event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\'")}')">
         </span>
@@ -654,18 +644,10 @@ function displayRelated(images) {
   lazyLoadInit();
 }
 
-
 /* ---------------------------------- */
-/* FALLBACK (same as search Explore More) */
+/* FALLBACK — GUARANTEED CONTENT */
 /* ---------------------------------- */
-
 async function loadRelatedFallback() {
-  const wrapper = document.querySelector(".related-wrapper");
-  wrapper.style.display = "block";
-
-  const container = document.getElementById("related-images");
-  const cols = container.querySelectorAll(".masonry-col");
-
 
   const r = await fetch(`${API_BASE}/api/images/popular-latest?limit=200`);
   const pop = await r.json();
@@ -673,35 +655,7 @@ async function loadRelatedFallback() {
 
   images = images.sort(() => Math.random() - 0.5);
 
-  let col = 0;
-
-  images.slice(0, 50).forEach(img => {
-    const card = createRelatedCard(img);
-    cols[col].appendChild(card);
-    col = (col + 1) % cols.length;
-  });
-
-  lazyLoadInit();
-}
-
-function createRelatedCard(img) {
-  const div = document.createElement("div");
-  div.classList.add("image-item");
-
-  const file = img.thumbnailFileName || img.fileName;
-  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
-
-  div.innerHTML = `
-    <div class="image-wrapper">
-      <div class="skeleton"></div>
-      <a href="/photo/${img.slug}-${img._id}">
-        <img data-src="${url}" class="lazy-img image-load" alt="${img.title}">
-      </a>
-      <span class="download-overlay" onclick="downloadImage('${img.fileName}')"></span>
-    </div>
-  `;
-
-  return div;
+  displayRelated(images.slice(0, 50));
 }
 
 /* ---------------------------------- */
@@ -710,15 +664,10 @@ function createRelatedCard(img) {
 window.addEventListener("scroll", async () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 400) {
     const keyword = relatedKeywordList[relatedKeywordIndex - 1];
-    const more = await loadMoreRelated(keyword);
-    if (!more) {
-      // Try next keyword until something loads
-      while (relatedKeywordIndex < relatedKeywordList.length) {
-        const nextKeyword = relatedKeywordList[relatedKeywordIndex++];
-        const loaded = await loadMoreRelated(nextKeyword);
-        if (loaded) break;
-      }
-    } 
+    if (!keyword) return;
+
+    const loaded = await loadMoreRelated(keyword);
+    if (!loaded) loadNextKeywordBatch();
   }
 });
 
@@ -824,6 +773,14 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("cookieConsent", "true");
     banner.classList.remove("show");
   });
+
+  /* TOUCH PROTECTION */
+  const overlay = document.getElementById("image-protect-overlay");
+  if (overlay) {
+    overlay.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+    });
+  }
 
 });
 
