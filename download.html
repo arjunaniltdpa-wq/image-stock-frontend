@@ -9,7 +9,7 @@
 
   <title id="seo-title">Pixeora Photo</title>
 
-  <meta name="pinterest-rich-pin" content="false" />
+  <meta name="pinterest-rich-pin" content="true">
   <meta id="seo-desc" name="description" content="Download high-quality HD wallpapers & royalty-free stock images for free.">
   <meta id="seo-keywords" name="keywords"
         content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use images, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
@@ -56,7 +56,11 @@
   ========================== -->
   <meta id="og-title" property="og:title" content="Pixeora – Free HD Image">
   <meta id="og-desc" property="og:description" content="Download full HD wallpapers & royalty-free stock images.">
-  <meta id="og-image" property="og:image" content="https://pixeora.com/images/logo.png">
+  <meta id="og-image" property="og:image" content="https://cdn.pixeora.com/preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+
   <meta property="og:url" id="og-url" content="">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Pixeora">
@@ -65,7 +69,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta id="twitter-title" name="twitter:title" content="Pixeora – Free HD Image Download">
   <meta id="twitter-desc" name="twitter:description" content="Download high-quality wallpapers, 4K backgrounds, and stock images.">
-  <meta id="twitter-image" name="twitter:image" content="https://pixeora.com/images/logo.png">
+  <meta id="twitter-image" name="twitter:image" content="https://cdn.pixeora.com/preview.jpg">
 
 
   <!-- =========================
@@ -161,17 +165,6 @@
     <div class="image-section">
 
       <div id="main-skeleton" class="skeleton"></div>
-
-      <!-- 🔒 PROTECTED IMAGE WRAPPER -->
-      <div class="protected-wrapper" style="position:relative; display:inline-block; width:100%;">
-
-        <img id="download-image"
-             src=""
-             alt="Selected Image"
-             loading="lazy"
-             class="image-load protected-img">
-
-      </div>
       <!-- END PROTECTED WRAPPER -->
 
       <h2 id="image-name">Loading...</h2>
@@ -236,10 +229,14 @@
     alt="Selected Image"
     loading="lazy"
   />
-
-  <!-- Touch / right-click blocker -->
-  <div id="image-protect-overlay"></div>
 </div>
+
+<img
+  src="https://cdn.pixeora.com/preview.jpg"
+  alt="Pixeora Free HD Image"
+  style="display:none"
+/>
+
 
 
 <script>

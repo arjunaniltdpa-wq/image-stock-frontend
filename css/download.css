@@ -513,11 +513,10 @@ html, body {
 
 .related-wrapper h2 {
   width: 100%;
-  max-width: 1280px;
+  max-width: 100%;   /* ✅ MATCH main */
   padding: 0 16px;
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 18px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* =====================================================
@@ -525,30 +524,22 @@ html, body {
 ===================================================== */
 
 #related-images {
-  display: flex;
-  gap: 16px;
-
   width: 100%;
-  max-width: 100%;
-
-  padding-left: 16px;
-  padding-right: 16px;
-
+  max-width: 100%;   /* ✅ MATCH main */
   margin-left: auto;
   margin-right: auto;
-
+  padding: 0 16px;
+  display: flex;
+  gap: 16px;
   box-sizing: border-box;
-  justify-content: center;
 }
-
 
 /* =====================================================
    MASONRY COLUMNS (AUTO STABLE)
 ===================================================== */
 #related-images .masonry-col {
-  flex: 1 1 0;
-  min-width: 220px;
-  max-width: 260px;
+  flex: 1;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   gap: 16px;
