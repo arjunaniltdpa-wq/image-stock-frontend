@@ -472,6 +472,7 @@ async function loadImageDetails() {
     /* RELATED IMAGES */
     const subject = detectMainSubject(img.title || img.fileName || "");
     startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
+    
 
   } catch (err) {
     console.error("Loader Error:", err);
@@ -505,6 +506,7 @@ function startRelatedSystem(keywords) {
     loadRelatedFallback();
     return;
   }
+  relatedColIndex = 0;
 
   const strongWords = [
     "tiger","lion","cat","dog","elephant","wolf","bear","horse",
@@ -540,7 +542,7 @@ function startRelatedSystem(keywords) {
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
   `;
-  
+
   loadNextKeywordBatch();
 }
 
@@ -602,18 +604,17 @@ async function loadMoreRelated(keyword) {
   }
 }
 
+let relatedColIndex = 0;
+
 function displayRelated(images) {
 
-  function getVisibleRelatedCols() {
-    return Array.from(document.querySelectorAll("#related-images .masonry-col"))
-      .filter(col => getComputedStyle(col).display !== "none");
-  }
+  const cols = Array.from(
+    document.querySelectorAll("#related-images .masonry-col")
+  ).filter(col => getComputedStyle(col).display !== "none");
 
-  let colIndex = 0;
+  if (!cols.length) return;
 
   images.forEach(img => {
-    const cols = getVisibleRelatedCols();
-    if (!cols.length) return;
 
     const safeSlug =
       img.slug || slugify(img.title || img.fileName || "image");
@@ -631,13 +632,12 @@ function displayRelated(images) {
       <div class="image-wrapper">
         <div class="skeleton"></div>
 
-        <a href="/photo/${safeSlug}-${img._id}" class="image-link">
+        <a href="/photo/${safeSlug}-${img._id}">
           <img
             data-src="${thumb}"
             class="lazy-img image-load"
             alt="${img.alt || img.title || 'Image'}"
             loading="lazy"
-            decoding="async"
           />
         </a>
 
@@ -647,8 +647,8 @@ function displayRelated(images) {
       </div>
     `;
 
-    cols[colIndex].appendChild(card);
-    colIndex = (colIndex + 1) % cols.length;
+    cols[relatedColIndex].appendChild(card);
+    relatedColIndex = (relatedColIndex + 1) % cols.length;
   });
 
   lazyLoadInit();

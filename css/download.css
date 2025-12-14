@@ -508,15 +508,9 @@ html, body {
 /* ---------- RELATED SECTION TITLE ---------- */
 
 
-/* ===== RELATED SECTION WRAPPER ===== */
-.related-masonry {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  max-width: 100%;       /* ensure it stretches fully */
-  justify-content: center;
-  margin: 0 auto;
-}
+/* =====================================================
+   RELATED SECTION WRAPPER
+===================================================== */
 
 .related-wrapper {
   width: 100%;
@@ -535,40 +529,11 @@ html, body {
   margin-bottom: 16px;
 }
 
-/* ===== RELATED MASONRY GRID ===== */
-.masonry-grid {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  width: 100%;
-  max-width: 100% !important;   /* allow full width */
-  padding: 0 20px;
-  box-sizing: border-box;
-}
+/* =====================================================
+   RELATED MASONRY GRID (MAIN FIX)
+===================================================== */
 
-/* Up to 5 columns (auto) */
-.masonry-col {
-  flex: 1;
-  min-width: 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* ===== IMAGE CARD ===== */
-.image-item {
-  width: 100%;
-  position: relative;
-}
-
-.image-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  object-fit: cover;   /* avoid cropping */
-}
-/* FIX: Related masonry layout */
-.related-masonry {
+#related-images {
   display: flex;
   gap: 16px;
   width: 100%;
@@ -578,8 +543,38 @@ html, body {
   justify-content: center;
 }
 
+/* =====================================================
+   MASONRY COLUMNS (UP TO 5)
+===================================================== */
 
-/* ===== DOWNLOAD OVERLAY ===== */
+#related-images .masonry-col {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* =====================================================
+   IMAGE CARD
+===================================================== */
+
+.image-item {
+  width: 100%;
+  position: relative;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* =====================================================
+   DOWNLOAD OVERLAY
+===================================================== */
+
 .download-overlay {
   position: absolute;
   bottom: 8px;
@@ -599,33 +594,43 @@ html, body {
   transform: scale(1.1);
 }
 
-/* ===== RESPONSIVE COLUMN CONTROL ===== */
+/* =====================================================
+   RESPONSIVE COLUMN CONTROL
+===================================================== */
 
 /* 4 columns */
 @media (max-width: 1400px) {
-  .masonry-col:nth-child(5) { display: none; }
+  #related-images .masonry-col:nth-child(5) {
+    display: none;
+  }
 }
 
 /* 3 columns */
 @media (max-width: 1100px) {
-  .masonry-col:nth-child(4) { display: none; }
+  #related-images .masonry-col:nth-child(4) {
+    display: none;
+  }
 }
 
 /* 2 columns */
 @media (max-width: 800px) {
-  .masonry-col:nth-child(3) { display: none; }
+  #related-images .masonry-col:nth-child(3) {
+    display: none;
+  }
 }
 
 /* 1 column (mobile) */
 @media (max-width: 500px) {
-  .masonry-col:nth-child(2) { display: none; }
+  #related-images .masonry-col:nth-child(2) {
+    display: none;
+  }
 
-  .masonry-grid {
+  #related-images {
     padding: 0 8px;
   }
 
   .image-item img {
-    object-fit: contain !important; /* full image, no crop */
+    object-fit: contain !important;
   }
 }
 
