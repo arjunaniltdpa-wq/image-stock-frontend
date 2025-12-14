@@ -536,10 +536,9 @@ html, body {
   gap: 16px;
   width: 100%;
   max-width: 1280px;
-  padding: 0 16px;
-  margin: 0 auto;
+  padding-inline: 16px;
+  margin-inline: auto;
   box-sizing: border-box;
-  justify-content: center;
 }
 
 /* =====================================================
@@ -625,22 +624,15 @@ html, body {
 
 /* 1 column (mobile) */
 @media (max-width: 500px) {
+  #related-images {
+    padding-inline: 12px;
+  }
+
+  #related-images .masonry-col {
+    min-width: 100%;
+  }
+
   #related-images .masonry-col:nth-child(2) {
     display: none;
   }
-
-  #related-images {
-    padding: 0 8px;
-  }
-
-  .image-item img {
-    object-fit: contain;
-    background: #000;
-  }
-}
-
-.protected-img {
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
 }
