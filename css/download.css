@@ -535,8 +535,9 @@ html, body {
   display: flex;
   gap: 16px;
   width: 100%;
-  max-width: none;      /* 🔥 remove restriction */
+  max-width: 1280px;
   padding: 0 16px;
+  margin: 0 auto;
   box-sizing: border-box;
   justify-content: center;
 }
