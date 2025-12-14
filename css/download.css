@@ -633,9 +633,3 @@ html, body {
     object-fit: contain !important;
   }
 }
-
-.protected-img {
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
