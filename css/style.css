@@ -534,18 +534,37 @@ color: white;
     gap: 16px;
     width: 100%;
     padding: 0 16px;
-    box-sizing: border-box;
     margin: 0 auto;
 }
 
 /* Masonry Columns */
 .masonry-col {
-    max-width: 380px;
     flex: 1;
+    max-width: 380px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-width: 0;   /* IMPORTANT for responsive */
+    min-width: 0;
+}
+
+/* UHD / Desktop – 4 columns */
+@media (min-width: 1400px) {
+    .masonry-col { max-width: 25%; }
+}
+
+/* Laptop – 3 columns */
+@media (max-width: 1399px) {
+    .masonry-col { max-width: 33.33%; }
+}
+
+/* Tablet – 2 columns */
+@media (max-width: 1024px) {
+    .masonry-col { max-width: 50%; }
+}
+
+/* Mobile – 1 column */
+@media (max-width: 600px) {
+    .masonry-col { max-width: 100%; }
 }
 
 /* Image Item */
@@ -582,47 +601,6 @@ color: white;
     opacity: 1;
     transform: scale(1.1);
 }
-
-/* ============================
-   ⭐ RESPONSIVE BREAKPOINTS
-================================ */
-/* Desktop – 4 columns max */
-@media (min-width: 1401px) {
-    .masonry-col {
-        flex-basis: 25%;
-        max-width: 25%;
-    }
-}
-
-
-/* Tablet – 3 columns */
-@media (max-width: 1024px) {
-    .masonry-col:nth-child(4) {
-        display: none;
-    }
-}
-
-/* Large Mobile – 2 columns */
-@media (max-width: 700px) {
-    .masonry-col:nth-child(3),
-    .masonry-col:nth-child(4) {
-        display: none;
-    }
-}
-
-/* Small Mobile – 1 column */
-@media (max-width: 450px) {
-    .masonry-col:nth-child(2),
-    .masonry-col:nth-child(3),
-    .masonry-col:nth-child(4) {
-        display: none;
-    }
-
-    .masonry-col:nth-child(1) {
-        flex: 1 !important;
-    }
-}
-
 
 /* Make dropdown always appear above search bar */
 .nav-menu,
