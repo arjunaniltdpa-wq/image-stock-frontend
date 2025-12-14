@@ -540,10 +540,7 @@ function startRelatedSystem(keywords) {
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
   `;
-
-  // FIX 3: Query correctly
-  window.relatedCols = Array.from(grid.querySelectorAll(".masonry-col"));
-
+  
   loadNextKeywordBatch();
 }
 
@@ -606,16 +603,20 @@ async function loadMoreRelated(keyword) {
 }
 
 function displayRelated(images) {
-  const cols = window.relatedCols;
-  if (!cols.length) return;
+
+  function getVisibleRelatedCols() {
+    return Array.from(document.querySelectorAll("#related-images .masonry-col"))
+      .filter(col => getComputedStyle(col).display !== "none");
+  }
 
   let colIndex = 0;
 
   images.forEach(img => {
+    const cols = getVisibleRelatedCols();
+    if (!cols.length) return;
 
-    let safeSlug =
-      img.slug ||
-      slugify(img.title || img.fileName || "image");
+    const safeSlug =
+      img.slug || slugify(img.title || img.fileName || "image");
 
     const thumb =
       img.thumbnailUrl ||
@@ -624,10 +625,10 @@ function displayRelated(images) {
         : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`);
 
     const card = document.createElement("div");
-    card.classList.add("image-item");
+    card.className = "image-item";
 
     card.innerHTML = `
-      <div class="image-wrapper" style="position:relative;">
+      <div class="image-wrapper">
         <div class="skeleton"></div>
 
         <a href="/photo/${safeSlug}-${img._id}" class="image-link">
@@ -641,7 +642,7 @@ function displayRelated(images) {
         </a>
 
         <span class="download-overlay"
-          onclick="event.stopImmediatePropagation(); event.preventDefault(); downloadImage('${(img.fileName||"").replace(/'/g, "\\'")}')">
+          onclick="event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\'")}')">
         </span>
       </div>
     `;
@@ -652,6 +653,7 @@ function displayRelated(images) {
 
   lazyLoadInit();
 }
+
 
 /* ---------------------------------- */
 /* FALLBACK (same as search Explore More) */
@@ -825,9 +827,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* TOUCH PROTECTION */
   const overlay = document.getElementById("image-protect-overlay");
-  overlay.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-  });
+  if (overlay) {
+    overlay.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+    });
+  }
 
 });
 
