@@ -533,11 +533,14 @@ html, body {
 
 #related-images {
   display: flex;
+  justify-content: center;        /* 🔥 force centering */
   gap: 16px;
   width: 100%;
   max-width: 1280px;
-  padding-inline: 16px;
-  margin-inline: auto;   /* 🔥 centers grid */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
   box-sizing: border-box;
 }
 
@@ -545,7 +548,7 @@ html, body {
    MASONRY COLUMNS (AUTO STABLE)
 ===================================================== */
 #related-images .masonry-col {
-  flex: 0 0 calc((100% - 64px) / 5); /* 5 columns, 4 gaps */
+  flex: 0 0 240px;                /* 🔥 fixed column width */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -597,37 +600,27 @@ html, body {
 /* =====================================================
    RESPONSIVE COLUMN CONTROL (MATCH SEARCH PAGE)
 ===================================================== */
-/* 4 columns */
 @media (max-width: 1400px) {
-  #related-images .masonry-col {
-    flex: 0 0 calc((100% - 48px) / 4);
-  }
   #related-images .masonry-col:nth-child(5) { display: none; }
 }
 
-/* 3 columns */
 @media (max-width: 1100px) {
-  #related-images .masonry-col {
-    flex: 0 0 calc((100% - 32px) / 3);
-  }
   #related-images .masonry-col:nth-child(4) { display: none; }
 }
 
-/* 2 columns */
 @media (max-width: 800px) {
-  #related-images .masonry-col {
-    flex: 0 0 calc((100% - 16px) / 2);
-  }
   #related-images .masonry-col:nth-child(3) { display: none; }
 }
 
-/* 1 column */
 @media (max-width: 500px) {
   #related-images {
-    padding-inline: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
+
   #related-images .masonry-col {
     flex: 0 0 100%;
   }
+
   #related-images .masonry-col:nth-child(2) { display: none; }
 }
