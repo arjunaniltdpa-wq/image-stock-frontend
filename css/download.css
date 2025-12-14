@@ -407,13 +407,6 @@ html, body {
     overflow-x: hidden !important;
 }
 
-.page-wrapper,
-.layout-wrapper,
-.related-section,
-#related-images {
-    padding-right: 0 !important;
-    margin-right: 0 !important;
-}
 @media (max-width: 1024px) {
     body {
         padding-right: 0 !important;
@@ -545,8 +538,7 @@ html, body {
   margin-right: auto;
 
   box-sizing: border-box;
-
-  justify-content: center; /* 🔥 THIS IS THE KEY */
+  justify-content: center;
 }
 
 
@@ -556,7 +548,7 @@ html, body {
 #related-images .masonry-col {
   flex: 1 1 0;
   min-width: 220px;
-  max-width: 260px; /* 🔥 prevents uneven stretching */
+  max-width: 260px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -630,7 +622,9 @@ html, body {
     flex: 0 0 100%;
   }
 
-  #related-images .masonry-col:nth-child(2) { display: none; }
+  #related-images .masonry-col:nth-child(2) {
+    display: none;
+  }
 }
 
 
