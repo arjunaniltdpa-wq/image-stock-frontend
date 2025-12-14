@@ -491,6 +491,8 @@ let relatedPage = 1;
 let relatedLoading = false;
 let loadedIds = new Set();
 let relatedColIndex = 0;
+let relatedCursor = null;
+
 
 /* Helper slug */
 function slugify(text = "") {
@@ -507,6 +509,7 @@ function startRelatedSystem(keywords = []) {
   relatedKeywordIndex = 0;
   relatedPage = 1;
   relatedLoading = false;
+  relatedCursor = null;
   loadedIds.clear();
 
   const grid = document.querySelector("#related-images");
@@ -565,24 +568,27 @@ async function loadNextKeywordBatch() {
 
 /* LOAD MORE */
 async function loadMoreRelated(keyword) {
-
-  if (relatedLoading) return false;
+  if (relatedLoading) return true;
   relatedLoading = true;
 
   try {
-    const res = await fetch(
-      `${API_BASE}/api/search?q=${encodeURIComponent(keyword)}&page=${relatedPage}&limit=20`
-    );
-    const json = await res.json();
+    const url = relatedCursor
+      ? `${API_BASE}/api/search/next?q=${encodeURIComponent(keyword)}&cursor=${relatedCursor}&limit=20`
+      : `${API_BASE}/api/search/first?q=${encodeURIComponent(keyword)}&limit=20`;
 
-    const images =
-      json.images || json.data || json.results || [];
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Search API failed");
+
+    const data = await res.json();
+
+    const images = data.images || [];
+    relatedCursor = data.nextCursor || null;
 
     const unique = images.filter(img => {
-      const id = img?._id || img?.id;
+      const id = img._id || img.id;
       if (!id || loadedIds.has(id)) return false;
       loadedIds.add(id);
-      img._id = id;
+      if (!img._id) img._id = id;
       return true;
     });
 
@@ -592,12 +598,11 @@ async function loadMoreRelated(keyword) {
     }
 
     displayRelated(unique);
-    relatedPage++;
     relatedLoading = false;
     return true;
 
   } catch (e) {
-    console.log("Related error:", e);
+    console.error("Related error:", e);
     relatedLoading = false;
     return false;
   }
@@ -773,15 +778,6 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("cookieConsent", "true");
     banner.classList.remove("show");
   });
-
-  /* TOUCH PROTECTION */
-  const overlay = document.getElementById("image-protect-overlay");
-  if (overlay) {
-    overlay.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-    });
-  }
-
 });
 
 </script>
