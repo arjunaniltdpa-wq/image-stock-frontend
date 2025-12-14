@@ -533,22 +533,30 @@ html, body {
 
 #related-images {
   display: flex;
-  justify-content: center;        /* 🔥 force centering */
   gap: 16px;
+
   width: 100%;
   max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
+
   padding-left: 16px;
   padding-right: 16px;
+
+  margin-left: auto;
+  margin-right: auto;
+
   box-sizing: border-box;
+
+  justify-content: center; /* 🔥 THIS IS THE KEY */
 }
+
 
 /* =====================================================
    MASONRY COLUMNS (AUTO STABLE)
 ===================================================== */
 #related-images .masonry-col {
-  flex: 0 0 240px;                /* 🔥 fixed column width */
+  flex: 1 1 0;
+  min-width: 220px;
+  max-width: 260px; /* 🔥 prevents uneven stretching */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -623,4 +631,33 @@ html, body {
   }
 
   #related-images .masonry-col:nth-child(2) { display: none; }
+}
+
+
+/* ==============================
+   MAIN IMAGE PROTECTION ONLY
+============================== */
+
+.protected-wrapper {
+  position: relative;
+}
+
+/* Image protection */
+.protected-wrapper .protected-img {
+  -webkit-user-select: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+  pointer-events: none; /* block direct interactions */
+}
+
+/* Overlay catches all touches */
+#image-protect-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: transparent;
+
+  touch-action: none;
+  -webkit-touch-callout: none;
 }
