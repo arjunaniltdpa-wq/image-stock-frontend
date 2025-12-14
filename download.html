@@ -159,31 +159,46 @@
 
 
 <div class="page-wrapper">
-
   <main>
 
     <div class="image-section">
 
       <div id="main-skeleton" class="skeleton"></div>
-      <!-- END PROTECTED WRAPPER -->
+
+      <!-- 🔒 MAIN IMAGE (INSIDE BOX) -->
+      <div class="protected-wrapper">
+        <img
+          id="download-image"
+          class="image-load protected-img"
+          src=""
+          alt="Selected Image"
+          loading="lazy"
+        />
+        <div id="image-protect-overlay"></div>
+      </div>
 
       <h2 id="image-name">Loading...</h2>
 
       <div class="image-actions">
-        <button class="info-btn"><i class="fas fa-info-circle"></i> Info</button>
+        <button class="info-btn">
+          <i class="fas fa-info-circle"></i> Info
+        </button>
 
         <a id="download-link" href="#" download>
-          <button class="download-btn"><i class="fas fa-download"></i> Download</button>
+          <button class="download-btn">
+            <i class="fas fa-download"></i> Download
+          </button>
         </a>
       </div>
+
     </div>
 
     <!-- ⭐ Updated Keywords Block -->
     <div class="keywords" id="keywords"></div>
 
-
   </main>
 </div>
+
 
 <div class="related-wrapper">
   <h2>Related Images</h2>
@@ -196,6 +211,7 @@
     <div class="related-col"></div>
   </div>
 </div>
+
 
 <!-- INFO MODAL -->
 <div id="infoModal" class="info-modal">
@@ -212,6 +228,7 @@
   </div>
 </div>
 
+
 <div id="cookie-banner" class="premium-cookie">
   <div class="cookie-content">
     <p class="cookie-message">
@@ -221,23 +238,15 @@
   </div>
 </div>
 
-<div class="protected-wrapper">
-  <img
-    id="download-image"
-    class="protected-img"
-    src=""
-    alt="Selected Image"
-    loading="lazy"
-  />
-</div>
 
+<!-- SEO fallback image (keep) -->
 <img
   src="https://cdn.pixeora.com/preview.jpg"
   alt="Pixeora Free HD Image"
   style="display:none"
 />
 
-
+</body>
 
 <script>
 /* ---------------------------------- */
