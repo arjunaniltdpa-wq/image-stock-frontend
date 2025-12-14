@@ -534,38 +534,28 @@ color: white;
     gap: 16px;
     width: 100%;
     padding: 0 16px;
+    box-sizing: border-box;
     margin: 0 auto;
 }
 
 /* Masonry Columns */
 .masonry-col {
-    flex: 1;
     max-width: 380px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-width: 0;
+    min-width: 0;   /* IMPORTANT for responsive */
 }
 
-/* UHD / Desktop – 4 columns */
-@media (min-width: 1400px) {
-    .masonry-col { max-width: 25%; }
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent; /* ✅ FIX */
 }
 
-/* Laptop – 3 columns */
-@media (max-width: 1399px) {
-    .masonry-col { max-width: 33.33%; }
-}
-
-/* Tablet – 2 columns */
-@media (max-width: 1024px) {
-    .masonry-col { max-width: 50%; }
-}
-
-/* Mobile – 1 column */
-@media (max-width: 600px) {
-    .masonry-col { max-width: 100%; }
-}
 
 /* Image Item */
 .image-item {
@@ -575,15 +565,13 @@ color: white;
     position: relative;
 }
 
-/* Image inside item */
 .image-item img {
-    min-height: 200px;
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 12px;
-    object-fit: cover;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;   /* desktop */
 }
+
 
 /* ⭐ DOWNLOAD OVERLAY */
 .download-overlay {
@@ -601,6 +589,47 @@ color: white;
     opacity: 1;
     transform: scale(1.1);
 }
+
+/* ============================
+   ⭐ RESPONSIVE BREAKPOINTS
+================================ */
+/* Desktop – 4 columns max */
+@media (min-width: 1401px) {
+    .masonry-col {
+        flex-basis: 25%;
+        max-width: 25%;
+    }
+}
+
+
+/* Tablet – 3 columns */
+@media (max-width: 1024px) {
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
+}
+
+/* Large Mobile – 2 columns */
+@media (max-width: 700px) {
+    .masonry-col:nth-child(3),
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
+}
+
+/* Small Mobile – 1 column */
+@media (max-width: 450px) {
+    .masonry-col:nth-child(2),
+    .masonry-col:nth-child(3),
+    .masonry-col:nth-child(4) {
+        display: none;
+    }
+
+    .masonry-col:nth-child(1) {
+        flex: 1 !important;
+    }
+}
+
 
 /* Make dropdown always appear above search bar */
 .nav-menu,
@@ -633,7 +662,7 @@ color: white;
   
   .image-item img {
     height: auto !important;
-    object-fit: contain !important;  /* ✔ shows full image */
+    object-fit: contain !important; /* full image */
   }
 }
 /* ===== Premium Cookie Banner ===== */
