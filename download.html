@@ -13,8 +13,6 @@
   <meta name="keywords"
         content="free hd wallpaper, 4k image download, royalty free stock photos, commercial use images, pixeora">
 
-  <!-- Canonical (JS will update correctly for users, bots use og.js) -->
-  <link id="canonical-link" rel="canonical" href="https://pixeora.com/photo/">
 
   <!-- Pinterest domain verification (OK to keep) -->
   <meta name="pinterest-rich-pin" content="true">
@@ -391,9 +389,6 @@ async function loadImageDetails() {
       document.querySelector("meta[property='og:image']")?.setAttribute("content", originalUrl);
       document.querySelector("meta[name='twitter:image']")?.setAttribute("content", originalUrl);
     }
-
-    /* Canonical */
-    document.getElementById("canonical-link")?.setAttribute("href", window.location.href);
 
     /* Schema */
     const ld = {
