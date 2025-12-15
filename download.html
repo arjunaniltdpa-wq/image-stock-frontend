@@ -247,7 +247,7 @@ async function loadImageDetails() {
     }
     /* Try rawSlug exactly as URL contains */
     if (rawSlug) {
-      apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
+      apiList = [`${API_BASE}/api/images/slug/${rawSlug}`];
     }
     /* Try ID-only (fallback) */
     if (imageId) {

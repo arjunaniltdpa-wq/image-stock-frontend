@@ -1,3 +1,4 @@
+// middleware.js
 export const config = {
   matcher: ["/photo/:path*"],
 };
@@ -11,7 +12,7 @@ export function middleware(req) {
   if (!isBot) return;
 
   const ogUrl = new URL("/api/og", req.url);
-  ogUrl.searchParams.set("url", req.nextUrl.href);
+  ogUrl.searchParams.set("url", req.url); // FULL PAGE URL
 
   return Response.rewrite(ogUrl);
 }
