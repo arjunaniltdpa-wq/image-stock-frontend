@@ -1,5 +1,5 @@
 export const config = {
-  matcher: "/photo/:path*",
+  matcher: ["/photo/:path*"],
 };
 
 export function middleware(req) {
@@ -14,15 +14,10 @@ export function middleware(req) {
     ua.includes("LinkedInBot") ||
     ua.includes("Slackbot");
 
-  if (!isBot) {
-    return; // normal users → load JS page
-  }
+  if (!isBot) return;
 
-  const url = new URL(req.url);
-  const target = url.pathname;
-
-  const ogUrl = new URL("/api/og", url.origin);
-  ogUrl.searchParams.set("url", target);
+  const ogUrl = new URL("/api/og", req.url);
+  ogUrl.searchParams.set("url", req.url); // FULL URL REQUIRED
 
   return Response.rewrite(ogUrl);
 }

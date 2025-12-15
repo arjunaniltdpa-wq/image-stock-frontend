@@ -1,55 +1,78 @@
-export const config = {
-  runtime: "edge",
-};
-
 export default async function handler(req) {
-  const url = new URL(req.url);
+  try {
+    const pageUrl =
+      new URL(req.url).searchParams.get("url") || "https://pixeora.com";
 
-  // Expect ?url=/photo/slug-id
-  const target = url.searchParams.get("url");
-  if (!target) {
-    return new Response("Missing url", { status: 400 });
-  }
+    const pathname = new URL(pageUrl).pathname;
 
-  const slug = target.split("/").pop();
+    const apiRes = await fetch(
+      `https://api.pixeora.com/api/images/slug${pathname}`
+    );
 
-  // Fetch image metadata from your API
-  const apiRes = await fetch(
-    `https://api.pixeora.com/api/images/slug/${slug}`
-  );
+    if (!apiRes.ok) throw new Error("API failed");
 
-  if (!apiRes.ok) {
-    return new Response("Not found", { status: 404 });
-  }
+    const data = await apiRes.json();
+    const img = data.image || data;
 
-  const data = await apiRes.json();
-  const img = data.image || data;
+    const title =
+      (img.title && img.title.trim()) ||
+      "Free HD Image – Pixeora";
 
-  const imageUrl = `https://cdn.pixeora.com/${img.fileName}`;
+    const description =
+      img.description ||
+      "Download free HD wallpapers and royalty-free stock images.";
 
-  const html = `<!DOCTYPE html>
+    const imageUrl = img.fileName
+      ? `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`
+      : "https://cdn.pixeora.com/preview.jpg";
+
+    const html = `<!DOCTYPE html>
 <html>
 <head>
-  <title>${img.title}</title>
+<meta charset="UTF-8">
+<title>${title}</title>
 
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="${img.title}">
-  <meta property="og:description" content="${img.description || ""}">
-  <meta property="og:image" content="${imageUrl}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="1800">
-  <meta property="og:url" content="https://pixeora.com${target}">
-  <meta property="og:site_name" content="Pixeora">
+<meta name="robots" content="index, follow">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="${imageUrl}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${description}">
+<meta property="og:image" content="${imageUrl}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="${pageUrl}">
+<meta property="og:site_name" content="Pixeora">
 
-  <link rel="image_src" href="${imageUrl}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${title}">
+<meta name="twitter:description" content="${description}">
+<meta name="twitter:image" content="${imageUrl}">
+
+<link rel="canonical" href="${pageUrl}">
 </head>
 <body></body>
 </html>`;
 
-  return new Response(html, {
-    headers: { "content-type": "text/html; charset=UTF-8" },
-  });
+    return new Response(html, {
+      headers: {
+        "content-type": "text/html; charset=UTF-8",
+        "cache-control": "public, max-age=600",
+      },
+    });
+  } catch (err) {
+    return new Response(
+      `<!DOCTYPE html>
+<html>
+<head>
+<title>Pixeora – Free HD Images</title>
+<meta property="og:title" content="Pixeora – Free HD Images">
+<meta property="og:description" content="Download free HD wallpapers and royalty-free stock images.">
+<meta property="og:image" content="https://cdn.pixeora.com/preview.jpg">
+<meta property="og:url" content="https://pixeora.com">
+</head>
+<body></body>
+</html>`,
+      { headers: { "content-type": "text/html" } }
+    );
+  }
 }

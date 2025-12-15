@@ -593,14 +593,12 @@ color: white;
 /* ============================
    ⭐ RESPONSIVE BREAKPOINTS
 ================================ */
-/* Desktop – 4 columns max */
 @media (min-width: 1401px) {
     .masonry-col {
-        flex-basis: 25%;
-        max-width: 25%;
+        flex-basis: 33.33%;
+        max-width: 33.33%;
     }
 }
-
 
 /* Tablet – 3 columns */
 @media (max-width: 1024px) {

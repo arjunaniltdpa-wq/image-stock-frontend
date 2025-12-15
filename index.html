@@ -187,15 +187,15 @@
     </section>
 
     <!-- POPULAR IMAGES -->
-    <section class="popular-images">
-      <div class="masonry-grid" id="masonry">
+    <section class="related-wrapper">
+      <div class="masonry-grid" id="related-masonry">
         <div class="masonry-col"></div>
         <div class="masonry-col"></div>
         <div class="masonry-col"></div>
-        <div class="masonry-col"></div>      
+        <div class="masonry-col"></div>
       </div>
-        
     </section>
+  </section>
 
   </main>
 
@@ -215,7 +215,7 @@ let loading = false;
 const limit = 36;
 
 /* Get masonry columns */
-const masonry = document.getElementById("masonry");
+const masonry = document.getElementById("related-masonry");
 
 /* ⭐ NEW: detect visible columns only */
 function getVisibleColumns() {
@@ -241,12 +241,14 @@ function createImageCard(img) {
 
       <a href="/photo/${img.slug}-${img._id}">
         <img 
-          data-src="${url}" 
+          data-src="${url}"
           class="lazy-img image-load"
           alt="${img.alt || ''}"
           width="400"
           height="260"
           loading="lazy"
+          decoding="async"
+          fetchpriority="low"
         >
       </a>
 
@@ -353,7 +355,7 @@ function lazyLoadInit() {
       });
     },
     {
-      rootMargin: "300px 0px 300px 0px",
+      rootMargin: "150px 0px 150px 0px",
       threshold: 0
     }
   );

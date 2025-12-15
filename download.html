@@ -2,98 +2,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- =========================
-      SEO + INDEXING (corrected)
-  ========================== -->
+  <!-- SEO -->
   <meta name="robots" content="index, follow">
 
-  <title id="seo-title">Pixeora Photo</title>
+  <title>Pixeora Photo</title>
 
-  <meta name="pinterest-rich-pin" content="true">
-  <meta id="seo-desc" name="description" content="Download high-quality HD wallpapers & royalty-free stock images for free.">
-  <meta id="seo-keywords" name="keywords"
-        content="free hd wallpaper download, 4k image download, stock photo download, royalty free images, commercial use images, aesthetic backgrounds, nature wallpapers, abstract wallpapers, USA UK Canada Australia India wallpaper download">
+  <meta name="description"
+        content="Download high-quality HD wallpapers, 4K backgrounds and royalty-free stock images for free.">
 
-  <meta name="p:domain_verify" content="baeea6bc953c52f33c6f450565b4a8ab"/>
-  
-  <!-- Canonical (dynamic update later) -->
+  <meta name="keywords"
+        content="free hd wallpaper, 4k image download, royalty free stock photos, commercial use images, pixeora">
+
+  <!-- Canonical (JS will update correctly for users, bots use og.js) -->
   <link id="canonical-link" rel="canonical" href="https://pixeora.com/photo/">
 
-  <!-- =========================
-      FAVICONS
-  ========================== -->
+  <!-- Pinterest domain verification (OK to keep) -->
+  <meta name="pinterest-rich-pin" content="true">
+  <meta name="p:domain_verify" content="baeea6bc953c52f33c6f450565b4a8ab"/>
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="192x192" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
   <link rel="apple-touch-icon" href="/images/logo.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#000000">
 
-  <!-- =========================
-      PERFORMANCE BOOST
-  ========================== -->
+  <!-- Styles -->
   <link rel="preload" href="/css/download.css" as="style">
   <link rel="stylesheet" href="/css/download.css">
   <link rel="stylesheet" href="/css/cookie.css">
 
+  <!-- Performance -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdn.pixeora.com">
-
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
   <link rel="dns-prefetch" href="https://api.pixeora.com">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
-  <!-- =========================
-      SOCIAL SHARING META
-  ========================== -->
-  <meta id="og-title" property="og:title" content="Pixeora – Free HD Image">
-  <meta id="og-desc" property="og:description" content="Download full HD wallpapers & royalty-free stock images.">
-  <meta id="og-image" property="og:image" content="https://cdn.pixeora.com/preview.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:type" content="image/jpeg">
-
-  <meta property="og:url" id="og-url" content="">
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Pixeora">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta id="twitter-title" name="twitter:title" content="Pixeora – Free HD Image Download">
-  <meta id="twitter-desc" name="twitter:description" content="Download high-quality wallpapers, 4K backgrounds, and stock images.">
-  <meta id="twitter-image" name="twitter:image" content="https://cdn.pixeora.com/preview.jpg">
-
-
-  <!-- =========================
-      STRUCTURED DATA (Dynamic ImageObject)
-  ========================== -->
-  <script type="application/ld+json" id="ld-json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ImageObject",
-    "name": "",
-    "description": "",
-    "contentUrl": "",
-    "thumbnailUrl": "",
-    "creator": {
-      "@type": "Organization",
-      "name": "Pixeora"
-    },
-    "license": "https://pixeora.com/license"
-  }
-  </script>
-
-  <!-- =========================
-      LOGO SCHEMA
-  ========================== -->
+  <!-- Structured Data: Organization (safe for users & bots) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -104,35 +58,12 @@
   }
   </script>
 
-
-  <!-- =========================
-      FIXED PINTEREST / SOCIAL PREVIEW
-      (removed buggy img.fileName reference)
-  ========================== -->
-  <script>
-  (function () {
-    const slug = window.location.pathname.split("/photo/")[1];
-    if (!slug) return;
-
-    const idMatch = slug.match(/([a-f0-9]{24})$/i);
-    if (!idMatch) return;
-
-    // OG URL must always update first
-    document.getElementById("og-url")?.setAttribute("content", window.location.href);
-  })();
-  </script>
-
-  <!-- =========================
-      NOSCRIPT FALLBACK (SEO + users)
-  ========================== -->
+  <!-- NOSCRIPT fallback -->
   <noscript>
     <meta name="robots" content="index, follow">
-    <div style="padding:10px;background:#111;color:#fff;text-align:center;font-size:14px;">
-      JavaScript is disabled. Image preview may not load, but you can still access files.
-    </div>
   </noscript>
-
 </head>
+
 
 <body>
 
