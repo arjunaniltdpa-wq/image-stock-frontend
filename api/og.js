@@ -2,46 +2,37 @@ export default async function handler(req) {
   try {
     const { searchParams } = new URL(req.url);
     const pageUrl = searchParams.get("url");
-
-    if (!pageUrl) throw new Error("No page URL");
+    if (!pageUrl) throw new Error("Missing URL");
 
     const pathname = new URL(pageUrl).pathname;
-
-    if (!pathname.startsWith("/photo/")) {
-      throw new Error("Invalid path");
-    }
-
-    const slug = pathname.replace("/photo/", "");
+    const slug = pathname.split("/photo/")[1];
+    if (!slug) throw new Error("Invalid slug");
 
     const apiRes = await fetch(
       `https://api.pixeora.com/api/images/slug/${slug}`,
       { cache: "no-store" }
     );
 
-    if (!apiRes.ok) throw new Error("Image API failed");
+    if (!apiRes.ok) throw new Error("API failed");
 
     const data = await apiRes.json();
     const img = data.image || data;
 
-    if (!img || !img.fileName) throw new Error("Invalid image");
-
-    const title = img.title || img.slug || "Free HD Image";
-    const description =
-      img.description ||
-      "Download free HD wallpapers, 4K backgrounds and royalty-free stock images.";
+    if (!img?.fileName) throw new Error("No image");
 
     const imageUrl = `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+    const title = img.title || "Free HD Image – Pixeora";
+    const desc = img.description || "Download free HD wallpapers & royalty-free stock images.";
 
     return new Response(`<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
-
-<title>${escapeHtml(title)}</title>
+<title>${escape(title)}</title>
 
 <meta property="og:type" content="article">
-<meta property="og:title" content="${escapeHtml(title)}">
-<meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:title" content="${escape(title)}">
+<meta property="og:description" content="${escape(desc)}">
 <meta property="og:image" content="${imageUrl}">
 <meta property="og:image:secure_url" content="${imageUrl}">
 <meta property="og:image:width" content="1200">
@@ -50,8 +41,8 @@ export default async function handler(req) {
 <meta property="og:site_name" content="Pixeora">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${escapeHtml(title)}">
-<meta name="twitter:description" content="${escapeHtml(description)}">
+<meta name="twitter:title" content="${escape(title)}">
+<meta name="twitter:description" content="${escape(desc)}">
 <meta name="twitter:image" content="${imageUrl}">
 
 <link rel="canonical" href="${pageUrl}">
@@ -59,34 +50,22 @@ export default async function handler(req) {
 <body></body>
 </html>`, {
       status: 200,
-      headers: {
-        "content-type": "text/html; charset=UTF-8",
-        "cache-control": "public, max-age=300"
-      }
+      headers: { "content-type": "text/html; charset=UTF-8" },
     });
 
-  } catch (e) {
+  } catch {
     return new Response(`<!DOCTYPE html>
-<html>
-<head>
-<meta property="og:type" content="website">
+<html><head>
 <meta property="og:title" content="Pixeora – Free HD Images">
-<meta property="og:description" content="Download free HD wallpapers and royalty-free stock images.">
 <meta property="og:image" content="https://cdn.pixeora.com/preview.jpg">
 <meta property="og:url" content="https://pixeora.com">
-</head>
-<body></body>
-</html>`, {
+</head></html>`, {
       status: 200,
-      headers: { "content-type": "text/html; charset=UTF-8" }
+      headers: { "content-type": "text/html; charset=UTF-8" },
     });
   }
 }
 
-function escapeHtml(str = "") {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+function escape(str="") {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
