@@ -2,6 +2,13 @@
   "version": 2,
   "routes": [
     {
+      "src": "^/photo/(.*)$",
+      "headers": {
+        "User-Agent": "(facebookexternalhit|Twitterbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot)"
+      },
+      "dest": "/og/$1"
+    },
+    {
       "src": "^/photo/.*$",
       "dest": "/download.html"
     }
