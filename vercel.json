@@ -6,7 +6,7 @@
       "headers": {
         "User-Agent": "(facebookexternalhit|Twitterbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot)"
       },
-      "dest": "/og/$1"
+      "dest": "/api/og?slug=$1"
     },
     {
       "src": "^/photo/.*$",
