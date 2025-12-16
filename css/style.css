@@ -48,6 +48,8 @@ color: #222;
     padding: 8px 12px;
     border-radius: 6px;
     transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
 }
 
 /* NAV LINKS */
@@ -142,6 +144,12 @@ color: #222;
     background-size: 300% 300%;
     color: #fff !important;
 }
+
+.nav-links {
+  display: flex;
+  align-items: center;   /* 👈 THIS fixes vertical alignment */
+}
+
 
 /* ---------------- BANNER ---------------- */
 .banner {
@@ -527,26 +535,22 @@ color: white;
 /* now regular grid */
 
 /* =============================
-   MASONRY GRID — FIXED & FLUID
+   MASONRY GRID — LOCKED & STABLE
 ============================= */
 
-/* Masonry Container */
 .masonry-grid {
     width: 100%;
     max-width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    padding: 0 12px;
     margin: 0 auto;
+    display: flex;
+    gap: 14px;
+    padding: 0 16px;   /* small gutter on edges */
     box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 /* Masonry Columns */
 .masonry-col {
     flex: 1 1 0;
-    max-width: 100%;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -567,6 +571,11 @@ color: white;
     object-fit: cover;
     display: block;
 }
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
 
 
 /* ⭐ DOWNLOAD OVERLAY */
@@ -578,7 +587,7 @@ color: white;
     height: 40px;
     background: url('../images/download-icon.png') center/cover no-repeat;
     opacity: 0;
-    transition: 0.25s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .image-item:hover .download-overlay {
@@ -589,6 +598,15 @@ color: white;
 /* ============================
    ⭐ RESPONSIVE BREAKPOINTS
 ================================ */
+/* Prevent crazy-wide columns on huge screens */
+@media (min-width: 1600px) {
+  .masonry-grid {
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 /* Desktop – 4 columns */
 @media (min-width: 1200px) {
   .masonry-col { flex: 1; }
