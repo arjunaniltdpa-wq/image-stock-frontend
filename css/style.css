@@ -526,50 +526,46 @@ color: white;
 }
 /* now regular grid */
 
+/* =============================
+   MASONRY GRID — FIXED & FLUID
+============================= */
+
 /* Masonry Container */
 .masonry-grid {
-    max-width: 1600px;
+    width: 100%;
+    max-width: 100%;
     display: flex;
     justify-content: center;
-    gap: 16px;
-    width: 100%;
-    padding: 0 16px;
-    box-sizing: border-box;
+    gap: 14px;
+    padding: 0 12px;
     margin: 0 auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 /* Masonry Columns */
 .masonry-col {
-    max-width: 380px;
-    flex: 1;
+    flex: 1 1 0;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    min-width: 0;   /* IMPORTANT for responsive */
+    gap: 14px;
+    min-width: 0;
 }
-
-.image-wrapper {
-  position: relative;
-  width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  background: transparent; /* ✅ FIX */
-}
-
 
 /* Image Item */
 .image-item {
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
-    position: relative;
 }
 
+/* 🔒 FORCE SMALL THUMBNAILS EVERYWHERE */
 .image-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;   /* desktop */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
 }
 
 
@@ -593,39 +589,31 @@ color: white;
 /* ============================
    ⭐ RESPONSIVE BREAKPOINTS
 ================================ */
-@media (min-width: 1401px) {
-    .masonry-col {
-        flex-basis: 33.33%;
-        max-width: 33.33%;
-    }
+/* Desktop – 4 columns */
+@media (min-width: 1200px) {
+  .masonry-col { flex: 1; }
 }
 
 /* Tablet – 3 columns */
 @media (max-width: 1024px) {
-    .masonry-col:nth-child(4) {
-        display: none;
-    }
+  .masonry-col:nth-child(4) { display: none; }
 }
 
 /* Large Mobile – 2 columns */
 @media (max-width: 700px) {
-    .masonry-col:nth-child(3),
-    .masonry-col:nth-child(4) {
-        display: none;
-    }
+  .masonry-col:nth-child(3),
+  .masonry-col:nth-child(4) { display: none; }
 }
 
 /* Small Mobile – 1 column */
 @media (max-width: 450px) {
-    .masonry-col:nth-child(2),
-    .masonry-col:nth-child(3),
-    .masonry-col:nth-child(4) {
-        display: none;
-    }
+  .masonry-col:nth-child(2),
+  .masonry-col:nth-child(3),
+  .masonry-col:nth-child(4) { display: none; }
 
-    .masonry-col:nth-child(1) {
-        flex: 1 !important;
-    }
+  .masonry-col {
+    flex: 1 1 100%;
+  }
 }
 
 

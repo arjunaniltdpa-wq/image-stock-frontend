@@ -1,16 +1,16 @@
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
   <title>Free HD Wallpapers, 4K Images & Royalty-Free Stock Photos | Pixeora</title>
 
   <!-- SEO -->
   <meta name="robots" content="index, follow">
-  <meta name="description" content="Download free HD wallpapers, 4K backgrounds, royalty-free stock images and commercial-use photos. Fast loading, clean UI, daily new premium-quality photos." />
-  <meta name="keywords" content="free hd wallpapers, 4k wallpapers download, stock images free, royalty free images, commercial use photos free, pixeora images" />
+  <meta name="description" content="Download free HD wallpapers, 4K backgrounds, royalty-free stock images and commercial-use photos. Fast loading, clean UI, daily new premium-quality photos.">
+  <meta name="keywords" content="free hd wallpapers, 4k wallpapers download, stock images free, royalty free images, commercial use photos free, pixeora images">
   <link rel="canonical" href="https://pixeora.com/">
 
-  <!-- Preconnect (Performance) -->
+  <!-- Preconnect -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,10 +27,12 @@
   <link rel="apple-touch-icon" href="/images/logo.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#000000">
 
-  <!-- Preload LCP image -->
+  <!-- Preload LCP -->
   <link rel="preload" href="images/banner.jpg" as="image" type="image/jpeg">
 
+  <!-- CSS -->
   <link rel="stylesheet" href="css/cookie.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
@@ -49,25 +51,26 @@
   <meta name="twitter:description" content="Download premium HD wallpapers, 4K backgrounds and royalty-free stock photos.">
   <meta name="twitter:image" content="https://pixeora.com/images/og-image.jpg">
 
-  <!-- Structured Data: Organization Logo -->
+  <!-- Cache -->
+  <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "url": "https://pixeora.com/",
     "name": "Pixeora",
+    "url": "https://pixeora.com/",
     "logo": "https://pixeora.com/images/logo.png"
   }
   </script>
 
-  <!-- Structured Data: Website Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Pixeora",
     "url": "https://pixeora.com/",
-    "description": "Free HD wallpapers, 4K backgrounds and royalty-free stock photos.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://pixeora.com/search.html?query={search_term}",
@@ -75,138 +78,89 @@
     }
   }
   </script>
-
-  <!-- Structured Data: Homepage FAQ -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Are the wallpapers on Pixeora free to use?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, all wallpapers and images on Pixeora are free to download and can be used for personal and commercial projects."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do I need an account to download images?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No account or signup is required. Downloads are instant and free."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Are Pixeora images copyright-free?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. All images on Pixeora are royalty-free and safe for use."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does Pixeora offer HD and 4K wallpapers?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, Pixeora offers high-resolution HD, 2K, 4K, and even 8K wallpapers."
-        }
-      }
-    ]
-  }
-  </script>
-
 </head>
 
-    
+<body>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css" />
+<header class="top-header">
+  <div class="top-nav-container">
+    <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
 
-    <meta http-equiv="Cache-Control" content="public, max-age=31536000" />
-  </head>
+    <nav class="nav-links">
+      <ul class="nav-menu">
+        <li>
+          <a href="legal.html" class="legal-link-header">Legal & Policies</a>
+        </li>
 
-  <body>
+        <li class="dropdown">
+          <button class="dropdown-btn" aria-label="AI Tools Menu">AI Tools</button>
+          <ul class="dropdown-content">
+            <li><a href="upscale.html">Upscale</a></li>
+            <li><a href="bgremove.html">BG Remove</a></li>
+            <li><a href="imagecompressor.html">Image Compressor</a></li>
+            <li><a href="formatconverter.html">Format Converter</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-  <header class="top-header">
-    <div class="top-nav-container">
-      <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
+<main class="container">
 
-      <nav class="nav-links">
-        <ul class="nav-menu">
-          <a href="legal.html" class="legal-link-header">Legal & Policies</a></li>
-          <li class="dropdown">
-            <button class="dropdown-btn" aria-label="AI Tools Menu">AI Tools</button>
-            <ul class="dropdown-content">
-              <li><a href="upscale.html">Upscale</a></li>
-              <li><a href="bgremove.html">BG Remove</a></li>
-              <li><a href="imagecompressor.html">Image Compressor</a></li>
-              <li><a href="formatconverter.html">Format Converter</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <!-- BANNER -->
-    <section class="banner">
-      <div class="banner-content">
-        <form class="search-bar-wrapper">
-          <div class="search-bar-border">
-            <div class="search-bar">
-              <input type="text" id="searchInput" placeholder="Search Images" required>
-              <button type="submit" class="search-icon">
-                <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
-              </button>
-            </div>
+  <!-- BANNER -->
+  <section class="banner">
+    <div class="banner-content">
+      <form class="search-bar-wrapper">
+        <div class="search-bar-border">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search Images" required>
+            <button type="submit" class="search-icon">
+              <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
+            </button>
           </div>
-        </form>
+        </div>
+      </form>
 
-        <h1 class="banner-text">Explore Free HD Wallpapers & Images</h1>
-      </div>
-    </section>
-
-    <!-- CATEGORIES -->
-    <section class="categories">
-      <div class="category-grid">
-        <a href="search.html?query=nature" class="category">Nature</a>
-        <a href="search.html?query=business" class="category">Business</a>
-        <a href="search.html?query=technology" class="category">Technology</a>
-        <a href="search.html?query=travel" class="category">Travel</a>
-        <a href="search.html?query=food" class="category">Food</a>
-        <a href="search.html?query=architecture" class="category">Architecture</a>
-        <a href="search.html?query=fashion" class="category">Fashion</a>
-        <a href="search.html?query=abstract" class="category">Abstract</a>
-        <a href="search.html?query=anime" class="category">Anime</a>
-      </div>
-    </section>
-
-    <!-- POPULAR IMAGES -->
-    <section class="related-wrapper">
-      <div class="masonry-grid" id="related-masonry">
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-      </div>
-    </section>
+      <h1 class="banner-text">Explore Free HD Wallpapers & Images</h1>
+    </div>
   </section>
 
-  </main>
-
-  <div id="cookie-banner" class="premium-cookie">
-    <div class="cookie-content">
-      <p class="cookie-message">
-        We use cookies to enhance your browsing experience and analyze traffic.
-      </p>
-      <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
+  <!-- CATEGORIES -->
+  <section class="categories">
+    <div class="category-grid">
+      <a href="search.html?query=nature" class="category">Nature</a>
+      <a href="search.html?query=business" class="category">Business</a>
+      <a href="search.html?query=technology" class="category">Technology</a>
+      <a href="search.html?query=travel" class="category">Travel</a>
+      <a href="search.html?query=food" class="category">Food</a>
+      <a href="search.html?query=architecture" class="category">Architecture</a>
+      <a href="search.html?query=fashion" class="category">Fashion</a>
+      <a href="search.html?query=abstract" class="category">Abstract</a>
+      <a href="search.html?query=anime" class="category">Anime</a>
     </div>
+  </section>
+
+  <!-- POPULAR IMAGES -->
+  <section class="related-wrapper">
+    <div class="masonry-grid" id="related-masonry">
+      <div class="masonry-col"></div>
+      <div class="masonry-col"></div>
+      <div class="masonry-col"></div>
+      <div class="masonry-col"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="cookie-banner" class="premium-cookie">
+  <div class="cookie-content">
+    <p class="cookie-message">
+      We use cookies to enhance your browsing experience and analyze traffic.
+    </p>
+    <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
+</div>
 
 <script>
 const API_BASE = "https://api.pixeora.com";
@@ -260,13 +214,16 @@ function createImageCard(img) {
   return div;
 }
 
-/* ⭐ FIX: distribute using visible columns only */
 function addToNextColumn(card) {
   const visibleCols = getVisibleColumns();
-  if (visibleCols.length === 0) return;
+  if (!visibleCols.length) return;
+
+  if (colIndex >= visibleCols.length) {
+    colIndex = 0;
+  }
 
   visibleCols[colIndex].appendChild(card);
-  colIndex = (colIndex + 1) % visibleCols.length;
+  colIndex++;
 }
 
 /* ⭐⭐⭐ INITIAL LOAD ⭐⭐⭐ */
@@ -355,7 +312,7 @@ function lazyLoadInit() {
       });
     },
     {
-      rootMargin: "150px 0px 150px 0px",
+      rootMargin: "400px 0px 400px 0px",
       threshold: 0
     }
   );
