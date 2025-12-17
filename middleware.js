@@ -6,7 +6,7 @@ export default async function middleware(req) {
   try {
     const ua = req.headers.get("user-agent") || "";
     const isBot =
-      /facebookexternalhit|Twitterbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(
+      /facebookexternalhit|facebookcatalog|Facebot|MetaInspector|Twitterbot|Pinterestbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(
         ua
       );
 
