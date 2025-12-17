@@ -10,30 +10,25 @@ export default async function middleware(req) {
       ua
     );
 
-  // 👤 Normal users → continue to SPA
-  if (!isBot) {
-    return fetch(req);
-  }
-
   const url = new URL(req.url);
   const slug = url.pathname.replace("/photo/", "").trim();
-  if (!slug) return fetch(req);
 
-  try {
-    const res = await fetch(
-      `https://api.pixeora.com/api/og-meta?slug=${encodeURIComponent(slug)}`,
-      { cache: "no-store" }
-    );
+  // ====== BOTS: return OG HTML ======
+  if (isBot && slug) {
+    try {
+      const res = await fetch(
+        `https://api.pixeora.com/api/og-meta?slug=${encodeURIComponent(slug)}`,
+        { cache: "no-store" }
+      );
 
-    if (!res.ok) return fetch(req);
+      if (res.ok) {
+        const og = await res.json();
 
-    const og = await res.json();
+        const title = escapeHtml(og.title);
+        const desc = escapeHtml(og.description);
+        const image = og.image;
 
-    const title = escapeHtml(og.title);
-    const desc = escapeHtml(og.description);
-    const image = og.image;
-
-    const html = `<!DOCTYPE html>
+        const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -59,14 +54,16 @@ export default async function middleware(req) {
 <body></body>
 </html>`;
 
-    return new Response(html, {
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-      },
-    });
-  } catch {
-    return fetch(req);
+        return new Response(html, {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      }
+    } catch {}
   }
+
+  // ====== HUMANS: rewrite to SPA entry ======
+  url.pathname = "/download.html";
+  return Response.rewrite(url);
 }
 
 function escapeHtml(str = "") {
