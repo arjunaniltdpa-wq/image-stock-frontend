@@ -44,22 +44,6 @@
   }
   </script>
 
-  <!-- 🤖 BOT REDIRECT (CRITICAL) -->
-  <script>
-  (function () {
-    var ua = navigator.userAgent || "";
-    var isBot =
-      /facebookexternalhit|Facebot|MetaInspector|Twitterbot|Pinterestbot|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(ua);
-
-    if (isBot && location.pathname.startsWith("/photo/")) {
-      var slug = location.pathname.replace("/photo/", "");
-      location.replace(
-        "https://api.pixeora.com/photo/" + encodeURIComponent(slug)
-      );
-    }
-  })();
-  </script>
-
 </head>
 
 <body>
