@@ -6,45 +6,23 @@
   <meta name="robots" content="index, follow">
 
   <title>Pixeora Photo</title>
-
   <meta name="description"
         content="Download high-quality HD wallpapers, 4K backgrounds and royalty-free stock images for free.">
 
-  <meta name="keywords"
-        content="free hd wallpaper, 4k image download, royalty free stock photos, commercial use images, pixeora">
-
-  <!-- Pinterest domain verification -->
+  <!-- Pinterest verification -->
   <meta name="pinterest-rich-pin" content="true">
   <meta name="p:domain_verify" content="baeea6bc953c52f33c6f450565b4a8ab">
 
-  <!-- Open Graph (CRITICAL) -->
-  <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Pixeora">
-  <meta property="og:title" content="Pixeora Photo">
-  <meta property="og:description"
-        content="Download high-quality HD wallpapers, 4K backgrounds and royalty-free stock images for free.">
-
-  <meta property="og:image" content="https://api.pixeora.com/api/og?slug=…">
-
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image"
-        content="https://api.pixeora.com/api/og/default.jpg">
-
+  <!-- ❌ DO NOT DEFINE og:image HERE -->
+  <!-- OG tags will be served by BACKEND OG PAGE -->
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="192x192" href="/images/logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
   <link rel="apple-touch-icon" href="/images/logo.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#000000">
 
   <!-- Styles -->
   <link rel="preload" href="/css/download.css" as="style">
@@ -53,20 +31,9 @@
 
   <!-- Performance -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
-  <link rel="dns-prefetch" href="https://api.pixeora.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- Structured Data: Organization -->
+  <!-- Organization Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -77,35 +44,7 @@
   }
   </script>
 
-  <!-- NOSCRIPT fallback -->
-  <noscript>
-    <meta name="robots" content="index, follow">
-  </noscript>
-
-  <!-- Image schema injected by JS -->
-  <script id="ld-json" type="application/ld+json"></script>
-
-  <script>
-  (function () {
-    var ua = navigator.userAgent || "";
-
-    var isBot =
-      /facebookexternalhit|facebookcatalog|Facebot|MetaInspector|Twitterbot|Pinterestbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(
-        ua
-      );
-
-    // Only act on /photo/ pages
-    if (isBot && location.pathname.startsWith("/photo/")) {
-      var slug = location.pathname.replace("/photo/", "");
-
-      // Redirect crawler to backend OG page
-      location.replace(
-        "https://api.pixeora.com/photo/" + encodeURIComponent(slug)
-      );
-    }
-  })();
-    
-</script>
+</head>
 
 
 </head>
