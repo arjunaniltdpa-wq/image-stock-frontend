@@ -159,7 +159,7 @@ const limit = 36;
 /* Get masonry columns */
 const masonry = document.getElementById("related-masonry");
 
-/* ⭐ NEW: detect visible columns only */
+/* Detect visible columns only */
 function getVisibleColumns() {
   return Array.from(document.querySelectorAll(".masonry-col"))
     .filter(col => getComputedStyle(col).display !== "none");
@@ -206,52 +206,41 @@ function addToNextColumn(card) {
   const visibleCols = getVisibleColumns();
   if (!visibleCols.length) return;
 
-  if (colIndex >= visibleCols.length) {
-    colIndex = 0;
-  }
-
+  if (colIndex >= visibleCols.length) colIndex = 0;
   visibleCols[colIndex].appendChild(card);
   colIndex++;
 }
 
-/* ⭐⭐⭐ INITIAL LOAD ⭐⭐⭐ */
+/* ================= INITIAL LOAD ================= */
 async function loadInitialImages() {
   try {
     loading = true;
     const res = await fetch(`${API_BASE}/api/images/popular-latest?page=1&limit=12`);
     const data = await res.json();
-    const images = data.images || [];
 
-    images.forEach(img => {
-      const card = createImageCard(img);
-      addToNextColumn(card);
+    (data.images || []).forEach(img => {
+      addToNextColumn(createImageCard(img));
     });
 
     lazyLoadInit();
-    applyImageLoadAnimation();
-
     page = 2;
     loading = false;
 
-    /* ⭐ NEW AUTO-LOAD FIX FOR TABLET */
     setTimeout(checkPageHeight, 500);
-
   } catch (err) {
     console.error("INITIAL LOAD ERROR:", err);
   }
 }
 
-/* ⭐ AUTO-LOAD MORE IMAGES IF PAGE IS TOO SHORT (tablet mode fix) */
+/* Auto load if page height is small */
 function checkPageHeight() {
-  const tooSmall = document.body.offsetHeight < window.innerHeight + 200;
-
-  if (tooSmall && !loading) {
+  if (document.body.offsetHeight < window.innerHeight + 200 && !loading) {
     loadImages();
     setTimeout(checkPageHeight, 700);
   }
 }
 
-/* ⭐⭐⭐ LOAD NEXT IMAGES ⭐⭐⭐ */
+/* ================= LOAD MORE ================= */
 async function loadImages() {
   if (loading) return;
   loading = true;
@@ -259,17 +248,13 @@ async function loadImages() {
   try {
     const res = await fetch(`${API_BASE}/api/images/popular-latest?page=${page}&limit=${limit}`);
     const data = await res.json();
-    const images = data.images || [];
 
-    images.forEach(img => {
-      const card = createImageCard(img);
-      addToNextColumn(card);
+    (data.images || []).forEach(img => {
+      addToNextColumn(createImageCard(img));
     });
 
     page++;
     lazyLoadInit();
-    applyImageLoadAnimation();
-
   } catch (e) {
     console.error("LOAD ERROR:", e);
   }
@@ -277,50 +262,38 @@ async function loadImages() {
   loading = false;
 }
 
-/* LAZY LOAD */
+/* ================= LAZY LOAD (FIXED) ================= */
+const lazyObserver = new IntersectionObserver(
+  (entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const img = entry.target;
+      img.src = img.dataset.src;
+
+      img.onload = () => {
+        img.classList.add("image-loaded");
+        const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
+        if (skeleton) skeleton.remove();
+      };
+
+      img.classList.remove("lazy-img");
+      obs.unobserve(img);
+    });
+  },
+  {
+    rootMargin: "400px 0px",
+    threshold: 0
+  }
+);
+
 function lazyLoadInit() {
-  const lazyImages = document.querySelectorAll("img.lazy-img");
-
-  const observer = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-
-        const img = entry.target;
-        img.src = img.dataset.src;
-
-        img.onload = () => {
-          img.classList.add("image-loaded");
-          const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
-          if (skeleton) skeleton.remove();
-        };
-
-        img.classList.remove("lazy-img");
-        obs.unobserve(img);
-      });
-    },
-    {
-      rootMargin: "400px 0px 400px 0px",
-      threshold: 0
-    }
-  );
-
-  lazyImages.forEach(img => observer.observe(img));
-}
-
-/* FADE-IN */
-function applyImageLoadAnimation() {
-  document.querySelectorAll(".image-load").forEach(img => {
-    img.onload = () => {
-      img.classList.add("image-loaded");
-
-      const skeleton = img.closest(".image-wrapper").querySelector(".skeleton");
-      if (skeleton) skeleton.remove();
-    };
+  document.querySelectorAll("img.lazy-img").forEach(img => {
+    lazyObserver.observe(img);
   });
 }
 
-/* INFINITE SCROLL — improved trigger */
+/* ================= INFINITE SCROLL ================= */
 function onScroll() {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
     loadImages();
@@ -328,17 +301,17 @@ function onScroll() {
 }
 window.addEventListener("scroll", onScroll);
 
-/* CALL FIRST LOAD */
+/* START */
 loadInitialImages();
 
-/* SEARCH */
+/* ================= SEARCH ================= */
 document.querySelector(".search-bar-wrapper").addEventListener("submit", e => {
   e.preventDefault();
   const q = document.getElementById("searchInput").value.trim();
   if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
 });
 
-/* SUGGESTIONS */
+/* ================= SUGGESTIONS ================= */
 const input = document.getElementById("searchInput");
 const suggestionBox = document.createElement("div");
 suggestionBox.id = "suggestionBox";
@@ -353,20 +326,14 @@ Object.assign(suggestionBox.style, {
 input.parentNode.appendChild(suggestionBox);
 
 let suggestTimer;
-
 input.addEventListener("input", () => {
   clearTimeout(suggestTimer);
   const q = input.value.trim();
-
-  if (q.length < 2) {
-    suggestionBox.innerHTML = "";
-    return;
-  }
+  if (q.length < 2) return (suggestionBox.innerHTML = "");
 
   suggestTimer = setTimeout(async () => {
     const res = await fetch(`${API_BASE}/api/suggest?q=${encodeURIComponent(q)}`);
     const suggestions = await res.json();
-
     suggestionBox.innerHTML = suggestions
       .map(s => `<div class="suggest-item" style="padding:10px;cursor:pointer">${s}</div>`)
       .join("");
@@ -380,15 +347,13 @@ input.addEventListener("input", () => {
   }, 200);
 });
 
-/* COOKIE */
-document.addEventListener("DOMContentLoaded", function () {
+/* ================= COOKIE ================= */
+document.addEventListener("DOMContentLoaded", () => {
   const banner = document.getElementById("cookie-banner");
   const acceptBtn = document.getElementById("cookie-accept");
 
   if (!localStorage.getItem("cookieConsent")) {
-    setTimeout(() => {
-      banner.classList.add("show");
-    }, 500);
+    setTimeout(() => banner.classList.add("show"), 500);
   }
 
   acceptBtn.addEventListener("click", () => {
