@@ -86,6 +86,29 @@
   <!-- Image schema injected by JS -->
   <script id="ld-json" type="application/ld+json"></script>
 
+  <script>
+  (function () {
+    var ua = navigator.userAgent || "";
+
+    var isBot =
+      /facebookexternalhit|facebookcatalog|Facebot|MetaInspector|Twitterbot|Pinterestbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(
+        ua
+      );
+
+    // Only act on /photo/ pages
+    if (isBot && location.pathname.startsWith("/photo/")) {
+      var slug = location.pathname.replace("/photo/", "");
+
+      // Redirect crawler to backend OG page
+      location.replace(
+        "https://api.pixeora.com/photo/" + encodeURIComponent(slug)
+      );
+    }
+  })();
+    
+</script>
+
+
 </head>
 
 <body>
