@@ -203,7 +203,10 @@ function detectMainSubject(title) {
 const rawSlug = window.location.pathname.split("/photo/")[1] || "";
 const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
 const imageId = idMatch ? idMatch[1] : null;
-let slug = rawSlug.replace(/-[a-f0-9]{24}$/i, "");
+let slug = rawSlug
+  .replace(/-[a-f0-9]{24}$/i, "")
+  .replace(/-pixeora$/i, "");
+
 
 if (!slug || slug.trim() === "" || slug === "undefined" || slug === "null") {
   slug = null;
