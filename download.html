@@ -223,11 +223,6 @@ async function loadImageDetails() {
       apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
     }
 
-    // ✅ FALLBACK: clean slug ONLY (NO ID)
-    if (slug) {
-      apiList.push(`${API_BASE}/api/images/slug/${slug}`);
-    }
-
     let img = null;
 
     for (let url of apiList) {
