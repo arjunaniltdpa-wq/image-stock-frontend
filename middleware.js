@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 export const config = {
   matcher: ["/photo/:path*"],
 };
@@ -12,13 +10,14 @@ export default async function middleware(req) {
       ua
     );
 
+  // 👤 Normal users → continue to SPA
   if (!isBot) {
-    return NextResponse.next();
+    return fetch(req);
   }
 
   const url = new URL(req.url);
   const slug = url.pathname.replace("/photo/", "").trim();
-  if (!slug) return NextResponse.next();
+  if (!slug) return fetch(req);
 
   try {
     const res = await fetch(
@@ -26,7 +25,7 @@ export default async function middleware(req) {
       { cache: "no-store" }
     );
 
-    if (!res.ok) return NextResponse.next();
+    if (!res.ok) return fetch(req);
 
     const og = await res.json();
 
@@ -61,10 +60,12 @@ export default async function middleware(req) {
 </html>`;
 
     return new Response(html, {
-      headers: { "Content-Type": "text/html; charset=utf-8" },
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+      },
     });
   } catch {
-    return NextResponse.next();
+    return fetch(req);
   }
 }
 
