@@ -200,14 +200,14 @@ function detectMainSubject(title) {
 /* ---------------------------------- */
 /* UNIVERSAL ID + SLUG */
 /* ---------------------------------- */
-const rawSlug = decodeURIComponent(
-  window.location.pathname.replace("/photo/", "")
-);
-
+const rawSlug = window.location.pathname.split("/photo/")[1] || "";
 const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
 const imageId = idMatch ? idMatch[1] : null;
-const cleanSlug = rawSlug.replace(/-[a-f0-9]{24}$/i, "");
+let slug = rawSlug.replace(/-[a-f0-9]{24}$/i, "");
 
+if (!slug || slug.trim() === "" || slug === "undefined" || slug === "null") {
+  slug = null;
+}
 
 /* ---------------------------------- */
 /* DOWNLOAD HELPER — FORCED DOWNLOAD */
@@ -231,14 +231,14 @@ async function loadImageDetails() {
   try {
     let apiList = [];
 
-    // 1️⃣ Mongo ID (BEST)
+    // ✅ BEST: Mongo ID
     if (imageId) {
       apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
     }
 
-    // 2️⃣ Clean slug (stored in DB)
-    if (cleanSlug) {
-      apiList.push(`${API_BASE}/api/images/slug/${cleanSlug}`);
+    // ✅ FALLBACK: clean slug ONLY (NO ID)
+    if (slug) {
+      apiList.push(`${API_BASE}/api/images/slug/${slug}`);
     }
 
     let img = null;
@@ -254,7 +254,6 @@ async function loadImageDetails() {
       if (img && (img._id || img.fileName)) break;
     }
 
-    // 🚨 HARD STOP IF NOT FOUND
     if (!img) {
       document.getElementById("image-name").textContent = "Image Not Found.";
       return;
