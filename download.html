@@ -218,9 +218,9 @@ async function loadImageDetails() {
   try {
     let apiList = [];
 
-    // ✅ BEST: Mongo ID
-    if (imageId) {
-      apiList.push(`${API_BASE}/api/images/slug/${imageId}`);
+    // ✅ FIX: always send FULL slug-id (backend expects this)
+    if (rawSlug) {
+      apiList.push(`${API_BASE}/api/images/slug/${rawSlug}`);
     }
 
     let img = null;
@@ -318,7 +318,8 @@ async function loadImageDetails() {
       "license": "https://pixeora.com/license"
     };
 
-    document.getElementById("ld-json").textContent = JSON.stringify(ld);
+    const ldEl = document.getElementById("ld-json");
+    if (ldEl) ldEl.textContent = JSON.stringify(ld);
 
     // Keywords
     const keywords =
@@ -326,7 +327,7 @@ async function loadImageDetails() {
       img.tags?.length ? img.tags : [];
 
     const kwEl = document.getElementById("keywords");
-    if (kwEl) {
+    if (kwEl && keywords.length) {
       kwEl.innerHTML = keywords
         .map(t => `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
         .join("");
@@ -334,13 +335,16 @@ async function loadImageDetails() {
 
     // Related
     const subject = detectMainSubject(img.title || img.fileName || "");
-    startRelatedSystem([subject, img.category, ...keywords.slice(0, 6)].filter(Boolean));
+    startRelatedSystem(
+      [subject, img.category, ...keywords.slice(0, 6)].filter(Boolean)
+    );
 
   } catch (err) {
     console.error("Loader Error:", err);
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
+
 
 
 /* ---------------------------------- */
