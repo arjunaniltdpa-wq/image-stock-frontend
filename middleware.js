@@ -3,26 +3,25 @@ export const config = {
 };
 
 export default async function middleware(req) {
-  const ua = req.headers.get("user-agent") || "";
+  try {
+    const ua = req.headers.get("user-agent") || "";
+    const isBot =
+      /facebookexternalhit|Twitterbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(
+        ua
+      );
 
-  const isBot =
-    /facebookexternalhit|Twitterbot|Pinterest|Slackbot|WhatsApp|LinkedInBot|TelegramBot/i.test(
-      ua
-    );
+    const url = new URL(req.url);
+    const slug = url.pathname.replace("/photo/", "").trim();
 
-  const url = new URL(req.url);
-  const slug = url.pathname.replace("/photo/", "").trim();
-
-  // ====== BOTS: return OG HTML ======
-  if (isBot && slug) {
-    try {
-      const res = await fetch(
+    // ===== BOTS → OG HTML =====
+    if (isBot && slug) {
+      const ogRes = await fetch(
         `https://api.pixeora.com/api/og-meta?slug=${encodeURIComponent(slug)}`,
         { cache: "no-store" }
       );
 
-      if (res.ok) {
-        const og = await res.json();
+      if (ogRes.ok) {
+        const og = await ogRes.json();
 
         const title = escapeHtml(og.title);
         const desc = escapeHtml(og.description);
@@ -55,15 +54,28 @@ export default async function middleware(req) {
 </html>`;
 
         return new Response(html, {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+          },
         });
       }
-    } catch {}
-  }
+    }
 
-  // ====== HUMANS: rewrite to SPA entry ======
-  url.pathname = "/download.html";
-  return Response.rewrite(url);
+    // ===== HUMANS → SPA ENTRY FILE =====
+    const spaUrl = new URL(req.url);
+    spaUrl.pathname = "/download.html";
+
+    const spaReq = new Request(spaUrl.toString(), {
+      method: req.method,
+      headers: req.headers,
+      redirect: "manual",
+    });
+
+    return fetch(spaReq);
+  } catch (err) {
+    // Fallback: never break site
+    return fetch(req);
+  }
 }
 
 function escapeHtml(str = "") {
