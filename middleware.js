@@ -12,7 +12,6 @@ export default async function middleware(req) {
       ua
     );
 
-  // 👤 Normal users → serve app normally
   if (!isBot) {
     return NextResponse.next();
   }
@@ -22,18 +21,18 @@ export default async function middleware(req) {
   if (!slug) return NextResponse.next();
 
   try {
-    const metaRes = await fetch(
+    const res = await fetch(
       `https://api.pixeora.com/api/og-meta?slug=${encodeURIComponent(slug)}`,
       { cache: "no-store" }
     );
 
-    if (!metaRes.ok) return NextResponse.next();
+    if (!res.ok) return NextResponse.next();
 
-    const og = await metaRes.json();
+    const og = await res.json();
 
-    const title = escape(og.title || "Pixeora Free HD Image");
-    const desc = escape(og.description || "Download free HD images from Pixeora");
-    const image = og.image || "https://pixeora.com/images/og-default.jpg";
+    const title = escapeHtml(og.title);
+    const desc = escapeHtml(og.description);
+    const image = og.image;
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -56,23 +55,20 @@ export default async function middleware(req) {
 <meta name="twitter:description" content="${desc}" />
 <meta name="twitter:image" content="${image}" />
 
-<!-- Human redirect -->
 <meta http-equiv="refresh" content="0; url=${og.url}" />
 </head>
 <body></body>
 </html>`;
 
     return new Response(html, {
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-      },
+      headers: { "Content-Type": "text/html; charset=utf-8" },
     });
-  } catch (e) {
+  } catch {
     return NextResponse.next();
   }
 }
 
-function escape(str = "") {
+function escapeHtml(str = "") {
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

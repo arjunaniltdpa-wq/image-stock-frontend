@@ -1,9 +1,3 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "^/photo/.*$",
-      "dest": "/download.html"
-    }
-  ]
+  "version": 2
 }
