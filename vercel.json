@@ -2,8 +2,12 @@
   "version": 2,
   "routes": [
     {
-      "src": "^/photo/.*$",
-      "dest": "/download.html"
+      "src": "^/photo/(.*)$",
+      "dest": "https://api.pixeora.com/photo/$1"
+    },
+    {
+      "src": "^/(.*)$",
+      "dest": "/$1"
     }
   ]
 }
