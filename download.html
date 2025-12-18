@@ -182,23 +182,49 @@ function detectMainSubject(title) {
 }
 
 /* ---------------------------------- */
-/* UNIVERSAL ID + SLUG */
+/* UNIVERSAL ID + SLUG (FINAL FIX) */
 /* ---------------------------------- */
-// ✅ ALWAYS get slug from query param
-const params = new URLSearchParams(window.location.search);
-const rawSlug = params.get("slug") || "";
+
+let rawSlug = "";
+
+// 1️⃣ Priority: clean /photo/slug-ID URL
+if (window.location.pathname.startsWith("/photo/")) {
+  rawSlug = window.location.pathname.replace("/photo/", "").trim();
+}
+
+// 2️⃣ Fallback: ?slug=slug-ID (old links, bots, download.html)
+if (!rawSlug) {
+  const params = new URLSearchParams(window.location.search);
+  rawSlug = params.get("slug") || "";
+}
+
+if (!rawSlug) {
+  console.error("No slug found in URL");
+}
 
 // Extract Mongo ID if present
 const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
 const imageId = idMatch ? idMatch[1] : null;
 
-// Clean slug (for fallback usage)
+// Clean slug (optional fallback usage)
 let slug = rawSlug
   .replace(/-[a-f0-9]{24}$/i, "")
   .replace(/-pixeora$/i, "");
 
-if (!rawSlug) {
-  console.error("No slug in URL");
+/* ---------------------------------- */
+/* FORCE CLEAN CANONICAL URL */
+/* ---------------------------------- */
+
+// If page opened via download.html?slug=...
+if (
+  rawSlug &&
+  !window.location.pathname.startsWith("/photo/")
+) {
+  window.history.replaceState(
+    null,
+    "",
+    `/photo/${rawSlug}`
+  );
 }
 
 /* ---------------------------------- */
