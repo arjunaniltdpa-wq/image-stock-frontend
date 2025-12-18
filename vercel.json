@@ -6,6 +6,10 @@
       "dest": "https://api.pixeora.com/photo/$1"
     },
     {
+      "src": "^/api/og$",
+      "dest": "https://api.pixeora.com/api/og"
+    },
+    {
       "src": "^/(.*)$",
       "dest": "/$1"
     }
