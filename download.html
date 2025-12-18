@@ -184,16 +184,21 @@ function detectMainSubject(title) {
 /* ---------------------------------- */
 /* UNIVERSAL ID + SLUG */
 /* ---------------------------------- */
-const rawSlug = window.location.pathname.split("/photo/")[1] || "";
+// ✅ ALWAYS get slug from query param
+const params = new URLSearchParams(window.location.search);
+const rawSlug = params.get("slug") || "";
+
+// Extract Mongo ID if present
 const idMatch = rawSlug.match(/([a-f0-9]{24})$/i);
 const imageId = idMatch ? idMatch[1] : null;
+
+// Clean slug (for fallback usage)
 let slug = rawSlug
   .replace(/-[a-f0-9]{24}$/i, "")
   .replace(/-pixeora$/i, "");
 
-
-if (!slug || slug.trim() === "" || slug === "undefined" || slug === "null") {
-  slug = null;
+if (!rawSlug) {
+  console.error("No slug in URL");
 }
 
 /* ---------------------------------- */
