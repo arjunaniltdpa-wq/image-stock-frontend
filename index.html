@@ -156,16 +156,12 @@ let page = 1;
 let loading = false;
 const limit = 36;
 
-/* Get masonry columns */
+
+/* FIXED MASONRY COLUMNS (SAME AS SEARCH PAGE) */
 const masonry = document.getElementById("related-masonry");
-
-/* Detect visible columns only */
-function getVisibleColumns() {
-  return Array.from(document.querySelectorAll(".masonry-col"))
-    .filter(col => getComputedStyle(col).display !== "none");
-}
-
+const cols = Array.from(masonry.querySelectorAll(".masonry-col"));
 let colIndex = 0;
+
 
 function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
@@ -203,18 +199,20 @@ function createImageCard(img) {
 }
 
 function addToNextColumn(card) {
-  const visibleCols = getVisibleColumns();
-  if (!visibleCols.length) return;
-
-  if (colIndex >= visibleCols.length) colIndex = 0;
-  visibleCols[colIndex].appendChild(card);
-  colIndex++;
+  cols[colIndex].appendChild(card);
+  colIndex = (colIndex + 1) % cols.length;
 }
 
-/* ================= INITIAL LOAD ================= */
+
 async function loadInitialImages() {
   try {
     loading = true;
+
+    // ✅ RESET ON FIRST LOAD ONLY
+    cols.forEach(col => col.innerHTML = "");
+    colIndex = 0;
+    page = 1;
+
     const res = await fetch(`${API_BASE}/api/images/popular-latest?page=1&limit=12`);
     const data = await res.json();
 
@@ -229,6 +227,7 @@ async function loadInitialImages() {
     setTimeout(checkPageHeight, 500);
   } catch (err) {
     console.error("INITIAL LOAD ERROR:", err);
+    loading = false;
   }
 }
 
@@ -240,13 +239,15 @@ function checkPageHeight() {
   }
 }
 
-/* ================= LOAD MORE ================= */
+/* ================= LOAD MORE (FINAL) ================= */
 async function loadImages() {
   if (loading) return;
   loading = true;
 
   try {
-    const res = await fetch(`${API_BASE}/api/images/popular-latest?page=${page}&limit=${limit}`);
+    const res = await fetch(
+      `${API_BASE}/api/images/popular-latest?page=${page}&limit=${limit}`
+    );
     const data = await res.json();
 
     (data.images || []).forEach(img => {
@@ -255,6 +256,7 @@ async function loadImages() {
 
     page++;
     lazyLoadInit();
+
   } catch (e) {
     console.error("LOAD ERROR:", e);
   }
