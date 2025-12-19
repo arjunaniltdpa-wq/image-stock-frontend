@@ -23,12 +23,12 @@
   <link rel="dns-prefetch" href="https://cdn.pixeora.com">
   <link rel="dns-prefetch" href="https://api.pixeora.com">
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="192x192" href="/images/logo.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
-  <link rel="apple-touch-icon" href="/images/logo.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#000000">
+  <!-- Favicons (Google SERP friendly) -->
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/favicon-32x32.png">
+
 
   <!-- Preload LCP -->
   <link rel="preload" href="images/banner.jpg" as="image" type="image/jpeg">
@@ -154,7 +154,9 @@
 const API_BASE = "https://api.pixeora.com";
 let page = 1;
 let loading = false;
-const limit = 36;
+const isLargeScreen = window.innerWidth > 1200;
+const limit = isLargeScreen ? 20 : 36;
+
 
 
 /* FIXED MASONRY COLUMNS (SAME AS SEARCH PAGE) */
@@ -241,7 +243,8 @@ function checkPageHeight() {
 
 /* ================= LOAD MORE (FINAL) ================= */
 async function loadImages() {
-  if (loading) return;
+
+  if (loading || document.hidden) return;
   loading = true;
 
   try {
@@ -271,7 +274,9 @@ const lazyObserver = new IntersectionObserver(
       if (!entry.isIntersecting) return;
 
       const img = entry.target;
-      img.src = img.dataset.src;
+      setTimeout(() => {
+       img.src = img.dataset.src;
+      }, 50);
 
       img.onload = () => {
         img.classList.add("image-loaded");
@@ -348,6 +353,13 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
+
+img.onerror = () => {
+  img.src = "/images/placeholder.jpg";
+  img.classList.add("image-loaded");
+  const skeleton = img.closest(".image-wrapper")?.querySelector(".skeleton");
+  if (skeleton) skeleton.remove();
+};
 
 /* ================= COOKIE ================= */
 document.addEventListener("DOMContentLoaded", () => {

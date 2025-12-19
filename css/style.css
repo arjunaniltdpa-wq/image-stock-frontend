@@ -504,7 +504,7 @@ color: white;
 
 .skeleton {
   width: 100%;
-  min-height: 220px;
+  min-height: 160px;
   border-radius: 12px;
   background: linear-gradient(90deg,
     rgba(220, 220, 220, 0.21),
@@ -606,13 +606,11 @@ color: white;
     margin-right: auto;
   }
 }
-
 @media (min-width: 1200px) {
-  .image-item img {
-    object-fit: contain;
+  .masonry-grid {
+    align-items: flex-start;
   }
 }
-
 
 /* Tablet – 3 columns */
 @media (max-width: 1024px) {
