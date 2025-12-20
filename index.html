@@ -367,14 +367,6 @@ input.addEventListener("input", () => {
   }, 200);
 });
 
-img.onerror = () => {
-  img.src = "/images/placeholder.jpg";
-  img.classList.add("image-loaded");
-  const sk = img.closest(".image-wrapper")?.querySelector(".skeleton");
-  if (sk) sk.remove();
-};
-
-
 /* ================= COOKIE ================= */
 document.addEventListener("DOMContentLoaded", () => {
   const banner = document.getElementById("cookie-banner");
