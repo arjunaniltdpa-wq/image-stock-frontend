@@ -627,30 +627,44 @@ const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
 
 infoBtn.onclick = async () => {
+  // Safety check
+  if (!window.__originalFileName) {
+    alert("Image is still loading. Please wait a moment.");
+    return;
+  }
+
   modal.classList.add("active");
 
   const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(window.__originalFileName)}`;
+
+  // Image name
   document.getElementById("info-name").textContent =
     document.getElementById("image-name").textContent;
 
   try {
     const tmp = new Image();
+    tmp.crossOrigin = "anonymous";
     tmp.src = originalUrl;
+
     await tmp.decode();
 
+    // ✅ Dimensions (always works)
     document.getElementById("info-dimensions").textContent =
       `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
 
-    const head = await fetch(originalUrl, { method: "HEAD" });
-    const size = head.headers.get("content-length");
+    // ✅ Approximate file size (CDN-safe)
+    const approxSizeMB =
+      (tmp.naturalWidth * tmp.naturalHeight * 3) / (1024 * 1024);
 
     document.getElementById("info-size").textContent =
-      size ? (size / (1024 * 1024)).toFixed(2) + " MB" : "Unknown";
+      approxSizeMB.toFixed(2) + " MB (approx)";
 
+    // ✅ Format
     const ext = originalUrl.split(".").pop().split("?")[0].toUpperCase();
     document.getElementById("info-format").textContent = ext;
 
   } catch (e) {
+    console.error("Info load error:", e);
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
     document.getElementById("info-format").textContent = "-";
