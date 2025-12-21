@@ -105,6 +105,12 @@
   <div class="image-count" id="image-count">0 Images</div>
 </div>
 
+<button id="goTopBtn" aria-label="Go to top">
+  <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5l8 7-8 7" />
+  </svg>
+</button>
+
 <!-- Gallery -->
 <section class="search-results">
   <div class="masonry-grid" id="masonry">
@@ -374,6 +380,29 @@ if (query) {
   keywordSpan.textContent = `"${query[0].toUpperCase() + query.slice(1)}"`;
   loadSearchFirst(query);
 }
+/* ================= Top Button ================= */
+const goTopBtn = document.getElementById("goTopBtn");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 400) {
+    goTopBtn.style.display = "flex";
+    goTopBtn.style.opacity = "1";
+  } else {
+    goTopBtn.style.opacity = "0";
+    setTimeout(() => {
+      if (window.scrollY < 400) {
+        goTopBtn.style.display = "none";
+      }
+    }, 300);
+  }
+});
+
+goTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
 
 /* COOKIE */
 document.addEventListener("DOMContentLoaded", function () {

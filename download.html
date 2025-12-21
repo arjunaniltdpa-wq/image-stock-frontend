@@ -128,6 +128,11 @@
   </main>
 </div>
 
+<button id="goTopBtn" aria-label="Go to top">
+  <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5l8 7-8 7" />
+  </svg>
+</button>
 
 <div class="related-wrapper">
   <h2>Related Images</h2>
@@ -662,6 +667,30 @@ infoBtn.onclick = () => {
 
 closeBtn.onclick = () => modal.classList.remove("active");
 window.onclick = (e) => { if (e.target === modal) modal.classList.remove("active"); };
+
+/* ================= Top Button ================= */
+const goTopBtn = document.getElementById("goTopBtn");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 400) {
+    goTopBtn.style.display = "flex";
+    goTopBtn.style.opacity = "1";
+  } else {
+    goTopBtn.style.opacity = "0";
+    setTimeout(() => {
+      if (window.scrollY < 400) {
+        goTopBtn.style.display = "none";
+      }
+    }, 300);
+  }
+});
+
+goTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
 
 /* ---------------------------------- */
 /* COOKIE + IMAGE LOAD + SEARCH — SINGLE CLEAN DOM READY */

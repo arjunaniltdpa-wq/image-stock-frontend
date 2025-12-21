@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nature Wallpapers & Images | Pixeora</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO -->
+  <meta name="description" content="Download free HD nature wallpapers and images. Landscapes, wildlife, forests, waterfalls and sunsets.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/category1.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Pixeora</a>
+
+    <form class="search-bar" action="search.html">
+      <input type="text" name="q" placeholder="Search images" required>
+      <button type="submit">
+        <img src="images/search-icon.png" alt="Search">
+      </button>
+    </form>
+
+    <a href="legal.html" class="legal-link">Legal</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="category-hero">
+  <h1>Nature Wallpapers & Images</h1>
+  <p>
+    Discover free HD nature wallpapers including landscapes,
+    wildlife, forests, waterfalls and breathtaking sunsets.
+  </p>
+</section>
+
+<section class="subcategory-block">
+
+  <!-- HEADER -->
+  <div class="subcategory-header">
+    <div>
+      <h2>Landscapes</h2>
+      <p>
+        Explore mountains, valleys, deserts, and breathtaking natural scenery
+        captured in high-resolution photography.
+      </p>
+    </div>
+
+    <a href="search.html?q=landscapes" class="see-more">
+      See more →
+    </a>
+  </div>
+
+  <!-- HORIZONTAL IMAGE STRIP -->
+  <div class="subcategory-scroll">
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape1.jpg" alt="Mountain landscape wallpaper">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape2.jpg" alt="Valley nature image">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape3.jpg" alt="Desert landscape photo">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape4.jpg" alt="Green hills wallpaper">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape5.jpg" alt="Nature scenery HD">
+    </a>
+        <a href="#" class="sub-image">
+      <img src="images/landscape1.jpg" alt="Mountain landscape wallpaper">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape2.jpg" alt="Valley nature image">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape3.jpg" alt="Desert landscape photo">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape4.jpg" alt="Green hills wallpaper">
+    </a>
+
+    <a href="#" class="sub-image">
+      <img src="images/landscape5.jpg" alt="Nature scenery HD">
+    </a>
+
+
+    <!-- 👉 Add up to 20 images -->
+  </div>
+
+</section>
+
+
+<!-- ================= IMAGE STRIP 1 ================= -->
+<section class="category-strip">
+  <h2>Popular Nature Images</h2>
+
+  <div class="horizontal-scroll" id="natureStrip">
+    <!-- JS injects 20 images -->
+  </div>
+
+  <a class="explore-more" href="search.html?q=nature">
+    Explore more →
+  </a>
+</section>
+
+<!-- ================= IMAGE STRIP 2 ================= -->
+<section class="category-strip">
+  <h2>Nature Wallpapers</h2>
+
+  <div class="horizontal-scroll" id="wallpaperStrip">
+    <!-- JS injects 20 images -->
+  </div>
+
+  <a class="explore-more" href="search.html?q=nature+wallpaper">
+    Explore more →
+  </a>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  © 2025 Pixeora. All rights reserved.
+</footer>
+
+<!-- ================= JS ================= -->
+<script>
+  function loadStrip(containerId, query) {
+    fetch(`/api/images?category=${query}&limit=20`)
+      .then(res => res.json())
+      .then(images => {
+        const strip = document.getElementById(containerId);
+        images.forEach(img => {
+          strip.innerHTML += `
+            <a href="/photo/${img.slug}" class="image-card">
+              <img src="${img.thumbnail}" alt="${img.title}">
+            </a>
+          `;
+        });
+      });
+  }
+
+  loadStrip("natureStrip", "nature");
+  loadStrip("wallpaperStrip", "nature wallpaper");
+</script>
+
+</body>
+</html>

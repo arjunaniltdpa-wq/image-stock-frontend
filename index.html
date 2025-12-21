@@ -136,11 +136,15 @@
     <h1 class="banner-text">
       Explore Free HD Wallpapers & Images
     </h1>
-
   </div>
+  
+<button id="goTopBtn" aria-label="Go to top">
+  <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5l8 7-8 7" />
+  </svg>
+</button>
+
 </section>
-
-
   <!-- CATEGORIES -->
   <section class="categories">
     <div class="category-grid">
@@ -393,6 +397,31 @@ input.addEventListener("input", () => {
     });
   }, 200);
 });
+
+/* ================= Top Button ================= */
+const goTopBtn = document.getElementById("goTopBtn");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 400) {
+    goTopBtn.style.display = "flex";
+    goTopBtn.style.opacity = "1";
+  } else {
+    goTopBtn.style.opacity = "0";
+    setTimeout(() => {
+      if (window.scrollY < 400) {
+        goTopBtn.style.display = "none";
+      }
+    }, 300);
+  }
+});
+
+goTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
 
 /* ================= COOKIE ================= */
 document.addEventListener("DOMContentLoaded", () => {

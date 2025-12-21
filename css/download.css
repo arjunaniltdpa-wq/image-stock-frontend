@@ -42,7 +42,7 @@ body {
   text-decoration: none;
   font-family: 'Marck Script', cursive;
   font-size: 40px;
-  color: #ffffff;
+  color: #242424;
   letter-spacing: -0.08em;
   z-index: 10;
 }
@@ -650,4 +650,61 @@ html, body {
 
   touch-action: none;
   -webkit-touch-callout: none;
+}
+/* GO TO TOP – GLASS SQUARE */
+#goTopBtn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+
+  cursor: pointer;
+  z-index: 9999;
+  transition: transform 0.3s ease, background 0.3s ease, opacity 0.3s ease;
+}
+
+/* SVG ARROW (YOUR STYLE) */
+#goTopBtn .arrow-icon {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+  stroke: #212121;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  /* rotate right-arrow to UP */
+  transform: rotate(-90deg);
+}
+
+/* Hover */
+#goTopBtn:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  #goTopBtn {
+    width: 48px;
+    height: 48px;
+    bottom: 18px;
+    right: 18px;
+    border-radius: 12px;
+  }
 }
