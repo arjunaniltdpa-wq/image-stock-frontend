@@ -627,44 +627,37 @@ const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
 
 infoBtn.onclick = () => {
-  if (!window.__originalFileName) {
-    alert("Image is still loading. Please wait.");
-    return;
-  }
-
   modal.classList.add("active");
 
-  const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(window.__originalFileName)}`;
+  const mainImg = document.getElementById("download-image");
 
-  document.getElementById("info-name").textContent =
-    document.getElementById("image-name").textContent;
-
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.src = originalUrl;
-
-  img.onload = () => {
-    // ✅ Dimensions (always works)
-    document.getElementById("info-dimensions").textContent =
-      `${img.naturalWidth} × ${img.naturalHeight}px`;
-
-    // ✅ Approx file size (safe)
-    const approxSizeMB =
-      (img.naturalWidth * img.naturalHeight * 3) / (1024 * 1024);
-
-    document.getElementById("info-size").textContent =
-      approxSizeMB.toFixed(2) + " MB (approx)";
-
-    // ✅ Format
-    const ext = originalUrl.split(".").pop().split("?")[0].toUpperCase();
-    document.getElementById("info-format").textContent = ext;
-  };
-
-  img.onerror = () => {
+  if (!mainImg || !mainImg.complete || !mainImg.naturalWidth) {
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
     document.getElementById("info-format").textContent = "-";
-  };
+    return;
+  }
+
+  // Name
+  document.getElementById("info-name").textContent =
+    document.getElementById("image-name").textContent;
+
+  // ✅ Dimensions (ALWAYS WORKS)
+  const w = mainImg.naturalWidth;
+  const h = mainImg.naturalHeight;
+
+  document.getElementById("info-dimensions").textContent =
+    `${w} × ${h}px`;
+
+  // ✅ Approx size (safe estimate)
+  const approxSizeMB = (w * h * 3) / (1024 * 1024);
+  document.getElementById("info-size").textContent =
+    approxSizeMB.toFixed(2) + " MB (approx)";
+
+  // ✅ Format
+  const src = mainImg.src || "";
+  const ext = src.split(".").pop().split("?")[0].toUpperCase();
+  document.getElementById("info-format").textContent = ext;
 };
 
 closeBtn.onclick = () => modal.classList.remove("active");
@@ -711,7 +704,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 });
-
-
-
 </script>

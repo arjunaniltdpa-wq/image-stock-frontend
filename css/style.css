@@ -188,57 +188,59 @@ justify-content: center;
   display: block;
 }
 
-/* Search Bar */
+/* =============================
+   SEARCH BAR WRAPPER
+============================= */
+
 .search-bar-wrapper {
-display: flex;
-justify-content: center;
-width: 100%;
-margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
-.search-bar-border {
-padding: 2px;
-border-radius: 22px;
-background: linear-gradient(270deg, #08ff9c, #025aff, #08ff9c);
-background-size: 300% 300%;
-animation: gradientGlow 5s linear infinite;
-}
-
-@keyframes gradientGlow {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
-}
+/* =============================
+   GLASS SEARCH BAR
+============================= */
 
 .search-bar {
-width: 800px;
-height: 55px;
-max-width: 100%;
-display: flex;
-align-items: center;
-background-color: white;
-border-radius: 20px;
-overflow: hidden;
-box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2;
+
+  width: 800px;
+  height: 56px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.45),
+    0 10px 40px rgba(0,0,0,0.25);
 }
 
+/* Input */
 .search-bar input {
-flex: 1;
-padding: 20px 20px;
-border: none;
-font-size: 18px;
-outline: none;
+  flex: 1;
+  padding: 0 22px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 18px;
 }
 
-.search-bar .search-icon {
-  padding: 0 20px;       /* keep horizontal spacing */
+.search-bar input::placeholder {
+  color: rgba(255,255,255,0.8);
+}
+
+/* Icon */
+.search-icon {
+  padding: 0 20px;
   background: none;
   border: none;
-  font-size: 32px;       /* bigger size */
-  line-height: 1;        /* ensures vertical center */
-  display: flex;          /* flex to center vertically */
-  align-items: center;    /* center icon inside button */
-  justify-content: center; 
   cursor: pointer;
 }
 
@@ -261,20 +263,6 @@ outline: none;
   display: inline-block;    /* 💚 Fix clipping */
   padding: 25px 0;          /* adds breathing room */
 }
-
-/* Gradient Animation */
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 
 /* ---------------- CATEGORY ---------------- */
 .category-grid {
@@ -338,7 +326,6 @@ color: white;
 
 /* Allow clicks on search bar */
 .search-bar-wrapper,
-.search-bar-border,
 .search-bar,
 #searchInput,
 .search-icon {

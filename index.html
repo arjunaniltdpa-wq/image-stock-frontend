@@ -105,23 +105,41 @@
 
 <main class="container">
 
-  <!-- BANNER -->
-  <section class="banner">
-    <div class="banner-content">
-      <form class="search-bar-wrapper">
-        <div class="search-bar-border">
-          <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search Images" required>
-            <button type="submit" class="search-icon">
-              <img src="images/search-icon.png" alt="Search" style="width:20px; height:20px;">
-            </button>
-          </div>
-        </div>
-      </form>
+<!-- BANNER -->
+<section class="banner">
+  <div class="banner-content">
 
-      <h1 class="banner-text">Explore Free HD Wallpapers & Images</h1>
-    </div>
-  </section>
+    <!-- SEARCH BAR -->
+    <form class="search-bar-wrapper" autocomplete="off">
+      <!-- 🔵 ORBIT CONTAINER (IMPORTANT) -->
+      <div class="orbit-ring">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Images"
+            aria-label="Search Images"
+          >
+          <button type="submit" class="search-icon" aria-label="Search">
+            <img
+              src="images/search-icon.png"
+              alt=""
+              width="20"
+              height="20"
+            >
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- HEADLINE -->
+    <h1 class="banner-text">
+      Explore Free HD Wallpapers & Images
+    </h1>
+
+  </div>
+</section>
+
 
   <!-- CATEGORIES -->
   <section class="categories">
