@@ -626,10 +626,9 @@ const modal = document.getElementById("infoModal");
 const infoBtn = document.querySelector(".info-btn");
 const closeBtn = document.querySelector(".close-btn");
 
-infoBtn.onclick = async () => {
-  // Safety check
+infoBtn.onclick = () => {
   if (!window.__originalFileName) {
-    alert("Image is still loading. Please wait a moment.");
+    alert("Image is still loading. Please wait.");
     return;
   }
 
@@ -637,24 +636,21 @@ infoBtn.onclick = async () => {
 
   const originalUrl = `https://cdn.pixeora.com/${encodeURIComponent(window.__originalFileName)}`;
 
-  // Image name
   document.getElementById("info-name").textContent =
     document.getElementById("image-name").textContent;
 
-  try {
-    const tmp = new Image();
-    tmp.crossOrigin = "anonymous";
-    tmp.src = originalUrl;
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = originalUrl;
 
-    await tmp.decode();
-
+  img.onload = () => {
     // ✅ Dimensions (always works)
     document.getElementById("info-dimensions").textContent =
-      `${tmp.naturalWidth} × ${tmp.naturalHeight}px`;
+      `${img.naturalWidth} × ${img.naturalHeight}px`;
 
-    // ✅ Approximate file size (CDN-safe)
+    // ✅ Approx file size (safe)
     const approxSizeMB =
-      (tmp.naturalWidth * tmp.naturalHeight * 3) / (1024 * 1024);
+      (img.naturalWidth * img.naturalHeight * 3) / (1024 * 1024);
 
     document.getElementById("info-size").textContent =
       approxSizeMB.toFixed(2) + " MB (approx)";
@@ -662,13 +658,13 @@ infoBtn.onclick = async () => {
     // ✅ Format
     const ext = originalUrl.split(".").pop().split("?")[0].toUpperCase();
     document.getElementById("info-format").textContent = ext;
+  };
 
-  } catch (e) {
-    console.error("Info load error:", e);
+  img.onerror = () => {
     document.getElementById("info-dimensions").textContent = "-";
     document.getElementById("info-size").textContent = "-";
     document.getElementById("info-format").textContent = "-";
-  }
+  };
 };
 
 closeBtn.onclick = () => modal.classList.remove("active");
