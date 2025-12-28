@@ -138,41 +138,44 @@
 
 <!-- ================= JS ================= -->
 <script>
-  function loadSubCategory(containerId, category, limit = 10) {
-    fetch(`/api/images?category=${encodeURIComponent(category)}&limit=${limit}`)
-      .then(res => res.json())
-      .then(images => {
-        const container = document.getElementById(containerId);
-        if (!container) return;
+const API_BASE = "https://api.pixeora.com";
 
-        container.innerHTML = "";
+function loadSubCategory(containerId, keyword, limit = 10) {
+  fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}&limit=${limit}`)
+    .then(res => {
+      if (!res.ok) throw new Error("API error");
+      return res.json();
+    })
+    .then(data => {
+      const images = data.images || [];
+      const container = document.getElementById(containerId);
+      if (!container) return;
 
-        images.forEach(img => {
-          container.innerHTML += `
-            <a href="/photo/${img.slug}" class="sub-image">
-              <img
-                src="${img.thumbnailUrl}"
-                alt="${img.title}"
-                loading="lazy">
-            </a>
-          `;
-        });
-      })
-      .catch(err => console.error("Load error:", err));
-  }
+      container.innerHTML = "";
 
-  /* SUBCATEGORIES */
-  loadSubCategory("landscapeStrip", "landscape");
-  loadSubCategory("flowerStrip", "flowers");
-  loadSubCategory("animalStrip", "animals");
-  loadSubCategory("waterfallStrip", "waterfall");
-  loadSubCategory("forestStrip", "forest");
-  loadSubCategory("sunsetStrip", "sunset");
+      images.forEach(img => {
+        const file = img.thumbnailFileName || img.fileName;
+        const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
-  /* POPULAR */
-  loadSubCategory("natureStrip", "nature", 20);
-  loadSubCategory("wallpaperStrip", "nature wallpaper", 20);
+        container.innerHTML += `
+          <a href="/photo/${img.slug}-${img._id}" class="sub-image">
+            <img src="${imgUrl}" loading="lazy" alt="${img.alt || ''}">
+          </a>
+        `;
+      });
+    })
+    .catch(err => console.error("Subcategory load error:", err));
+}
+
+/* SUBCATEGORIES */
+loadSubCategory("landscapeStrip", "landscape");
+loadSubCategory("flowerStrip", "flowers");
+loadSubCategory("animalStrip", "animals");
+loadSubCategory("waterfallStrip", "waterfall");
+loadSubCategory("forestStrip", "forest");
+loadSubCategory("sunsetStrip", "sunset");
+
+/* POPULAR */
+loadSubCategory("natureStrip", "nature", 20);
+loadSubCategory("wallpaperStrip", "nature wallpaper", 20);
 </script>
-
-</body>
-</html>
