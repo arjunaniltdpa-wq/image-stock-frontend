@@ -16,10 +16,24 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/nature.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Nature Wallpapers & Images",
+    "description": "Free HD nature wallpapers including landscapes, wildlife, forests, waterfalls, flowers, mountains and sunsets.",
+    "url": "https://pixeora.com/nature.html",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Pixeora",
+      "url": "https://pixeora.com"
+    }
+  }
+  </script>
 </head>
 
 <body>
-
 <!-- Header -->
 <header class="header">
   <div class="header-overlay">
@@ -58,9 +72,20 @@
       <h2>Landscape Wallpapers</h2>
       <p>Mountains, valleys, deserts and scenic natural landscapes in high resolution.</p>
     </div>
-    <a href="search.html?q=landscape" class="see-more">See more →</a>
+    <a href="search.html?query=landscape" class="see-more">See more →</a>
   </div>
-  <div class="subcategory-scroll" id="landscapeStrip"></div>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn">
+      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg>
+    </button>
+
+    <div class="subcategory-scroll" id="landscapeStrip"></div>
+
+    <button class="scroll-btn right glass-btn">
+      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg>
+    </button>
+  </div>
 </section>
 
 <section class="subcategory-block">
@@ -71,7 +96,12 @@
     </div>
     <a href="search.html?q=flowers" class="see-more">See more →</a>
   </div>
-  <div class="subcategory-scroll" id="flowerStrip"></div>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+    <div class="subcategory-scroll" id="flowerStrip"></div>
+    <button class="scroll-btn right glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+  </div>
 </section>
 
 <section class="subcategory-block">
@@ -82,7 +112,12 @@
     </div>
     <a href="search.html?q=animals" class="see-more">See more →</a>
   </div>
-  <div class="subcategory-scroll" id="animalStrip"></div>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+    <div class="subcategory-scroll" id="animalStrip"></div>
+    <button class="scroll-btn right glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+  </div>
 </section>
 
 <section class="subcategory-block">
@@ -93,7 +128,12 @@
     </div>
     <a href="search.html?q=waterfall" class="see-more">See more →</a>
   </div>
-  <div class="subcategory-scroll" id="waterfallStrip"></div>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+    <div class="subcategory-scroll" id="waterfallStrip"></div>
+    <button class="scroll-btn right glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+  </div>
 </section>
 
 <section class="subcategory-block">
@@ -104,7 +144,12 @@
     </div>
     <a href="search.html?q=forest" class="see-more">See more →</a>
   </div>
-  <div class="subcategory-scroll" id="forestStrip"></div>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+    <div class="subcategory-scroll" id="forestStrip"></div>
+    <button class="scroll-btn right glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+  </div>
 </section>
 
 <section class="subcategory-block">
@@ -115,67 +160,224 @@
     </div>
     <a href="search.html?q=sunset" class="see-more">See more →</a>
   </div>
-  <div class="subcategory-scroll" id="sunsetStrip"></div>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+    <div class="subcategory-scroll" id="sunsetStrip"></div>
+    <button class="scroll-btn right glass-btn"><svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg></button>
+  </div>
+
 </section>
+<!-- ================= POPULAR SECTIONS ================= -->
 
-<!-- ================= POPULAR STRIPS ================= -->
-
-<section class="category-strip">
+<section class="category-strip standalone-section compact-strip">
   <h2>Popular Nature Images</h2>
-  <div class="horizontal-scroll" id="natureStrip"></div>
-  <a class="explore-more" href="search.html?q=nature">Explore more →</a>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn">
+      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg>
+    </button>
+
+    <div class="horizontal-scroll" id="natureStrip"></div>
+
+    <button class="scroll-btn right glass-btn">
+      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg>
+    </button>
+  </div>
+
+  <a class="explore-more" href="search.html?query=nature">Explore more →</a>
 </section>
 
-<section class="category-strip">
+<section class="category-strip standalone-section compact-strip">
   <h2>Nature Wallpapers</h2>
-  <div class="horizontal-scroll" id="wallpaperStrip"></div>
-  <a class="explore-more" href="search.html?q=nature+wallpaper">Explore more →</a>
+
+  <div class="scroll-wrapper">
+    <button class="scroll-btn left glass-btn">
+      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg>
+    </button>
+
+    <div class="horizontal-scroll" id="wallpaperStrip"></div>
+
+    <button class="scroll-btn right glass-btn">
+      <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M8 5l8 7-8 7"/></svg>
+    </button>
+  </div>
+
+  <a class="explore-more" href="search.html?query=nature+wallpaper">Explore more →</a>
 </section>
 
-<footer class="footer">
-  © 2025 Pixeora. All rights reserved.
+<footer class="site-footer">
+
+  <div class="footer-inner">
+
+    <section class="category-summary">
+      <p>
+        Pixeora offers a growing collection of free HD nature wallpapers and images,
+        including landscapes, wildlife, forests, waterfalls, flowers, mountains and sunsets.
+        All images are available for personal and commercial use without attribution.
+      </p>
+    </section>
+
+    <div class="footer-copy">
+      © 2025 <strong>Pixeora</strong>. All rights reserved.
+    </div>
+
+  </div>
+
 </footer>
+
 
 <!-- ================= JS ================= -->
 <script>
 const API_BASE = "https://api.pixeora.com";
 
-function loadSubCategory(containerId, keyword, limit = 10) {
-  fetch(`${API_BASE}/api/images/search?q=${encodeURIComponent(keyword)}&limit=${limit}`)
-    .then(res => {
-      if (!res.ok) throw new Error("API error");
-      return res.json();
-    })
-    .then(data => {
-      const images = data.images || [];
-      const container = document.getElementById(containerId);
-      if (!container) return;
+async function loadStrip(containerId, keyword, limit = 10) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
 
-      container.innerHTML = "";
+  /* 1️⃣ PRE-FILL SKELETONS */
+  container.innerHTML = "";
+  for (let i = 0; i < limit; i++) {
+    const skel = document.createElement("div");
+    skel.className = "sub-image";
+    skel.style.width = "260px";
+    skel.style.aspectRatio = "1 / 1";
+    container.appendChild(skel);
+  }
 
-      images.forEach(img => {
-        const file = img.thumbnailFileName || img.fileName;
-        const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+  try {
+    const res = await fetch(
+      `${API_BASE}/api/search/first?q=${encodeURIComponent(keyword)}&limit=${limit}`,
+      { priority: "low" }
+    );
 
-        container.innerHTML += `
-          <a href="/photo/${img.slug}-${img._id}" class="sub-image">
-            <img src="${imgUrl}" loading="lazy" alt="${img.alt || ''}">
-          </a>
-        `;
-      });
-    })
-    .catch(err => console.error("Subcategory load error:", err));
+    const data = await res.json();
+    const images = data.images || [];
+
+    container.innerHTML = "";
+
+    images.forEach(img => {
+      const file = img.thumbnailFileName || img.fileName;
+      const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+
+      const a = document.createElement("a");
+      a.href = `/photo/${img.slug}-${img._id}`;
+      a.className = "sub-image";
+
+      const image = new Image();
+      image.src = imgUrl;
+      image.loading = "lazy";
+      image.alt = img.alt || img.title || "";
+
+      image.onload = () => {
+        a.classList.add("loaded");
+      };
+
+      a.appendChild(image);
+      container.appendChild(a);
+    });
+
+  } catch (err) {
+    console.error("Strip load error:", keyword, err);
+  }
 }
 
-/* SUBCATEGORIES */
-loadSubCategory("landscapeStrip", "landscape");
-loadSubCategory("flowerStrip", "flowers");
-loadSubCategory("animalStrip", "animals");
-loadSubCategory("waterfallStrip", "waterfall");
-loadSubCategory("forestStrip", "forest");
-loadSubCategory("sunsetStrip", "sunset");
+/* LOAD */
+document.addEventListener("DOMContentLoaded", () => {
+  loadStrip("landscapeStrip", "nature landscape");
+  loadStrip("flowerStrip", "nature flowers");
+  loadStrip("animalStrip", "wildlife animals");
+  loadStrip("waterfallStrip", "waterfall nature");
+  loadStrip("forestStrip", "forest nature");
+  loadStrip("sunsetStrip", "sunset nature");
 
-/* POPULAR */
-loadSubCategory("natureStrip", "nature", 20);
-loadSubCategory("wallpaperStrip", "nature wallpaper", 20);
+  loadStrip("natureStrip", "nature", 20);
+  loadStrip("wallpaperStrip", "nature wallpaper", 20);
+});
+
+
+document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
+  .forEach(scroller => {
+    scroller.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        scroller.scrollLeft += e.deltaY * 1.2;
+      }
+    }, { passive: false });
+  });
+
 </script>
+
+<script>
+document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
+  const scroller = wrapper.querySelector('.subcategory-scroll, .horizontal-scroll');
+  const btnLeft = wrapper.querySelector('.glass-btn.left');
+  const btnRight = wrapper.querySelector('.glass-btn.right');
+
+  if (!scroller) return;
+
+  const SCROLL_DISTANCE = 560;   // how far per click
+  const DURATION = 580;          // ms (lower = faster)
+
+  function smoothScroll(element, distance) {
+    const start = element.scrollLeft;
+    const startTime = performance.now();
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animate(time) {
+      const elapsed = time - startTime;
+      const progress = Math.min(elapsed / DURATION, 1);
+      const eased = easeOutCubic(progress);
+
+      element.scrollLeft = start + distance * eased;
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  btnRight?.addEventListener('click', () => {
+    smoothScroll(scroller, SCROLL_DISTANCE);
+  });
+
+  btnLeft?.addEventListener('click', () => {
+    smoothScroll(scroller, -SCROLL_DISTANCE);
+  });
+
+  function updateButtons() {
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+
+    if (scroller.scrollLeft > 10) {
+      btnLeft?.classList.add('show');
+    } else {
+      btnLeft?.classList.remove('show');
+    }
+
+    if (scroller.scrollLeft < maxScroll - 10) {
+      btnRight?.classList.add('show');
+    } else {
+      btnRight?.classList.remove('show');
+    }
+  }
+
+  updateButtons();
+  scroller.addEventListener('scroll', updateButtons);
+});
+</script>
+
+<script>
+function redirectSearch() {
+  const q = document.getElementById("searchInput").value.trim();
+  if (!q) return false;
+  window.location.href = `/search.html?q=${encodeURIComponent(q)}`;
+  return false;
+}
+</script>
+
+

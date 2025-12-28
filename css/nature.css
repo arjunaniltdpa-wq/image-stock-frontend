@@ -120,43 +120,6 @@ body {
   object-fit: contain;
 }
 
-/* =============== Search Info =============== */
-.search-info {
-  max-width: 100%;
-  margin: 30px auto 20px;
-  padding: 0 20px;
-}
-
-.search-info p {
-  font-style: italic;
-  color: #666;
-  font-size: 20px;
-  margin: 0 0 6px;
-}
-
-.search-info h1 {
-  font-weight: 600;
-  font-size: 40px;
-  margin: 0 0 12px;
-}
-
-.keyword {
-  font-weight: 600;
-  font-style: italic;
-  letter-spacing: -0.07em;
-}
-
-.image-count {
-  display: inline-block;
-  background: #000;
-  color: #00ffff;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  margin-top: 6px;
-}
-
-
 /* ================================
    HEADER — TABLET & MOBILE MATCH
 ================================ */
@@ -303,7 +266,7 @@ body {
 
 .subcategory-scroll {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   padding: 0 20px;
   overflow-x: auto;
   scroll-behavior: smooth;
@@ -326,12 +289,14 @@ body {
 /* IMAGE CARD */
 .sub-image {
   flex: 0 0 auto;
-  width: 260px;
-  aspect-ratio: 1 / 1;
+  width: 200px;
+  aspect-ratio: 4 / 5;   /* 🔥 portrait-friendly */
   border-radius: 18px;
   overflow: hidden;
   background: #f0f0f0;
   position: relative;
+  overflow: hidden;              /* 🔥 IMPORTANT */
+  isolation: isolate;            /* prevents paint bleed */
   box-shadow:
     0 10px 22px rgba(0,0,0,0.12),
     inset 0 1px 0 rgba(255,255,255,0.6);
@@ -344,7 +309,9 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.45s ease;
+  transform-origin: center;
+  will-change: transform;
+  transition: transform 0.4s ease;
 }
 
 .sub-image:hover {
@@ -379,7 +346,7 @@ body {
 /* IMAGE CARD */
 .image-card {
   flex: 0 0 auto;
-  width: 190px;
+  width: 200px;
   aspect-ratio: 1 / 1;
   border-radius: 16px;
   overflow: hidden;
@@ -398,6 +365,35 @@ body {
   object-fit: cover;
 }
 
+/* ==============================
+   COMPACT STRIP (POPULAR SECTIONS)
+============================== */
+
+.compact-strip .sub-image {
+  width: 360px;           /* 🔽 smaller */
+  aspect-ratio: 4 / 2.5;
+  border-radius: 14px;
+}
+
+.compact-strip .sub-image img {
+  object-fit: cover;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .compact-strip .sub-image {
+    width: 235px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .compact-strip .sub-image {
+    width: 320px;
+  }
+}
+
+
 /* =============== EXPLORE MORE =============== */
 .explore-more {
   display: inline-block;
@@ -408,13 +404,48 @@ body {
   text-decoration: none;
 }
 
-/* =============== FOOTER =============== */
-.footer {
-  padding: 44px 20px;
+/* ================= FOOTER ================= */
+
+.site-footer {
+  margin-top: 90px;
+  padding: 56px 20px 40px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+/* Centered container */
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Summary text */
+.category-summary p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #555;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Copyright */
+.footer-copy {
   font-size: 14px;
   color: #777;
 }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .category-summary p {
+    font-size: 14px;
+  }
+}
+
 /* HIDE HORIZONTAL SCROLLBAR – KEEP SCROLL FUNCTION */
 .subcategory-scroll,
 .horizontal-scroll {
@@ -455,7 +486,7 @@ body {
   }
 
   .image-card {
-    width: 150px;
+    width: 350px;
   }
 }
 
@@ -465,6 +496,157 @@ body {
   }
 
   .image-card {
-    width: 135px;
+    width: 335px;
+  }
+}
+/* ================= SKELETON ================= */
+
+.sub-image {
+  position: relative;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+/* Skeleton box */
+.sub-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #eeeeee 25%,
+    #f5f5f5 37%,
+    #eeeeee 63%
+  );
+  background-size: 400% 100%;
+  animation: skeletonShimmer 1.4s ease infinite;
+  z-index: 1;
+}
+
+/* Hide skeleton when loaded */
+.sub-image.loaded::before {
+  display: none;
+}
+
+/* Image fade-in */
+.sub-image img {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.sub-image.loaded img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+/* ==============================
+   STANDALONE SECTION FIX
+============================== */
+
+.standalone-section {
+  margin-top: 70px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.standalone-section h2 {
+  padding: 0 20px;
+  margin-bottom: 18px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.subcategory-scroll,
+.horizontal-scroll {
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+}
+/* ===== Scroll Wrapper ===== */
+.scroll-wrapper {
+  position: relative;
+}
+
+/* ================= Scroll Wrapper ================= */
+.scroll-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ================= Glass Arrow Button ================= */
+.glass-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+
+  cursor: pointer;
+  z-index: 50;
+
+  /* hidden by default */
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.25s ease, background 0.25s ease;
+}
+
+/* visible when JS adds .show */
+.glass-btn.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* positions */
+.glass-btn.left {
+  left: 6px;
+}
+
+.glass-btn.right {
+  right: 6px;
+}
+
+/* arrow icon */
+.glass-btn .arrow-icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #212121;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* 🔥 LEFT ARROW → flip icon ONLY */
+.glass-btn.left .arrow-icon {
+  transform: scaleX(-1);
+}
+/* hover */
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* desktop only */
+@media (max-width: 992px) {
+  .glass-btn {
+    display: none !important;
   }
 }
