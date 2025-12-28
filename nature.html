@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nature Wallpapers & Images | Pixeora</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO -->
+  <meta name="description" content="Download free HD nature wallpapers and images. Landscapes, wildlife, forests, waterfalls, flowers, mountains and sunsets.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://pixeora.com/nature.html">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/nature.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-overlay">
+
+    <a href="index.html" class="logo">Pixeora</a>
+
+    <div class="search-bar-wrapper">
+      <div class="search-bar-border">
+        <form class="search-bar" onsubmit="return redirectSearch()">
+          <input type="text" id="searchInput" placeholder="Search Image" required>
+          <button type="submit" class="search-icon">
+            <img src="images/search-icon.png" alt="Search">
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <a href="legal.html" class="legal-link-header">Legal & Policies</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="category-hero">
+  <h1>Nature Wallpapers & Images</h1>
+  <p>
+    Discover free HD nature wallpapers including landscapes, wildlife,
+    forests, waterfalls, flowers, mountains and breathtaking sunsets.
+  </p>
+</section>
+
+<!-- ================= SUBCATEGORIES ================= -->
+
+<section class="subcategory-block">
+  <div class="subcategory-header">
+    <div>
+      <h2>Landscape Wallpapers</h2>
+      <p>Mountains, valleys, deserts and scenic natural landscapes in high resolution.</p>
+    </div>
+    <a href="search.html?q=landscape" class="see-more">See more →</a>
+  </div>
+  <div class="subcategory-scroll" id="landscapeStrip"></div>
+</section>
+
+<section class="subcategory-block">
+  <div class="subcategory-header">
+    <div>
+      <h2>Flower Wallpapers</h2>
+      <p>Beautiful flower wallpapers featuring roses, tulips, lilies and wildflowers.</p>
+    </div>
+    <a href="search.html?q=flowers" class="see-more">See more →</a>
+  </div>
+  <div class="subcategory-scroll" id="flowerStrip"></div>
+</section>
+
+<section class="subcategory-block">
+  <div class="subcategory-header">
+    <div>
+      <h2>Animals & Wildlife</h2>
+      <p>Wildlife photography including birds, lions, elephants and forest animals.</p>
+    </div>
+    <a href="search.html?q=animals" class="see-more">See more →</a>
+  </div>
+  <div class="subcategory-scroll" id="animalStrip"></div>
+</section>
+
+<section class="subcategory-block">
+  <div class="subcategory-header">
+    <div>
+      <h2>Rivers & Waterfalls</h2>
+      <p>Flowing rivers and majestic waterfalls captured in stunning HD quality.</p>
+    </div>
+    <a href="search.html?q=waterfall" class="see-more">See more →</a>
+  </div>
+  <div class="subcategory-scroll" id="waterfallStrip"></div>
+</section>
+
+<section class="subcategory-block">
+  <div class="subcategory-header">
+    <div>
+      <h2>Forest Wallpapers</h2>
+      <p>Dense forests, green trees, jungle landscapes and misty woods.</p>
+    </div>
+    <a href="search.html?q=forest" class="see-more">See more →</a>
+  </div>
+  <div class="subcategory-scroll" id="forestStrip"></div>
+</section>
+
+<section class="subcategory-block">
+  <div class="subcategory-header">
+    <div>
+      <h2>Sunset Wallpapers</h2>
+      <p>Breathtaking sunset wallpapers with vibrant skies and golden light.</p>
+    </div>
+    <a href="search.html?q=sunset" class="see-more">See more →</a>
+  </div>
+  <div class="subcategory-scroll" id="sunsetStrip"></div>
+</section>
+
+<!-- ================= POPULAR STRIPS ================= -->
+
+<section class="category-strip">
+  <h2>Popular Nature Images</h2>
+  <div class="horizontal-scroll" id="natureStrip"></div>
+  <a class="explore-more" href="search.html?q=nature">Explore more →</a>
+</section>
+
+<section class="category-strip">
+  <h2>Nature Wallpapers</h2>
+  <div class="horizontal-scroll" id="wallpaperStrip"></div>
+  <a class="explore-more" href="search.html?q=nature+wallpaper">Explore more →</a>
+</section>
+
+<footer class="footer">
+  © 2025 Pixeora. All rights reserved.
+</footer>
+
+<!-- ================= JS ================= -->
+<script>
+  function loadSubCategory(containerId, category, limit = 10) {
+    fetch(`/api/images?category=${encodeURIComponent(category)}&limit=${limit}`)
+      .then(res => res.json())
+      .then(images => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        images.forEach(img => {
+          container.innerHTML += `
+            <a href="/photo/${img.slug}" class="sub-image">
+              <img
+                src="${img.thumbnailUrl}"
+                alt="${img.title}"
+                loading="lazy">
+            </a>
+          `;
+        });
+      })
+      .catch(err => console.error("Load error:", err));
+  }
+
+  /* SUBCATEGORIES */
+  loadSubCategory("landscapeStrip", "landscape");
+  loadSubCategory("flowerStrip", "flowers");
+  loadSubCategory("animalStrip", "animals");
+  loadSubCategory("waterfallStrip", "waterfall");
+  loadSubCategory("forestStrip", "forest");
+  loadSubCategory("sunsetStrip", "sunset");
+
+  /* POPULAR */
+  loadSubCategory("natureStrip", "nature", 20);
+  loadSubCategory("wallpaperStrip", "nature wallpaper", 20);
+</script>
+
+</body>
+</html>
