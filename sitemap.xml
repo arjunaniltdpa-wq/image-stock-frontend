@@ -11,18 +11,13 @@
         <loc>https://pixeora.com/sitemap-tools.xml</loc>
     </sitemap>
 
-    <!-- Image Sitemaps (DIRECT for faster Google Image indexing) -->
+    <!-- Image Sitemaps -->
     <sitemap>
-        <loc>https://api.pixeora.com/sitemap-images-1.xml</loc>
+        <loc>https://pixeora.com/sitemap-images-1.xml</loc>
     </sitemap>
 
     <sitemap>
-        <loc>https://api.pixeora.com/sitemap-images-2.xml</loc>
-    </sitemap>
-
-    <!-- Backend Sitemap Index (keep for redundancy) -->
-    <sitemap>
-        <loc>https://api.pixeora.com/sitemap.xml</loc>
+        <loc>https://pixeora.com/sitemap-images-2.xml</loc>
     </sitemap>
 
 </sitemapindex>
