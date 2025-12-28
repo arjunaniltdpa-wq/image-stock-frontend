@@ -2,6 +2,14 @@
   "version": 2,
   "routes": [
     {
+      "src": "^/sitemap.xml$",
+      "dest": "https://api.pixeora.com/sitemap.xml"
+    },
+    {
+      "src": "^/sitemap-images-(.*)\\.xml$",
+      "dest": "https://api.pixeora.com/sitemap-images-$1.xml"
+    },
+    {
       "src": "^/photo/(.*)$",
       "dest": "https://api.pixeora.com/photo/$1"
     },
