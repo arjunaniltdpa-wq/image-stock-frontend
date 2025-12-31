@@ -3,7 +3,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO -->
-  <meta name="robots" content="index, follow">
+  <!-- IMPORTANT: noindex for download pages -->
+  <meta name="robots" content="noindex, follow">
 
   <title>Pixeora Photo</title>
   <meta name="description"
@@ -13,22 +14,20 @@
   <meta name="pinterest-rich-pin" content="false">
   <meta name="p:domain_verify" content="baeea6bc953c52f33c6f450565b4a8ab">
 
-  <!-- ❌ DO NOT DEFINE og:image HERE -->
-  <!-- OG TAGS ARE SERVED BY BACKEND OG PAGE -->
+  <!-- OG TAGS SERVED BY BACKEND -->
+  <!-- DO NOT define og:image here -->
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 
-  <!-- Favicons (Google SERP friendly) -->
+  <!-- Favicons -->
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/favicon-32x32.png">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <!-- Styles -->
   <link rel="preload" href="/css/download.css" as="style">
@@ -38,11 +37,8 @@
   <!-- Performance -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
-  
-  <!-- Organization Schema -->
-   
-  <script id="ld-json" type="application/ld+json"></script>
 
+  <!-- Organization Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -52,6 +48,7 @@
     "logo": "https://pixeora.com/images/logo.png"
   }
   </script>
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VPX3GGRR7H"></script>
   <script>
@@ -60,11 +57,9 @@
     gtag('js', new Date());
     gtag('config', 'G-VPX3GGRR7H');
   </script>
-
 </head>
 
 <body>
-
 <header class="header">
   <div class="header-overlay">
 
