@@ -262,7 +262,6 @@
 </footer>
 
 <!-- ================= JS ================= -->
-<!-- ================= JS ================= -->
 <script>
 const API_BASE = "https://api.pixeora.com";
 const DEFAULT_LIMIT = 6;
@@ -369,6 +368,19 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(el);
   });
 });
+</script>
+
+<script>
+/* Mouse / trackpad horizontal scroll */
+document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
+  .forEach(scroller => {
+    scroller.addEventListener('wheel', e => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        scroller.scrollLeft += e.deltaY * 1.2;
+      }
+    }, { passive: false });
+  });
 </script>
 
 <script>

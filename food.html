@@ -324,18 +324,24 @@
 <!-- ================= JS ================= -->
 <script>
 const API_BASE = "https://api.pixeora.com";
+const DEFAULT_LIMIT = 6;
 
-async function loadStrip(containerId, keyword, limit = 10) {
+/* Cloudflare optimized thumbnail */
+const CDN_THUMB = (file) =>
+  `https://cdn.pixeora.com/cdn-cgi/image/width=320,quality=60/${encodeURIComponent(file)}`;
+
+async function loadStrip(containerId, keyword, limit = DEFAULT_LIMIT) {
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container || container.dataset.loaded) return;
+  if (!keyword) return;
 
-  /* 1️⃣ PRE-FILL SKELETONS */
+  container.dataset.loaded = "true";
   container.innerHTML = "";
+
+  /* Skeletons */
   for (let i = 0; i < limit; i++) {
     const skel = document.createElement("div");
-    skel.className = "sub-image";
-    skel.style.width = "260px";
-    skel.style.aspectRatio = "1 / 1";
+    skel.className = "sub-image skeleton";
     container.appendChild(skel);
   }
 
@@ -345,14 +351,12 @@ async function loadStrip(containerId, keyword, limit = 10) {
       { priority: "low" }
     );
 
-    const data = await res.json();
-    const images = data.images || [];
-
+    const { images = [] } = await res.json();
     container.innerHTML = "";
 
-    images.forEach(img => {
+    images.forEach((img, index) => {
       const file = img.thumbnailFileName || img.fileName;
-      const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+      const imgUrl = CDN_THUMB(file);
 
       const a = document.createElement("a");
       a.href = `/photo/${img.slug}-${img._id}`;
@@ -360,10 +364,20 @@ async function loadStrip(containerId, keyword, limit = 10) {
 
       const image = new Image();
       image.src = imgUrl;
-      image.loading = "lazy";
       image.alt = img.alt || img.title || "";
 
+      /* Priority handling */
+      image.loading = index < 2 ? "eager" : "lazy";
+      image.fetchPriority = index < 2 ? "high" : "low";
+
+      /* Blur → sharp (premium feel) */
+      image.style.filter = "blur(12px)";
+      image.style.transform = "scale(1.05)";
+
       image.onload = () => {
+        image.style.transition = "filter .4s ease, transform .4s ease";
+        image.style.filter = "blur(0)";
+        image.style.transform = "scale(1)";
         a.classList.add("loaded");
       };
 
@@ -376,19 +390,46 @@ async function loadStrip(containerId, keyword, limit = 10) {
   }
 }
 
-/* LOAD */
+/* LOAD LOGIC */
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* 🔥 Load FIRST strip immediately */
   loadStrip("fastFoodStrip", "fast food street food");
-  loadStrip("dessertStrip", "desserts sweets");
-  loadStrip("healthyStrip", "healthy food");
-  loadStrip("drinkStrip", "drinks beverages");
-  loadStrip("homeFoodStrip", "home cooking food");
-  loadStrip("gourmetStrip", "gourmet fine dining");
 
-  loadStrip("foodStrip", "food", 20);
-  loadStrip("foodWallpaperStrip", "food wallpaper", 20);
+  /* Lazy load others */
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          loadStrip(el.id, el.dataset.q, el.dataset.limit);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { rootMargin: "800px" }
+  );
+
+  const stripMap = {
+    dessertStrip: "desserts sweets",
+    healthyStrip: "healthy food",
+    drinkStrip: "drinks beverages",
+    homeFoodStrip: "home cooking food",
+    gourmetStrip: "gourmet fine dining",
+    foodStrip: "food",
+    foodWallpaperStrip: "food wallpaper"
+  };
+
+  Object.entries(stripMap).forEach(([id, query]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.dataset.q = query;
+    el.dataset.limit = id.includes("Strip") ? "20" : "6";
+    observer.observe(el);
+  });
 });
-
+</script>
+<script>
 document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
   .forEach(scroller => {
     scroller.addEventListener('wheel', (e) => {
