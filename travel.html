@@ -328,24 +328,18 @@
 <!-- ================= JS ================= -->
 <script>
 const API_BASE = "https://api.pixeora.com";
-const DEFAULT_LIMIT = 6;
 
-/* Cloudflare optimized thumbnail */
-const CDN_THUMB = (file) =>
-  `https://cdn.pixeora.com/cdn-cgi/image/width=320,quality=60/${encodeURIComponent(file)}`;
-
-async function loadStrip(containerId, keyword, limit = DEFAULT_LIMIT) {
+async function loadStrip(containerId, keyword, limit = 10) {
   const container = document.getElementById(containerId);
-  if (!container || container.dataset.loaded) return;
-  if (!keyword) return;
+  if (!container) return;
 
-  container.dataset.loaded = "true";
+  /* 1️⃣ PRE-FILL SKELETONS */
   container.innerHTML = "";
-
-  /* Skeletons */
   for (let i = 0; i < limit; i++) {
     const skel = document.createElement("div");
-    skel.className = "sub-image skeleton";
+    skel.className = "sub-image";
+    skel.style.width = "260px";
+    skel.style.aspectRatio = "1 / 1";
     container.appendChild(skel);
   }
 
@@ -355,12 +349,14 @@ async function loadStrip(containerId, keyword, limit = DEFAULT_LIMIT) {
       { priority: "low" }
     );
 
-    const { images = [] } = await res.json();
+    const data = await res.json();
+    const images = data.images || [];
+
     container.innerHTML = "";
 
-    images.forEach((img, index) => {
+    images.forEach(img => {
       const file = img.thumbnailFileName || img.fileName;
-      const imgUrl = CDN_THUMB(file);
+      const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
       const a = document.createElement("a");
       a.href = `/photo/${img.slug}-${img._id}`;
@@ -368,20 +364,10 @@ async function loadStrip(containerId, keyword, limit = DEFAULT_LIMIT) {
 
       const image = new Image();
       image.src = imgUrl;
+      image.loading = "lazy";
       image.alt = img.alt || img.title || "";
 
-      /* Priority handling */
-      image.loading = index < 2 ? "eager" : "lazy";
-      image.fetchPriority = index < 2 ? "high" : "low";
-
-      /* Blur → sharp (premium feel) */
-      image.style.filter = "blur(12px)";
-      image.style.transform = "scale(1.05)";
-
       image.onload = () => {
-        image.style.transition = "filter .4s ease, transform .4s ease";
-        image.style.filter = "blur(0)";
-        image.style.transform = "scale(1)";
         a.classList.add("loaded");
       };
 
@@ -394,47 +380,19 @@ async function loadStrip(containerId, keyword, limit = DEFAULT_LIMIT) {
   }
 }
 
-/* LOAD LOGIC */
+/* LOAD */
 document.addEventListener("DOMContentLoaded", () => {
-
-  /* 🔥 Load FIRST strip immediately */
   loadStrip("beachStrip", "beach island travel");
+  loadStrip("mountainStrip", "mountain nature travel");
+  loadStrip("cityStrip", "city architecture travel");
+  loadStrip("adventureStrip", "adventure exploration travel");
+  loadStrip("hotelStrip", "hotel resort travel");
+  loadStrip("cultureStrip", "culture heritage travel");
 
-  /* Lazy load others */
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          loadStrip(el.id, el.dataset.q, el.dataset.limit);
-          observer.unobserve(el);
-        }
-      });
-    },
-    { rootMargin: "800px" }
-  );
-
-  const stripMap = {
-    mountainStrip: "mountain nature travel",
-    cityStrip: "city architecture travel",
-    adventureStrip: "adventure exploration travel",
-    hotelStrip: "hotel resort travel",
-    cultureStrip: "culture heritage travel",
-    travelStrip: "travel",
-    travelWallpaperStrip: "travel wallpaper"
-  };
-
-  Object.entries(stripMap).forEach(([id, query]) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.dataset.q = query;
-    el.dataset.limit = id.includes("Strip") ? "20" : "6";
-    observer.observe(el);
-  });
+  loadStrip("travelStrip", "travel", 20);
+  loadStrip("travelWallpaperStrip", "travel wallpaper", 20);
 });
-</script>
 
-<script>
 document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
   .forEach(scroller => {
     scroller.addEventListener('wheel', (e) => {
