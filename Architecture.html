@@ -25,6 +25,11 @@
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
+  <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.pixeora.com">
+  <link rel="dns-prefetch" href="//api.pixeora.com">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -260,21 +265,24 @@
 
 </footer>
 
-<!-- ================= JS ================= -->
 <script>
 const API_BASE = "https://api.pixeora.com";
 
-async function loadStrip(containerId, keyword, limit = 10) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+/* 🔹 CONFIG */
+const DEFAULT_LIMIT = 6;
+const CDN_THUMB = (file) =>
+  `https://cdn.pixeora.com/cdn-cgi/image/width=320,quality=60/${encodeURIComponent(file)}`;
 
-  /* 1️⃣ PRE-FILL SKELETONS */
+/* 🔹 LOAD STRIP */
+async function loadStrip(container, keyword, limit = DEFAULT_LIMIT) {
+  if (!container || container.dataset.loaded) return;
+  container.dataset.loaded = "true";
+
+  /* Skeletons */
   container.innerHTML = "";
   for (let i = 0; i < limit; i++) {
     const skel = document.createElement("div");
-    skel.className = "sub-image";
-    skel.style.width = "260px";
-    skel.style.aspectRatio = "1 / 1";
+    skel.className = "sub-image skeleton";
     container.appendChild(skel);
   }
 
@@ -284,14 +292,12 @@ async function loadStrip(containerId, keyword, limit = 10) {
       { priority: "low" }
     );
 
-    const data = await res.json();
-    const images = data.images || [];
-
+    const { images = [] } = await res.json();
     container.innerHTML = "";
 
     images.forEach(img => {
       const file = img.thumbnailFileName || img.fileName;
-      const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+      const imgUrl = CDN_THUMB(file);
 
       const a = document.createElement("a");
       a.href = `/photo/${img.slug}-${img._id}`;
@@ -299,10 +305,18 @@ async function loadStrip(containerId, keyword, limit = 10) {
 
       const image = new Image();
       image.src = imgUrl;
-      image.loading = "lazy";
       image.alt = img.alt || img.title || "";
+      image.loading = "lazy";
+      image.fetchPriority = "low";
+
+      /* Blur → Sharp (Pexels feel) */
+      image.style.filter = "blur(12px)";
+      image.style.transform = "scale(1.05)";
 
       image.onload = () => {
+        image.style.transition = "filter .4s ease, transform .4s ease";
+        image.style.filter = "blur(0)";
+        image.style.transform = "scale(1)";
         a.classList.add("loaded");
       };
 
@@ -315,101 +329,75 @@ async function loadStrip(containerId, keyword, limit = 10) {
   }
 }
 
-/* LOAD */
+/* 🔹 INTERSECTION OBSERVER */
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        loadStrip(el, el.dataset.q, el.dataset.limit);
+        observer.unobserve(el);
+      }
+    });
+  },
+  { rootMargin: "200px" }
+);
+
+/* 🔹 INIT */
 document.addEventListener("DOMContentLoaded", () => {
-  loadStrip("modernArchStrip", "modern architecture");
-  loadStrip("interiorStrip", "interior architecture design");
-  loadStrip("skyscraperStrip", "skyscraper architecture");
-  loadStrip("historicStrip", "historic architecture");
-  loadStrip("urbanStrip", "urban architecture city");
-  loadStrip("luxuryStrip", "luxury home architecture");
-
-  loadStrip("architectureStrip", "architecture", 20);
-  loadStrip("architectureWallpaperStrip", "architecture wallpaper", 20);
+  document.querySelectorAll(".subcategory-scroll, .horizontal-scroll")
+    .forEach(el => observer.observe(el));
 });
+</script>
 
+<script>
 document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
   .forEach(scroller => {
-    scroller.addEventListener('wheel', (e) => {
+    scroller.addEventListener('wheel', e => {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
         scroller.scrollLeft += e.deltaY * 1.2;
       }
     }, { passive: false });
   });
-
 </script>
-
 <script>
 document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
   const scroller = wrapper.querySelector('.subcategory-scroll, .horizontal-scroll');
   const btnLeft = wrapper.querySelector('.glass-btn.left');
   const btnRight = wrapper.querySelector('.glass-btn.right');
-
   if (!scroller) return;
 
-  const SCROLL_DISTANCE = 560;   // how far per click
-  const DURATION = 580;          // ms (lower = faster)
+  const SCROLL_DISTANCE = 560;
+  const DURATION = 520;
 
-  function smoothScroll(element, distance) {
-    const start = element.scrollLeft;
+  function smoothScroll(distance) {
+    const start = scroller.scrollLeft;
     const startTime = performance.now();
 
-    function easeOutCubic(t) {
+    function ease(t) {
       return 1 - Math.pow(1 - t, 3);
     }
 
     function animate(time) {
-      const elapsed = time - startTime;
-      const progress = Math.min(elapsed / DURATION, 1);
-      const eased = easeOutCubic(progress);
-
-      element.scrollLeft = start + distance * eased;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
+      const progress = Math.min((time - startTime) / DURATION, 1);
+      scroller.scrollLeft = start + distance * ease(progress);
+      if (progress < 1) requestAnimationFrame(animate);
     }
 
     requestAnimationFrame(animate);
   }
 
-  btnRight?.addEventListener('click', () => {
-    smoothScroll(scroller, SCROLL_DISTANCE);
-  });
-
-  btnLeft?.addEventListener('click', () => {
-    smoothScroll(scroller, -SCROLL_DISTANCE);
-  });
-
-  function updateButtons() {
-    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-
-    if (scroller.scrollLeft > 10) {
-      btnLeft?.classList.add('show');
-    } else {
-      btnLeft?.classList.remove('show');
-    }
-
-    if (scroller.scrollLeft < maxScroll - 10) {
-      btnRight?.classList.add('show');
-    } else {
-      btnRight?.classList.remove('show');
-    }
-  }
-
-  updateButtons();
-  scroller.addEventListener('scroll', updateButtons);
+  btnRight?.addEventListener('click', () => smoothScroll(SCROLL_DISTANCE));
+  btnLeft?.addEventListener('click', () => smoothScroll(-SCROLL_DISTANCE));
 });
 </script>
-
 <script>
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (!q) return false;
-  window.location.href = `/search.html?q=${encodeURIComponent(q)}`;
+  location.href = `/search.html?q=${encodeURIComponent(q)}`;
   return false;
 }
 </script>
-
 
