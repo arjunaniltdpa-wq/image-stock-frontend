@@ -4,7 +4,7 @@
 
   <!-- SEO -->
   <!-- IMPORTANT: noindex for download pages -->
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
 
   <title>Pixeora Photo</title>
   <meta name="description"
@@ -46,6 +46,16 @@
     "name": "Pixeora",
     "url": "https://pixeora.com",
     "logo": "https://pixeora.com/images/logo.png"
+  }
+  </script>
+  <script type="application/ld+json" id="ld-json"></script>
+
+  <script>
+  if (window.location.pathname.startsWith("/photo/")) {
+    const canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    canonical.href = "https://pixeora.com" + window.location.pathname;
+    document.head.appendChild(canonical);
   }
   </script>
 
