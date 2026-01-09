@@ -372,8 +372,16 @@ async function loadImageDetails() {
       "description": img.description || "",
       "contentUrl": originalUrl,
       "thumbnailUrl": thumbUrl,
-      "creator": { "@type": "Organization", "name": "Pixeora" },
-      "license": "https://pixeora.com/license"
+
+      "creator": {
+        "@type": "Organization",
+        "name": "Pixeora"
+      },
+
+      "creditText": "Pixeora Photo",
+      "copyrightNotice": "© 2026 Pixeora Photo. All rights reserved.",
+      "license": "https://pixeora.com/license",
+      "acquireLicensePage": "https://pixeora.com/license"
     };
 
     const ldEl = document.getElementById("ld-json");
