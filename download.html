@@ -6,9 +6,9 @@
   <!-- IMPORTANT: noindex for download pages -->
   <meta name="robots" content="index, follow">
 
-  <title>Pixeora Photo</title>
+  <title>Free HD Stock Image Download | Pixeora</title>
   <meta name="description"
-        content="Download high-quality HD wallpapers, 4K backgrounds and royalty-free stock images for free.">
+        content="Download free high-quality HD and 4K stock images for commercial and personal use.">
 
   <!-- Pinterest verification -->
   <meta name="pinterest-rich-pin" content="false">
@@ -37,6 +37,13 @@
   <!-- Performance -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
+
+  <link
+  rel="preload"
+  as="image"
+  href="https://cdn.pixeora.com/seo-placeholder.jpg"
+  fetchpriority="high"
+  />
 
   <!-- Organization Schema -->
   <script type="application/ld+json">
@@ -104,15 +111,25 @@
         <img
           id="download-image"
           class="image-load protected-img"
-          src=""
-          alt="Selected Image"
-          loading="lazy"
+          src="https://cdn.pixeora.com/seo-placeholder.jpg"
+          data-dynamic="true"
+          alt="Free high quality stock image from Pixeora"
+          fetchpriority="high"
         />
+        <noscript>
+          <img
+            src="https://cdn.pixeora.com/seo-placeholder.jpg"
+            alt="Free stock image download from Pixeora"
+          />
+        </noscript>
         <div id="image-protect-overlay"></div>
       </div>
 
       <h2 id="image-name">Loading...</h2>
-
+      <p class="image-caption">
+        Free stock image available for download in HD and 4K resolution.
+      </p>
+      
       <div class="image-actions">
         <button class="info-btn">
           <i class="fas fa-info-circle"></i> Info
@@ -368,10 +385,17 @@ async function loadImageDetails() {
     const ld = {
       "@context": "https://schema.org",
       "@type": "ImageObject",
+
       "name": safeTitle,
       "description": img.description || "",
       "contentUrl": originalUrl,
       "thumbnailUrl": thumbUrl,
+
+      "representativeOfPage": true,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": window.location.href
+      },
 
       "creator": {
         "@type": "Organization",
@@ -379,9 +403,7 @@ async function loadImageDetails() {
       },
 
       "creditText": "Pixeora Photo",
-      "copyrightNotice": "© 2026 Pixeora Photo. All rights reserved.",
-      "license": "https://pixeora.com/license",
-      "acquireLicensePage": "https://pixeora.com/license"
+      "license": "https://pixeora.com/license"
     };
 
     const ldEl = document.getElementById("ld-json");
