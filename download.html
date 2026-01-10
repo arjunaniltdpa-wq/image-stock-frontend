@@ -126,9 +126,6 @@
       </div>
 
       <h2 id="image-name">Loading...</h2>
-      <p class="image-caption">
-        Free stock image available for download in HD and 4K resolution.
-      </p>
       
       <div class="image-actions">
         <button class="info-btn">
@@ -380,6 +377,8 @@ async function loadImageDetails() {
     }
 
     window.__originalFileName = img.fileName || img.file || "";
+    window.__imageFileSize = img.size || null;
+
 
     // Schema
     const ld = {
@@ -689,11 +688,13 @@ infoBtn.onclick = () => {
   document.getElementById("info-dimensions").textContent =
     `${w} × ${h}px`;
 
-  // ✅ Approx size (safe estimate)
-  const approxSizeMB = (w * h * 3) / (1024 * 1024);
-  document.getElementById("info-size").textContent =
-    approxSizeMB.toFixed(2) + " MB (approx)";
-
+  if (window.__imageFileSize) {
+    const sizeMB = (window.__imageFileSize / (1024 * 1024)).toFixed(2);
+    document.getElementById("info-size").textContent =
+      sizeMB + " MB";
+  } else {
+    document.getElementById("info-size").textContent = "-";
+  }
   // ✅ Format
   const src = mainImg.src || "";
   const ext = src.split(".").pop().split("?")[0].toUpperCase();
