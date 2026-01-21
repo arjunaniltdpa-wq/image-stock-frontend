@@ -3,7 +3,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO -->
-  <!-- IMPORTANT: noindex for download pages -->
   <meta name="robots" content="index, follow">
 
   <title>Free HD Stock Image Download | Pixeora</title>
@@ -761,12 +760,24 @@ document.addEventListener("DOMContentLoaded", function () {
     banner.classList.remove("show");
   });
     /* TOUCH PROTECTION */
-  const overlay = document.getElementById("image-protect-overlay");
-  if (overlay) {
-    overlay.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-    });
-  }
 
+  const overlay = document.getElementById("image-protect-overlay");
+
+  if (overlay) {
+    let moved = false;
+
+    overlay.addEventListener("touchstart", () => {
+      moved = false;
+    }, { passive: true });
+
+    overlay.addEventListener("touchmove", () => {
+      moved = true;
+    }, { passive: true });
+
+    overlay.addEventListener("touchend", (e) => {
+      if (!moved) e.preventDefault();
+    }, { passive: false });
+  }
+  
 });
 </script>

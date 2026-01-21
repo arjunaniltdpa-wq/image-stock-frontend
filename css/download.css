@@ -648,7 +648,7 @@ html, body {
   z-index: 5;
   background: transparent;
 
-  touch-action: none;
+  touch-action: pan-y;   /* ✅ allow vertical scroll */
   -webkit-touch-callout: none;
 }
 /* GO TO TOP – GLASS SQUARE */
