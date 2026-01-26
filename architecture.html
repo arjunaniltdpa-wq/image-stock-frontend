@@ -269,15 +269,19 @@
 <script>
 const API_BASE = "https://api.pixeora.com";
 
+/* ================= STRIP LOADER ================= */
+
 async function loadStrip(containerId, keyword, limit = 10) {
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container || container.dataset.loaded) return;
 
-  /* 1️⃣ PRE-FILL SKELETONS */
+  container.dataset.loaded = "true";
+
+  /* 1️⃣ SKELETONS */
   container.innerHTML = "";
   for (let i = 0; i < limit; i++) {
     const skel = document.createElement("div");
-    skel.className = "sub-image";
+    skel.className = "sub-image skeleton";
     skel.style.width = "260px";
     skel.style.aspectRatio = "1 / 1";
     container.appendChild(skel);
@@ -294,7 +298,7 @@ async function loadStrip(containerId, keyword, limit = 10) {
 
     container.innerHTML = "";
 
-    images.forEach(img => {
+    images.forEach((img, index) => {
       const file = img.thumbnailFileName || img.fileName;
       const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
@@ -304,12 +308,11 @@ async function loadStrip(containerId, keyword, limit = 10) {
 
       const image = new Image();
       image.src = imgUrl;
-      image.loading = "lazy";
+      image.loading = index < 3 ? "eager" : "lazy";
+      image.decoding = "async";
       image.alt = img.alt || img.title || "";
 
-      image.onload = () => {
-        a.classList.add("loaded");
-      };
+      image.onload = () => a.classList.add("loaded");
 
       a.appendChild(image);
       container.appendChild(a);
@@ -320,18 +323,49 @@ async function loadStrip(containerId, keyword, limit = 10) {
   }
 }
 
-/* LOAD */
-document.addEventListener("DOMContentLoaded", () => {
-  loadStrip("modernArchStrip", "modern architecture");
-  loadStrip("interiorStrip", "interior architecture design");
-  loadStrip("skyscraperStrip", "skyscraper architecture");
-  loadStrip("historicStrip", "historic architecture");
-  loadStrip("urbanStrip", "urban architecture city");
-  loadStrip("luxuryStrip", "luxury home architecture");
+/* ================= INTERSECTION OBSERVER ================= */
 
-  loadStrip("architectureStrip", "architecture", 20);
-  loadStrip("architectureWallpaperStrip", "architecture wallpaper", 20);
+const stripObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const el = entry.target;
+    const keyword = el.dataset.keyword;
+    const limit = Number(el.dataset.limit || 10);
+
+    loadStrip(el.id, keyword, limit);
+    stripObserver.unobserve(el);
+  });
+}, {
+  rootMargin: "800px 0px",
+  threshold: 0.01
 });
+
+/* ================= INIT ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const strips = [
+    ["modernArchStrip", "modern architecture"],
+    ["interiorStrip", "interior architecture design"],
+    ["skyscraperStrip", "skyscraper architecture"],
+    ["historicStrip", "historic architecture"],
+    ["urbanStrip", "urban architecture city"],
+    ["luxuryStrip", "luxury home architecture"],
+    ["architectureStrip", "architecture", 20],
+    ["architectureWallpaperStrip", "architecture wallpaper", 20]
+  ];
+
+  strips.forEach(([id, keyword, limit]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.dataset.keyword = keyword;
+    el.dataset.limit = limit || 10;
+    stripObserver.observe(el);
+  });
+});
+
+/* ================= HORIZONTAL SCROLL ================= */
 
 document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
   .forEach(scroller => {
@@ -342,10 +376,11 @@ document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
       }
     }, { passive: false });
   });
-
 </script>
 
 <script>
+/* ================= SCROLL BUTTONS ================= */
+
 document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
   const scroller = wrapper.querySelector('.subcategory-scroll, .horizontal-scroll');
   const btnLeft = wrapper.querySelector('.glass-btn.left');
@@ -353,8 +388,8 @@ document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
 
   if (!scroller) return;
 
-  const SCROLL_DISTANCE = 560;   // how far per click
-  const DURATION = 580;          // ms (lower = faster)
+  const SCROLL_DISTANCE = 560;
+  const DURATION = 580;
 
   function smoothScroll(element, distance) {
     const start = element.scrollLeft;
@@ -367,40 +402,20 @@ document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
     function animate(time) {
       const elapsed = time - startTime;
       const progress = Math.min(elapsed / DURATION, 1);
-      const eased = easeOutCubic(progress);
-
-      element.scrollLeft = start + distance * eased;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
+      element.scrollLeft = start + distance * easeOutCubic(progress);
+      if (progress < 1) requestAnimationFrame(animate);
     }
 
     requestAnimationFrame(animate);
   }
 
-  btnRight?.addEventListener('click', () => {
-    smoothScroll(scroller, SCROLL_DISTANCE);
-  });
-
-  btnLeft?.addEventListener('click', () => {
-    smoothScroll(scroller, -SCROLL_DISTANCE);
-  });
+  btnRight?.addEventListener('click', () => smoothScroll(scroller, SCROLL_DISTANCE));
+  btnLeft?.addEventListener('click', () => smoothScroll(scroller, -SCROLL_DISTANCE));
 
   function updateButtons() {
     const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-
-    if (scroller.scrollLeft > 10) {
-      btnLeft?.classList.add('show');
-    } else {
-      btnLeft?.classList.remove('show');
-    }
-
-    if (scroller.scrollLeft < maxScroll - 10) {
-      btnRight?.classList.add('show');
-    } else {
-      btnRight?.classList.remove('show');
-    }
+    btnLeft?.classList.toggle('show', scroller.scrollLeft > 10);
+    btnRight?.classList.toggle('show', scroller.scrollLeft < maxScroll - 10);
   }
 
   updateButtons();
@@ -416,5 +431,3 @@ function redirectSearch() {
   return false;
 }
 </script>
-
-
