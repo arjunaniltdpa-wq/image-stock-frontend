@@ -133,7 +133,7 @@
 const API_BASE = "https://api.pixeora.com";
 
 const params = new URLSearchParams(window.location.search);
-const query = params.get("query") || params.get("q");
+let query = params.get("query") || params.get("q");
 
 const keywordSpan = document.querySelector(".keyword");
 const imageCountDiv = document.getElementById("image-count");
@@ -381,15 +381,37 @@ window.addEventListener("scroll", () => {
 /* SEARCH REDIRECT */
 function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
-  if (q) window.location.href = `search.html?query=${encodeURIComponent(q)}`;
+  if (!q) return false;
+
+  // 🔥 UPDATE GLOBAL QUERY
+  query = q;
+
+  history.pushState({}, "", `?query=${encodeURIComponent(q)}`);
+
+  nextCursor = null;
+  totalImages = 0;
+
+  cols.forEach(c => (c.innerHTML = ""));
+  colIndex = 0;
+  document.getElementById("loadMoreSection").style.display = "none";
+
+  keywordSpan.textContent = `"${q[0].toUpperCase() + q.slice(1)}"`;
+
+  loadSearchFirst(q);
   return false;
 }
 
-/* START */
-if (query) {
-  keywordSpan.textContent = `"${query[0].toUpperCase() + query.slice(1)}"`;
-  loadSearchFirst(query);
-}
+window.addEventListener("popstate", () => {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("query");
+  if (q) {
+    query = q; // 🔥 important
+    keywordSpan.textContent = `"${q[0].toUpperCase() + q.slice(1)}"`;
+    loadSearchFirst(q);
+  }
+});
+
+
 /* ================= Top Button ================= */
 const goTopBtn = document.getElementById("goTopBtn");
 
