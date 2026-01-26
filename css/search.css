@@ -587,10 +587,10 @@ body {
 .load-more-btn {
   background: #333333;
   color: #ffffff;
-  padding: 11px 70px;
+  padding: 11px 50px;
   font-size: 15px;
   border: none;
-  border-radius: 16px;
+  border-radius: 30px;
   cursor: pointer;
   font-family: system-ui, sans-serif;
   transition: 0.2s ease-in-out;
@@ -655,4 +655,25 @@ body {
     right: 18px;
     border-radius: 12px;
   }
+}
+.image-wrapper {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #eee 25%,
+    #f5f5f5 37%,
+    #eee 63%
+  );
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
 }
