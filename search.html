@@ -133,7 +133,7 @@
 const API_BASE = "https://api.pixeora.com";
 
 const params = new URLSearchParams(window.location.search);
-const query = params.get("query") || params.get("q");
+let query = params.get("query") || params.get("q");
 
 const keywordSpan = document.querySelector(".keyword");
 const imageCountDiv = document.getElementById("image-count");
@@ -411,6 +411,11 @@ window.addEventListener("popstate", () => {
   }
 });
 
+// 🔥 INITIAL PAGE LOAD
+if (query) {
+  keywordSpan.textContent = `"${query[0].toUpperCase() + query.slice(1)}"`;
+  loadSearchFirst(query);
+}
 
 /* ================= Top Button ================= */
 const goTopBtn = document.getElementById("goTopBtn");
