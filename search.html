@@ -383,21 +383,7 @@ function redirectSearch() {
   const q = document.getElementById("searchInput").value.trim();
   if (!q) return false;
 
-  // 🔥 UPDATE GLOBAL QUERY
-  query = q;
-
-  history.pushState({}, "", `?query=${encodeURIComponent(q)}`);
-
-  nextCursor = null;
-  totalImages = 0;
-
-  cols.forEach(c => (c.innerHTML = ""));
-  colIndex = 0;
-  document.getElementById("loadMoreSection").style.display = "none";
-
-  keywordSpan.textContent = `"${q[0].toUpperCase() + q.slice(1)}"`;
-
-  loadSearchFirst(q);
+  window.location.href = `/search.html?query=${encodeURIComponent(q)}`;
   return false;
 }
 
