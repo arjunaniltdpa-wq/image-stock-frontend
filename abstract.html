@@ -265,6 +265,24 @@
 <script>
 const API_BASE = "https://api.pixeora.com";
 
+/* ================= STRIP IMAGE OBSERVER ================= */
+const stripImageObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const img = entry.target;
+    img.src = img.dataset.src;
+    img.onload = () => {
+      img.parentElement.classList.add("loaded");
+    };
+
+    stripImageObserver.unobserve(img);
+  });
+}, {
+  rootMargin: "600px 0px"
+});
+
+/* ================= LOAD STRIP ================= */
 async function loadStrip(containerId, keyword, limit = 10) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -290,7 +308,7 @@ async function loadStrip(containerId, keyword, limit = 10) {
 
     container.innerHTML = "";
 
-    images.forEach(img => {
+    images.forEach((img, index) => {
       const file = img.thumbnailFileName || img.fileName;
       const imgUrl = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
@@ -298,17 +316,26 @@ async function loadStrip(containerId, keyword, limit = 10) {
       a.href = `/photo/${img.slug}-${img._id}`;
       a.className = "sub-image";
 
-      const image = new Image();
-      image.src = imgUrl;
+      const image = document.createElement("img");
+      image.dataset.src = imgUrl;
       image.loading = "lazy";
+      image.decoding = "async";
       image.alt = img.alt || img.title || "";
-
-      image.onload = () => {
-        a.classList.add("loaded");
-      };
 
       a.appendChild(image);
       container.appendChild(a);
+
+      /* 2️⃣ OBSERVE IMAGE (REAL LAZY LOAD) */
+      stripImageObserver.observe(image);
+
+      /* 3️⃣ PRELOAD FIRST 4 IMAGES OF FIRST STRIP ONLY */
+      if (index < 4 && containerId === "geometricStrip") {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "image";
+        link.href = imgUrl;
+        document.head.appendChild(link);
+      }
     });
 
   } catch (err) {
@@ -316,19 +343,20 @@ async function loadStrip(containerId, keyword, limit = 10) {
   }
 }
 
-/* LOAD */
-document.addEventListener("DOMContentLoaded", () => {
- loadStrip("geometricStrip", "geometric abstract pattern");
-  loadStrip("fluidStrip", "fluid marble abstract art");
-  loadStrip("minimalStrip", "minimal abstract design");
-  loadStrip("colorfulStrip", "colorful abstract art");
-  loadStrip("abstract3DStrip", "3d abstract art");
-  loadStrip("textureStrip", "abstract texture background");
+/* ================= SEQUENTIAL LOAD ================= */
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadStrip("geometricStrip", "geometric abstract pattern");
+  await loadStrip("fluidStrip", "fluid marble abstract art");
+  await loadStrip("minimalStrip", "minimal abstract design");
+  await loadStrip("colorfulStrip", "colorful abstract art");
+  await loadStrip("abstract3DStrip", "3d abstract art");
+  await loadStrip("textureStrip", "abstract texture background");
 
-  loadStrip("abstractStrip", "abstract", 20);
-  loadStrip("abstractWallpaperStrip", "abstract wallpaper", 20);
+  await loadStrip("abstractStrip", "abstract", 20);
+  await loadStrip("abstractWallpaperStrip", "abstract wallpaper", 20);
 });
 
+/* ================= MOUSE WHEEL HORIZONTAL SCROLL ================= */
 document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
   .forEach(scroller => {
     scroller.addEventListener('wheel', (e) => {
@@ -338,7 +366,6 @@ document.querySelectorAll('.subcategory-scroll, .horizontal-scroll')
       }
     }, { passive: false });
   });
-
 </script>
 
 <script>
@@ -349,8 +376,8 @@ document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
 
   if (!scroller) return;
 
-  const SCROLL_DISTANCE = 560;   // how far per click
-  const DURATION = 580;          // ms (lower = faster)
+  const SCROLL_DISTANCE = 560;
+  const DURATION = 580;
 
   function smoothScroll(element, distance) {
     const start = element.scrollLeft;
