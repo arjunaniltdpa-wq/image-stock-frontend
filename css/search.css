@@ -224,6 +224,10 @@ body {
     opacity: 1;
     transform: scale(1.15);
 }
+.image-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px 200px;
+}
 
 /* ⭐ Force exactly 3 columns on iPad and tablets */
 @media (min-width: 700px) and (max-width: 1024px) {

@@ -169,7 +169,7 @@ document.addEventListener("click", (ev) => {
 }, true);
 
 /* CARD TEMPLATE */
-function createCard(img) {
+function createCard(img, index = 999) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
@@ -182,12 +182,12 @@ function createCard(img) {
       <div class="skeleton"></div>
       <a href="/photo/${img.slug || ""}-${img._id || ""}" class="image-link">
         <img
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
           data-src="${url}"
           loading="lazy"
           decoding="async"
           class="lazy-img image-load"
           alt="${(img.alt || img.title || "")}"
+          ${index < 2 ? 'fetchpriority="high"' : ''}
         >
       </a>
       <span class="download-overlay" data-file="${safeFileAttr}"></span>
@@ -236,11 +236,27 @@ function lazyLoadInit() {
     imageObserver.observe(img);
   });
 }
+function preloadFirstRow(images) {
+  images.slice(0, 4).forEach(img => {
+    const file = img.thumbnailFileName || img.fileName;
+    if (!file) return;
+
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+    link.fetchpriority = "high";
+    document.head.appendChild(link);
+  });
+}
 
 /* ================= LOAD FIRST SEARCH RESULTS ================= */
 /* ================= LOAD FIRST SEARCH RESULTS ================= */
-const FIRST_RENDER_COUNT = 10;
-const MAX_INITIAL_RENDER = 50;
+const FIRST_RENDER_COUNT = 8;   // instant
+const SCROLL_BATCH = 12;       // load on scroll
+
+let bufferedImages = [];
+let bufferIndex = 0;
 
 async function loadSearchFirst(q) {
   try {
@@ -249,16 +265,17 @@ async function loadSearchFirst(q) {
     );
     const data = await res.json();
 
-    const images = data.images || [];
+    bufferedImages = data.images || [];
+    bufferIndex = 0;
     nextCursor = data.nextCursor;
-    totalImages = data.total || images.length;
+    totalImages = data.total || bufferedImages.length;
 
     imageCountDiv.textContent = `${totalImages} Images`;
 
     cols.forEach(c => (c.innerHTML = ""));
     colIndex = 0;
 
-    if (!images.length) {
+    if (!bufferedImages.length) {
       masonry.innerHTML = "<p>No images found.</p>";
       loadRelatedInitial(q);
       return;
@@ -266,37 +283,39 @@ async function loadSearchFirst(q) {
 
     relatedSection.style.display = "none";
 
-    /* 1️⃣ Show first 10 images instantly */
-    images.slice(0, FIRST_RENDER_COUNT).forEach(img =>
-      addToNextColumn(createCard(img))
-    );
+    /* 🔥 1️⃣ INSTANT render first 8 */
+    bufferedImages.slice(0, FIRST_RENDER_COUNT).forEach((img, i) => {
+      addToNextColumn(createCard(img, i));
+    });
 
+    preloadFirstRow(bufferedImages);
+
+    bufferIndex = FIRST_RENDER_COUNT;
     lazyLoadInit();
 
-    /* 2️⃣ Render remaining images (up to 50) slightly later */
-    setTimeout(() => {
-      images.slice(FIRST_RENDER_COUNT, MAX_INITIAL_RENDER).forEach(img =>
-        addToNextColumn(createCard(img))
-      );
-
-      lazyLoadInit();
-      toggleLoadMore(); // ✅ button logic runs ONLY here
-    }, 100);
-
-    /* 🔥 Preload ONLY images that are visible initially */
-    images.slice(0, FIRST_RENDER_COUNT).forEach(img => {
-      const link = document.createElement("link");
-      link.rel = "preload";
-      link.as = "image";
-      link.href = `https://cdn.pixeora.com/${encodeURIComponent(
-        img.thumbnailFileName || img.fileName
-      )}`;
-      document.head.appendChild(link);
+    /* 🔥 Let browser paint before anything else */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        maybeAppendMore();
+      });
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("SEARCH FIRST ERROR:", err);
   }
+}
+function maybeAppendMore() {
+  if (bufferIndex >= bufferedImages.length) return;
+
+  const batch = bufferedImages.slice(
+    bufferIndex,
+    bufferIndex + SCROLL_BATCH
+  );
+
+  batch.forEach(img => addToNextColumn(createCard(img)));
+  bufferIndex += SCROLL_BATCH;
+
+  lazyLoadInit();
 }
 
 /* ================= LOAD MORE BUTTON ================= */
@@ -369,14 +388,23 @@ function loadNextRelatedBatch() {
   lazyLoadInit();
 }
 
+let scrollTick = false;
+
 window.addEventListener("scroll", () => {
-  if (relatedSection.style.display === "block") {
-    const rect = relatedSection.getBoundingClientRect();
-    if (rect.bottom - window.innerHeight < 600) {
-      loadNextRelatedBatch();
+  if (scrollTick) return;
+  scrollTick = true;
+
+  requestAnimationFrame(() => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 1200
+    ) {
+      maybeAppendMore();
     }
-  }
+    scrollTick = false;
+  });
 });
+
 
 /* SEARCH REDIRECT */
 function redirectSearch() {
@@ -407,16 +435,11 @@ if (query) {
 const goTopBtn = document.getElementById("goTopBtn");
 
 window.addEventListener("scroll", () => {
-  if (window.scrollY > 400) {
-    goTopBtn.style.display = "flex";
-    goTopBtn.style.opacity = "1";
-  } else {
-    goTopBtn.style.opacity = "0";
-    setTimeout(() => {
-      if (window.scrollY < 400) {
-        goTopBtn.style.display = "none";
-      }
-    }, 300);
+  if (
+    window.innerHeight + window.scrollY >=
+    document.body.offsetHeight - 1200
+  ) {
+    maybeAppendMore();
   }
 });
 
