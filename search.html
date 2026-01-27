@@ -173,8 +173,8 @@ function createCard(img) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const file = img.thumbnailFileName || img.fileName || "";
-  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+  const url = getThumbUrl(img);
+
   const safeFileAttr = String(img.fileName || "").replace(/"/g, "&quot;");
 
   div.innerHTML = `
@@ -194,6 +194,21 @@ function createCard(img) {
     </div>
   `;
   return div;
+}
+
+function getThumbUrl(img) {
+  // New images (WebP)
+  if (img.thumbWebpUrl) {
+    return img.thumbWebpUrl;
+  }
+
+  // Old images (JPEG thumbnail)
+  if (img.thumbnailFileName) {
+    return `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`;
+  }
+
+  // Fallback (original)
+  return `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 }
 
 /* COLUMN INSERT */
@@ -288,9 +303,7 @@ async function loadSearchFirst(q) {
       const link = document.createElement("link");
       link.rel = "preload";
       link.as = "image";
-      link.href = `https://cdn.pixeora.com/${encodeURIComponent(
-        img.thumbnailFileName || img.fileName
-      )}`;
+      link.href = getThumbUrl(img);
       document.head.appendChild(link);
     });
 
