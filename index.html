@@ -203,24 +203,10 @@ function downloadImage(rawName) {
 
 function createImageCard(img) {
   const div = document.createElement("div");
-  const url = getThumbnailUrl(img);
-
   div.classList.add("image-item");
-  
-  function getThumbnailUrl(img) {
-    // 1️⃣ New images (WebP thumbnail)
-    if (img.thumbWebpUrl) {
-      return img.thumbWebpUrl;
-    }
 
-    // 2️⃣ Old images (JPEG thumbnail file)
-    if (img.thumbnailFileName) {
-      return `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`;
-    }
-
-    // 3️⃣ Absolute fallback (original image)
-    return `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
-  }
+  const file = img.thumbnailFileName || img.fileName;
+  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
   div.innerHTML = `
     <div class="image-wrapper">

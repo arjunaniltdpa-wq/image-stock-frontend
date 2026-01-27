@@ -224,21 +224,6 @@ function detectMainSubject(title) {
 /* ---------------------------------- */
 /* UNIVERSAL ID + SLUG (FINAL FIX) */
 /* ---------------------------------- */
-function getThumbUrl(img) {
-  if (img.thumbWebpUrl) return img.thumbWebpUrl;
-  if (img.thumbnailFileName)
-    return `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`;
-  return img.fileName
-    ? `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`
-    : "";
-}
-
-function getPreviewUrl(img) {
-  if (img.previewWebpUrl) return img.previewWebpUrl;
-  return img.fileName
-    ? `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`
-    : "";
-}
 
 let rawSlug = "";
 
@@ -329,11 +314,13 @@ async function loadImageDetails() {
 
     // Normalize ID
     if (!img._id && img.id) img._id = img.id;
-    
-    const file = img.fileName ? encodeURIComponent(img.fileName) : "";
+
     // CDN URLs
-    const thumbUrl = getThumbUrl(img);
-    const previewUrl = getPreviewUrl(img);
+    const file = encodeURIComponent(img.fileName || img.file || "");
+    const thumbUrl = img.thumbnailFileName
+      ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
+      : (file ? `https://cdn.pixeora.com/thumbs/${file}` : "");
+
     const originalUrl = file
       ? `https://cdn.pixeora.com/${file}`
       : (img.url || "");
@@ -341,39 +328,35 @@ async function loadImageDetails() {
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    // 1️⃣ Thumb (instant)
+    // Thumbnail first
     if (thumbUrl) {
       mainImg.src = thumbUrl;
       mainImg.style.filter = "blur(3px)";
-      mainImg.style.opacity = "0.25";
+      mainImg.style.opacity = "0.2";
+    } else if (originalUrl) {
+      mainImg.src = originalUrl;
+      mainImg.style.filter = "blur(3px)";
+      mainImg.style.opacity = "0.2";
     }
 
     skeleton.style.display = "none";
 
-    // 2️⃣ Preview WebP (LCP image for new uploads)
-    if (previewUrl) {
-      const preview = new Image();
-      preview.src = previewUrl;
-
-      preview.onload = () => {
-        mainImg.src = previewUrl;
+    // HD preload
+    if (originalUrl) {
+      const hd = new Image();
+      hd.src = originalUrl;
+      hd.onload = () => {
+        mainImg.src = originalUrl;
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
 
-        if (preview.naturalWidth && preview.naturalHeight) {
+        if (hd.naturalWidth && hd.naturalHeight) {
           mainImg.style.aspectRatio =
-            `${preview.naturalWidth}/${preview.naturalHeight}`;
+            `${hd.naturalWidth}/${hd.naturalHeight}`;
         }
       };
     }
-
-    // 3️⃣ Original preload (background, NOT LCP)
-    if (originalUrl) {
-      const hd = new Image();
-      hd.src = originalUrl;
-    }
-
 
     // Title
     const safeTitle =
@@ -403,7 +386,7 @@ async function loadImageDetails() {
 
       "name": safeTitle,
       "description": img.description || "",
-      "contentUrl": previewUrl || originalUrl,
+      "contentUrl": originalUrl,
       "thumbnailUrl": thumbUrl,
 
       "representativeOfPage": true,
