@@ -173,7 +173,9 @@ function createCard(img, index = 999) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  const file = img.thumbnailFileName || img.fileName || "";
+  if (!img.thumbnailFileName) return null;
+  const file = img.thumbnailFileName;
+
   const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
   const safeFileAttr = String(img.fileName || "").replace(/"/g, "&quot;");
 
@@ -227,7 +229,7 @@ function lazyLoadInit() {
         obs.unobserve(img);
       });
     }, {
-      rootMargin: "1500px 0px", // aggressive preloading like Unsplash
+      rootMargin: "600px 0px", // aggressive preloading like Unsplash
       threshold: 0.01
     });
   }
@@ -260,6 +262,22 @@ let bufferIndex = 0;
 
 async function loadSearchFirst(q) {
   try {
+    // 🟢 1️⃣ INSTANT skeletons (NO WAIT)
+    cols.forEach(c => (c.innerHTML = ""));
+    colIndex = 0;
+
+    for (let i = 0; i < FIRST_RENDER_COUNT; i++) {
+      const sk = document.createElement("div");
+      sk.className = "image-item";
+      sk.innerHTML = `
+        <div class="image-wrapper">
+          <div class="skeleton"></div>
+        </div>
+      `;
+      addToNextColumn(sk);
+    }
+
+    // 🟢 2️⃣ Fetch AFTER UI paints
     const res = await fetch(
       `${API_BASE}/api/search/first?q=${encodeURIComponent(q)}&limit=50`
     );
@@ -272,6 +290,7 @@ async function loadSearchFirst(q) {
 
     imageCountDiv.textContent = `${totalImages} Images`;
 
+    // 🟢 3️⃣ Replace skeletons with REAL images
     cols.forEach(c => (c.innerHTML = ""));
     colIndex = 0;
 
@@ -283,7 +302,6 @@ async function loadSearchFirst(q) {
 
     relatedSection.style.display = "none";
 
-    /* 🔥 1️⃣ INSTANT render first 8 */
     bufferedImages.slice(0, FIRST_RENDER_COUNT).forEach((img, i) => {
       addToNextColumn(createCard(img, i));
     });
@@ -292,18 +310,13 @@ async function loadSearchFirst(q) {
 
     bufferIndex = FIRST_RENDER_COUNT;
     lazyLoadInit();
-
-    /* 🔥 Let browser paint before anything else */
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        maybeAppendMore();
-      });
-    });
+    toggleLoadMore();
 
   } catch (err) {
     console.error("SEARCH FIRST ERROR:", err);
   }
 }
+
 function maybeAppendMore() {
   if (bufferIndex >= bufferedImages.length) return;
 
@@ -323,13 +336,13 @@ function maybeAppendMore() {
 function toggleLoadMore() {
   const section = document.getElementById("loadMoreSection");
 
-  // Show button ONLY if another page truly exists
-  if (nextCursor && totalImages > MAX_INITIAL_RENDER) {
+  if (nextCursor) {
     section.style.display = "block";
   } else {
     section.style.display = "none";
   }
 }
+
 
 /* ================= LOAD NEXT SEARCH RESULTS ================= */
 
@@ -391,20 +404,23 @@ function loadNextRelatedBatch() {
 let scrollTick = false;
 
 window.addEventListener("scroll", () => {
-  if (scrollTick) return;
-  scrollTick = true;
+  const scrollY = window.scrollY;
 
-  requestAnimationFrame(() => {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 1200
-    ) {
-      maybeAppendMore();
-    }
-    scrollTick = false;
-  });
+  // 🔼 Show / hide GO TOP button
+  if (scrollY > 600) {
+    goTopBtn.style.display = "flex";
+  } else {
+    goTopBtn.style.display = "none";
+  }
+
+  // ⬇️ Infinite scroll
+  if (
+    window.innerHeight + scrollY >=
+    document.body.offsetHeight - 1200
+  ) {
+    maybeAppendMore();
+  }
 });
-
 
 /* SEARCH REDIRECT */
 function redirectSearch() {

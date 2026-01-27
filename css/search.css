@@ -664,20 +664,3 @@ body {
   overflow: hidden;
   border-radius: 12px;
 }
-
-.skeleton {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    #eee 25%,
-    #f5f5f5 37%,
-    #eee 63%
-  );
-  animation: shimmer 1.2s infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
