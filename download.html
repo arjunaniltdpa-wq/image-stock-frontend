@@ -326,49 +326,35 @@ async function loadImageDetails() {
     const skeleton = document.getElementById("main-skeleton");
 
     // Thumbnail first
-    if (thumbUrl) {
-      mainImg.src = thumbUrl;
-      mainImg.style.filter = "blur(3px)";
-      mainImg.style.opacity = "0.2";
-    } else if (originalUrl) {
-      mainImg.src = originalUrl;
-      mainImg.style.filter = "blur(3px)";
-      mainImg.style.opacity = "0.2";
-    }
+    // Placeholder ONLY (never thumbnail as main)
+    mainImg.src = "https://cdn.pixeora.com/seo-placeholder.jpg";
+    mainImg.style.filter = "blur(6px)";
+    mainImg.style.opacity = "0.4";
 
     skeleton.style.display = "none";
 
     // HD preload
-    const finalSrc = previewUrl || thumbUrl;
-
-    if (finalSrc) {
-      const hd = new Image();
-      hd.src = finalSrc;
-      
-      hd.onload = () => {
-        mainImg.src = finalSrc;
-        mainImg.style.transition = "filter .4s ease, opacity .3s ease";
-        mainImg.style.filter = "blur(0)";
-        mainImg.style.opacity = "1";
-
-        if (hd.naturalWidth && hd.naturalHeight) {
-          mainImg.style.aspectRatio =
-            `${hd.naturalWidth}/${hd.naturalHeight}`;
-        }
-      };
-
-      hd.decode?.().then(() => {
-        mainImg.src = finalSrc;
-        mainImg.style.transition = "filter .4s ease, opacity .3s ease";
-        mainImg.style.filter = "blur(0)";
-        mainImg.style.opacity = "1";
-
-        if (hd.naturalWidth && hd.naturalHeight) {
-          mainImg.style.aspectRatio =
-            `${hd.naturalWidth}/${hd.naturalHeight}`;
-        }
-      });
+    // 🔒 MAIN IMAGE = PREVIEW ONLY
+    if (!previewUrl) {
+      console.warn("Preview missing for:", img.fileName);
+      return; // do NOT fallback to thumbnail
     }
+
+    const hd = new Image();
+    hd.src = previewUrl;
+    hd.decoding = "async";
+
+    hd.onload = () => {
+      mainImg.src = previewUrl;
+      mainImg.style.transition = "filter .4s ease, opacity .3s ease";
+      mainImg.style.filter = "blur(0)";
+      mainImg.style.opacity = "1";
+
+      if (hd.naturalWidth && hd.naturalHeight) {
+        mainImg.style.aspectRatio =
+          `${hd.naturalWidth}/${hd.naturalHeight}`;
+      }
+    };
 
     // Title
     const safeTitle =
