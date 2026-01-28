@@ -335,19 +335,22 @@ async function loadImageDetails() {
     skeleton.style.display = "none";
 
     // --- 2️⃣ Upgrade ONLY to preview.webp ---
-    if (previewUrl) {
-      const previewImg = new Image();
-      previewImg.src = previewUrl;
+    // --- 2️⃣ Decide FINAL image (preview > original) ---
+    const finalMainSrc = previewUrl || originalUrl;
 
-      previewImg.onload = () => {
-        mainImg.src = previewUrl;
+    if (finalMainSrc) {
+      const finalImg = new Image();
+      finalImg.src = finalMainSrc;
+
+      finalImg.onload = () => {
+        mainImg.src = finalMainSrc;
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
 
-        if (previewImg.naturalWidth && previewImg.naturalHeight) {
+        if (finalImg.naturalWidth && finalImg.naturalHeight) {
           mainImg.style.aspectRatio =
-            `${previewImg.naturalWidth}/${previewImg.naturalHeight}`;
+            `${finalImg.naturalWidth}/${finalImg.naturalHeight}`;
         }
       };
     }
