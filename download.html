@@ -103,10 +103,10 @@
         <img
           id="download-image"
           class="image-load protected-img"
-          src="https://cdn.pixeora.com/seo-placeholder.jpg"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
           decoding="async"
           loading="eager"
-          alt="Free high quality stock image from Pixeora"
+          alt="High quality stock image preview"
         />
         <noscript>
           <img
@@ -325,36 +325,32 @@ async function loadImageDetails() {
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
-    // Thumbnail first
-    // Placeholder ONLY (never thumbnail as main)
-    mainImg.src = "https://cdn.pixeora.com/seo-placeholder.jpg";
-    mainImg.style.filter = "blur(6px)";
-    mainImg.style.opacity = "0.4";
+    // --- 1️⃣ Show thumbnail immediately (FAST) ---
+    if (thumbUrl) {
+      mainImg.src = thumbUrl;
+      mainImg.style.filter = "blur(6px)";
+      mainImg.style.opacity = "0.4";
+    }
 
     skeleton.style.display = "none";
 
-    // HD preload
-    // 🔒 MAIN IMAGE = PREVIEW ONLY
-    if (!previewUrl) {
-      console.warn("Preview missing for:", img.fileName);
-      return; // do NOT fallback to thumbnail
+    // --- 2️⃣ Upgrade ONLY to preview.webp ---
+    if (previewUrl) {
+      const previewImg = new Image();
+      previewImg.src = previewUrl;
+
+      previewImg.onload = () => {
+        mainImg.src = previewUrl;
+        mainImg.style.transition = "filter .4s ease, opacity .3s ease";
+        mainImg.style.filter = "blur(0)";
+        mainImg.style.opacity = "1";
+
+        if (previewImg.naturalWidth && previewImg.naturalHeight) {
+          mainImg.style.aspectRatio =
+            `${previewImg.naturalWidth}/${previewImg.naturalHeight}`;
+        }
+      };
     }
-
-    const hd = new Image();
-    hd.src = previewUrl;
-    hd.decoding = "async";
-
-    hd.onload = () => {
-      mainImg.src = previewUrl;
-      mainImg.style.transition = "filter .4s ease, opacity .3s ease";
-      mainImg.style.filter = "blur(0)";
-      mainImg.style.opacity = "1";
-
-      if (hd.naturalWidth && hd.naturalHeight) {
-        mainImg.style.aspectRatio =
-          `${hd.naturalWidth}/${hd.naturalHeight}`;
-      }
-    };
 
     // Title
     const safeTitle =
