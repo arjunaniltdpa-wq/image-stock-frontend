@@ -428,8 +428,6 @@ async function loadImageDetails() {
   }
 }
 
-
-
 /* ---------------------------------- */
 /* RELATED SYSTEM – STABLE + SEARCH MATCH */
 /* ---------------------------------- */
@@ -568,8 +566,8 @@ function displayRelated(images) {
 
   images.forEach(img => {
 
-    const safeSlug =
-      img.slug || slugify(img.title || img.fileName || "image");
+    // ✅ ALWAYS use DB slug (already includes _id)
+    const finalSlug = img.slug;
 
     const thumb =
       img.thumbnailFileName
@@ -582,7 +580,7 @@ function displayRelated(images) {
     card.innerHTML = `
       <div class="image-wrapper">
         <div class="skeleton"></div>
-        <a href="/photo/${safeSlug}-${img._id}">
+        <a href="/photo/${finalSlug}">
           <img data-src="${thumb}" class="lazy-img image-load" alt="${img.title || ''}">
         </a>
         <span class="download-overlay"
@@ -590,7 +588,7 @@ function displayRelated(images) {
         </span>
       </div>
     `;
-
+    
     cols[relatedColIndex].appendChild(card);
     relatedColIndex = (relatedColIndex + 1) % cols.length;
   });
