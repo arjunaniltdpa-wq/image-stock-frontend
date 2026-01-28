@@ -37,13 +37,6 @@
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
 
-  <link
-  rel="preload"
-  as="image"
-  href="https://cdn.pixeora.com/seo-placeholder.jpg"
-  fetchpriority="high"
-  />
-
   <!-- Organization Schema -->
   <script type="application/ld+json">
   {
@@ -111,9 +104,9 @@
           id="download-image"
           class="image-load protected-img"
           src="https://cdn.pixeora.com/seo-placeholder.jpg"
-          data-dynamic="true"
+          decoding="async"
+          loading="eager"
           alt="Free high quality stock image from Pixeora"
-          fetchpriority="high"
         />
         <noscript>
           <img
@@ -346,11 +339,12 @@ async function loadImageDetails() {
     skeleton.style.display = "none";
 
     // HD preload
-    const finalSrc = previewUrl || originalUrl;
+    const finalSrc = previewUrl || thumbUrl;
 
     if (finalSrc) {
       const hd = new Image();
       hd.src = finalSrc;
+      
       hd.onload = () => {
         mainImg.src = finalSrc;
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
@@ -362,6 +356,18 @@ async function loadImageDetails() {
             `${hd.naturalWidth}/${hd.naturalHeight}`;
         }
       };
+
+      hd.decode?.().then(() => {
+        mainImg.src = finalSrc;
+        mainImg.style.transition = "filter .4s ease, opacity .3s ease";
+        mainImg.style.filter = "blur(0)";
+        mainImg.style.opacity = "1";
+
+        if (hd.naturalWidth && hd.naturalHeight) {
+          mainImg.style.aspectRatio =
+            `${hd.naturalWidth}/${hd.naturalHeight}`;
+        }
+      });
     }
 
     // Title
