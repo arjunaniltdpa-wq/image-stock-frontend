@@ -321,6 +321,10 @@ async function loadImageDetails() {
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
       : (file ? `https://cdn.pixeora.com/thumbs/${file}` : "");
 
+    const previewUrl = img.previewFileName
+      ? `https://cdn.pixeora.com/${encodeURIComponent(img.previewFileName)}`
+      : null;
+
     const originalUrl = file
       ? `https://cdn.pixeora.com/${file}`
       : (img.url || "");
@@ -342,11 +346,13 @@ async function loadImageDetails() {
     skeleton.style.display = "none";
 
     // HD preload
-    if (originalUrl) {
+    const finalSrc = previewUrl || originalUrl;
+
+    if (finalSrc) {
       const hd = new Image();
-      hd.src = originalUrl;
+      hd.src = finalSrc;
       hd.onload = () => {
-        mainImg.src = originalUrl;
+        mainImg.src = finalSrc;
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
@@ -386,7 +392,7 @@ async function loadImageDetails() {
 
       "name": safeTitle,
       "description": img.description || "",
-      "contentUrl": originalUrl,
+      "contentUrl": previewUrl || originalUrl,
       "thumbnailUrl": thumbUrl,
 
       "representativeOfPage": true,
