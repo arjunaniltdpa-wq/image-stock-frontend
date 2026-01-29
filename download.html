@@ -53,7 +53,7 @@
   if (window.location.pathname.startsWith("/photo/")) {
     const canonical = document.createElement("link");
     canonical.rel = "canonical";
-    canonical.href = `https://pixeora.com/photo/${rawSlug.replace(/(-[a-f0-9]{24}){2,}$/i, "-$1")}`;
+    canonical.href = "https://pixeora.com" + window.location.pathname;
     document.head.appendChild(canonical);
   }
   </script>
@@ -260,12 +260,6 @@ if (
   );
 }
 
-// ✅ FORCE CLEAN URL (ONLY ONE ID)
-if (imageId && rawSlug.endsWith(`-${imageId}-${imageId}`)) {
-  const fixedSlug = rawSlug.replace(`-${imageId}`, "");
-  window.history.replaceState(null, "", `/photo/${fixedSlug}`);
-}
-
 /* ---------------------------------- */
 /* DOWNLOAD HELPER — FORCED DOWNLOAD */
 /* ---------------------------------- */
@@ -283,6 +277,7 @@ async function downloadImage(rawName) {
   // Force download using backend (works on all devices)
   window.location.href = apiURL;
 }
+
 
 async function loadImageDetails() {
   try {
@@ -433,6 +428,7 @@ async function loadImageDetails() {
     document.getElementById("image-name").textContent = "Image Not Found.";
   }
 }
+
 
 /* ---------------------------------- */
 /* RELATED SYSTEM – STABLE + SEARCH MATCH */
@@ -729,6 +725,33 @@ goTopBtn.addEventListener("click", () => {
 });
 
 /* ---------------------------------- */
+/* FORCE SLUG → SLUG-ID REDIRECT */
+/* ---------------------------------- */
+async function ensureCanonicalSlug() {
+  if (!rawSlug) return false;
+
+  if (/[a-f0-9]{24}$/i.test(rawSlug)) {
+    return false; // already canonical
+  }
+
+  try {
+    const res = await fetch(
+      `${API_BASE}/api/images/resolve-slug/${encodeURIComponent(rawSlug)}`
+    );
+
+    if (!res.ok) return false;
+
+    const data = await res.json();
+    if (!data?.slug) return false;
+
+    window.location.replace(`/photo/${data.slug}`);
+    return true; // redirect triggered
+  } catch {
+    return false;
+  }
+}
+
+/* ---------------------------------- */
 /* COOKIE + IMAGE LOAD + SEARCH — SINGLE CLEAN DOM READY */
 /* ---------------------------------- */
 document.addEventListener("DOMContentLoaded", function () {
@@ -745,8 +768,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* LOAD IMAGE DETAILS */
-  loadImageDetails();
+  /* ENSURE CANONICAL SLUG FIRST */
+  ensureCanonicalSlug().then((redirected) => {
+    if (redirected) return; // ⛔ stop, page will reload
+    loadImageDetails();
+  });
 
   /* COOKIE BANNER */
   const banner = document.getElementById("cookie-banner");
