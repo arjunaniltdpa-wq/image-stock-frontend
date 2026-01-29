@@ -53,7 +53,7 @@
   if (window.location.pathname.startsWith("/photo/")) {
     const canonical = document.createElement("link");
     canonical.rel = "canonical";
-    canonical.href = `https://pixeora.com/photo/${rawSlug.replace(/(-[a-f0-9]{24}){2,}$/i, "-$1")}`;
+    canonical.href = "https://pixeora.com" + window.location.pathname;
     document.head.appendChild(canonical);
   }
   </script>
@@ -258,11 +258,6 @@ if (
     "",
     `/photo/${rawSlug}`
   );
-}
-// ✅ FORCE CLEAN URL (ONLY ONE ID)
-if (imageId && rawSlug.endsWith(`-${imageId}-${imageId}`)) {
-  const fixedSlug = rawSlug.replace(`-${imageId}`, "");
-  window.history.replaceState(null, "", `/photo/${fixedSlug}`);
 }
 
 /* ---------------------------------- */
