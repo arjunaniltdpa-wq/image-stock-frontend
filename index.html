@@ -76,6 +76,11 @@
     gtag('config', 'G-VPX3GGRR7H');
   </script>
 
+  <!-- Google AdSense -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous"></script>
+  
 </head>
 
 <body>
@@ -144,8 +149,22 @@
     <path d="M8 5l8 7-8 7" />
   </svg>
 </button>
+</section> <!-- END BANNER -->
 
+<!-- TOP DISPLAY AD -->
+<section class="ad-section ad-top">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="1551401768"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
 </section>
+
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
   <!-- CATEGORIES -->
   <section class="categories">
     <div class="category-grid">
@@ -188,14 +207,12 @@ let page = 1;
 let loading = false;
 const isLargeScreen = window.innerWidth > 1800;
 const limit = 12;
-
-
+let imageCounter = 0;
 
 /* FIXED MASONRY COLUMNS (SAME AS SEARCH PAGE) */
 const masonry = document.getElementById("related-masonry");
 const cols = Array.from(masonry.querySelectorAll(".masonry-col"));
 let colIndex = 0;
-
 
 function downloadImage(rawName) {
   window.location.href = `${API_BASE}/api/images/download/${encodeURIComponent(rawName)}`;
@@ -238,6 +255,30 @@ function addToNextColumn(card) {
   colIndex = (colIndex + 1) % cols.length;
 }
 
+function createAdCard() {
+  const adDiv = document.createElement("div");
+  adDiv.classList.add("image-item", "ad-item");
+
+  adDiv.innerHTML = `
+    <div class="image-wrapper ad-wrapper">
+      <span class="ad-label">Advertisement</span>
+
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="2074145941"
+           data-ad-format="rectangle"></ins>
+    </div>
+  `;
+
+  setTimeout(() => {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  }, 100);
+
+  return adDiv;
+}
 
 async function loadInitialImages() {
   try {
@@ -253,6 +294,11 @@ async function loadInitialImages() {
 
     (data.images || []).forEach(img => {
       addToNextColumn(createImageCard(img));
+      imageCounter++;
+
+      if (imageCounter % 15 === 0) {
+        addToNextColumn(createAdCard());
+      }
     });
 
     lazyLoadInit();
@@ -288,6 +334,11 @@ async function loadImages() {
 
     (data.images || []).forEach(img => {
       addToNextColumn(createImageCard(img));
+      imageCounter++;
+
+      if (imageCounter % 15 === 0) {
+        addToNextColumn(createAdCard());
+      }
     });
 
     page++;
@@ -423,7 +474,6 @@ goTopBtn.addEventListener("click", () => {
   });
 });
 
-
 /* ================= COOKIE ================= */
 document.addEventListener("DOMContentLoaded", () => {
   const banner = document.getElementById("cookie-banner");
@@ -438,4 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
     banner.classList.remove("show");
   });
 });
+
+if (location.protocol === 'file:') {
+  document.querySelectorAll('.ad-section').forEach(ad => {
+    ad.style.display = 'none';
+  });
+}
+
 </script>
