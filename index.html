@@ -495,4 +495,17 @@ if (location.protocol === 'file:') {
   });
 }
 
+window.addEventListener("load", () => {
+  document.querySelectorAll(".ad-section").forEach(section => {
+    const ins = section.querySelector("ins.adsbygoogle");
+
+    // Give AdSense time to inject iframe
+    setTimeout(() => {
+      if (ins && ins.querySelector("iframe")) {
+        section.style.display = "block";
+      }
+    }, 1500);
+  });
+});
+
 </script>

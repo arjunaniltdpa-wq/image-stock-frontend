@@ -173,7 +173,6 @@ color: #222;
   overflow: hidden;
 }
 
-
 .banner-content {
 width: 100%;
 max-width: 900px;
@@ -823,4 +822,8 @@ color: white;
     text-align: center;
     margin-top: 10px;
   }
+}
+/* Hide ad containers by default */
+.ad-section {
+  display: none;
 }
