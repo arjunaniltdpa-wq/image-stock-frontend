@@ -664,3 +664,17 @@ body {
   overflow: hidden;
   border-radius: 12px;
 }
+.ad-search-top {
+  margin: 25px 0;
+  text-align: center;
+  min-height: 100px;
+}
+.ad-item {
+  min-height: 250px;
+}
+
+.ad-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

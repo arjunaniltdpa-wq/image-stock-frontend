@@ -38,6 +38,11 @@
   <meta property="og:description" content="Search free HD wallpapers and stock images on Pixeora.">
   <meta property="og:image" content="https://pixeora.com/images/og-image.jpg">
 
+  <!-- Google AdSense -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous"></script>
+
   <!-- Organization Schema -->
   <script type="application/ld+json">
   {
@@ -86,6 +91,19 @@
   <h1><span class="keyword">""</span></h1>
   <div class="image-count" id="image-count">0 Images</div>
 </div>
+
+<!-- 🔥 SEARCH TOP BANNER AD -->
+<section class="ad-section ad-search-top">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="1551401768"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</section>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 <button id="goTopBtn" aria-label="Go to top">
   <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -149,6 +167,8 @@ let colIndex = 0;
 /* Search Pagination */
 let nextCursor = null;
 let totalImages = 0;
+let imageCounter = 0;
+
 
 /* DOWNLOAD */
 function downloadImage(rawName) {
@@ -196,6 +216,31 @@ function createCard(img, index = 999) {
     </div>
   `;
   return div;
+}
+
+function createAdCard() {
+  const adDiv = document.createElement("div");
+  adDiv.classList.add("image-item", "ad-item");
+
+  adDiv.innerHTML = `
+    <div class="image-wrapper ad-wrapper">
+      <span class="ad-label">Advertisement</span>
+
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="5554225959"
+           data-ad-format="rectangle"></ins>
+    </div>
+  `;
+
+  setTimeout(() => {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  }, 100);
+
+  return adDiv;
 }
 
 /* COLUMN INSERT */
@@ -253,7 +298,6 @@ function preloadFirstRow(images) {
 }
 
 /* ================= LOAD FIRST SEARCH RESULTS ================= */
-/* ================= LOAD FIRST SEARCH RESULTS ================= */
 const FIRST_RENDER_COUNT = 8;   // instant
 const SCROLL_BATCH = 12;       // load on scroll
 
@@ -265,6 +309,7 @@ async function loadSearchFirst(q) {
     // 🟢 1️⃣ INSTANT skeletons (NO WAIT)
     cols.forEach(c => (c.innerHTML = ""));
     colIndex = 0;
+    imageCounter = 0;
 
     for (let i = 0; i < FIRST_RENDER_COUNT; i++) {
       const sk = document.createElement("div");
@@ -303,7 +348,7 @@ async function loadSearchFirst(q) {
     relatedSection.style.display = "none";
 
     bufferedImages.slice(0, FIRST_RENDER_COUNT).forEach((img, i) => {
-      addToNextColumn(createCard(img, i));
+      addCardWithAd(img, i);
     });
 
     preloadFirstRow(bufferedImages);
@@ -325,7 +370,7 @@ function maybeAppendMore() {
     bufferIndex + SCROLL_BATCH
   );
 
-  batch.forEach(img => addToNextColumn(createCard(img)));
+  batch.forEach(img => addCardWithAd(img));
   bufferIndex += SCROLL_BATCH;
 
   lazyLoadInit();
@@ -357,7 +402,7 @@ async function loadSearchNext() {
 
   nextCursor = data.nextCursor;
 
-  images.forEach(img => addToNextColumn(createCard(img)));
+  images.forEach(img => addCardWithAd(img));
 
   lazyLoadInit();
   toggleLoadMore();
@@ -393,7 +438,7 @@ function loadNextRelatedBatch() {
 
   let col = 0;
   batch.forEach(img => {
-    relatedCols[col].appendChild(createCard(img));
+    addCardWithAd(img);
     col = (col + 1) % relatedCols.length;
   });
 
@@ -465,6 +510,20 @@ goTopBtn.addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+
+function addCardWithAd(img, index = 999) {
+  const card = createCard(img, index);
+  if (!card) return;
+
+  addToNextColumn(card);
+  imageCounter++;
+
+  // Insert ad after every 15 images
+  if (imageCounter % 15 === 0) {
+    addToNextColumn(createAdCard());
+  }
+}
+
 
 /* COOKIE */
 document.addEventListener("DOMContentLoaded", function () {

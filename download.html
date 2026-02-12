@@ -66,6 +66,11 @@
     gtag('js', new Date());
     gtag('config', 'G-VPX3GGRR7H');
   </script>
+  <!-- Google AdSense -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
+    crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -90,6 +95,19 @@
   </div>
 </header>
 
+<!-- 🔥 TOP PHOTO PAGE AD -->
+<section class="ad-section ad-photo-top">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="1551401768"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</section>
+
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 <div class="page-wrapper">
   <main>
@@ -138,6 +156,19 @@
 
   </main>
 </div>
+
+<!-- 🔥 KEYWORDS AD -->
+<section class="ad-section ad-photo-mid">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="2074145941"
+       data-ad-format="rectangle"></ins>
+</section>
+
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 <button id="goTopBtn" aria-label="Go to top">
   <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -441,7 +472,7 @@ let relatedLoading = false;
 let loadedIds = new Set();
 let relatedColIndex = 0;
 let relatedCursor = null;
-
+let relatedImageCounter = 0;
 
 /* Helper slug */
 function slugify(text = "") {
@@ -460,6 +491,7 @@ function startRelatedSystem(keywords = []) {
   relatedLoading = false;
   relatedCursor = null;
   loadedIds.clear();
+  relatedImageCounter = 0;
 
   const grid = document.querySelector("#related-images");
   if (!grid) return;
@@ -568,7 +600,6 @@ function displayRelated(images) {
 
   images.forEach(img => {
 
-    // ✅ ALWAYS use DB slug (already includes _id)
     const finalSlug = img.slug;
 
     const thumb =
@@ -590,12 +621,43 @@ function displayRelated(images) {
         </span>
       </div>
     `;
-    
+
     cols[relatedColIndex].appendChild(card);
     relatedColIndex = (relatedColIndex + 1) % cols.length;
+
+    relatedImageCounter++;
+
+    // 🔥 Insert ad after every 10 related images
+    if (relatedImageCounter % 10 === 0) {
+      cols[relatedColIndex].appendChild(createRelatedAdCard());
+      relatedColIndex = (relatedColIndex + 1) % cols.length;
+    }
   });
 
   lazyLoadInit();
+}
+function createRelatedAdCard() {
+  const adDiv = document.createElement("div");
+  adDiv.className = "image-item ad-item";
+
+  adDiv.innerHTML = `
+    <div class="image-wrapper ad-wrapper">
+      <span class="ad-label">Advertisement</span>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-4549865852809903"
+           data-ad-slot="2074145941"
+           data-ad-format="rectangle"></ins>
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  });
+
+  return adDiv;
 }
 
 /* ---------------------------------- */
