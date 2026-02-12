@@ -217,6 +217,44 @@
 </body>
 
 <script>
+function handleAdsVisibility() {
+
+  // Hide ads if running locally
+  if (location.protocol === 'file:') {
+    document.querySelectorAll(
+      '.ad-section, .banner-ad, .side-ad-vertical, .bottom-sticky-ad, .ad-item'
+    ).forEach(ad => ad.style.display = 'none');
+    return;
+  }
+
+  document.querySelectorAll('ins.adsbygoogle').forEach(ins => {
+
+    const container = ins.closest(
+      '.ad-section, .banner-ad, .side-ad-vertical, .bottom-sticky-ad, .ad-item'
+    );
+
+    setTimeout(() => {
+      if (!ins.querySelector("iframe")) {
+        if (container) container.style.display = 'none';
+      }
+    }, 2500);
+
+  });
+}
+
+// Run on load
+window.addEventListener("load", handleAdsVisibility);
+
+window.addEventListener("load", () => {
+  setTimeout(handleAdsVisibility, 2500);
+});
+
+// Re-check ads every 5 seconds (lightweight)
+setInterval(handleAdsVisibility, 5000);
+
+</script>
+
+<script>
 /* ---------------------------------- */
 /* GLOBAL SETTINGS */
 /* ---------------------------------- */

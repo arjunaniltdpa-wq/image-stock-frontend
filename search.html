@@ -148,6 +148,43 @@
 </div>
 
 <script>
+function handleAdsVisibility() {
+
+  // Hide ads if running locally
+  if (location.protocol === 'file:') {
+    document.querySelectorAll(
+      '.ad-section, .banner-ad, .side-ad-vertical, .bottom-sticky-ad, .ad-item'
+    ).forEach(ad => ad.style.display = 'none');
+    return;
+  }
+
+  document.querySelectorAll('ins.adsbygoogle').forEach(ins => {
+
+    const container = ins.closest(
+      '.ad-section, .banner-ad, .side-ad-vertical, .bottom-sticky-ad, .ad-item'
+    );
+
+    setTimeout(() => {
+      if (!ins.querySelector("iframe")) {
+        if (container) container.style.display = 'none';
+      }
+    }, 2500);
+
+  });
+}
+
+// Run on load
+window.addEventListener("load", handleAdsVisibility);
+
+// Also re-check every time new ads are pushed
+const originalPush = (window.adsbygoogle = window.adsbygoogle || []).push;
+window.adsbygoogle.push = function () {
+  originalPush.apply(this, arguments);
+  setTimeout(handleAdsVisibility, 2500);
+};
+</script>
+
+<script>
 const API_BASE = "https://api.pixeora.com";
 
 const params = new URLSearchParams(window.location.search);
