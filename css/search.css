@@ -678,3 +678,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+/* Hide ad containers by default */
+.ad-section {
+  display: none;
+}
