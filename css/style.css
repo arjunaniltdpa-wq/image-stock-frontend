@@ -823,6 +823,37 @@ color: white;
     margin-top: 10px;
   }
 }
+
+.about-ticker {
+  overflow: hidden;
+  white-space: nowrap;
+  background: #fafafa;
+  padding: 0px 0;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tickerScroll 25s linear infinite;
+}
+
+.ticker-track p {
+  margin: 0;
+  padding: 0 60px;
+  font-size: 1rem;
+  color: #edecf3;
+  font-weight: 500;
+}
+
+@keyframes tickerScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-30%);
+  }
+}
+
 /* Hide ad containers by default */
 .ad-section {
   display: none;

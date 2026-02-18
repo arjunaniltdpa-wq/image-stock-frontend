@@ -151,6 +151,17 @@
 </button>
 </section> <!-- END BANNER -->
 
+<section class="about-ticker">
+  <div class="ticker-track">
+    <p>
+      Pixeora is a free stock image platform offering high-quality HD and 4K wallpapers, royalty-free photos, and commercial-use images for creators, designers, and businesses worldwide.
+    </p>
+    <p>
+      Pixeora is a free stock image platform offering high-quality HD and 4K wallpapers, royalty-free photos, and commercial-use images for creators, designers, and businesses worldwide.
+    </p>
+  </div>
+</section>
+
 <!-- TOP DISPLAY AD -->
 <section class="ad-section ad-top">
   <ins class="adsbygoogle"
@@ -508,4 +519,15 @@ window.addEventListener("load", () => {
   });
 });
 
+const revealElements = document.querySelectorAll(".reveal-on-scroll");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("revealed");
+    }
+  });
+}, { threshold: 0.2 });
+
+revealElements.forEach(el => observer.observe(el));
 </script>
