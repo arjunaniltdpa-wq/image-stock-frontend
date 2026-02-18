@@ -383,6 +383,12 @@ async function loadImageDetails() {
         if (finalImg.naturalWidth && finalImg.naturalHeight) {
           mainImg.style.aspectRatio =
             `${finalImg.naturalWidth}/${finalImg.naturalHeight}`;
+
+          // SAFE: ld already exists
+          ld.width = finalImg.naturalWidth;
+          ld.height = finalImg.naturalHeight;
+
+          if (ldEl) ldEl.textContent = JSON.stringify(ld);
         }
       };
     }
@@ -407,18 +413,20 @@ async function loadImageDetails() {
     window.__originalFileName = img.fileName || img.file || "";
     window.__imageFileSize = img.size || null;
 
-
-    // Schema
+    // Create schema FIRST
     const ld = {
       "@context": "https://schema.org",
       "@type": "ImageObject",
 
       "name": safeTitle,
       "description": img.description || "",
-      "contentUrl": previewUrl || originalUrl,
+
+      "contentUrl": originalUrl || previewUrl,
       "thumbnailUrl": thumbUrl,
 
+      "url": window.location.href,
       "representativeOfPage": true,
+
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": window.location.href
@@ -426,15 +434,32 @@ async function loadImageDetails() {
 
       "creator": {
         "@type": "Organization",
-        "name": "Pixeora"
+        "name": "Pixeora",
+        "url": "https://pixeora.com"
       },
 
       "creditText": "Pixeora Photo",
-      "license": "https://pixeora.com/license"
+      "license": "https://pixeora.com/license",
+      "acquireLicensePage": "https://pixeora.com/license"
     };
 
     const ldEl = document.getElementById("ld-json");
     if (ldEl) ldEl.textContent = JSON.stringify(ld);
+
+    // 👉 Load ORIGINAL image only for dimension accuracy
+    if (originalUrl) {
+      const dimImg = new Image();
+      dimImg.src = originalUrl;
+
+      dimImg.onload = () => {
+        if (dimImg.naturalWidth && dimImg.naturalHeight) {
+          ld.width = dimImg.naturalWidth;
+          ld.height = dimImg.naturalHeight;
+
+          if (ldEl) ldEl.textContent = JSON.stringify(ld);
+        }
+      };
+    }
 
     // Keywords
     const keywords =
