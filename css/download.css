@@ -244,11 +244,11 @@ body {
 /* SEO Description */
 .seo-desc {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;          /* thin */
-  font-size: 15px;           /* small clean */
+  font-weight: 200;          /* thin */
+  font-size: 8px;           /* small clean */
   line-height: 1.7;
-  color: #666;               /* soft grey */
-  max-width: 850px;
+  color: #8e8e8e;               /* soft grey */
+  max-width: 550px;
 }
 
 /* ======================================================
