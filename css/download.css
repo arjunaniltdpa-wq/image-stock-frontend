@@ -245,10 +245,10 @@ body {
 .seo-desc {
   font-family: 'Inter', sans-serif;
   font-weight: 200;          /* thin */
-  font-size: 8px;           /* small clean */
+  font-size: 11px;           /* small clean */
   line-height: 1.7;
-  color: #8e8e8e;               /* soft grey */
-  max-width: 550px;
+  color: #7c7c7c;               /* soft grey */
+  max-width: 850px;
 }
 
 /* ======================================================
