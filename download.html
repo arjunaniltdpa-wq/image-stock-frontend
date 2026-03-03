@@ -120,12 +120,13 @@
       <div class="protected-wrapper">
         <img
           id="download-image"
-          class="image-load protected-img"
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-          decoding="async"
+          src="https://cdn.pixeora.com/seo-placeholder.jpg"
+          alt="Loading image..."
+          width="1200"
+          height="800"
           loading="eager"
-          alt="High quality stock image preview"
-        />
+          fetchpriority="high">
+
         <noscript>
           <img
             src="https://cdn.pixeora.com/seo-placeholder.jpg"
@@ -360,7 +361,6 @@ async function loadImageDetails() {
 
     // --- 1️⃣ Show thumbnail immediately (FAST) ---
     if (thumbUrl) {
-      mainImg.src = thumbUrl;
       mainImg.style.filter = "blur(6px)";
       mainImg.style.opacity = "0.4";
     }
@@ -376,7 +376,6 @@ async function loadImageDetails() {
       finalImg.src = finalMainSrc;
 
       finalImg.onload = () => {
-        mainImg.src = finalMainSrc;
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
