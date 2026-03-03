@@ -3,8 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO -->
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="googlebot" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="index, follow">
 
   <title>Free HD Stock Image Download | Pixeora</title>
   <meta name="description"
@@ -37,9 +36,6 @@
   <!-- Performance -->
   <link rel="preconnect" href="https://cdn.pixeora.com" crossorigin>
   <link rel="preconnect" href="https://api.pixeora.com" crossorigin>
-
-  <link rel="dns-prefetch" href="https://cdn.pixeora.com">
-  <link rel="dns-prefetch" href="https://api.pixeora.com">
   
   <!-- Organization Schema -->
   <script type="application/ld+json">
@@ -52,6 +48,15 @@
   }
   </script>
   <script type="application/ld+json" id="ld-json"></script>
+
+  <script>
+  if (window.location.pathname.startsWith("/photo/")) {
+    const canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    canonical.href = "https://pixeora.com" + window.location.pathname;
+    document.head.appendChild(canonical);
+  }
+  </script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VPX3GGRR7H"></script>
@@ -90,6 +95,20 @@
   </div>
 </header>
 
+<!-- 🔥 TOP PHOTO PAGE AD -->
+<section class="ad-section ad-photo-top">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-4549865852809903"
+       data-ad-slot="1551401768"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</section>
+
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 <div class="page-wrapper">
   <main>
 
@@ -100,13 +119,19 @@
       <!-- 🔒 MAIN IMAGE (INSIDE BOX) -->
       <div class="protected-wrapper">
         <img
-          id="main-image"
-          src="https://cdn.pixeora.com/thumbs/DEFAULT.webp"
-          alt="Loading image..."
+          id="download-image"
+          class="image-load protected-img"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+          decoding="async"
           loading="eager"
-          style="max-width:100%; height:auto;"
+          alt="High quality stock image preview"
         />
-
+        <noscript>
+          <img
+            src="https://cdn.pixeora.com/seo-placeholder.jpg"
+            alt="Free stock image download from Pixeora"
+          />
+        </noscript>
         <div id="image-protect-overlay"></div>
       </div>
 
@@ -133,20 +158,6 @@
   </main>
 </div>
 
-<!-- 🔥 TOP PHOTO PAGE AD -->
-<section class="ad-section ad-photo-top">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4549865852809903"
-       data-ad-slot="1551401768"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-</section>
-
-<script>
-  (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-  
 <!-- 🔥 KEYWORDS AD -->
 <section class="ad-section ad-photo-mid">
   <ins class="adsbygoogle"
@@ -344,7 +355,7 @@ async function loadImageDetails() {
       ? `https://cdn.pixeora.com/${file}`
       : (img.url || "");
 
-    const mainImg = document.getElementById("main-image");
+    const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
 
     // --- 1️⃣ Show thumbnail immediately (FAST) ---
@@ -393,11 +404,17 @@ async function loadImageDetails() {
     mainImg.alt = `${safeTitle} HD stock image free download from Pixeora`;
 
     document.getElementById("image-name").textContent = safeTitle;
+    document.title = `${safeTitle} HD Stock Image – Free Download | Pixeora`;
 
     const seoText = img.description?.trim() || 
     `Download high quality ${safeTitle} in HD resolution. Free for personal and commercial use. Explore more premium stock images at Pixeora.`;
 
     document.getElementById("seo-description").textContent = seoText;    
+
+    document.querySelector('meta[name="description"]').setAttribute(
+      "content",
+      `Download ${safeTitle} in HD resolution. Free stock image for commercial and personal use from Pixeora.`
+    );    
 
     // Download
     const downloadAnchor = document.getElementById("download-link");
@@ -417,7 +434,7 @@ async function loadImageDetails() {
       "name": safeTitle,
       "description": img.description || "",
 
-      "contentUrl": previewUrl || originalUrl,
+      "contentUrl": originalUrl || previewUrl,
       "thumbnailUrl": thumbUrl,
 
       "url": window.location.href,
@@ -426,7 +443,6 @@ async function loadImageDetails() {
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": window.location.href
-        
       },
 
       "creator": {
@@ -778,7 +794,7 @@ const closeBtn = document.querySelector(".close-btn");
 infoBtn.onclick = () => {
   modal.classList.add("active");
 
-  const mainImg = document.getElementById("main-image")
+  const mainImg = document.getElementById("download-image");
 
   if (!mainImg || !mainImg.complete || !mainImg.naturalWidth) {
     document.getElementById("info-dimensions").textContent = "-";
