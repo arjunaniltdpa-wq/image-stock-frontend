@@ -13,6 +13,8 @@
   <meta name="pinterest-rich-pin" content="false">
   <meta name="p:domain_verify" content="baeea6bc953c52f33c6f450565b4a8ab">
 
+  <meta property="og:type" content="article">
+
   <!-- OG TAGS SERVED BY BACKEND -->
   <!-- DO NOT define og:image here -->
 
@@ -118,18 +120,27 @@
 
       <!-- 🔒 MAIN IMAGE (INSIDE BOX) -->
       <div class="protected-wrapper">
-        <img
+        <a id="image-link" href="#">
+          <img
           id="download-image"
-          class="image-load protected-img"
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-          decoding="async"
           loading="eager"
-          alt="High quality stock image preview"
-        />
+          fetchpriority="high"
+          src="https://cdn.pixeora.com/thumb_placeholder.webp"
+          width="1200"
+          height="800"
+          alt="Free HD stock image from Pixeora">
+        </a>
+        <img
+        id="seo-image"
+        class="seo-hidden"
+        src="https://cdn.pixeora.com/thumb_placeholder.webp"
+        />       
         <noscript>
           <img
-            src="https://cdn.pixeora.com/seo-placeholder.jpg"
-            alt="Free stock image download from Pixeora"
+            src="https://cdn.pixeora.com/thumb_placeholder.webp"
+            alt="Free HD stock image from Pixeora"
+            width="1200"
+            height="800"
           />
         </noscript>
         <div id="image-protect-overlay"></div>
@@ -309,8 +320,6 @@ async function downloadImage(rawName) {
   // Force download using backend (works on all devices)
   window.location.href = apiURL;
 }
-
-
 async function loadImageDetails() {
   try {
     let apiList = [];
@@ -354,6 +363,19 @@ async function loadImageDetails() {
     const originalUrl = file
       ? `https://cdn.pixeora.com/${file}`
       : (img.url || "");
+      
+    const imageLink = document.getElementById("image-link");
+    if(imageLink){
+    imageLink.href = originalUrl;
+    }      
+    const seoImg = document.getElementById("seo-image");
+    if (seoImg) {
+      seoImg.src = previewUrl || originalUrl;
+    }
+    const linkImg = document.createElement("link");
+    linkImg.rel = "image_src";
+    linkImg.href = previewUrl || originalUrl;
+    document.head.appendChild(linkImg);
 
     const mainImg = document.getElementById("download-image");
     const skeleton = document.getElementById("main-skeleton");
@@ -503,6 +525,10 @@ async function loadImageDetails() {
         }
       };
     }
+    const ogImg = document.createElement("meta");
+    ogImg.setAttribute("property","og:image");
+    ogImg.setAttribute("content", previewUrl || originalUrl);
+    document.head.appendChild(ogImg);
 
     // Keywords
     const keywords =

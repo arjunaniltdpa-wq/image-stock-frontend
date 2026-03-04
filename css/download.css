@@ -737,3 +737,9 @@ html, body {
 .ad-section {
   display: none;
 }
+.seo-hidden{
+position:absolute;
+width:1px;
+height:1px;
+overflow:hidden;
+}
