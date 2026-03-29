@@ -169,6 +169,36 @@
   </main>
 </div>
 
+<section class="image-description">
+  <h2>About this Image</h2>
+
+  <p>
+    This high-quality image titled "<span id="desc-title"></span>" is available
+    for free download in HD resolution. It is suitable for a wide range of uses
+    including website design, presentations, social media, and commercial projects.
+  </p>
+
+  <p>
+    All images on Pixeora are carefully curated to ensure quality and usability.
+    You can use this image without attribution for both personal and business use.
+    Whether you're a designer, marketer, or content creator, this image can enhance
+    your visual projects.
+  </p>
+
+  <p>
+    Explore more related images below or browse categories to find similar high-quality
+    stock photos. New images are added regularly to keep the collection fresh.
+  </p>
+</section>
+
+<section class="license-box">
+  <h3>License Information</h3>
+  <p>
+    This image is free for personal and commercial use. No attribution is required.
+    Redistribution or resale of the image as a standalone file is not allowed.
+  </p>
+</section>
+
 <!-- 🔥 KEYWORDS AD -->
 <section class="ad-section ad-photo-mid">
   <ins class="adsbygoogle"
@@ -225,6 +255,13 @@
     <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
 </div>
+
+<footer>
+  <a href="/privacy.html">Privacy Policy</a> |
+  <a href="/terms.html">Terms</a> |
+  <a href="/contact.html">Contact</a> |
+  <a href="/about.html">About</a>
+</footer>
 
 </body>
 
@@ -426,10 +463,16 @@ async function loadImageDetails() {
     mainImg.alt = `${safeTitle} HD stock image free download from Pixeora`;
 
     document.getElementById("image-name").textContent = safeTitle;
+    document.getElementById("desc-title").textContent = safeTitle;  
     document.title = `${safeTitle} HD Stock Image – Free Download | Pixeora`;
 
-    const seoText = img.description?.trim() || 
-    `Download high quality ${safeTitle} in HD resolution. Free for personal and commercial use. Explore more premium stock images at Pixeora.`;
+    const seoText = `
+    Download ${safeTitle} in HD and 4K resolution. Free for personal and commercial use. Explore high-quality stock images on Pixeora.
+
+    Pixeora offers free HD and 4K stock images with no attribution required. Browse more related images below to find similar visuals.
+    `;
+
+    document.getElementById("seo-description").textContent = seoText;
 
     document.getElementById("seo-description").textContent = seoText;    
 
@@ -721,37 +764,9 @@ function displayRelated(images) {
 
     relatedImageCounter++;
 
-    // 🔥 Insert ad after every 10 related images
-    if (relatedImageCounter % 10 === 0) {
-      cols[relatedColIndex].appendChild(createRelatedAdCard());
-      relatedColIndex = (relatedColIndex + 1) % cols.length;
-    }
   });
 
   lazyLoadInit();
-}
-function createRelatedAdCard() {
-  const adDiv = document.createElement("div");
-  adDiv.className = "image-item ad-item";
-
-  adDiv.innerHTML = `
-    <div class="image-wrapper ad-wrapper">
-      <span class="ad-label">Advertisement</span>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-4549865852809903"
-           data-ad-slot="2074145941"
-           data-ad-format="rectangle"></ins>
-    </div>
-  `;
-
-  requestAnimationFrame(() => {
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {}
-  });
-
-  return adDiv;
 }
 
 /* ---------------------------------- */
