@@ -319,7 +319,59 @@ background-image: linear-gradient(135deg, #08ff9c, #025aff);
 color: white;
 }
 
+/* 🔥 SMART LEGAL BAR */
+#legalBar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+}
 
+#legalBar.hidden {
+  transform: translateY(100%);
+}
+
+.legal-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.legal-links a {
+  color: #aaa;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+.legal-links a:hover {
+  color: #00ffcc;
+}
+
+.seo-content {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 125px;
+  text-align: center;
+}
+
+.seo-content h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.seo-content p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
 /* ---------------- MASONRY GRID ---------------- */
 
 .image-item .image-wrapper .download-overlay {

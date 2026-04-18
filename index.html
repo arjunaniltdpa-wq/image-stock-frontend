@@ -91,10 +91,6 @@
 
     <nav class="nav-links">
       <ul class="nav-menu">
-        <li>
-          <a href="legal.html" class="legal-link-header">Legal & Policies</a>
-        </li>
-
         <li class="dropdown">
           <button class="dropdown-btn" aria-label="AI Tools Menu">AI Tools</button>
           <ul class="dropdown-content">
@@ -191,6 +187,28 @@
     </div>
   </section>
 
+  <section class="seo-content">
+    <div class="seo-container">
+      <h2>Free HD Wallpapers & Stock Images for Every Need</h2>
+      <p>
+        Pixeora offers a growing collection of free HD wallpapers, 4K backgrounds, and royalty-free stock images designed for creators, designers, and businesses.
+        All images are available for personal and commercial use without licensing complications.
+      </p>
+
+      <p>
+        Explore categories like business marketing assets, nature photography,
+        technology visuals, and trending seasonal collections. Our platform is
+        optimized for fast loading, high resolution downloads, and seamless browsing.
+      </p>
+
+      <p>
+        New images are added daily to ensure fresh and relevant content for your projects.
+        Whether you need website visuals, social media creatives, or presentation graphics,
+        Pixeora provides high-quality resources completely free.
+      </p>
+    </div>
+  </section>
+
   <!-- POPULAR IMAGES -->
   <section class="related-wrapper">
     <div class="masonry-grid" id="related-masonry">
@@ -202,6 +220,20 @@
   </section>
 
 </main>
+
+<!-- 🔥 SMART LEGAL BAR -->
+<div id="legalBar">
+  <div class="legal-inner">
+    <span>© 2026 Pixeora • Free stock images for personal & commercial use</span>
+    <div class="legal-links">
+      <a href="/cookies.html">Cookies</a>
+      <a href="/privacy-policy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/dmca.html">DMCA</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</div>
 
 <div id="cookie-banner" class="premium-cookie">
   <div class="cookie-content">
@@ -517,6 +549,24 @@ window.addEventListener("load", () => {
       }
     }, 1500);
   });
+});
+
+/* 🔥 SCROLL-AWARE LEGAL BAR */
+let lastScrollTop = 0;
+const legalBar = document.getElementById("legalBar");
+
+window.addEventListener("scroll", () => {
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (scrollTop > lastScrollTop) {
+    // scrolling down
+    legalBar.classList.add("hidden");
+  } else {
+    // scrolling up
+    legalBar.classList.remove("hidden");
+  }
+
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 
 const revealElements = document.querySelectorAll(".reveal-on-scroll");
