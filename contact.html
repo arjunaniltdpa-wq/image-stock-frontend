@@ -43,34 +43,47 @@
       <a href="mailto:pixeora.contact@gmail.com">pixeora.contact@gmail.com</a>.
     </p>
 
-    <form class="contact-form">
+    <form class="contact-form-grid">
 
-      <div class="form-group">
-        <label>Your Name</label>
-        <input type="text" placeholder="John Doe" required>
+      <!-- LEFT SIDE -->
+      <div class="form-left">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="John Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label>Your Email</label>
+            <input type="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" placeholder="Privacy question, DMCA, general legal..." required>
+          </div>
+        </div>
+
+        <button type="submit" class="contact-btn">
+          ✈️ Send Message
+        </button>
+
+        <p class="form-note">
+          By sending this message, you agree that we may use the information provided
+          to contact you regarding your request.
+        </p>
+
       </div>
 
-      <div class="form-group">
-        <label>Your Email</label>
-        <input type="email" placeholder="you@example.com" required>
-      </div>
-
-      <div class="form-group">
-        <label>Subject</label>
-        <input type="text" placeholder="Privacy question, DMCA, general legal..." required>
-      </div>
-
-      <div class="form-group">
+      <!-- RIGHT SIDE -->
+      <div class="form-right">
         <label>Your Message</label>
-        <textarea rows="5" placeholder="Write your message here..." required></textarea>
+        <textarea rows="6" placeholder="Write your message here..." required></textarea>
       </div>
-
-      <button type="submit" class="contact-btn">
-        ✈️ Send Message
-      </button>
 
     </form>
-
+    
     <p class="form-note">
       By sending this message, you agree that we may use the information provided
       to contact you regarding your request.

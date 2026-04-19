@@ -682,3 +682,39 @@ body {
 .ad-section {
   display: none;
 }
+
+/* 🔥 SMART LEGAL BAR */
+#legalBar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+}
+
+#legalBar.hidden {
+  transform: translateY(100%);
+}
+
+.legal-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.legal-links a {
+  color: #aaa;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+.legal-links a:hover {
+  color: #00ffcc;
+}
