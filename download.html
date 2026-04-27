@@ -12,6 +12,7 @@
   <!-- Pinterest verification -->
   <meta name="pinterest-rich-pin" content="false">
   <meta name="p:domain_verify" content="baeea6bc953c52f33c6f450565b4a8ab">
+  <meta name="theme-color" content="#ffffff">
 
   <meta property="og:type" content="article">
 
@@ -100,11 +101,11 @@
 <!-- 🔥 TOP PHOTO PAGE AD -->
 <section class="ad-section ad-photo-top">
   <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4549865852809903"
-       data-ad-slot="1551401768"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+      style="display:block"
+      data-ad-client="ca-pub-4549865852809903"
+      data-ad-slot="1551401768"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
 </section>
 
 <script>
@@ -147,6 +148,7 @@
       </div>
 
       <h1 id="image-name">Loading...</h1>
+      <p id="image-caption" class="img-caption"></p>
       <p id="seo-description" class="seo-desc"></p>
       
       <div class="image-actions">
@@ -169,26 +171,13 @@
   </main>
 </div>
 
+<noscript>
+  <p>Download high-quality stock image from Pixeora. Free for personal and commercial use.</p>
+</noscript>
+
 <section class="image-description">
-  <h2>About this Image</h2>
-
-  <p>
-    This high-quality image titled "<span id="desc-title"></span>" is available
-    for free download in HD resolution. It is suitable for a wide range of uses
-    including website design, presentations, social media, and commercial projects.
-  </p>
-
-  <p>
-    All images on Pixeora are carefully curated to ensure quality and usability.
-    You can use this image without attribution for both personal and business use.
-    Whether you're a designer, marketer, or content creator, this image can enhance
-    your visual projects.
-  </p>
-
-  <p>
-    Explore more related images below or browse categories to find similar high-quality
-    stock photos. New images are added regularly to keep the collection fresh.
-  </p>
+  <h2 id="about-heading"></h2>
+  <p id="dynamic-desc"></p>
 </section>
 
 <section class="license-box">
@@ -202,11 +191,16 @@
 <!-- 🔥 KEYWORDS AD -->
 <section class="ad-section ad-photo-mid">
   <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-4549865852809903"
-       data-ad-slot="2074145941"
-       data-ad-format="rectangle"></ins>
+      style="display:block"
+      data-ad-client="ca-pub-4549865852809903"
+      data-ad-slot="2074145941"
+      data-ad-format="rectangle"></ins>
 </section>
+
+<div class="use-case">
+  <h3>Best Uses</h3>
+  <p id="use-case-text"></p>
+</div>
 
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({});
@@ -370,6 +364,7 @@ async function downloadImage(rawName) {
   // Force download using backend (works on all devices)
   window.location.href = apiURL;
 }
+
 async function loadImageDetails() {
   try {
     let apiList = [];
@@ -466,34 +461,98 @@ async function loadImageDetails() {
         }
       };
     }
-
+    
     // Title
     const safeTitle =
       img.title?.trim() ||
       img.fileName?.trim() ||
       img.slug?.trim() ||
       "Untitled Image";
-    mainImg.alt = `${safeTitle} HD stock image free download from Pixeora`;
+    mainImg.alt = `${safeTitle} - high quality free stock image for commercial use`;
 
-    document.getElementById("image-name").textContent = safeTitle;
-    document.getElementById("desc-title").textContent = safeTitle;  
-    document.title = `${safeTitle} HD Stock Image – Free Download | Pixeora`;
-
-    const seoText = `
-    Download ${safeTitle} in HD and 4K resolution. Free for personal and commercial use. Explore high-quality stock images on Pixeora.
-
-    Pixeora offers free HD and 4K stock images with no attribution required. Browse more related images below to find similar visuals.
+    const tags = (img.tags || []).slice(0, 5).join(", ");
+    const category = img.category || "design projects";
+    const useCases = `
+    Best for ${category}, including social media posts, ads, websites, and creative design projects.
     `;
 
-    document.getElementById("seo-description").textContent = seoText;
+    /* ---------------- OG TAGS (FINAL CLEAN VERSION) ---------------- */
+
+    // ❌ Remove old OG tags (important)
+    document.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
+
+    // ✅ og:image
+    const ogImg = document.createElement("meta");
+    ogImg.setAttribute("property", "og:image");
+    ogImg.setAttribute("content", previewUrl || originalUrl);
+
+    // ✅ og:title
+    const ogTitle = document.createElement("meta");
+    ogTitle.setAttribute("property", "og:title");
+    ogTitle.setAttribute("content", safeTitle);
+
+    // ✅ og:description
+    const ogDesc = document.createElement("meta");
+    ogDesc.setAttribute("property", "og:description");
+    ogDesc.setAttribute(
+      "content",
+      `${safeTitle} featuring ${tags}. Free HD image for ${category}.`
+    );
+
+    // ✅ og:url
+    const ogUrl = document.createElement("meta");
+    ogUrl.setAttribute("property", "og:url");
+    ogUrl.setAttribute("content", window.location.href);
+
+    // ✅ Append ALL
+    document.head.appendChild(ogImg);
+    document.head.appendChild(ogTitle);
+    document.head.appendChild(ogDesc);
+    document.head.appendChild(ogUrl);
+
+    document.getElementById("use-case-text").textContent = useCases;
+
+    const descVariations = [
+      `Download ${safeTitle}, a high-quality image featuring ${tags}.`,
+      `${safeTitle} is a premium stock image showcasing ${tags}.`,
+      `Explore ${safeTitle}, a detailed image ideal for ${category}.`
+    ];
+
+    const dynamicDesc = descVariations[Math.floor(Math.random() * descVariations.length)] + `
+    This image is ideal for ${category}, including website design, social media, marketing, and creative projects. 
+    Available in HD resolution, it is suitable for both personal and commercial use without attribution.
+    `;
+
+    document.getElementById("dynamic-desc").textContent = dynamicDesc;
+
+    document.getElementById("about-heading").textContent = `About ${safeTitle}`;
+    document.getElementById("image-name").textContent =
+      `${safeTitle} Free HD Image`;
+    document.title = `${safeTitle} Free HD Image Download (No Copyright) | Pixeora`;  
+
+    document.getElementById("image-caption").textContent =
+      `${safeTitle} high-quality stock image available for free download.`;
+
+    const seoText = `
+    ${safeTitle} featuring ${tags}. 
+    Ideal for ${category}, including ads, websites, and social media. 
+    Free HD image download with no attribution required.
+    `;
 
     document.getElementById("seo-description").textContent = seoText;    
 
+    const metaVariations = [
+      `${safeTitle} featuring ${tags}.`,
+      `High-quality ${safeTitle} image for ${category}.`,
+      `${safeTitle} free HD image ideal for ${category}.`
+    ];
+
     document.querySelector('meta[name="description"]').setAttribute(
       "content",
-      `Download ${safeTitle} in HD resolution. Free stock image for commercial and personal use from Pixeora.`
-    );    
-
+      metaVariations[Math.floor(Math.random() * metaVariations.length)] +
+      ` Perfect for ads, websites, and social media use.`
+    );
+    
     // Download
     const downloadAnchor = document.getElementById("download-link");
     if (downloadAnchor && file) {
@@ -510,7 +569,7 @@ async function loadImageDetails() {
       "@type": "ImageObject",
 
       "name": safeTitle,
-      "description": img.description || "",
+      "description": img.description || `${safeTitle} featuring ${tags}. High-quality free stock image from Pixeora.`,
 
       "contentUrl": originalUrl || previewUrl,
       "thumbnailUrl": thumbUrl,
@@ -581,10 +640,6 @@ async function loadImageDetails() {
         }
       };
     }
-    const ogImg = document.createElement("meta");
-    ogImg.setAttribute("property","og:image");
-    ogImg.setAttribute("content", previewUrl || originalUrl);
-    document.head.appendChild(ogImg);
 
     // Keywords
     const keywords =
@@ -1027,4 +1082,34 @@ window.adsbygoogle.push = function () {
   setTimeout(handleAdsVisibility, 2500);
 };
 
+
+/* 🔥 SCROLL-AWARE LEGAL BAR */
+let lastScrollTop = 0;
+const legalBar = document.getElementById("legalBar");
+
+window.addEventListener("scroll", () => {
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (scrollTop > lastScrollTop) {
+    // scrolling down
+    legalBar.classList.add("hidden");
+  } else {
+    // scrolling up
+    legalBar.classList.remove("hidden");
+  }
+
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+});
+
+const revealElements = document.querySelectorAll(".reveal-on-scroll");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("revealed");
+    }
+  });
+}, { threshold: 0.2 });
+
+revealElements.forEach(el => observer.observe(el));
 </script>
