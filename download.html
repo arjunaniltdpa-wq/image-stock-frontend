@@ -5,7 +5,7 @@
   <!-- SEO -->
   <meta name="robots" content="index, follow">
 
-  <title>Free HD Stock Image Download | Pixeora</title>
+  <title>Loading Image | Pixeora</title>
   <meta name="description"
         content="Download free high-quality HD and 4K stock images for commercial and personal use.">
 
@@ -129,7 +129,7 @@
           src="https://cdn.pixeora.com/thumb_placeholder.webp"
           width="1200"
           height="800"
-          alt="Free HD stock image from Pixeora">
+          alt="Free HD stock image 4K wallpaper background download"
         </a>
         <img
         id="seo-image"
@@ -147,7 +147,10 @@
         <div id="image-protect-overlay"></div>
       </div>
 
-      <h1 id="image-name">Loading...</h1>
+      <h1 id="image-name">Free HD Stock Image Download</h1>
+      <p style="opacity:0; position:absolute; pointer-events:none;">
+      High quality free stock image download, 4K wallpaper, HD background, royalty-free image for commercial and personal use.
+      </p>
       <p id="image-caption" class="img-caption"></p>
       <p id="seo-description" class="seo-desc"></p>
       
@@ -172,12 +175,26 @@
 </div>
 
 <noscript>
-  <p>Download high-quality stock image from Pixeora. Free for personal and commercial use.</p>
+  <h1>Free HD Stock Image</h1>
+  <p>
+    Download high-quality HD and 4K stock images for free.
+    Suitable for websites, wallpapers, and commercial use.
+  </p>
 </noscript>
 
 <section class="image-description">
   <h2 id="about-heading"></h2>
   <p id="dynamic-desc"></p>
+
+  <!-- 🔥 STATIC SEO CONTENT -->
+  <div class="static-seo">
+    <h3>About this image</h3>
+    <p>
+      This image is part of a high-quality stock collection available for free download.
+      It can be used for wallpapers, website backgrounds, social media posts, and creative design projects.
+      All images on Pixeora are free for personal and commercial use without attribution.
+    </p>
+  </div>
 </section>
 
 <section class="license-box">
@@ -214,6 +231,11 @@
 
 <div class="related-wrapper">
   <h2>Related Images</h2>
+
+  <div class="seo-links">
+    <h3>Explore More Images</h3>
+    <div id="seo-links-list"></div>
+  </div>
 
   <div class="related-masonry" id="related-images">
     <div class="related-col"></div>
@@ -252,6 +274,11 @@
       <a href="/contact.html">Contact</a>
     </div>
   </div>
+</div>
+
+<div class="pagination-links">
+  <a href="/search.html?query=popular">Popular Images</a>
+  <a href="/search.html?query=latest">Latest Images</a>
 </div>
 
 <div id="cookie-banner" class="premium-cookie">
@@ -468,10 +495,19 @@ async function loadImageDetails() {
       img.fileName?.trim() ||
       img.slug?.trim() ||
       "Untitled Image";
-    mainImg.alt = `${safeTitle} - high quality free stock image for commercial use`;
+    mainImg.alt = `${safeTitle} 4K wallpaper HD background free download`;
 
     const tags = (img.tags || []).slice(0, 5).join(", ");
     const category = img.category || "design projects";
+    const categoryLink = document.createElement("div");
+    categoryLink.innerHTML = `
+      <h3>More in ${category}</h3>
+      <a href="/search.html?query=${encodeURIComponent(category)}">
+        View more ${category} images
+      </a>
+    `;
+
+    document.querySelector(".use-case").appendChild(categoryLink);
     const useCases = `
     Best for ${category}, including social media posts, ads, websites, and creative design projects.
     `;
@@ -512,23 +548,23 @@ async function loadImageDetails() {
 
     document.getElementById("use-case-text").textContent = useCases;
 
-    const descVariations = [
-      `Download ${safeTitle}, a high-quality image featuring ${tags}.`,
-      `${safeTitle} is a premium stock image showcasing ${tags}.`,
-      `Explore ${safeTitle}, a detailed image ideal for ${category}.`
-    ];
+    const dynamicDesc = `
+    ${safeTitle} is a high-quality stock image featuring ${tags}.
 
-    const dynamicDesc = descVariations[Math.floor(Math.random() * descVariations.length)] + `
-    This image is ideal for ${category}, including website design, social media, marketing, and creative projects. 
-    Available in HD resolution, it is suitable for both personal and commercial use without attribution.
+    This image is perfect for ${category}, including:
+    - wallpapers
+    - website backgrounds
+    - social media posts
+    - marketing creatives
+
+    Available in HD and 4K resolution, it can be used for both personal and commercial projects without attribution.
     `;
-
     document.getElementById("dynamic-desc").textContent = dynamicDesc;
 
     document.getElementById("about-heading").textContent = `About ${safeTitle}`;
     document.getElementById("image-name").textContent =
       `${safeTitle} Free HD Image`;
-    document.title = `${safeTitle} Free HD Image Download (No Copyright) | Pixeora`;  
+    document.title = `${safeTitle} 4K Wallpaper Free Download | Pixeora`;
 
     document.getElementById("image-caption").textContent =
       `${safeTitle} high-quality stock image available for free download.`;
@@ -541,16 +577,9 @@ async function loadImageDetails() {
 
     document.getElementById("seo-description").textContent = seoText;    
 
-    const metaVariations = [
-      `${safeTitle} featuring ${tags}.`,
-      `High-quality ${safeTitle} image for ${category}.`,
-      `${safeTitle} free HD image ideal for ${category}.`
-    ];
-
     document.querySelector('meta[name="description"]').setAttribute(
       "content",
-      metaVariations[Math.floor(Math.random() * metaVariations.length)] +
-      ` Perfect for ads, websites, and social media use.`
+      `${safeTitle} featuring ${tags}. Free HD image for ${category}. Perfect for websites, ads, and social media.`
     );
     
     // Download
@@ -649,7 +678,13 @@ async function loadImageDetails() {
     const kwEl = document.getElementById("keywords");
     if (kwEl && keywords.length) {
       kwEl.innerHTML = keywords
-        .map(t => `<span onclick="location.href='/search.html?query=${encodeURIComponent(t)}'">${t}</span>`)
+        .map(t => `
+          <a href="/search.html?query=${encodeURIComponent(t)}" 
+            title="${t} images"
+            style="margin:4px; display:inline-block;">
+            ${t}
+          </a>
+        `)
         .join("");
     }
 
@@ -759,8 +794,8 @@ async function loadMoreRelated(keyword) {
 
   try {
     const url = relatedCursor
-      ? `${API_BASE}/api/search/next?q=${encodeURIComponent(keyword)}&cursor=${relatedCursor}&limit=20`
-      : `${API_BASE}/api/search/first?q=${encodeURIComponent(keyword)}&limit=20`;
+      ? `${API_BASE}/api/search/next?q=${encodeURIComponent(keyword)}&cursor=${relatedCursor}&limit=40`
+      : `${API_BASE}/api/search/first?q=${encodeURIComponent(keyword)}&limit=40`;
 
     const res = await fetch(url);
     if (!res.ok) throw new Error("Search API failed");
@@ -818,7 +853,7 @@ function displayRelated(images) {
     card.innerHTML = `
       <div class="image-wrapper">
         <div class="skeleton"></div>
-        <a href="/photo/${finalSlug}">
+        <a href="/photo/${finalSlug}" title="${img.title || ''} 4K wallpaper" >
           <img data-src="${thumb}" class="lazy-img image-load" alt="${img.title || ''}">
         </a>
         <span class="download-overlay"
@@ -833,6 +868,16 @@ function displayRelated(images) {
     relatedImageCounter++;
 
   });
+
+  const seoList = document.getElementById("seo-links-list");
+
+  if (seoList) {
+    seoList.innerHTML = images.slice(0, 20).map(img => `
+      <a href="/photo/${img.slug}" style="margin:5px; display:inline-block;">
+        ${img.title || 'Free HD Image'}
+      </a>
+    `).join("");
+  }
 
   lazyLoadInit();
 }
