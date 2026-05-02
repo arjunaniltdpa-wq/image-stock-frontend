@@ -3,6 +3,9 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background-color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
 }
 
 /* ============================================
@@ -536,7 +539,7 @@ html, body {
   width: 100%;
   margin-top: 48px;
   margin: 0 auto;
-  max-width: 1400px;   /* optional */
+  max-width: 1800px;   /* optional */
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -889,4 +892,9 @@ a:hover {
   background: rgba(0,0,0,0.5);
   z-index: 9998;
   display: none;
+}
+
+body {
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }

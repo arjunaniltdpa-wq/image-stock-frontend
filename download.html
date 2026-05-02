@@ -1106,7 +1106,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
     /* TOUCH PROTECTION */
 
-  const overlay = document.getElementById("image-protect-overlay");
+  const protectOverlay = document.getElementById("image-protect-overlay");
 
   if (overlay) {
     let moved = false;
@@ -1191,4 +1191,10 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 
 revealElements.forEach(el => observer.observe(el));
+
+window.addEventListener("load", () => {
+  document.body.style.visibility = "visible";
+  document.body.style.opacity = "1";
+});
+
 </script>
