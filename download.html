@@ -120,19 +120,6 @@
       <!-- 🔒 MAIN IMAGE (INSIDE BOX) -->
       <div class="protected-wrapper">
 
-        <div id="main-skeleton" class="skeleton"></div>
-
-        <a id="image-link" href="#">
-          <img
-            id="download-image"
-            src="https://cdn.pixeora.com/thumb_placeholder.webp"
-            loading="eager"
-            fetchpriority="high"
-            width="1200"
-            height="800"
-            alt="Free HD stock image 4K wallpaper background download"
-          />
-      
         <noscript>
           <img
             src="https://cdn.pixeora.com/thumb_placeholder.webp"
@@ -438,11 +425,6 @@ async function loadImageDetails() {
       ? `https://cdn.pixeora.com/${file}`
       : (img.url || "");
       
-    const imageLink = document.getElementById("image-link");
-    if(imageLink){
-    imageLink.href = originalUrl;
-    }      
-
     const linkImg = document.createElement("link");
     linkImg.rel = "image_src";
     linkImg.href = previewUrl || originalUrl;
