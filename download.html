@@ -74,6 +74,9 @@
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
     crossorigin="anonymous"></script>
 
+  <script>
+    document.documentElement.style.visibility = "hidden";
+  </script>
 </head>
 
 <style>
@@ -481,6 +484,7 @@ async function loadImageDetails() {
         mainImg.style.opacity = "1";
         mainImg.style.visibility = "visible"; // 👈 ADD
         document.body.style.display = "block";
+        document.documentElement.style.visibility = "visible";
 
         skeleton.style.opacity = "0";
 
