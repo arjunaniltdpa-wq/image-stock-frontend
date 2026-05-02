@@ -74,14 +74,7 @@
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
     crossorigin="anonymous"></script>
 
-  <script>
-    document.documentElement.style.visibility = "hidden";
-  </script>
 </head>
-
-<style>
-  body { display: none; }
-</style>
 
 <body>
 <header class="header">
@@ -131,15 +124,14 @@
 
         <a id="image-link" href="#">
           <img
-          id="download-image"
-          style="opacity:0;"
-          loading="eager"
-          fetchpriority="high"
-          src=""
-          width="1200"
-          height="800"
-          alt="Free HD stock image 4K wallpaper background download"
-        </a>
+            id="download-image"
+            src="https://cdn.pixeora.com/thumb_placeholder.webp"
+            loading="eager"
+            fetchpriority="high"
+            width="1200"
+            height="800"
+            alt="Free HD stock image 4K wallpaper background download"
+          />
       
         <noscript>
           <img
@@ -464,8 +456,8 @@ async function loadImageDetails() {
     if (thumbUrl) {
       mainImg.src = thumbUrl;
       mainImg.style.filter = "blur(6px)";
-      mainImg.style.opacity = "0.4";
       mainImg.style.visibility = "visible"; // 👈 ADD
+      skeleton.style.display = "none";
     }
 
     // --- 2️⃣ Upgrade ONLY to preview.webp ---
@@ -479,11 +471,9 @@ async function loadImageDetails() {
       finalImg.onload = () => {
         mainImg.src = finalMainSrc;
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
-        mainImg.style.filter = "blur(0)";
+        mainImg.style.filter = "blur(0)"; 
         mainImg.style.opacity = "1";
         mainImg.style.visibility = "visible"; // 👈 ADD
-        document.body.style.display = "block";
-        document.documentElement.style.visibility = "visible";
 
         skeleton.style.opacity = "0";
 
