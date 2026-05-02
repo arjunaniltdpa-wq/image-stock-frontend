@@ -131,10 +131,11 @@
 
         <a id="image-link" href="#">
           <img
-          id="download-image" style="opacity:0;"
+          id="download-image"
+          style="opacity:0;"
           loading="eager"
           fetchpriority="high"
-          src="https://cdn.pixeora.com/thumb_placeholder.webp"
+          src=""
           width="1200"
           height="800"
           alt="Free HD stock image 4K wallpaper background download"
@@ -449,16 +450,14 @@ async function loadImageDetails() {
     if(imageLink){
     imageLink.href = originalUrl;
     }      
-    const seoImg = document.getElementById("seo-image");
-    if (seoImg) {
-      seoImg.src = previewUrl || originalUrl;
-    }
+
     const linkImg = document.createElement("link");
     linkImg.rel = "image_src";
     linkImg.href = previewUrl || originalUrl;
     document.head.appendChild(linkImg);
 
     const mainImg = document.getElementById("download-image");
+
     const skeleton = document.getElementById("main-skeleton");
 
     // --- 1️⃣ Show thumbnail immediately (FAST) ---
@@ -475,7 +474,7 @@ async function loadImageDetails() {
 
     if (finalMainSrc) {
       const finalImg = new Image();
-      finalImg.src = finalMainSrc;
+      finalImg.src = finalMainSrc;  
 
       finalImg.onload = () => {
         mainImg.src = finalMainSrc;

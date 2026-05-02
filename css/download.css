@@ -870,6 +870,7 @@
   .hidden-seo-text {
     opacity: 0;
     position: absolute;
+    display: none;
     pointer-events: none;
   }
   a {
