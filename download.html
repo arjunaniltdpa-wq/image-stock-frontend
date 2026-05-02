@@ -158,7 +158,9 @@
       <div class="image-actions">
         <button class="info-btn">
           <i class="fas fa-info-circle"></i> Info
-        </button>
+        </button> 
+
+       <button id="toggleSeo" class="info-btn">Show More</button> <!-- ✅ HERE -->
 
         <a id="download-link" href="#" download>
           <button class="download-btn">
@@ -201,8 +203,6 @@
 </noscript>
 
 <div class="seo-collapse">
-
-  <button id="toggleSeo">Show More ▼</button>
 
   <div id="seoContent" style="display:none;">
 
@@ -285,11 +285,6 @@
       <a href="/contact.html">Contact</a>
     </div>
   </div>
-</div>
-
-<div class="pagination-links">
-  <a href="/search.html?query=popular">Popular Images</a>
-  <a href="/search.html?query=latest">Latest Images</a>
 </div>
 
 <div id="cookie-banner" class="premium-cookie">
@@ -715,13 +710,21 @@ async function loadImageDetails() {
 }
 
 const toggleBtn = document.getElementById("toggleSeo");
+const seoContent = document.getElementById("seoContent");
 
-if (toggleBtn) {
+if (toggleBtn && seoContent) {
   toggleBtn.onclick = () => {
-    const el = document.getElementById("seoContent");
-    el.style.display = el.style.display === "none" ? "block" : "none";
+    seoContent.style.display = "block";
   };
+
+  // click outside to close
+  window.addEventListener("click", (e) => {
+    if (e.target === seoContent) {
+      seoContent.style.display = "none";
+    }
+  });
 }
+
 /* ---------------------------------- */
 /* RELATED SYSTEM – STABLE + SEARCH MATCH */
 /* ---------------------------------- */

@@ -167,13 +167,20 @@ body {
   overflow: hidden; /* 🔥 required */
 }
 
+#image-name,
+#image-caption,
+#seo-description {
+  color: #111;
+  text-decoration: none;
+  pointer-events: none;   /* ❗ disables click */
+}
+
 #download-image {
   width: 100%;
-  height: 100%;        /* ✅ CHANGE */
+  height: auto;              /* ✅ IMPORTANT */
   display: block;
-  max-width: 100%;
   border-radius: 30px;
-  object-fit: cover;
+  object-fit: contain;       /* ✅ NO CROP */
 }
 
 .image-actions {
@@ -234,6 +241,21 @@ body {
   color: #fff;
 }
 
+.keywords a {
+  background: #f2f2f2;
+  color: #222;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  text-decoration: none;     /* ❌ remove underline */
+  transition: 0.2s ease;
+  display: inline-block;
+}
+
+.keywords a:hover {
+  background: #000;
+  color: #fff;
+}
 /* SEO Description */
 .seo-desc {
   font-family: 'Inter', sans-serif;
@@ -515,7 +537,7 @@ html, body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* 🔥 change from center */
+  align-items: center;  /* ✅ CHANGE */
 }
 
 .related-wrapper h2 {
@@ -533,6 +555,7 @@ html, body {
 #related-images {
   width: 100%;
   max-width: 100%;   /* ✅ MATCH main */
+  justify-content: center;   /* ✅ ADD */
   margin-left: auto;
   margin-right: auto;
   padding: 0 16px;
@@ -631,9 +654,8 @@ html, body {
 ============================== */
 
 .protected-wrapper {
+  width: 100%;
   position: relative;
-  aspect-ratio: auto;   /* OR remove completely */
-
 }
 
 /* Image protection */
@@ -712,6 +734,25 @@ html, body {
 #goTopBtn:hover {
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.28);
+}
+
+#seoContent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+
+  overflow-y: auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 9999;
 }
 
 /* Mobile */
