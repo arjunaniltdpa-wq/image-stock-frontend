@@ -76,6 +76,10 @@
 
 </head>
 
+<style>
+  body { display: none; }
+</style>
+
 <body>
 <header class="header">
   <div class="header-overlay">
@@ -132,11 +136,7 @@
           height="800"
           alt="Free HD stock image 4K wallpaper background download"
         </a>
-        <img
-        id="seo-image"
-        class="seo-hidden"
-        src="https://cdn.pixeora.com/thumb_placeholder.webp"
-        />       
+      
         <noscript>
           <img
             src="https://cdn.pixeora.com/thumb_placeholder.webp"
@@ -421,6 +421,7 @@ async function loadImageDetails() {
 
     if (!img) {
       document.getElementById("image-name").textContent = "Image Not Found.";
+      document.body.style.display = "block"; // ✅ ADD HERE ALSO
       return;
     }
 
@@ -479,8 +480,7 @@ async function loadImageDetails() {
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
         mainImg.style.visibility = "visible"; // 👈 ADD
-        document.body.style.visibility = "visible";
-        document.body.style.opacity = "1";
+        document.body.style.display = "block";
 
         skeleton.style.opacity = "0";
 
