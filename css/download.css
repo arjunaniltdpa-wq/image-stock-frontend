@@ -821,12 +821,6 @@ html, body {
 .ad-section {
   display: none;
 }
-.seo-hidden{
-position:absolute;
-width:1px;
-height:1px;
-overflow:hidden;
-}
 
 /* 🔥 SMART LEGAL BAR */
 #legalBar {
@@ -863,6 +857,13 @@ overflow:hidden;
 .legal-links a:hover {
   color: #00ffcc;
 }
+.seo-hidden {
+  position: relative;
+  max-width: 900px;
+  margin: 20px auto;
+  font-size: 14px;
+  color: #666;
+}
 
 .seo-links {
   display: none;
@@ -890,7 +891,4 @@ a:hover {
   background: rgba(0,0,0,0.5);
   z-index: 9998;
   display: none;
-}
-body.preload {
-  visibility: hidden;
 }
