@@ -124,7 +124,7 @@
 
         <a id="image-link" href="#">
           <img
-          id="download-image"
+          id="download-image" style="opacity:0;"
           loading="eager"
           fetchpriority="high"
           src="https://cdn.pixeora.com/thumb_placeholder.webp"
@@ -463,6 +463,7 @@ async function loadImageDetails() {
       mainImg.src = thumbUrl;
       mainImg.style.filter = "blur(6px)";
       mainImg.style.opacity = "0.4";
+      mainImg.style.visibility = "visible"; // 👈 ADD
     }
 
     // --- 2️⃣ Upgrade ONLY to preview.webp ---
@@ -478,6 +479,7 @@ async function loadImageDetails() {
         mainImg.style.transition = "filter .4s ease, opacity .3s ease";
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
+        mainImg.style.visibility = "visible"; // 👈 ADD
 
         skeleton.style.opacity = "0";
 

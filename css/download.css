@@ -170,9 +170,10 @@ body {
 #image-name,
 #image-caption,
 #seo-description {
-  color: #111;
-  text-decoration: none;
-  pointer-events: none;   /* ❗ disables click */
+  color: #111 !important;
+  text-decoration: none !important;
+  pointer-events: none;
+  cursor: default;
 }
 
 #download-image {
@@ -534,7 +535,9 @@ html, body {
 .related-wrapper {
   width: 100%;
   margin-top: 48px;
-  padding: 0;
+  margin: 0 auto;
+  max-width: 1400px;   /* optional */
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;  /* ✅ CHANGE */
@@ -559,9 +562,11 @@ html, body {
   margin-left: auto;
   margin-right: auto;
   padding: 0 16px;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
-  box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;  
 }
 
 /* =====================================================
@@ -835,4 +840,10 @@ overflow:hidden;
   opacity: 0;
   position: absolute;
   pointer-events: none;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
 }
