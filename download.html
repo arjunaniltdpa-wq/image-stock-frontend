@@ -148,10 +148,12 @@
         <div id="image-protect-overlay"></div>
       </div>
 
-      <h1 id="image-name"></h1>
-      <p class="hidden-seo-text" style="display:none;"></p>
-      <p id="image-caption"></p>
-      <p id="seo-description"></p>
+      <h1 id="image-name">Free HD Stock Image Download</h1>
+      <p class="hidden-seo-text">
+      High quality free stock image download, 4K wallpaper, HD background, royalty-free image for commercial and personal use.
+      </p>
+      <p id="image-caption" class="img-caption"></p>
+      <p id="seo-description" class="seo-desc"></p>
       
       <div class="image-actions">
         <button class="info-btn">
@@ -477,6 +479,7 @@ async function loadImageDetails() {
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
         mainImg.style.visibility = "visible"; // 👈 ADD
+        document.body.style.visibility = "visible";
 
         skeleton.style.opacity = "0";
 
@@ -1189,10 +1192,5 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 
 revealElements.forEach(el => observer.observe(el));
-
-window.addEventListener("load", () => {
-  document.body.style.visibility = "visible";
-  document.body.style.opacity = "1";
-});
 
 </script>
