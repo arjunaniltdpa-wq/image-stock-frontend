@@ -125,38 +125,44 @@
         <a id="image-link" href="#">
           <img
             id="download-image"
-            src="https://cdn.pixeora.com/thumb_placeholder.webp"
+            src=""   <!-- ✅ EMPTY (IMPORTANT FIX) -->
             loading="eager"
             fetchpriority="high"
             width="1200"
             height="800"
-            alt="Free HD stock image 4K wallpaper background download"
+            alt=""
           />
-      
-        <noscript>
-          <img
-            src="https://cdn.pixeora.com/thumb_placeholder.webp"
-            alt="Free HD stock image from Pixeora"
-            width="1200"
-            height="800"
-          />
-        </noscript>
-        <div id="image-protect-overlay"></div>
+
+          <!-- ✅ KEEP FOR SEO -->
+          <noscript>
+            <img
+              src="https://cdn.pixeora.com/thumb_placeholder.webp"
+              alt="Free HD stock image from Pixeora"
+              width="1200"
+              height="800"
+            />
+          </noscript>
+
+          <div id="image-protect-overlay"></div>
+        </a>
       </div>
 
       <h1 id="image-name"></h1>
+
+      <!-- ✅ KEEP (but hidden already in CSS) -->
       <p class="hidden-seo-text">
-      High quality free stock image download, 4K wallpaper, HD background, royalty-free image for commercial and personal use.
+        High quality free stock image download, 4K wallpaper, HD background, royalty-free image for commercial and personal use.
       </p>
+
       <p id="image-caption" class="img-caption"></p>
       <p id="seo-description" class="seo-desc"></p>
-      
+
       <div class="image-actions">
         <button class="info-btn">
           <i class="fas fa-info-circle"></i> Info
         </button> 
 
-       <button id="toggleSeo" class="info-btn">Show More</button> <!-- ✅ HERE -->
+        <button id="toggleSeo" class="info-btn">Show More</button>
 
         <a id="download-link" href="#" download>
           <button class="download-btn">
