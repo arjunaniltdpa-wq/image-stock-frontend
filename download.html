@@ -479,6 +479,8 @@ async function loadImageDetails() {
         mainImg.style.filter = "blur(0)";
         mainImg.style.opacity = "1";
         mainImg.style.visibility = "visible"; // 👈 ADD
+        document.body.style.visibility = "visible";
+        document.body.style.opacity = "1";
 
         skeleton.style.opacity = "0";
 
@@ -1191,10 +1193,5 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 
 revealElements.forEach(el => observer.observe(el));
-
-window.addEventListener("load", () => {
-  document.body.style.visibility = "visible";
-  document.body.style.opacity = "1";
-});
 
 </script>
