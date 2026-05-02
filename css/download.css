@@ -563,10 +563,28 @@ html, body {
   margin-right: auto;
   padding: 0 16px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(5, 1fr); /* ✅ 5 columns */
   gap: 16px;
   width: 100%;
   box-sizing: border-box;  
+}
+
+@media (max-width: 1200px) {
+  #related-images {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  #related-images {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  #related-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* =====================================================
@@ -759,7 +777,20 @@ html, body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   z-index: 9999;
 }
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
 
+/* Close button */
+#closeSeoModal {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
 /* Mobile */
 @media (max-width: 768px) {
   #goTopBtn {
@@ -846,4 +877,16 @@ a {
 }
 a:hover {
   text-decoration: none;
+}
+
+#seoOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.5);
+  z-index: 9998;
+  display: none;
 }

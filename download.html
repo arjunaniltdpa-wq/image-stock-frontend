@@ -206,6 +206,10 @@
 
   <div id="seoContent" style="display:none;">
 
+    <div class="modal-header">
+      <button id="closeSeoModal">✕</button>
+    </div>
+
     <!-- KEEP YOUR EXISTING SECTIONS HERE -->
     <section class="image-description">
       <h2 id="about-heading"></h2>
@@ -238,6 +242,8 @@
   </div>
 
 </div>
+
+<div id="seoOverlay" style="display:none;"></div>
 
 <!-- 🔥 KEYWORDS AD -->
 <section class="ad-section ad-photo-mid">
@@ -295,13 +301,6 @@
     <button id="cookie-accept" class="cookie-btn-premium">Got it</button>
   </div>
 </div>
-
-<footer>
-  <a href="/privacy.html">Privacy Policy</a> |
-  <a href="/terms.html">Terms</a> |
-  <a href="/contact.html">Contact</a> |
-  <a href="/about.html">About</a>
-</footer>
 
 </body>
 
@@ -713,19 +712,28 @@ async function loadImageDetails() {
 
 const toggleBtn = document.getElementById("toggleSeo");
 const seoContent = document.getElementById("seoContent");
+const seoCloseBtn = document.getElementById("closeSeoModal");
+const overlay = document.getElementById("seoOverlay");
 
-if (toggleBtn && seoContent) {
+if (toggleBtn && seoContent && overlay) {
   toggleBtn.onclick = () => {
     seoContent.style.display = "block";
+    overlay.style.display = "block";
   };
-
-  // click outside to close
-  window.addEventListener("click", (e) => {
-    if (e.target === seoContent) {
-      seoContent.style.display = "none";
-    }
-  });
 }
+
+if (seoCloseBtn && overlay) {
+  seoCloseBtn.onclick = () => {
+    seoContent.style.display = "none";
+    overlay.style.display = "none";
+  };
+}
+
+// ✅ CLICK OUTSIDE (CORRECT WAY)
+overlay.onclick = () => {
+  seoContent.style.display = "none";
+  overlay.style.display = "none";
+};
 
 /* ---------------------------------- */
 /* RELATED SYSTEM – STABLE + SEARCH MATCH */
@@ -968,7 +976,7 @@ function lazyLoadInit() {
 /* INFO MODAL */
 /* ---------------------------------- */
 const modal = document.getElementById("infoModal");
-const infoBtn = document.querySelector(".info-btn");
+const infoBtn = document.querySelector(".info-btn:not(#toggleSeo)");
 const closeBtn = document.querySelector(".close-btn");
 
 infoBtn.onclick = () => {
