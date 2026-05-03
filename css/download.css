@@ -560,9 +560,9 @@ html, body {
 .related-wrapper {
   width: 100%;
   margin-top: 48px;
+  padding: 0 16px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1400px;   /* keep wide */
   padding: 0 16px;
 }
 
@@ -574,8 +574,14 @@ html, body {
 
 /* 🔥 5 COLUMN MASONRY */
 #related-images {
+  width: 100%;
   column-count: 5;      /* ✅ YOU WANT THIS */
   column-gap: 16px;
+}
+
+.related-wrapper h2,
+.seo-links {
+  max-width: 100%;
 }
 
 /* Responsive */
@@ -843,26 +849,29 @@ html, body {
   font-size: 14px;
   color: #666;
 }
-
 .seo-links {
   margin-bottom: 20px;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
 }
 
 .seo-chip {
   display: inline-block;
-  margin: 6px;
-  padding: 6px 12px;
-  background: #f1f1f1;
+  padding: 8px 14px;
+  background: #f2f2f2;
   border-radius: 20px;
   font-size: 13px;
-  color: #333;
+  color: #222;
   text-decoration: none;
-  transition: 0.2s;
+  transition: 0.2s ease;
+  white-space: nowrap;
 }
 
 .seo-chip:hover {
-  background: #e0e0e0;
+  background: #000;
+  color: #fff;
 }
 .hidden-seo-text {
   opacity: 0;
