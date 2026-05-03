@@ -557,43 +557,51 @@ html, body {
 /* =====================================================
   RELATED SECTION WRAPPER
 ===================================================== */
-
 .related-wrapper {
   width: 100%;
   margin-top: 48px;
-  margin: 0 auto;
-  max-width: 1400px;   /* 🔥 FIX */
-  padding: 0 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.related-wrapper h2 {
-  width: 100%;
-  max-width: 100%;   /* ✅ MATCH main */
-  padding: 0 16px;
   margin-left: auto;
   margin-right: auto;
-}
-
-#related-images {
-  width: 100%;
-  max-width: 1400px;   /* 🔥 THIS FIXES SIDE WHITE SPACE */
-  margin: 0 auto;      /* 🔥 CENTER */
+  max-width: 1400px;   /* keep wide */
   padding: 0 16px;
-
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  box-sizing: border-box;
 }
 
-/* REMOVE masonry-col behavior */
-#related-images .masonry-col {
-  display: contents;   /* 🔥 IMPORTANT */
+/* Title */
+.related-wrapper h2 {
+  width: 100%;
+  margin-bottom: 16px;
 }
 
+/* 🔥 5 COLUMN MASONRY */
+#related-images {
+  column-count: 5;      /* ✅ YOU WANT THIS */
+  column-gap: 16px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  #related-images { column-count: 4; }
+}
+@media (max-width: 900px) {
+  #related-images { column-count: 3; }
+}
+@media (max-width: 600px) {
+  #related-images { column-count: 2; }
+}
+
+/* Items */
+.image-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+/* Image FIX */
+.image-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
 /* =====================================================
   IMAGE CARD
 ===================================================== */
@@ -637,36 +645,11 @@ html, body {
   transform: scale(1);
 }
 
-/* =====================================================
-  RESPONSIVE COLUMN CONTROL (MATCH SEARCH PAGE)
-===================================================== */
-@media (max-width: 1400px) {
-  #related-images .masonry-col:nth-child(5) { display: none; }
-}
-
-@media (max-width: 1100px) {
-  #related-images .masonry-col:nth-child(4) { display: none; }
-}
-
-@media (max-width: 800px) {
-  #related-images .masonry-col:nth-child(3) { display: none; }
-}
-
 @media (max-width: 500px) {
   #related-images {
     padding-left: 12px;
     padding-right: 12px;
   }
-
-  #related-images .masonry-col {
-    flex: 0 0 100%;
-  }
-
-  #related-images .masonry-col:nth-child(2) {
-    display: none;
-  }
-}
-
 
 /* ==============================
   MAIN IMAGE PROTECTION ONLY
@@ -862,8 +845,24 @@ html, body {
 }
 
 .seo-links {
-  display: block;
-  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.seo-chip {
+  display: inline-block;
+  margin: 6px;
+  padding: 6px 12px;
+  background: #f1f1f1;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #333;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.seo-chip:hover {
+  background: #e0e0e0;
 }
 .hidden-seo-text {
   opacity: 0;

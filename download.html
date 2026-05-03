@@ -190,13 +190,8 @@
         <div id="seo-links-list"></div>
       </div>
 
-      <div class="related-masonry" id="related-images">
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-        <div class="masonry-col"></div>
-      </div>
+      <div id="related-images"></div>
+      
     </div>
 
   </main>
@@ -773,13 +768,7 @@ function startRelatedSystem(keywords = [], imageData = {}) {
   if (!grid) return;
 
   /* Reset grid */
-  grid.innerHTML = `
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-    <div class="masonry-col"></div>
-  `;
+  grid.innerHTML = "";
 
   /* Fallback if no keywords */
   if (!keywords.length && !imageData?.title) {
@@ -911,12 +900,6 @@ function displayRelated(images) {
     }
   }
 
-  const cols = Array.from(
-    document.querySelectorAll("#related-images .masonry-col")
-  ).filter(col => getComputedStyle(col).display !== "none");
-
-  if (!cols.length) return;
-
   images.forEach(img => {
 
     const finalSlug = img.slug;
@@ -946,8 +929,7 @@ function displayRelated(images) {
       </div>
     `;
 
-    cols[relatedColIndex].appendChild(card);
-    relatedColIndex = (relatedColIndex + 1) % cols.length;
+    document.getElementById("related-images").appendChild(card);
 
     relatedImageCounter++;
 
@@ -957,7 +939,7 @@ function displayRelated(images) {
 
   if (seoList) {
     seoList.innerHTML = images.slice(0, 20).map(img => `
-      <a href="/photo/${img.slug}" style="margin:5px; display:inline-block;">
+      <a href="/photo/${img.slug}" class="seo-chip">
         ${img.title || 'Free HD Image'}
       </a>
     `).join("");
