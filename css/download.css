@@ -142,7 +142,7 @@ body {
 
 /* Main area */
 .page-wrapper main {
-  max-width: 900px;
+  max-width: 100%;
   width: 100%;
   order: 2;
 }
@@ -583,7 +583,6 @@ html, body {
 .seo-links {
   max-width: 100%;
 }
-
 /* Responsive */
 @media (max-width: 1200px) {
   #related-images { column-count: 4; }
@@ -850,15 +849,15 @@ html, body {
   color: #666;
 }
 .seo-links {
-  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: flex-start;
+  margin-bottom: 20px;
 }
 
 .seo-chip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 8px 14px;
   background: #f2f2f2;
   border-radius: 20px;
@@ -866,6 +865,9 @@ html, body {
   color: #222;
   text-decoration: none;
   transition: 0.2s ease;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -873,6 +875,7 @@ html, body {
   background: #000;
   color: #fff;
 }
+
 .hidden-seo-text {
   opacity: 0;
   position: absolute;
@@ -896,4 +899,6 @@ a:hover {
   background: rgba(0,0,0,0.5);
   z-index: 9998;
   display: none;
+}
+
 }

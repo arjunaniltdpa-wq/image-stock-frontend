@@ -185,10 +185,8 @@
     <div class="related-wrapper">
       <h2>Related Images</h2>
 
-      <div class="seo-links">
-        <h3>Explore More Images</h3>
-        <div id="seo-links-list"></div>
-      </div>
+      <h3 class="explore-title">Explore More Images</h3>
+      <div class="seo-links" id="seo-links-list"></div>
 
       <div id="related-images"></div>
       
@@ -940,7 +938,7 @@ function displayRelated(images) {
   if (seoList) {
     seoList.innerHTML = images.slice(0, 20).map(img => `
       <a href="/photo/${img.slug}" class="seo-chip">
-        ${img.title || 'Free HD Image'}
+        ${(img.title || 'Free HD Image').slice(0, 35)}
       </a>
     `).join("");
   }
