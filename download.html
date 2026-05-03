@@ -936,7 +936,7 @@ function displayRelated(images) {
   const seoList = document.getElementById("seo-links-list");
 
   if (seoList) {
-    seoList.innerHTML = images.slice(0, 20).map(img => `
+    seoList.innerHTML = images.slice(0, 10).map(img => `
       <a href="/photo/${img.slug}" class="seo-chip">
         ${(img.title || 'Free HD Image').slice(0, 35)}
       </a>
