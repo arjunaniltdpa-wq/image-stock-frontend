@@ -123,7 +123,7 @@
         <div id="main-skeleton" class="skeleton"></div>
           <img
             id="download-image"
-            src=""
+            src="https://cdn.pixeora.com/placeholder.jpg" 
             loading="eager"
             fetchpriority="high"
             width="1200"
@@ -507,7 +507,7 @@ async function loadImageDetails() {
       img.fileName?.trim() ||
       img.slug?.trim() ||
       "Untitled Image";
-    mainImg.alt = `${safeTitle} 4K wallpaper HD background free download`;
+    mainImg.alt = `${safeTitle} – high quality 4k Wallpaper`;
 
     const tags = (img.tags || []).slice(0, 5).join(", ");
     const category = img.category || "design projects";
@@ -933,7 +933,12 @@ function displayRelated(images) {
       <div class="image-wrapper">
         <div class="skeleton"></div>
         <a href="/photo/${finalSlug}" title="${img.title || ''} 4K wallpaper" >
-          <img data-src="${thumb}" class="lazy-img image-load" alt="${img.title || ''}">
+        <img 
+          src="${thumb}" 
+          data-src="${thumb}" 
+          class="lazy-img image-load"
+          alt="${img.title || 'Free HD stock image'}"
+          loading="lazy">
         </a>
         <span class="download-overlay"
           onclick="event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\'")}')">
