@@ -1195,19 +1195,32 @@ window.adsbygoogle.push = function () {
 /* 🔥 SCROLL-AWARE LEGAL BAR */
 let lastScrollTop = 0;
 const legalBar = document.getElementById("legalBar");
+let ticking = false;
 
 window.addEventListener("scroll", () => {
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  if (scrollTop > lastScrollTop) {
-    // scrolling down
-    legalBar.classList.add("hidden");
-  } else {
-    // scrolling up
-    legalBar.classList.remove("hidden");
+      // 🔥 Always show at top
+      if (scrollTop < 100) {
+        legalBar.classList.remove("hidden");
+      } 
+      // 🔥 Scrolling DOWN → hide
+      else if (scrollTop > lastScrollTop) {
+        legalBar.classList.add("hidden");
+      } 
+      // 🔥 Scrolling UP → show
+      else {
+        legalBar.classList.remove("hidden");
+      }
+
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      ticking = false;
+    });
+
+    ticking = true;
   }
-
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 
 const revealElements = document.querySelectorAll(".reveal-on-scroll");
