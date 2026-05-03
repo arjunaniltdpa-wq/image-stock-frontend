@@ -938,7 +938,12 @@ function displayRelated(images) {
   if (seoList) {
     seoList.innerHTML = images.slice(0, 10).map(img => `
       <a href="/photo/${img.slug}" class="seo-chip">
-        ${(img.title || 'Free HD Image').slice(0, 35)}
+        ${(img.title || '')
+          .split(' ')
+          .filter(w => w.length > 3)
+          .slice(0, 2)
+          .join(' ')
+        }
       </a>
     `).join("");
   }
