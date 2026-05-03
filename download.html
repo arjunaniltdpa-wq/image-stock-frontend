@@ -158,19 +158,23 @@
       </div>      
       <p id="image-caption" class="img-caption"></p>
       <p id="seo-description" class="seo-desc"></p>
-      
+            
       <div class="image-actions">
-        <button class="info-btn">
-          <i class="fas fa-info-circle"></i> Info
-        </button> 
 
-       <button id="toggleSeo" class="info-btn">Show More</button> <!-- ✅ HERE -->
+        <div class="left-actions">
+          <button class="info-btn">
+            <i class="fas fa-info-circle"></i> Info
+          </button> 
+
+          <button id="toggleSeo">Show More</button>
+        </div>
 
         <a id="download-link" href="#" download>
           <button class="download-btn">
             <i class="fas fa-download"></i> Download
           </button>
         </a>
+
       </div>
 
     </div>
@@ -698,8 +702,10 @@ async function loadImageDetails() {
 
     // Related
     const subject = detectMainSubject(img.title || img.fileName || "");
+
     startRelatedSystem(
-      [subject, img.category, ...keywords.slice(0, 6)].filter(Boolean)
+      [subject, img.category, ...keywords.slice(0, 6)].filter(Boolean),
+      img   // 🔥 THIS IS THE IMPORTANT PART
     );
 
   } catch (err) {
@@ -753,9 +759,7 @@ function slugify(text = "") {
     .replace(/\s+/g, "-")
     .trim();
 }
-
-/* START RELATED */
-function startRelatedSystem(keywords = []) {
+function startRelatedSystem(keywords = [], imageData = {}) {
 
   relatedColIndex = 0;
   relatedKeywordIndex = 0;
@@ -777,36 +781,63 @@ function startRelatedSystem(keywords = []) {
     <div class="masonry-col"></div>
   `;
 
-  /* If keywords missing → fallback immediately */
-  if (!keywords.length) {
+  /* Fallback if no keywords */
+  if (!keywords.length && !imageData?.title) {
     loadRelatedFallback();
     return;
   }
 
-  const strongWords = [
-    "tiger","lion","cat","dog","elephant","wolf","bear","horse",
-    "bird","fish","bridge","architecture","mountain","river",
-    "waterfall","forest","portrait","face","people"
+  /* ---------------------------------- */
+  /* 🔥 BUILD STRONG SEARCH SIGNAL */
+  /* ---------------------------------- */
+
+  const title = (imageData.title || "").toLowerCase();
+  const file = (imageData.fileName || "").toLowerCase();
+
+  // Extract strong words from title
+  const words = (title || file)
+    .replace(/[^\w ]+/g, "")
+    .split(" ")
+    .filter(w => w.length > 3);
+
+  // Remove weak/common words
+  const stopWords = [
+    "with","from","into","this","that","free","image",
+    "photo","wallpaper","background","hd","4k"
   ];
 
-  const main = keywords[0]?.toLowerCase() || "";
-  const strong = [];
-  const medium = [];
-  const weak = [];
+  const filteredWords = words.filter(w => !stopWords.includes(w));
 
-  keywords.forEach(k => {
-    const kw = k.toLowerCase();
-    if (main && kw.includes(main)) strong.push(k);
-    else if (strongWords.some(sw => kw.includes(sw))) medium.push(k);
-    else weak.push(k);
-  });
+  // Pick top 3 strongest words
+  const primaryWords = filteredWords.slice(0, 3);
 
-  relatedKeywordList = [...new Set([...strong, ...medium, ...weak])];
+  /* ---------------------------------- */
+  /* 🔥 PRIORITY ORDER (VERY IMPORTANT) */
+  /* ---------------------------------- */
+
+  const mainQuery = primaryWords.join(" ");   // 👉 BEST MATCH
+  const category = imageData.category || "";
+  const subject = keywords[0] || "";
+
+  relatedKeywordList = [
+    mainQuery,              // 🔥 EXACT visual match
+    title,                  // 🔥 full title
+    subject,                // medium relevance
+    category,               // fallback
+    ...keywords.slice(1, 5) // weak fallback
+  ].filter(Boolean);
+
+  // Remove duplicates
+  relatedKeywordList = [...new Set(relatedKeywordList)];
 
   if (!relatedKeywordList.length) {
     loadRelatedFallback();
     return;
   }
+
+  /* ---------------------------------- */
+  /* 🚀 START LOADING */
+  /* ---------------------------------- */
 
   loadNextKeywordBatch();
 }
@@ -825,9 +856,11 @@ async function loadMoreRelated(keyword) {
   relatedLoading = true;
 
   try {
-    const url = relatedCursor
-      ? `${API_BASE}/api/search/next?q=${encodeURIComponent(keyword)}&cursor=${relatedCursor}&limit=40`
-      : `${API_BASE}/api/search/first?q=${encodeURIComponent(keyword)}&limit=40`;
+  const strongQuery = keyword;
+
+  const url = relatedCursor
+    ? `${API_BASE}/api/search/next?q=${encodeURIComponent(strongQuery)}&cursor=${relatedCursor}&limit=50`
+    : `${API_BASE}/api/search/first?q=${encodeURIComponent(strongQuery)}&limit=50`;
 
     const res = await fetch(url);
     if (!res.ok) throw new Error("Search API failed");
@@ -863,6 +896,20 @@ async function loadMoreRelated(keyword) {
 
 /* DISPLAY */
 function displayRelated(images) {
+
+  // 🔥 PRIORITIZE STRONG MATCH FIRST 30 IMAGES
+  if (relatedImageCounter < 30 && relatedKeywordList.length) {
+    const mainKeyword = relatedKeywordList[0]?.toLowerCase();
+
+    const filtered = images.filter(img =>
+      (img.title || "").toLowerCase().includes(mainKeyword)
+    );
+
+    // only apply filter if enough results
+    if (filtered.length > 5) {
+      images = filtered;
+    }
+  }
 
   const cols = Array.from(
     document.querySelectorAll("#related-images .masonry-col")
