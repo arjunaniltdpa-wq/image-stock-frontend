@@ -830,43 +830,38 @@ async function loadMoreRelated(keyword) {
 }
 
 let colIndex = 0;
+s
+function displayRelated(images) {
 
-function addToNextColumn(card) {
+  if (!images || !images.length) return;
 
   const masonry =
     document.getElementById("related-masonry");
 
-  if (!masonry) return;
+  if (!masonry) {
+    console.error("related-masonry not found");
+    return;
+  }
 
   const cols =
     masonry.querySelectorAll(".masonry-col");
 
-  if (!cols.length) return;
+  if (!cols.length) {
+    console.error("masonry columns missing");
+    return;
+  }
 
-  cols[colIndex].appendChild(card);
+  images.forEach((img, index) => {
 
-  colIndex =
-    (colIndex + 1) % cols.length;
-
-}
-
-function displayRelated(images) {
-
-  (images || []).forEach(img => {
-
-    if (!img) return;
-
-    const file =
-      img.thumbnailFileName ||
-      img.previewFileName ||
-      img.fileName;
+    if (!img || !img.fileName) return;
 
     const finalSlug =
       img.slug
         ? img.slug
         : `${slugify(img.title || "image")}-${img._id}`;
 
-    const url =
+    // 🔥 thumbnail priority
+    const imageUrl =
       img.thumbnailFileName
         ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
         : img.previewFileName
@@ -876,39 +871,36 @@ function displayRelated(images) {
     const card =
       document.createElement("div");
 
-    card.classList.add("image-item");
+    card.className = "image-item";
 
     card.innerHTML = `
 
       <div class="image-wrapper">
 
-        <div class="skeleton"></div>
-
         <a href="/photo/${finalSlug}">
 
           <img
-            src="${url}"
-            class="lazy-img image-load"
-            alt="${img.title || ''}"
+            src="${imageUrl}"
+            alt="${img.title || "Free HD Image"}"
             loading="lazy"
           >
 
         </a>
 
-        <span
+        <button
           class="download-overlay"
-          onclick="downloadImage('${(img.fileName || "").replace(/'/g,"\\\\'")}')"
-        ></span>
+          onclick="event.preventDefault(); event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\\\'")}')"
+          aria-label="Download"
+        ></button>
 
       </div>
 
     `;
 
-    addToNextColumn(card);
+    // 🔥 distribute columns
+    cols[index % cols.length].appendChild(card);
 
   });
-
-  lazyLoadInit();
 
 }
 
