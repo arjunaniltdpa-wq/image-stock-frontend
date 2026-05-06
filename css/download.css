@@ -668,7 +668,7 @@ html, body {
   bottom: 10px;
 
   width: auto;
-  height: 26px;
+  height: 30px;
 
   border: none;
   outline: none;
@@ -690,6 +690,11 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+/* SHOW ON IMAGE HOVER */
+.image-wrapper:hover .download-overlay {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* MOBILE */
