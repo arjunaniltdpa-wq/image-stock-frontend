@@ -549,7 +549,7 @@ html, body {
 
 /* --- Smooth Fade + Blur --- */
 .image-load {
-  opacity: 0;
+  opacity: 1;
   transform: scale(0.97);
   filter: blur(10px);
   transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
@@ -625,6 +625,29 @@ html, body {
   position: relative;
 }
 
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f2f2f2;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 14px;
+}
+
+.image-wrapper .skeleton {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+}
+
 .image-item img {
   width: 100%;
   height: auto;
@@ -693,7 +716,7 @@ html, body {
   position: absolute;   /* ✅ ADD */
   top: 0;
   left: 0;
-  z-index: 2;           /* above image */
+  z-index: 1;           /* above image */
 }
 
 /* Overlay catches all touches */
