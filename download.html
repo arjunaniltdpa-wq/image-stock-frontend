@@ -830,7 +830,7 @@ async function loadMoreRelated(keyword) {
 }
 
 let colIndex = 0;
-s
+
 function displayRelated(images) {
 
   if (!images || !images.length) return;
@@ -853,7 +853,14 @@ function displayRelated(images) {
 
   images.forEach((img, index) => {
 
-    if (!img || !img.fileName) return;
+    if (
+      !img ||
+      (
+        !img.thumbnailFileName &&
+        !img.previewFileName &&
+        !img.fileName
+      )
+    ) return;
 
     const finalSlug =
       img.slug
@@ -861,12 +868,13 @@ function displayRelated(images) {
         : `${slugify(img.title || "image")}-${img._id}`;
 
     // 🔥 thumbnail priority
+    const imageFile =
+      img.thumbnailFileName ||
+      img.previewFileName ||
+      img.fileName;
+
     const imageUrl =
-      img.thumbnailFileName
-        ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-        : img.previewFileName
-          ? `https://cdn.pixeora.com/${encodeURIComponent(img.previewFileName)}`
-          : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+      `https://cdn.pixeora.com/${encodeURIComponent(imageFile)}`;
 
     const card =
       document.createElement("div");
