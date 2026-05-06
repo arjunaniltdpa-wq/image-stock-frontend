@@ -441,6 +441,11 @@ async function loadImageDetails() {
     const mainImg = document.getElementById("download-image");
 
     const skeleton = document.getElementById("main-skeleton");
+    if (mainImg.complete) {
+      skeleton.style.display = "none";
+      mainImg.style.visibility = "visible";
+      mainImg.style.opacity = "1";
+    }
 
     // --- 1️⃣ Show thumbnail immediately (FAST) ---
     if (thumbUrl) {
@@ -743,7 +748,8 @@ function startRelatedSystem(keywords = [], imageData = {}) {
   /* 🔥 PRIORITY ORDER (VERY IMPORTANT) */
   /* ---------------------------------- */
 
-  const mainQuery = primaryWords.join(" ");   // 👉 BEST MATCH
+  const mainQuery =
+    primaryWords.slice(0, 2).join(" ");
   const category = imageData.category || "";
   const subject = keywords[0] || "";
 
@@ -829,9 +835,16 @@ function displayRelated(images) {
   if (relatedImageCounter < 30 && relatedKeywordList.length) {
     const mainKeyword = relatedKeywordList[0]?.toLowerCase();
 
-    const filtered = images.filter(img =>
-      (img.title || "").toLowerCase().includes(mainKeyword)
-    );
+    const filtered = images.filter(img => {
+
+      const t = (img.title || "").toLowerCase();
+
+      return (
+        t.includes(primaryWords[0] || "") &&
+        t.includes(primaryWords[1] || "")
+      );
+
+    });
 
     // only apply filter if enough results
     if (filtered.length > 5) {
