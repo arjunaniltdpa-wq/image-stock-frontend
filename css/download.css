@@ -664,26 +664,27 @@ html, body {
 
 .download-overlay {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+
+  right: 12px;
+  bottom: 12px;
 
   width: auto;
-  height: 30px;
+  height: 32px;
 
   border: none;
-  outline: none;
-
   background: transparent;
 
+  padding: 0;
   cursor: pointer;
 
   z-index: 5;
 
-  padding: 0;
+  opacity: 0;
+  transform: translateY(6px);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition:
+    opacity .22s ease,
+    transform .22s ease;
 }
 
 .download-overlay img {
@@ -691,12 +692,12 @@ html, body {
   height: 100%;
   object-fit: contain;
 }
+
 /* SHOW ON IMAGE HOVER */
 .image-wrapper:hover .download-overlay {
   opacity: 1;
   transform: translateY(0);
 }
-
 /* MOBILE */
 
 @media (max-width: 900px) {
