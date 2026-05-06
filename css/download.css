@@ -613,18 +613,33 @@ html, body {
   position:absolute;
   bottom:12px;
   right:12px;
+
   width:42px;
   height:42px;
+
   border:none;
   border-radius:50%;
+
   background:rgba(0,0,0,.72);
-  color:#fff;
-  font-size:18px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   cursor:pointer;
   z-index:20;
+
+  padding:0;
+}
+
+.download-overlay img{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+}
+
+.download-overlay:hover{
+  background:#000;
 }
 
 .download-overlay:hover{
