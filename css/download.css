@@ -569,32 +569,96 @@ html, body {
   margin-bottom:18px;
 }
 
-#related-images{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:20px;
+/* =================================
+   REAL MASONRY GRID
+================================= */
+
+.masonry-grid {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    gap: 14px;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.masonry-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
+
+.image-item {
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-item .download-overlay {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+    background: rgba(0,0,0,.72);
+    border-radius: 50%;
+    z-index: 5;
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .masonry-col:nth-child(4) {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .masonry-col:nth-child(3),
+  .masonry-col:nth-child(4) {
+    display: none;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 450px) {
+  .masonry-col:nth-child(2),
+  .masonry-col:nth-child(3),
+  .masonry-col:nth-child(4) {
+    display: none;
+  }
+}
+/* SAME AS INDEX PAGE */
+
+.related-wrapper{
   width:100%;
-  min-height:300px;
+  max-width:1800px;
+  margin:50px auto;
+  padding:0 16px;
 }
 
-#related-images img {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-.related-card{
-  position:relative;
-  border-radius:18px;
-  overflow:hidden;
-  background:#f5f5f5;
-  transition:transform .2s ease;
-}
-
-.related-card:hover{
-  transform:translateY(-3px);
-}
-
-.related-link{
-  display:block;
+.related-wrapper h2{
+  font-size:52px;
+  margin-bottom:24px;
+  color:#111;
 }
 
 .image-wrapper{
@@ -607,6 +671,8 @@ html, body {
   height:auto;
   display:block;
   border-radius:18px;
+  object-fit:cover;
+  background:#f3f3f3;
 }
 
 .download-overlay{

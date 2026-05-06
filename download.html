@@ -427,7 +427,7 @@ async function loadImageDetails() {
       ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
       : (file ? `https://cdn.pixeora.com/thumbs/${file}` : "");
 
-    const previewUrl = image.previewFileName
+    const previewUrl = img.previewFileName
       ? `https://cdn.pixeora.com/${image.previewFileName}`
       : `https://cdn.pixeora.com/placeholder.webp`;
 
@@ -711,7 +711,7 @@ function startRelatedSystem(keywords = [], imageData = {}) {
   loadedIds.clear();
   relatedImageCounter = 0;
 
-  const grid = document.querySelector("#related-images");
+  const grid = document.querySelector("#related-masonry");
   if (!grid) return;
 
   /* Fallback if no keywords */
@@ -829,108 +829,86 @@ async function loadMoreRelated(keyword) {
   }
 }
 
+const masonry =
+  document.getElementById("related-masonry");
+
+const cols =
+  Array.from(masonry.querySelectorAll(".masonry-col"));
+
+let colIndex = 0;
+
+function addToNextColumn(card) {
+
+  cols[colIndex].appendChild(card);
+
+  colIndex =
+    (colIndex + 1) % cols.length;
+
+}
+
 function displayRelated(images) {
-
-  const masonry =
-    document.getElementById("related-images");
-
-  if (!masonry) return;
-
-  // prevent duplicates
-  const existingLinks = new Set(
-    [...masonry.querySelectorAll("a")]
-      .map(a => a.href)
-  );
-
-  // 🔥 PRIORITIZE STRONG MATCH FIRST 30 IMAGES
-  if (relatedImageCounter < 30 && relatedKeywordList.length) {
-
-    const mainKeyword =
-      relatedKeywordList[0]?.toLowerCase();
-
-    const words = mainKeyword
-      .split(" ")
-      .filter(Boolean);
-
-    const filtered = images.filter(img => {
-
-      const t =
-        (img.title || "").toLowerCase();
-
-      return words.every(w => t.includes(w));
-
-    });
-
-    if (filtered.length > 5) {
-      images = filtered;
-    }
-  }
 
   (images || []).forEach(img => {
 
-    if (!img || !img.fileName) return;
+    if (!img) return;
 
-    const finalSlug = img.slug
-      ? img.slug
-      : `${slugify(img.title || "image")}-${img._id}`;
+    const file =
+      img.thumbnailFileName ||
+      img.previewFileName;
 
-    // skip duplicates
-    const finalUrl =
-      `/photo/${finalSlug}`;
+    if (!file) return;
 
-    if (existingLinks.has(location.origin + finalUrl)) {
-      return;
-    }
+    const finalSlug =
+      img.slug
+        ? img.slug
+        : `${slugify(img.title || "image")}-${img._id}`;
 
-    const thumb = img.thumbnailFileName
-      ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-      : img.previewFileName
-        ? `https://cdn.pixeora.com/${encodeURIComponent(img.previewFileName)}`
-        : img.fileName
-          ? `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`
-          : "https://cdn.pixeora.com/placeholder.jpg";
+    const url =
+      img.thumbnailFileName
+        ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
+        : img.previewFileName
+          ? `https://cdn.pixeora.com/${encodeURIComponent(img.previewFileName)}`
+          : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
 
-    const card = document.createElement("div");
+    const card =
+      document.createElement("div");
 
-    card.className = "related-card";
+    card.classList.add("image-item");
 
     card.innerHTML = `
+
       <div class="image-wrapper">
 
-        <a 
-          href="${finalUrl}"
-          class="related-link"
-          title="${img.title || ''} 4K wallpaper"
-        >
+        <div class="skeleton"></div>
 
-          <img 
-            src="${thumb}" 
-            class="image-load image-loaded" 
-            alt="${img.title || 'Free HD stock image'}"
+        <a href="/photo/${finalSlug}">
+
+          <img
+            data-src="${url}"
+            class="lazy-img image-load"
+            alt="${img.title || ''}"
             loading="lazy"
           >
 
         </a>
 
-        <button
+        <span
           class="download-overlay"
-          onclick="event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\'")}')"
-          aria-label="Download image"
-          type="button"
-        >
-          ↓
-        </button>
+          onclick="downloadImage('${(img.fileName || "").replace(/'/g,"\\\\'")}')"
+        ></span>
 
       </div>
+
     `;
 
-    masonry.appendChild(card);
-
-    relatedImageCounter++;
+    addToNextColumn(card);
 
   });
 
+  lazyLoadInit();
+
 }
+
 /* ---------------------------------- */
 /* FALLBACK — GUARANTEED CONTENT */
 /* ---------------------------------- */
