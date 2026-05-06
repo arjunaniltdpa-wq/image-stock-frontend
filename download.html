@@ -428,7 +428,7 @@ async function loadImageDetails() {
       : (file ? `https://cdn.pixeora.com/thumbs/${file}` : "");
 
     const previewUrl = img.previewFileName
-      ? `https://cdn.pixeora.com/${image.previewFileName}`
+      ? `https://cdn.pixeora.com/${encodeURIComponent(img.previewFileName)}`
       : `https://cdn.pixeora.com/placeholder.webp`;
 
     const originalUrl = file
@@ -887,7 +887,7 @@ function displayRelated(images) {
         <a href="/photo/${finalSlug}">
 
           <img
-            data-src="${url}"
+            src="${url}"
             class="lazy-img image-load"
             alt="${img.title || ''}"
             loading="lazy"
