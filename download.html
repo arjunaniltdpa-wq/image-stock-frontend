@@ -50,16 +50,6 @@
     "logo": "https://pixeora.com/images/logo.png"
   }
   </script>
-  <script type="application/ld+json" id="ld-json"></script>
-
-  <script>
-  if (window.location.pathname.startsWith("/photo/")) {
-    const canonical = document.createElement("link");
-    canonical.rel = "canonical";
-    canonical.href = "https://pixeora.com" + window.location.pathname;
-    document.head.appendChild(canonical);
-  }
-  </script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VPX3GGRR7H"></script>
@@ -519,32 +509,6 @@ async function loadImageDetails() {
 
     /* ---------------- OG TAGS (FINAL CLEAN VERSION) ---------------- */
 
-    // ❌ Remove old OG tags (important)
-    document.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
-
-    // ✅ og:image
-    const ogImg = document.createElement("meta");
-    ogImg.setAttribute("property", "og:image");
-    ogImg.setAttribute("content", previewUrl || originalUrl);
-
-    // ✅ og:title
-    const ogTitle = document.createElement("meta");
-    ogTitle.setAttribute("property", "og:title");
-    ogTitle.setAttribute("content", safeTitle);
-
-    // ✅ og:description
-    const ogDesc = document.createElement("meta");
-    ogDesc.setAttribute("property", "og:description");
-    ogDesc.setAttribute(
-      "content",
-      `${safeTitle} featuring ${tags}. Free HD image for ${category}.`
-    );
-
-    // ✅ og:url
-    const ogUrl = document.createElement("meta");
-    ogUrl.setAttribute("property", "og:url");
-    ogUrl.setAttribute("content", window.location.href);
-
     // ✅ Append ALL
     document.head.appendChild(ogImg);
     document.head.appendChild(ogTitle);
@@ -567,9 +531,6 @@ async function loadImageDetails() {
     document.getElementById("dynamic-desc").textContent = dynamicDesc;
 
     document.getElementById("about-heading").textContent = `About ${safeTitle}`;
-    document.getElementById("image-name").textContent =
-      `${safeTitle} Free HD Image`;
-    document.title = `${safeTitle} 4K Wallpaper Free Download | Pixeora`;
 
     document.getElementById("image-caption").textContent =
       `${safeTitle} high-quality stock image available for free download.`;
@@ -579,13 +540,6 @@ async function loadImageDetails() {
     Ideal for ${category}, including ads, websites, and social media. 
     Free HD image download with no attribution required.
     `;
-
-    document.getElementById("seo-description").textContent = seoText;    
-
-    document.querySelector('meta[name="description"]').setAttribute(
-      "content",
-      `${safeTitle} featuring ${tags}. Free HD image for ${category}. Perfect for websites, ads, and social media.`
-    );
     
     // Download
     const downloadAnchor = document.getElementById("download-link");
@@ -679,19 +633,6 @@ async function loadImageDetails() {
     const keywords =
       (img.keywords?.length ? img.keywords :
       img.tags?.length ? img.tags : []).slice(0, 8); // ✅ LIMIT
-
-    const kwEl = document.getElementById("keywords");
-    if (kwEl && keywords.length) {
-      kwEl.innerHTML = keywords
-        .map(t => `
-          <a href="/search.html?query=${encodeURIComponent(t)}" 
-            title="${t} images"
-            style="margin:4px; display:inline-block;">
-            ${t}
-          </a>
-        `)
-        .join("");
-    }
 
     // Related
     const subject = detectMainSubject(img.title || img.fileName || "");
@@ -933,21 +874,6 @@ function displayRelated(images) {
 
   });
 
-  const seoList = document.getElementById("seo-links-list");
-
-  if (seoList) {
-    seoList.innerHTML = images.slice(0, 10).map(img => `
-      <a href="/photo/${img.slug}" class="seo-chip">
-        ${(img.title || '')
-          .split(' ')
-          .filter(w => w.length > 3)
-          .slice(0, 2)
-          .join(' ')
-        }
-      </a>
-    `).join("");
-  }
-
   lazyLoadInit();
 }
 
@@ -1122,10 +1048,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ENSURE CANONICAL SLUG FIRST */
-  ensureCanonicalSlug().then((redirected) => {
-    if (redirected) return; // ⛔ stop, page will reload
-    loadImageDetails();
-  });
+  ensureCanonicalSlug();
 
   /* COOKIE BANNER */
   const banner = document.getElementById("cookie-banner");
