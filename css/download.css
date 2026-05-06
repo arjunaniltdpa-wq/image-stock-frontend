@@ -197,6 +197,10 @@ body {
 }
 
 .download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 17px 25px;
   border-radius: 25px;
   font-size: 16px;
@@ -204,6 +208,8 @@ body {
   border: none;
   background: #27ae60;
   color: #fff;
+  text-decoration: none;
+  gap: 8px;
 }
 
 .download-btn:hover {
@@ -529,6 +535,8 @@ html, body {
 
 /* --- Skeleton Loader --- */
 .skeleton {
+  position:absolute;
+  inset:0;
   background: linear-gradient(
     90deg,
     #f0f0f0 25%,
@@ -549,10 +557,12 @@ html, body {
 
 /* --- Smooth Fade + Blur --- */
 .image-load {
-  opacity: 1;
+  opacity: 0;
   transform: scale(0.97);
   filter: blur(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+  transition: opacity 0.5s ease,
+              transform 0.5s ease,
+              filter 0.5s ease;
 }
 
 .image-loaded {
@@ -599,6 +609,7 @@ html, body {
   overflow:hidden;
   background:#f5f5f5;
   transition:transform .25s ease;
+  isolation:isolate;
 }
 
 .related-card:hover{
@@ -643,12 +654,13 @@ html, body {
   background:rgba(0,0,0,.65);
   color:#fff;
   cursor:pointer;
-  z-index:5;
+  z-index:50;
   font-size:18px;
   display:flex;
   align-items:center;
   justify-content:center;
   transition:.2s ease;
+  
 }
 
 .download-overlay:hover{
@@ -667,38 +679,6 @@ html, body {
     padding:0 12px;
   }
 
-}
-
-/* =====================================================
-  DOWNLOAD OVERLAY
-===================================================== */
-
-.download-overlay {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 110px;
-  height: 40px;
-  background-image: url('/images/download-icon.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity .25s ease, transform .25s ease;
-  cursor: pointer;
-}
-
-.image-item:hover .download-overlay {
-  opacity: 1;
-  transform: scale(1);
-}
-
-@media (max-width: 500px) {
-  #related-images {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
 }
 
 /* ==============================
@@ -913,4 +893,13 @@ a:hover {
   z-index: 9998;
   display: none;
 }
+
+#image-protect-overlay{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  background:transparent;
+  pointer-events:none;
+}
+
 

@@ -639,24 +639,6 @@ async function loadImageDetails() {
   }
 }
 
-function forceDownload(url, filename) {
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download =
-    filename || "image.jpg";
-
-  document.body.appendChild(a);
-
-  a.click();
-
-  a.remove();
-
-}
-
 const toggleBtn = document.getElementById("toggleSeo");
 const seoContent = document.getElementById("seoContent");
 const seoCloseBtn = document.getElementById("closeSeoModal");
@@ -831,6 +813,7 @@ async function loadMoreRelated(keyword) {
     return false;
   }
 }
+
 function displayRelated(images) {
 
   const masonry =
@@ -908,7 +891,7 @@ function displayRelated(images) {
           <img 
             src="${thumb}" 
             data-src="${thumb}" 
-            class="lazy-img image-load"
+            class="image-load lazy-img"
             alt="${img.title || 'Free HD stock image'}"
             loading="lazy"
           >
@@ -1216,20 +1199,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const protectOverlay = document.getElementById("image-protect-overlay");
 
-  if (overlay) {
+  if (protectOverlay) {
+
     let moved = false;
 
-    overlay.addEventListener("touchstart", () => {
+    protectOverlay.addEventListener("touchstart", () => {
       moved = false;
     }, { passive: true });
 
-    overlay.addEventListener("touchmove", () => {
+    protectOverlay.addEventListener("touchmove", () => {
       moved = true;
     }, { passive: true });
 
-    overlay.addEventListener("touchend", (e) => {
+    protectOverlay.addEventListener("touchend", (e) => {
       if (!moved) e.preventDefault();
     }, { passive: false });
+
   }
   
 });
