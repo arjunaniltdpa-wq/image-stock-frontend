@@ -552,60 +552,67 @@ html, body {
 .related-wrapper{
   width:100%;
   max-width:1800px;
-  margin:36px auto;
+  margin:30px auto;
   padding:0 18px;
   box-sizing:border-box;
 }
 
 .related-wrapper h2{
-  font-size:36px;
+  font-size:26px;
   font-weight:800;
   margin-bottom:18px;
   color:#111;
 }
 
 .explore-title{
-  font-size:22px;
+  font-size:18px;
   color:#555;
   margin-bottom:18px;
 }
 
 /* SEO chips */
+.seo-links {
+  display: flex;
+  flex-wrap: wrap;
 
-.seo-links{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:35px;
+  gap: 10px;
+
+  margin-top: 18px;
 }
 
-.seo-chip{
-  display:inline-flex;
-  align-items:center;
+.seo-chip {
+  display: inline-flex;
+  align-items: center;
 
-  max-width:420px;
+  max-width: 420px;
 
-  padding:7px 12px;
+  padding: 8px 14px;
 
-  background:#f3f3f3;
-  border-radius:999px;
+  border-radius: 999px;
 
-  font-size:11px;
-  line-height:1.2;
+  background: #f3f3f3;
 
-  color:#222;
-  text-decoration:none;
+  color: #222;
+  text-decoration: none;
 
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
 
-  transition:.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+
+  margin: 0;
 }
 
-.seo-chip:hover{
-  background:#111;
-  color:#fff;
+.seo-chip:hover {
+  background: #ebebeb;
+  transform: translateY(-1px);
 }
 
 /* ===================================== */
