@@ -377,10 +377,17 @@ if (seoCloseBtn && overlay) {
 }
 
 // ✅ CLICK OUTSIDE (CORRECT WAY)
-overlay.onclick = () => {
-  seoContent.style.display = "none";
-  overlay.style.display = "none";
-};
+if (overlay && seoContent) {
+
+  overlay.onclick = () => {
+
+    seoContent.style.display = "none";
+
+    overlay.style.display = "none";
+
+  };
+
+}
 
 /* ---------------------------------- */
 /* RELATED SYSTEM – STABLE + SEARCH MATCH */
@@ -423,7 +430,7 @@ function startRelatedSystem(keywords = [], imageData = {}) {
     <div class="masonry-col"></div>
     <div class="masonry-col"></div>
   `;
-  
+
   /* Fallback if no keywords */
   if (!keywords.length && !imageData?.title) {
     loadRelatedFallback();
@@ -740,25 +747,42 @@ window.addEventListener("click", (e) => {
 const goTopBtn = document.getElementById("goTopBtn");
 
 window.addEventListener("scroll", () => {
+
+  if (!goTopBtn) return;
+
   if (window.scrollY > 400) {
+
     goTopBtn.style.display = "flex";
     goTopBtn.style.opacity = "1";
+
   } else {
+
     goTopBtn.style.opacity = "0";
+
     setTimeout(() => {
+
       if (window.scrollY < 400) {
         goTopBtn.style.display = "none";
       }
+
     }, 300);
+
   }
+
 });
 
-goTopBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+if (goTopBtn) {
+
+  goTopBtn.addEventListener("click", () => {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
   });
-});
+
+}
 
 /* ---------------------------------- */
 /* FORCE SLUG → SLUG-ID REDIRECT */
@@ -811,14 +835,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const banner = document.getElementById("cookie-banner");
   const acceptBtn = document.getElementById("cookie-accept");
 
-  if (!localStorage.getItem("cookieConsent")) {
-    setTimeout(() => banner.classList.add("show"), 500);
+  if (banner && !localStorage.getItem("cookieConsent")) {
+
+    setTimeout(() => {
+
+      banner.classList.add("show");
+
+    }, 500);
+
   }
 
-  acceptBtn.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", "true");
-    banner.classList.remove("show");
-  });
+  if (acceptBtn && banner) {
+
+    acceptBtn.addEventListener("click", () => {
+
+      localStorage.setItem("cookieConsent", "true");
+
+      banner.classList.remove("show");
+
+    });
+
+  }
     /* TOUCH PROTECTION */
 
   const protectOverlay = document.getElementById("image-protect-overlay");
@@ -883,31 +920,51 @@ let lastScrollTop = 0;
 const legalBar = document.getElementById("legalBar");
 let ticking = false;
 
-window.addEventListener("scroll", () => {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+if (legalBar) {
 
-      // 🔥 Always show at top
-      if (scrollTop < 100) {
-        legalBar.classList.remove("hidden");
-      } 
-      // 🔥 Scrolling DOWN → hide
-      else if (scrollTop > lastScrollTop) {
-        legalBar.classList.add("hidden");
-      } 
-      // 🔥 Scrolling UP → show
-      else {
-        legalBar.classList.remove("hidden");
-      }
+  window.addEventListener("scroll", () => {
 
-      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-      ticking = false;
-    });
+    if (!ticking) {
 
-    ticking = true;
-  }
-});
+      window.requestAnimationFrame(() => {
+
+        const scrollTop =
+          window.pageYOffset ||
+          document.documentElement.scrollTop;
+
+        // show at top
+        if (scrollTop < 100) {
+
+          legalBar.classList.remove("hidden");
+
+        }
+        // scrolling down
+        else if (scrollTop > lastScrollTop) {
+
+          legalBar.classList.add("hidden");
+
+        }
+        // scrolling up
+        else {
+
+          legalBar.classList.remove("hidden");
+
+        }
+
+        lastScrollTop =
+          scrollTop <= 0 ? 0 : scrollTop;
+
+        ticking = false;
+
+      });
+
+      ticking = true;
+
+    }
+
+  });
+
+}
 
 const revealElements = document.querySelectorAll(".reveal-on-scroll");
 
