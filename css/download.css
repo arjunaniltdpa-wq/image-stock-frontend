@@ -635,8 +635,9 @@ html, body {
 .image-wrapper {
   position: relative;
   overflow: hidden;
-  border-radius: 22px;
-  background: #f3f3f3;
+  border-radius: 16px;
+  background: transparent;
+  line-height: 0;
 }
 
 .image-wrapper img {
@@ -654,34 +655,34 @@ html, body {
 
 /* DOWNLOAD BUTTON */
 
-.download-overlay{
-  position:absolute;
-  right:10px;
-  bottom:10px;
+.download-overlay {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 
-  width:38px;
-  height:38px;
+  width: 26px;
+  height: 26px;
 
-  border:none;
-  border-radius:50%;
+  border: none;
+  outline: none;
 
-  background:
-    rgba(0,0,0,.58)
-    url('/images/download-icon.png')
-    center center / 16px 16px
-    no-repeat;
+  background: transparent;
 
-  backdrop-filter:blur(10px);
+  cursor: pointer;
 
-  cursor:pointer;
-  z-index:5;
+  z-index: 5;
 
-  transition:.2s ease;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.download-overlay:hover{
-  transform:scale(1.08);
-  background-color:rgba(0,0,0,.78);
+.download-overlay img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* MOBILE */

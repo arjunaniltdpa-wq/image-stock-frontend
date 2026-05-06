@@ -603,11 +603,13 @@ function displayRelated(images) {
 
         <a href="/photo/${finalSlug}">
 
-          <img
-            src="${imageUrl}"
-            alt="${img.title || "Free HD Image"}"
-            loading="lazy"
-          >
+        <img
+          src="${imageUrl}"
+          alt="${img.title || "Free HD Image"}"
+          loading="eager"
+          decoding="async"
+          fetchpriority="low"
+        >
 
         </a>
 
