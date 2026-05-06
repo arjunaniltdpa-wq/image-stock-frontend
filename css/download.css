@@ -916,4 +916,7 @@ a:hover {
   pointer-events:none;
 }
 
-
+.image-item{
+  content-visibility:auto;
+  contain-intrinsic-size:300px;
+}
