@@ -562,92 +562,111 @@ html, body {
 }
 
 /* =====================================================
-  RELATED SECTION WRAPPER
-===================================================== */
-#related-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
-  gap: 18px;
-  margin-top: 20px;
-}
-
-.image-item {
-  width: 100%;
-  display: block;
-}
-.related-wrapper {
-  width: 100%;
-  margin-top: 48px;
-  padding: 0 16px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 20px;   /* equal spacing */
-  box-sizing: border-box;
-}
-
-/* Title */
-.related-wrapper h2 {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.related-wrapper h2,
-.seo-links {
-  max-width: 100%;
-}
-
-/* Items */
-.image-item {
-  break-inside: avoid;
-  margin-bottom: 16px;
-}
-
-/* Image FIX */
-.image-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 12px;
-}
-/* =====================================================
-  IMAGE CARD
+   CLEAN RELATED SECTION
 ===================================================== */
 
-.image-item {
-  width: 100%;
-  position: relative;
+.related-wrapper{
+  width:100%;
+  max-width:1400px;
+  margin:50px auto 0;
+  padding:0 20px;
+  box-sizing:border-box;
 }
 
-.image-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 14px;
-  background: #f2f2f2;
+.related-wrapper h2{
+  font-size:28px;
+  margin-bottom:14px;
+  color:#111;
 }
 
-.image-wrapper img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 14px;
+.explore-title{
+  font-size:16px;
+  color:#666;
+  margin-bottom:14px;
 }
 
-.image-wrapper .skeleton {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 14px;
+#related-images{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+  width:100%;
 }
 
-.image-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 12px;
-  object-fit: cover;
-  background: #111;
+.related-card{
+  position:relative;
+  width:100%;
+  border-radius:18px;
+  overflow:hidden;
+  background:#f5f5f5;
+  transition:transform .25s ease;
+}
+
+.related-card:hover{
+  transform:translateY(-4px);
+}
+
+.related-link{
+  display:block;
+  text-decoration:none;
+}
+
+.image-wrapper{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+}
+
+.image-wrapper img{
+  width:100%;
+  height:auto;
+  display:block;
+  opacity:1 !important;
+  visibility:visible !important;
+  border-radius:18px;
+}
+
+.image-wrapper .skeleton{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  border-radius:18px;
+}
+
+.download-overlay{
+  position:absolute;
+  bottom:12px;
+  right:12px;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:50%;
+  background:rgba(0,0,0,.65);
+  color:#fff;
+  cursor:pointer;
+  z-index:5;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.2s ease;
+}
+
+.download-overlay:hover{
+  transform:scale(1.08);
+  background:#000;
+}
+
+@media(max-width:768px){
+
+  #related-images{
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+
+  .related-wrapper{
+    padding:0 12px;
+  }
+
 }
 
 /* =====================================================
@@ -686,42 +705,6 @@ html, body {
   MAIN IMAGE PROTECTION ONLY
 ============================== */
 
-.protected-wrapper {
-  width: 100%;
-  position: relative;
-}
-
-/* Image protection */
-.protected-wrapper .protected-img {
-  -webkit-user-select: none;
-  user-select: none;
-
-  -webkit-user-drag: none;
-  pointer-events: none; /* block direct interactions */
-}
-
-#main-skeleton {
-  width: 100%;
-  height: 400px;
-  border-radius: 30px;
-  transition: opacity 0.4s ease;
-
-  position: absolute;   /* ✅ ADD */
-  top: 0;
-  left: 0;
-  z-index: 1;           /* above image */
-}
-
-/* Overlay catches all touches */
-#image-protect-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  background: transparent;
-  pointer-events: none;
-  touch-action: pan-y;   /* ✅ allow vertical scroll */
-  -webkit-touch-callout: none;
-}
 /* GO TO TOP – GLASS SQUARE */
 #goTopBtn {
   position: fixed;
@@ -931,45 +914,3 @@ a:hover {
   display: none;
 }
 
-#related-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
-  gap: 18px;
-  margin-top: 24px;
-}
-
-.related-card {
-  width: 100%;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-}
-
-.related-link {
-  display: block;
-  text-decoration: none;
-}
-
-.image-wrapper {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-}
-
-.image-wrapper img {
-  width: 100%;
-  display: block;
-  border-radius: 16px;
-}
-
-.download-overlay {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  z-index: 5;
-  border: none;
-  border-radius: 999px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
