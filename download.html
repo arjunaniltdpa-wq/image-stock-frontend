@@ -402,6 +402,7 @@ function slugify(text = "") {
     .replace(/\s+/g, "-")
     .trim();
 }
+
 function startRelatedSystem(keywords = [], imageData = {}) {
 
   relatedColIndex = 0;
@@ -413,8 +414,16 @@ function startRelatedSystem(keywords = [], imageData = {}) {
   relatedImageCounter = 0;
 
   const grid = document.querySelector("#related-images");
+
   if (!grid) return;
 
+  grid.innerHTML = `
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+    <div class="masonry-col"></div>
+  `;
+  
   /* Fallback if no keywords */
   if (!keywords.length && !imageData?.title) {
     loadRelatedFallback();
@@ -531,16 +540,15 @@ async function loadMoreRelated(keyword) {
 }
 
 let colIndex = 0;
-
 function displayRelated(images) {
 
   if (!images || !images.length) return;
 
   const masonry =
-    document.getElementById("related-masonry");
+    document.getElementById("related-images");
 
   if (!masonry) {
-    console.error("related-masonry not found");
+    console.error("related-images not found");
     return;
   }
 
@@ -569,13 +577,13 @@ function displayRelated(images) {
         : `${slugify(img.title || "image")}-${img._id}`;
 
     // 🔥 thumbnail priority
-  const imageFile =
-    img.thumbnailFileName ||
-    img.previewFileName ||
-    img.fileName;
+    const imageFile =
+      img.thumbnailFileName ||
+      img.previewFileName ||
+      img.fileName;
 
-  const imageUrl =
-    `https://cdn.pixeora.com/${encodeURIComponent(imageFile)}`;
+    const imageUrl =
+      `https://cdn.pixeora.com/${encodeURIComponent(imageFile)}`;
 
     const card =
       document.createElement("div");

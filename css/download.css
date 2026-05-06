@@ -596,135 +596,100 @@ html, body {
   color:#fff;
 }
 
-/* =============================
-   REAL MASONRY GRID
-============================= */
+/* ===================================== */
+/* RELATED IMAGE GRID */
+/* ===================================== */
 
-.masonry-grid{
-  width:100%;
-  display:flex;
-  gap:18px;
-  align-items:flex-start;
+#related-images {
+  display: flex;
+  gap: 18px;
+  width: 100%;
+  margin-top: 30px;
+  align-items: flex-start;
 }
 
-.masonry-col{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
+.masonry-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.image-item{
-  width:100%;
+.image-item {
+  width: 100%;
+  display: block;
 }
 
-.image-wrapper{
-  position:relative;
-  width:100%;
-  border-radius:22px;
-  overflow:hidden;
-  background:#f3f3f3;
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #f3f3f3;
 }
 
-.image-wrapper a{
-  display:block;
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 22px;
+  object-fit: cover;
+  transition: transform .25s ease;
 }
 
-.image-wrapper img{
-  width:100%;
-  height:auto;
-  display:block;
-  border-radius:22px;
-  object-fit:cover;
-  transition:transform .25s ease;
-}
-
-.image-wrapper:hover img{
-  transform:scale(1.02);
+.image-wrapper:hover img {
+  transform: scale(1.02);
 }
 
 /* DOWNLOAD BUTTON */
 
-.download-overlay{
-  position:absolute;
-  bottom:12px;
-  right:12px;
-
-  width:42px;
-  height:42px;
-
-  border:none;
-  border-radius:50%;
-
-  background:rgba(0,0,0,.72);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  cursor:pointer;
-  z-index:10;
+.download-overlay {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  z-index: 5;
 }
 
-.download-overlay::before{
-  content:"↓";
-  color:#fff;
-  font-size:20px;
-  font-weight:700;
-}
-
-.download-overlay:hover{
-  background:#000;
-}
-
-/* TABLET */
-
-@media(max-width:1100px){
-
-  .masonry-col:nth-child(4){
-    display:none;
-  }
-
+.download-overlay::before {
+  content: "↓";
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 /* MOBILE */
 
-@media(max-width:768px){
+@media (max-width: 900px) {
 
-  .related-wrapper h2{
-    font-size:36px;
+  #related-images {
+    gap: 12px;
   }
 
-  .masonry-grid{
-    gap:12px;
-  }
-
-  .masonry-col{
-    gap:12px;
-  }
-
-  .masonry-col:nth-child(3),
-  .masonry-col:nth-child(4){
-    display:none;
+  .masonry-col {
+    gap: 12px;
   }
 
 }
 
-/* SMALL MOBILE */
+@media (max-width: 700px) {
 
-@media(max-width:480px){
-
-  .related-wrapper{
-    padding:0 10px;
+  #related-images {
+    gap: 10px;
   }
 
-  .masonry-col:nth-child(2),
   .masonry-col:nth-child(3),
-  .masonry-col:nth-child(4){
-    display:none;
+  .masonry-col:nth-child(4) {
+    display: none;
   }
 
 }
+
 /* ==============================
   MAIN IMAGE PROTECTION ONLY
 ============================== */
