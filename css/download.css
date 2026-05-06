@@ -564,6 +564,17 @@ html, body {
 /* =====================================================
   RELATED SECTION WRAPPER
 ===================================================== */
+#related-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.image-item {
+  width: 100%;
+  display: block;
+}
 .related-wrapper {
   width: 100%;
   margin-top: 48px;
@@ -580,27 +591,9 @@ html, body {
   margin-bottom: 16px;
 }
 
-/* 🔥 5 COLUMN MASONRY */
-#related-images {
-  width: 100%;
-  margin: 25px auto 0;
-  column-count: 5;      /* ✅ YOU WANT THIS */
-  column-gap: 16px;
-}
-
 .related-wrapper h2,
 .seo-links {
   max-width: 100%;
-}
-/* Responsive */
-@media (max-width: 1200px) {
-  #related-images { column-count: 4; }
-}
-@media (max-width: 900px) {
-  #related-images { column-count: 3; }
-}
-@media (max-width: 600px) {
-  #related-images { column-count: 2; }
 }
 
 /* Items */
@@ -936,4 +929,47 @@ a:hover {
   background: rgba(0,0,0,0.5);
   z-index: 9998;
   display: none;
+}
+
+#related-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.related-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.related-link {
+  display: block;
+  text-decoration: none;
+}
+
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.image-wrapper img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+}
+
+.download-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 5;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
 }

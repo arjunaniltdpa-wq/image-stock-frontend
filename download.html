@@ -814,8 +814,18 @@ async function loadMoreRelated(keyword) {
   }
 }
 
-/* DISPLAY */
 function displayRelated(images) {
+
+  const masonry =
+    document.getElementById("related-images");
+
+  if (!masonry) return;
+
+  // prevent duplicates
+  const existingLinks = new Set(
+    [...masonry.querySelectorAll("a")]
+      .map(a => a.href)
+  );
 
   // 🔥 PRIORITIZE STRONG MATCH FIRST 30 IMAGES
   if (relatedImageCounter < 30 && relatedKeywordList.length) {
@@ -843,34 +853,63 @@ function displayRelated(images) {
 
   images.forEach(img => {
 
-    const finalSlug = img.slug;
+    const finalSlug = img.slug
+      ? img.slug
+      : `${slugify(img.title || "image")}-${img._id}`;
 
-    const thumb =
-      img.thumbnailFileName
-        ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
-        : `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`;
+    // skip duplicates
+    const finalUrl =
+      `/photo/${finalSlug}`;
+
+    if (existingLinks.has(location.origin + finalUrl)) {
+      return;
+    }
+
+    const thumb = img.thumbnailFileName
+      ? `https://cdn.pixeora.com/${encodeURIComponent(img.thumbnailFileName)}`
+      : img.previewFileName
+        ? `https://cdn.pixeora.com/${encodeURIComponent(img.previewFileName)}`
+        : img.fileName
+          ? `https://cdn.pixeora.com/${encodeURIComponent(img.fileName)}`
+          : "https://cdn.pixeora.com/placeholder.jpg";
 
     const card = document.createElement("div");
-    card.className = "image-item";
+
+    card.className = "related-card";
 
     card.innerHTML = `
       <div class="image-wrapper">
+
         <div class="skeleton"></div>
-        <a href="/photo/${finalSlug}" title="${img.title || ''} 4K wallpaper" >
-        <img 
-          src="${thumb}" 
-          data-src="${thumb}" 
-          class="lazy-img image-load"
-          alt="${img.title || 'Free HD stock image'}"
-          loading="lazy">
+
+        <a 
+          href="${finalUrl}"
+          class="related-link"
+          title="${img.title || ''} 4K wallpaper"
+        >
+
+          <img 
+            src="${thumb}" 
+            data-src="${thumb}" 
+            class="lazy-img image-load"
+            alt="${img.title || 'Free HD stock image'}"
+            loading="lazy"
+          >
+
         </a>
-        <span class="download-overlay"
-          onclick="event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\'")}')">
-        </span>
+
+        <button
+          class="download-overlay"
+          onclick="event.stopPropagation(); downloadImage('${(img.fileName || "").replace(/'/g,"\\'")}')"
+          aria-label="Download image"
+        >
+          ↓
+        </button>
+
       </div>
     `;
 
-    document.getElementById("related-images").appendChild(card);
+    masonry.appendChild(card);
 
     relatedImageCounter++;
 
@@ -878,7 +917,6 @@ function displayRelated(images) {
 
   lazyLoadInit();
 }
-
 /* ---------------------------------- */
 /* FALLBACK — GUARANTEED CONTENT */
 /* ---------------------------------- */
@@ -920,10 +958,30 @@ function lazyLoadInit() {
         const img = entry.target;
         img.src = img.dataset.src;
 
-        img.onload = () => {
+        if (img.complete) {
           img.classList.add("image-loaded");
-          img.closest(".image-wrapper").querySelector(".skeleton").remove();
-        };
+
+          const sk =
+            img.closest(".image-wrapper")
+              ?.querySelector(".skeleton");
+
+          if (sk) sk.remove();
+
+        } else {
+
+          img.onload = () => {
+
+            img.classList.add("image-loaded");
+
+            const sk =
+              img.closest(".image-wrapper")
+                ?.querySelector(".skeleton");
+
+            if (sk) sk.remove();
+
+          };
+
+        }
 
         img.classList.remove("lazy-img");
         obs.unobserve(img);
@@ -1154,7 +1212,7 @@ window.addEventListener("scroll", () => {
 
 const revealElements = document.querySelectorAll(".reveal-on-scroll");
 
-loadImageDetails();
+loadImageDetails().catch(console.error);
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
