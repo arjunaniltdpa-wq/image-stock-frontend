@@ -159,10 +159,13 @@
           <button id="toggleSeo">Show More</button>
         </div>
 
-        <a id="download-link" href="#" download>
-          <button class="download-btn">
-            <i class="fas fa-download"></i> Download
-          </button>
+        <a
+          id="download-link"
+          class="download-btn"
+          href="#"
+          download
+        >
+          <i class="fas fa-download"></i> Download
         </a>
 
       </div>
@@ -403,10 +406,15 @@ async function loadImageDetails() {
       const res = await fetch(url);
       if (!res.ok) continue;
 
+      console.log("RELATED API:", url);
+
       const j = await res.json();
       img = j.image || j.data || j.result || j;
 
       if (Array.isArray(img)) img = img[0];
+      if (!img || typeof img !== "object") {
+        throw new Error("Invalid image data");
+      }        
       if (img && (img._id || img.fileName)) break;
     }
 
@@ -786,6 +794,7 @@ async function loadMoreRelated(keyword) {
     if (!res.ok) throw new Error("Search API failed");
 
     const data = await res.json();
+    console.log("RELATED DATA:", data);
 
     const images = data.images || [];
     relatedCursor = data.nextCursor || null;
@@ -851,7 +860,9 @@ function displayRelated(images) {
     }
   }
 
-  images.forEach(img => {
+  (images || []).forEach(img => {
+
+    if (!img || !img.fileName) return;
 
     const finalSlug = img.slug
       ? img.slug
@@ -888,8 +899,7 @@ function displayRelated(images) {
 
           <img 
             src="${thumb}" 
-            data-src="${thumb}" 
-            class="image-load lazy-img"
+            class="image-load image-loaded" 
             alt="${img.title || 'Free HD stock image'}"
             loading="lazy"
           >
@@ -910,43 +920,11 @@ function displayRelated(images) {
 
     masonry.appendChild(card);
 
-    // 🔥 FORCE IMAGE SHOW
-    const imgEl = card.querySelector("img");
-    const skeleton = card.querySelector(".skeleton");
-
-    if (imgEl.complete) {
-
-      imgEl.classList.add("image-loaded");
-
-      if (skeleton) {
-        skeleton.style.display = "none";
-      }
-
-    } else {
-
-      imgEl.onload = () => {
-
-        imgEl.classList.add("image-loaded");
-
-        if (skeleton) {
-          skeleton.style.display = "none";
-        }
-
-      };
-
-      imgEl.onerror = () => {
-
-        if (skeleton) {
-          skeleton.style.display = "none";
-        }
-
-      };
-
-    }
-
     relatedImageCounter++;
 
   });
+
+  lazyLoadInit();
 }
 /* ---------------------------------- */
 /* FALLBACK — GUARANTEED CONTENT */
@@ -1283,7 +1261,9 @@ window.addEventListener("scroll", () => {
 
 const revealElements = document.querySelectorAll(".reveal-on-scroll");
 
-loadImageDetails().catch(console.error);
+loadImageDetails().catch(err => {
+  console.error("FULL LOAD ERROR:", err);
+});
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
