@@ -829,15 +829,19 @@ async function loadMoreRelated(keyword) {
   }
 }
 
-const masonry =
-  document.getElementById("related-masonry");
-
-const cols =
-  Array.from(masonry.querySelectorAll(".masonry-col"));
-
 let colIndex = 0;
 
 function addToNextColumn(card) {
+
+  const masonry =
+    document.getElementById("related-masonry");
+
+  if (!masonry) return;
+
+  const cols =
+    masonry.querySelectorAll(".masonry-col");
+
+  if (!cols.length) return;
 
   cols[colIndex].appendChild(card);
 
@@ -854,9 +858,8 @@ function displayRelated(images) {
 
     const file =
       img.thumbnailFileName ||
-      img.previewFileName;
-
-    if (!file) return;
+      img.previewFileName ||
+      img.fileName;
 
     const finalSlug =
       img.slug
