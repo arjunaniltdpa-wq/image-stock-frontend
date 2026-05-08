@@ -236,7 +236,7 @@ body {
 ====================================================== */
 
 .wallpaper-details {
-  width: auto;
+  width: 420px;
   height: auto;
 
   flex-shrink: 0;
