@@ -138,34 +138,236 @@ body {
     padding: 0 12px !important;
   }
 }
+/* ======================================================
+   MAIN AREA
+====================================================== */
 
-
-/* Main area */
 .page-wrapper main {
-  max-width: 100%;
+  max-width: 1500px;
   width: 100%;
+  margin: 0 auto;
+  padding: 20px;
   order: 2;
 }
 
 /* ======================================================
-  IMAGE SECTION
+   WALLPAPER LAYOUT
+====================================================== */
+
+.wallpaper-layout {
+  width: 100%;
+}
+
+.wallpaper-container {
+  display: flex;
+  gap: 35px;
+  align-items: flex-start;
+}
+
+/* ======================================================
+   LEFT IMAGE SIDE
+====================================================== */
+
+.wallpaper-image {
+  flex: 1.15;
+  min-width: 0;
+}
+
+/* ======================================================
+   IMAGE SECTION
 ====================================================== */
 
 .image-section {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 15px;
+  width: 100%;
+  margin: 0;
+  padding: 18px;
   border-radius: 35px;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   overflow: visible;
 }
+
+/* IMAGE WRAPPER */
 
 .protected-wrapper {
   width: 100%;
   position: relative;
-  overflow: hidden; /* 🔥 required */
+  overflow: hidden;
+  border-radius: 28px;
 }
+
+/* IMAGE */
+
+#download-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  z-index: 2;
+  border-radius: 28px;
+}
+
+/* ======================================================
+   RIGHT DETAILS SIDE
+====================================================== */
+
+.wallpaper-details {
+  width: 420px;
+  flex-shrink: 0;
+
+  background: #fff;
+
+  border-radius: 35px;
+
+  padding: 28px;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  position: sticky;
+  top: 20px;
+}
+
+/* TITLE */
+
+.wallpaper-details h1 {
+  font-size: 38px;
+  line-height: 1.12;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 20px;
+}
+
+/* DESCRIPTION */
+
+.seo-desc {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  margin-top: 12px;
+}
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+.image-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+
+/* LEFT SIDE BUTTONS */
+
+.image-actions .left-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* DOWNLOAD BUTTON */
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 24px;
+
+  border-radius: 20px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+  border: none;
+
+  background: #27ae60;
+  color: #fff;
+
+  text-decoration: none;
+
+  gap: 8px;
+
+  transition: 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #219150;
+}
+
+/* INFO BUTTON */
+
+.info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 18px;
+
+  border-radius: 20px;
+
+  color: #fff;
+  border: none;
+
+  background: #3498db;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.info-btn:hover {
+  background: #2c82bc;
+}
+
+/* ======================================================
+   DETAILS GROUPS
+====================================================== */
+
+.detail-group {
+  margin-top: 28px;
+}
+
+.detail-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* TAGS */
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.detail-tags a {
+  background: #f3f3f3;
+  color: #222;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  font-size: 14px;
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.detail-tags a:hover {
+  background: #111;
+  color: #fff;
+}
+
+/* ======================================================
+   REMOVE LINK EFFECTS
+====================================================== */
 
 #image-name,
 #image-caption,
@@ -176,69 +378,31 @@ body {
   cursor: default;
 }
 
-#download-image {
-  width: 100%;
-  height: auto;              /* ✅ IMPORTANT */
-  display: block;
-  border-radius: 30px;
-  object-fit: contain;       /* ✅ NO CROP */
-  opacity: 1;
-  visibility: visible;
-  display: block;
-  position: relative;
-  z-index: 2;
-}
+/* ======================================================
+   MOBILE RESPONSIVE
+====================================================== */
 
-.image-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
+@media (max-width: 980px) {
 
-.download-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  .wallpaper-container {
+    flex-direction: column;
+  }
 
-  padding: 17px 25px;
-  border-radius: 25px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background: #27ae60;
-  color: #fff;
-  text-decoration: none;
-  gap: 8px;
-}
+  .wallpaper-details {
+    width: 100%;
+    position: static;
+    padding: 24px;
+  }
 
-.download-btn:hover {
-  background: #219150;
-}
+  .wallpaper-details h1 {
+    font-size: 28px;
+  }
 
-.info-btn {
-  background: #3498db;
-  padding: 12px 15px;
-  border-radius: 25px;
-  color: #fff;
-  border: none;
-}
+  .image-actions {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 
-.info-btn:hover {
-  background: #2c82bc;
-}
-
-/* FIX: Proper spacing for buttons */
-.image-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Left side buttons group */
-.image-actions .left-actions {
-  display: flex;
-  gap: 10px;
 }
 
 /* ======================================================
