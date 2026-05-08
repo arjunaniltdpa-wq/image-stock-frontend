@@ -120,6 +120,54 @@ body {
   display: block;
 }
 
+/* =========================================
+   TOP CATEGORY NAV
+========================================= */
+
+.top-categories {
+  width: 100%;
+
+  border-bottom: 1px solid #ececec;
+
+  background: #fff;
+}
+
+.top-categories-inner {
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  padding: 14px 40px;
+
+  display: flex;
+  gap: 28px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+.top-categories-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.top-categories a {
+  color: #555;
+
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: .2s ease;
+}
+
+.top-categories a:hover {
+  color: #111;
+}
+
 /* ======================================================
   ⭐ PAGE WRAPPER (FOR SIDE ADS)
 ====================================================== */
@@ -143,11 +191,13 @@ body {
 ====================================================== */
 
 .page-wrapper main {
-  max-width: 1500px;
-  width: 100%;
+  max-width: 1650px;
+
   margin: 0 auto;
-  padding: 20px;
-  order: 2;
+
+  padding: 30px 40px;
+
+  width: 100%;
 }
 
 /* ======================================================
@@ -156,6 +206,8 @@ body {
 
 .wallpaper-layout {
   width: 100%;
+
+  margin-top: 26px;
 }
 .wallpaper-container {
   display: flex;
@@ -168,7 +220,7 @@ body {
 ====================================================== */
 
 .wallpaper-image {
-  flex: 1.15;
+  flex: 1;
   min-width: 0;
   display: flex;
   
@@ -186,7 +238,8 @@ body {
 
   border-radius: 35px;
 
-  background: #f5f5f5;
+  background: #f7f7f7;
+  border: 1px solid #ececec;
 
   overflow: hidden;
 
@@ -244,11 +297,11 @@ body {
   background: #fff;
 
   border-radius: 35px;
+  border: 1px solid #ececec;
 
   padding: 28px;
 
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
 
