@@ -192,17 +192,16 @@ body {
 /* ======================================================
    MAIN AREA
 ====================================================== */
-
 .page-wrapper main {
-  max-width: 1650px;
+  width: 100%;
+  max-width: 1450px;
 
   margin: 0 auto;
 
-  padding: 30px 40px;
+  padding: 34px 24px;
 
-  width: 100%;
+  box-sizing: border-box;
 }
-
 /* ======================================================
    WALLPAPER LAYOUT
 ====================================================== */
@@ -215,11 +214,15 @@ body {
 .wallpaper-container {
   display: flex;
 
-  gap: 28px;
+  justify-content: center;
 
   align-items: stretch;
 
-  max-width: 1420px;
+  gap: 26px;
+
+  width: 100%;
+
+  max-width: 1280px;
 
   margin: 0 auto;
 }
@@ -228,21 +231,24 @@ body {
 ====================================================== */
 
 .wallpaper-image {
-  flex: 0.82;
+  flex: 0 1 760px;
 
   min-width: 0;
 
   display: flex;
 }
-
 /* ======================================================
    IMAGE SECTION
 ====================================================== */
-
 .image-section {
   width: 100%;
 
+  max-width: 760px;
+
+  margin: 0 auto;
+
   height: 100%;
+
   padding: 13px;
 
   border-radius: 35px;
@@ -256,7 +262,6 @@ body {
   align-items: center;
   justify-content: center;
 }
-
 /* IMAGE WRAPPER */
 .protected-wrapper {
   width: 100%;
@@ -298,7 +303,7 @@ body {
 ====================================================== */
 
 .wallpaper-details {
-  width: 380px;
+  width: 360px;
   height: auto;
 
   flex-shrink: 0;
