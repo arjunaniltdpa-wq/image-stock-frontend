@@ -346,7 +346,8 @@ body {
   gap: 10px;
 }
 
-.detail-tags a {
+.detail-tags a,
+.detail-tags span {
   background: #f3f3f3;
   color: #222;
 
@@ -360,7 +361,8 @@ body {
   transition: 0.2s ease;
 }
 
-.detail-tags a:hover {
+.detail-tags a:hover,
+.detail-tags span:hover {
   background: #111;
   color: #fff;
 }
@@ -408,50 +410,14 @@ body {
 /* ======================================================
   KEYWORDS SECTION
 ====================================================== */
-.keywords {
-  max-width: 900px;
-  margin: 20px auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
 
-.keywords span {
-  background: #e0f5e9;
-  color: #27ae60;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.keywords span:hover {
-  background: #27ae60;
-  color: #fff;
-}
-
-.keywords a {
-  background: #f2f2f2;
-  color: #222;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  text-decoration: none;     /* ❌ remove underline */
-  transition: 0.2s ease;
-  display: inline-block;
-}
-
-.keywords a:hover {
-  background: #000;
-  color: #fff;
-}
 /* SEO Description */
 .seo-desc {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 1.8;
   color: #444;
-  max-width: 760px;
+  max-width: 100%;
   margin-top: 18px;
   font-weight: 400;
 }
