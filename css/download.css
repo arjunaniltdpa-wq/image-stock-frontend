@@ -241,19 +241,6 @@ body {
   gap: 10px;
 }
 
-/* FIX: Show More style */
-#toggleSeo {
-  background: #f1f1f1;
-  color: #333;
-  padding: 12px 16px;
-  border-radius: 25px;
-  border: none;
-  cursor: pointer;
-}
-
-#toggleSeo:hover {
-  background: #e0e0e0;
-}
 /* ======================================================
   KEYWORDS SECTION
 ====================================================== */
@@ -297,11 +284,12 @@ body {
 /* SEO Description */
 .seo-desc {
   font-family: 'Inter', sans-serif;
-  font-weight: 200;          /* thin */
-  font-size: 11px;           /* small clean */
-  line-height: 1.7;
-  color: #7c7c7c;               /* soft grey */
-  max-width: 850px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+  max-width: 760px;
+  margin-top: 18px;
+  font-weight: 400;
 }
 
 /* ======================================================
@@ -776,38 +764,6 @@ html, body {
   background: rgba(255, 255, 255, 0.28);
 }
 
-#seoContent {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
-
-  overflow-y: auto;
-  background: #fff;
-  padding: 25px;
-  border-radius: 16px;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  z-index: 9999;
-}
-/* Header */
-.modal-header {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
-
-/* Close button */
-#closeSeoModal {
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
 /* Mobile */
 @media (max-width: 768px) {
   #goTopBtn {
@@ -875,37 +831,12 @@ html, body {
 .legal-links a:hover {
   color: #00ffcc;
 }
-.seo-hidden {
-  position: relative;
-  max-width: 900px;
-  margin: 20px auto;
-  font-size: 14px;
-  color: #666;
-}
 
-.hidden-seo-text {
-  opacity: 0;
-  position: absolute;
-  display: none;
-  pointer-events: none;
-}
 a {
   text-decoration: none;
 }
 a:hover {
   text-decoration: none;
-}
-
-#seoOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  background: rgba(0,0,0,0.5);
-  z-index: 9998;
-  display: none;
 }
 
 #image-protect-overlay{
