@@ -217,7 +217,7 @@ body {
 
 #download-image {
   max-width: 100%;
-  max-height: 720px;
+  max-height: 100%;
 
   width: auto;
   height: auto;
@@ -236,7 +236,7 @@ body {
 ====================================================== */
 
 .wallpaper-details {
-  width: 420px;
+  width: auto;
   height: auto;
 
   flex-shrink: 0;
