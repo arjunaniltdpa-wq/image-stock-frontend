@@ -170,6 +170,8 @@ body {
 .wallpaper-image {
   flex: 1.15;
   min-width: 0;
+  display: flex;
+  
 }
 
 /* ======================================================
@@ -179,8 +181,7 @@ body {
 .image-section {
   width: 100%;
 
-  min-height: 760px;
-
+  height: 100%;
   padding: 18px;
 
   border-radius: 35px;
@@ -236,6 +237,7 @@ body {
 
 .wallpaper-details {
   width: 420px;
+  height: auto;
 
   flex-shrink: 0;
 
