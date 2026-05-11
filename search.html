@@ -450,7 +450,7 @@ async function loadSearchFirst(q) {
     );
 
     const res = await fetch(
-      `${API_BASE}/api/search/first?q=${encodeURIComponent(q)}&limit=8`
+      `${API_BASE}/api/search/first?q=${encodeURIComponent(q)}&limit=16`
     );
     const data = await res.json();
 
@@ -458,6 +458,26 @@ async function loadSearchFirst(q) {
     bufferIndex = 0;
     nextCursor = data.nextCursor;
     totalImages = data.total || bufferedImages.length;
+
+    // instantly append remaining
+    if (
+      bufferedImages.length <= 20
+    ) {
+
+      bufferedImages
+      .slice(FIRST_RENDER_COUNT)
+      .forEach((img, i) => {
+
+        requestAnimationFrame(() => {
+          addCardWithAd(
+            img,
+            i + FIRST_RENDER_COUNT
+          );
+        });
+
+      });
+
+    }
 
     imageCountDiv.textContent = `${totalImages} Images`;
 
@@ -491,24 +511,43 @@ async function loadSearchFirst(q) {
   }
 }
 
-function maybeAppendMore() {
-  if (bufferIndex >= bufferedImages.length) return;
+let isAppending = false;
+
+async function maybeAppendMore() {
+
+  if (isAppending) return;
+
+  if (bufferIndex >= bufferedImages.length)
+    return;
+
+  isAppending = true;
 
   const batch = bufferedImages.slice(
     bufferIndex,
     bufferIndex + SCROLL_BATCH
   );
 
-  batch.forEach((img, i) => {
-
-    requestAnimationFrame(() => {
-      addCardWithAd(img);
-    });
-
-  });
   bufferIndex += SCROLL_BATCH;
 
+  // render in micro chunks
+  for (let i = 0; i < batch.length; i++) {
+
+    addCardWithAd(batch[i]);
+
+    // every 2 items → yield thread
+    if (i % 2 === 0) {
+
+      await new Promise(resolve =>
+        requestAnimationFrame(resolve)
+      );
+
+    }
+
+  }
+
   lazyLoadInit();
+
+  isAppending = false;
 }
 
 /* ================= LOAD MORE BUTTON ================= */
@@ -581,26 +620,30 @@ function loadNextRelatedBatch() {
   lazyLoadInit();
 }
 
-let scrollTick = false;
+const loadTrigger = document.createElement("div");
 
-window.addEventListener("scroll", () => {
-  const scrollY = window.scrollY;
+loadTrigger.id = "scroll-trigger";
 
-  // 🔼 Show / hide GO TOP button
-  if (scrollY > 600) {
-    goTopBtn.style.display = "flex";
-  } else {
-    goTopBtn.style.display = "none";
-  }
+document.body.appendChild(loadTrigger);
 
-  // ⬇️ Infinite scroll
-  if (
-    window.innerHeight + scrollY >=
-    document.body.offsetHeight - 1200
-  ) {
-    maybeAppendMore();
-  }
+const scrollObserver =
+new IntersectionObserver((entries) => {
+
+  entries.forEach(entry => {
+
+    if (entry.isIntersecting) {
+
+      maybeAppendMore();
+
+    }
+
+  });
+
+}, {
+  rootMargin: "1400px"
 });
+
+scrollObserver.observe(loadTrigger);
 
 /* SEARCH REDIRECT */
 function redirectSearch() {
