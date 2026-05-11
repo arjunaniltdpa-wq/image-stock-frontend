@@ -85,61 +85,152 @@
 
 <body>
 
-<header class="top-header">
-  <div class="top-nav-container">
-    <a href="/" class="logo" aria-label="Pixeora Homepage">Pixeora</a>
+<!-- PREMIUM HEADER -->
+<header class="top-header premium-header">
 
-    <nav class="nav-links">
-      <ul class="nav-menu">
-        <li class="dropdown">
-          <button class="dropdown-btn" aria-label="AI Tools Menu">AI Tools</button>
-          <ul class="dropdown-content">
-            <li><a href="upscale.html">Upscale</a></li>
-            <li><a href="bgremove.html">BG Remove</a></li>
-            <li><a href="imagecompressor.html">Image Compressor</a></li>
-            <li><a href="formatconverter.html">Format Converter</a></li>
-          </ul>
-        </li>
-      </ul>
+  <div class="top-nav-container premium-nav-container">
+
+    <!-- LOGO -->
+    <a href="/" class="logo premium-logo" aria-label="Pixeora Homepage">
+      Pixeora
+    </a>
+
+    <!-- CENTER NAV -->
+    <nav class="center-nav">
+      <a href="/">Home</a>
+      <a href="/explore.html">Explore</a>
+      <a href="/collections.html">Collections</a>
+      <a href="/community.html">Community</a>
+      <a href="/blog.html">Blog</a>
     </nav>
+
+    <!-- RIGHT ACTIONS -->
+    <div class="header-right">
+
+      <a href="/upload.html" class="upload-link">
+        Upload
+      </a>
+
+      <a href="/login.html" class="login-link">
+        Login
+      </a>
+
+      <a href="/join.html" class="join-link">
+        Join
+      </a>
+
+      <!-- AI TOOLS -->
+      <nav class="nav-links">
+        <ul class="nav-menu">
+
+          <li class="dropdown">
+
+            <button class="dropdown-btn" aria-label="AI Tools Menu">
+              AI Tools
+            </button>
+
+            <ul class="dropdown-content">
+              <li><a href="upscale.html">Upscale</a></li>
+              <li><a href="bgremove.html">BG Remove</a></li>
+              <li><a href="imagecompressor.html">Image Compressor</a></li>
+              <li><a href="formatconverter.html">Format Converter</a></li>
+            </ul>
+
+          </li>
+
+        </ul>
+      </nav>
+
+    </div>
+
   </div>
+
 </header>
 
-<main class="container">
+<!-- PREMIUM HERO -->
+<section class="banner premium-hero">
 
-<!-- BANNER -->
-<section class="banner">
-  <div class="banner-content">
+  <!-- OVERLAY -->
+  <div class="hero-overlay"></div>
 
-    <!-- SEARCH BAR -->
-    <form class="search-bar-wrapper" autocomplete="off">
-      <!-- 🔵 ORBIT CONTAINER (IMPORTANT) -->
-      <div class="orbit-ring">
-        <div class="search-bar">
+  <div class="hero-inner">
+
+    <!-- LEFT CONTENT -->
+    <div class="hero-left">
+
+      <h1 class="hero-title">
+        Stunning wallpapers.<br>
+        Totally free.
+      </h1>
+
+      <p class="hero-subtitle">
+        Discover premium HD wallpapers, royalty-free stock photos,
+        4K backgrounds and creative visuals from creators worldwide.
+      </p>
+
+      <!-- SEARCH -->
+      <form class="search-bar-wrapper premium-search-wrapper" autocomplete="off">
+
+        <div class="search-bar premium-search">
+
+          <!-- ICON -->
+          <div class="search-icon-wrap">
+
+            <svg viewBox="0 0 24 24" class="search-svg">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="20" y1="20" x2="16.5" y2="16.5"></line>
+            </svg>
+
+          </div>
+
+          <!-- INPUT -->
           <input
             type="text"
             id="searchInput"
-            placeholder="Search Images"
+            placeholder="Search wallpapers, backgrounds, photos..."
             aria-label="Search Images"
           >
-          <button type="submit" class="search-icon" aria-label="Search">
-            <img
-              src="images/search-icon.png"
-              alt=""
-              width="20"
-              height="20"
-            >
-          </button>
-        </div>
-      </div>
-    </form>
 
-    <!-- HEADLINE -->
-    <h1 class="banner-text">
-      Explore Free HD Wallpapers & Images
-    </h1>
+          <!-- CATEGORY -->
+          <select class="hero-select">
+            <option>Wallpapers</option>
+            <option>Photos</option>
+            <option>Backgrounds</option>
+          </select>
+
+          <!-- BUTTON -->
+          <button type="submit" class="hero-search-btn">
+            Search
+          </button>
+
+        </div>
+
+      </form>
+
+      <!-- TAGS -->
+      <div class="hero-tags">
+
+        <span>Nature</span>
+        <span>Mountains</span>
+        <span>Minimal</span>
+        <span>Dark</span>
+        <span>4K</span>
+        <span>Phone</span>
+
+      </div>
+
+    </div>
+
   </div>
-  
+
+  <!-- GO TOP -->
+  <button id="goTopBtn" aria-label="Go to top">
+    <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M8 5l8 7-8 7" />
+    </svg>
+  </button>
+
+</section>
 <button id="goTopBtn" aria-label="Go to top">
   <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M8 5l8 7-8 7" />
@@ -201,12 +292,55 @@
         optimized for fast loading, high resolution downloads, and seamless browsing.
       </p>
 
-      <p>
-        New images are added daily to ensure fresh and relevant content for your projects.
-        Whether you need website visuals, social media creatives, or presentation graphics,
-        Pixeora provides high-quality resources completely free.
-      </p>
     </div>
+  </section>
+
+  <!-- WALLPAPER HEADER -->
+  <section class="wallpapers-topbar">
+
+    <!-- LEFT -->
+    <div class="wallpapers-left">
+      <h2 class="wallpapers-heading">
+        Free wallpapers
+      </h2>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="wallpapers-right">
+
+      <div class="sort-dropdown">
+
+        <button class="sort-btn" id="sortToggle">
+
+          <span id="selectedSort">Popular</span>
+
+          <svg class="sort-arrow" viewBox="0 0 24 24">
+            <path d="M7 10l5 5 5-5"></path>
+          </svg>
+
+        </button>
+
+        <!-- DROPDOWN -->
+        <div class="sort-menu" id="sortMenu">
+
+          <button class="sort-option active" data-sort="popular">
+            Popular
+          </button>
+
+          <button class="sort-option" data-sort="latest">
+            New
+          </button>
+
+          <button class="sort-option" data-sort="relevant">
+            Relevant
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </section>
 
   <!-- POPULAR IMAGES -->
@@ -322,6 +456,51 @@ function createAdCard() {
 
   return adDiv;
 }
+
+/* SORT DROPDOWN */
+
+const sortToggle = document.getElementById("sortToggle");
+const sortMenu = document.getElementById("sortMenu");
+const selectedSort = document.getElementById("selectedSort");
+
+sortToggle.addEventListener("click", () => {
+  sortMenu.classList.toggle("show");
+});
+
+document.querySelectorAll(".sort-option").forEach(option => {
+
+  option.addEventListener("click", () => {
+
+    document.querySelectorAll(".sort-option").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    option.classList.add("active");
+
+    selectedSort.textContent = option.textContent;
+
+    sortMenu.classList.remove("show");
+
+    /* YOUR API SORT LOGIC HERE */
+
+    /*
+      popular
+      latest
+      relevant
+    */
+
+  });
+
+});
+
+window.addEventListener("click", e => {
+
+  if (!e.target.closest(".sort-dropdown")) {
+    sortMenu.classList.remove("show");
+  }
+
+});
+
 
 async function loadInitialImages() {
   try {
