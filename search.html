@@ -292,7 +292,8 @@ function createCard(img, index = 999) {
   if (!img.thumbnailFileName) return null;  
   const file = img.thumbnailFileName;
 
-  const url = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+  const url =
+  `https://cdn.pixeora.com/cdn-cgi/image/width=420,quality=50,format=webp/${encodeURIComponent(file)}`;
   const safeFileAttr = String(img.fileName || "").replace(/"/g, "&quot;");
 
   div.innerHTML = `
@@ -300,6 +301,7 @@ function createCard(img, index = 999) {
       <div class="skeleton"></div>
       <a href="/photo/${img.slug || ""}-${img._id || ""}" class="image-link">
         <img
+          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
           data-src="${url}"
           loading="lazy"
           decoding="async"
@@ -363,6 +365,8 @@ function lazyLoadInit() {
 
         img.src = img.dataset.src;
 
+        img.decode?.().catch(() => {});
+
         img.onload = () => {
 
           requestAnimationFrame(() => {
@@ -384,7 +388,7 @@ function lazyLoadInit() {
       });
 
     }, {
-      rootMargin: "1200px 0px",
+      rootMargin: "350px 0px",
       threshold: 0.01
     });
 
@@ -409,14 +413,15 @@ function preloadFirstRow(images) {
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "image";
-    link.href = `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
+    link.href =
+    `https://cdn.pixeora.com/cdn-cgi/image/width=420,quality=50,format=webp/${encodeURIComponent(file)}`;
     link.fetchpriority = "high";
     document.head.appendChild(link);
   });
 }
 
 /* ================= LOAD FIRST SEARCH RESULTS ================= */
-const FIRST_RENDER_COUNT = 12;
+const FIRST_RENDER_COUNT = 8;
 const SCROLL_BATCH = 8;
 
 let bufferedImages = [];
@@ -431,7 +436,7 @@ async function loadSearchFirst(q) {
 
     for (let i = 0; i < FIRST_RENDER_COUNT; i++) {
       const sk = document.createElement("div");
-      sk.className = "image-item";
+      sk.className = "image-item skeleton-item";  
       sk.innerHTML = `
         <div class="image-wrapper">
           <div class="skeleton"></div>
@@ -440,9 +445,12 @@ async function loadSearchFirst(q) {
       addToNextColumn(sk);
     }
 
-    // 🟢 2️⃣ Fetch AFTER UI paints
+    await new Promise(resolve =>
+      requestAnimationFrame(resolve)
+    );
+
     const res = await fetch(
-      `${API_BASE}/api/search/first?q=${encodeURIComponent(q)}&limit=16`
+      `${API_BASE}/api/search/first?q=${encodeURIComponent(q)}&limit=8`
     );
     const data = await res.json();
 
@@ -453,8 +461,10 @@ async function loadSearchFirst(q) {
 
     imageCountDiv.textContent = `${totalImages} Images`;
 
-    // 🟢 3️⃣ Replace skeletons with REAL images
-    cols.forEach(c => (c.innerHTML = ""));
+    // REMOVE ONLY skeleton items
+    document.querySelectorAll(".image-item.skeleton-item")
+      .forEach(el => el.remove());
+
     colIndex = 0;
 
     if (!bufferedImages.length) {
@@ -465,7 +475,9 @@ async function loadSearchFirst(q) {
 
     relatedSection.style.display = "none";
 
-    bufferedImages.slice(0, FIRST_RENDER_COUNT).forEach((img, i) => {
+    bufferedImages
+    .slice(0, FIRST_RENDER_COUNT)
+    .forEach((img, i) => {
       addCardWithAd(img, i);
     });
 
@@ -473,7 +485,6 @@ async function loadSearchFirst(q) {
 
     bufferIndex = FIRST_RENDER_COUNT;
     lazyLoadInit();
-    toggleLoadMore();
 
   } catch (err) {
     console.error("SEARCH FIRST ERROR:", err);
