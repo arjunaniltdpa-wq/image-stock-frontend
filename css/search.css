@@ -1,4 +1,4 @@
-/* =========================================
+  /* =========================================
    RESET
 ========================================= */
 
@@ -731,4 +731,65 @@ body{
 .image-wrapper img{
   transform:translateZ(0);
   backface-visibility:hidden;
+}
+
+.load-more-wrap{
+  display:flex;
+  justify-content:center;
+  margin:40px 0 60px;
+}
+
+.load-more-btn{
+  height:52px;
+  padding:0 28px;
+  border:none;
+  border-radius:18px;
+  background:#111;
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.load-more-btn:hover{
+  opacity:.88;
+  transform:translateY(-1px);
+}
+
+.download-overlay{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(4px);
+  transition:
+    opacity .22s ease,
+    transform .22s ease;
+  z-index:5;
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.12);
+}
+
+.image-item:hover .download-overlay{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.download-overlay img{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  pointer-events:none;
 }

@@ -216,6 +216,12 @@
   </div>
 </div>
 
+<div class="load-more-wrap">
+  <button id="loadMoreBtn" class="load-more-btn">
+    Load More Images
+  </button>
+</div>
+
 <!-- 🔥 SMART LEGAL BAR -->
 <div id="legalBar">
   <div class="legal-inner">
@@ -309,7 +315,17 @@ const url =
           ${index < 2 ? 'fetchpriority="high"' : ''}
         >
       </a>
-      <span class="download-overlay" data-file="${safeFileAttr}"></span>
+      <button
+        class="download-overlay"
+        data-file="${safeFileAttr}"
+        aria-label="Download"
+      >
+        <img
+          src="images/download-icon.png"
+          alt="Download"
+          loading="lazy"
+        >
+      </button>
     </div>
   `;
   return div;
@@ -521,45 +537,6 @@ async function loadSearchFirst(q) {
   }
 }
 
-let isAppending = false;
-
-async function maybeAppendMore() {
-
-  if (isAppending) return;
-
-  if (bufferIndex >= bufferedImages.length)
-    return;
-
-  isAppending = true;
-
-  const batch = bufferedImages.slice(
-    bufferIndex,
-    bufferIndex + SCROLL_BATCH
-  );
-
-  bufferIndex += SCROLL_BATCH;
-
-  // render in micro chunks
-  for (let i = 0; i < batch.length; i++) {
-
-    addCardWithAd(batch[i]);
-
-    // every 2 items → yield thread
-    if (i % 2 === 0) {
-
-      await new Promise(resolve =>
-        requestAnimationFrame(resolve)
-      );
-
-    }
-
-  }
-
-  lazyLoadInit();
-
-  isAppending = false;
-}
-
 /* ================= LOAD NEXT SEARCH RESULTS ================= */
 
 async function loadSearchNext() {
@@ -598,12 +575,12 @@ function shuffle(arr) {
 
 let relatedAll = [];
 let relatedIndex = 0;
-const RELATED_BATCH = 30;
+const RELATED_BATCH = 15;
 
 async function loadRelatedInitial(keyword) {
   relatedSection.style.display = "block";
 
-  const r = await fetch(`${API_BASE}/api/images/popular-latest?limit=200`);
+  const r = await fetch(`${API_BASE}/api/images/popular-latest?limit=60`);
   const pop = await r.json();
   relatedAll = shuffle(pop.images || []);
   relatedIndex = 0;
@@ -645,31 +622,17 @@ function loadNextRelatedBatch() {
   lazyLoadInit();
 
 }
+const loadMoreBtn =
+document.getElementById("loadMoreBtn");
 
-const loadTrigger = document.createElement("div");
+loadMoreBtn.addEventListener(
+  "click",
+  async () => {
 
-loadTrigger.id = "scroll-trigger";
+    await loadSearchNext();
 
-document.body.appendChild(loadTrigger);
-
-const scrollObserver =
-new IntersectionObserver((entries) => {
-
-  entries.forEach(entry => {
-
-    if (entry.isIntersecting) {
-
-      maybeAppendMore();
-
-    }
-
-  });
-
-}, {
-  rootMargin: "350px"
-});
-
-scrollObserver.observe(loadTrigger);
+  }
+);
 
 /* SEARCH REDIRECT */
 function redirectSearch() {
