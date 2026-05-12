@@ -390,25 +390,21 @@ body{
 
   position:relative;
 
-  background:#fff;
+  width:100%;
+
+  height:78vh;
+
+  min-height:720px;
+  max-height:920px;
 
   border-radius:34px;
 
   overflow:hidden;
 
-  box-shadow:
-  0 10px 40px rgba(0,0,0,.06);
-
-  border:
-  1px solid rgba(0,0,0,.06);
-
-  min-height:auto;
-  padding:18px;
+  background:#f6f6f6;
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
 }
 
@@ -420,12 +416,18 @@ body{
 }
 
 #download-image{
-  width:100%;
-  height:auto;
 
-  display:block;
+  width:100%;
+  height:100%;
 
   object-fit:contain;
+
+  display:block;
+}
+
+.image-section.portrait{
+
+  padding:20px 80px;
 }
 /* =========================================================
    FLOATING BUTTONS
