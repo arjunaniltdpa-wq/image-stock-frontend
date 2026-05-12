@@ -1580,19 +1580,15 @@ body{
 
 .related-wrapper .image-item img{
   width:100%;
-  height:auto;
+  height:auto !important;
+
+  object-fit:contain !important;
 
   display:block;
-
-  transition:
-  transform .7s ease,
-  opacity .25s ease;
-
-  will-change:transform;
 }
 
 .related-wrapper .image-item:hover img{
-  transform:scale(1.05);
+  transform:scale(1.02);
 }
 
 /* PREMIUM DOWNLOAD OVERLAY */
@@ -1718,4 +1714,53 @@ body{
     height:38px;
   }
 
+}
+
+/* =========================================
+   QUICK RELATED SCROLL
+========================================= */
+
+.quick-related-scroll{
+  width:min(1600px,95%);
+  margin:40px auto 20px;
+
+  overflow:hidden;
+}
+
+.scroll-row{
+  display:flex;
+  gap:18px;
+
+  overflow-x:auto;
+
+  padding-bottom:6px;
+
+  scrollbar-width:none;
+}
+
+.scroll-row::-webkit-scrollbar{
+  display:none;
+}
+
+.scroll-card{
+  flex:0 0 240px;
+
+  border-radius:22px;
+
+  overflow:hidden;
+
+  background:#fff;
+
+  transition:.25s ease;
+}
+
+.scroll-card:hover{
+  transform:translateY(-4px);
+}
+
+.scroll-card img{
+  width:100%;
+  height:auto;
+
+  display:block;
 }
