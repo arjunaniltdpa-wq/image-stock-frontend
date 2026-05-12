@@ -435,22 +435,6 @@ body{
   border-radius:24px;
 }
 
-/* FLOATING ACTIONS */
-
-.floating-image-actions{
-
-  position:absolute;
-
-  right:24px;
-  bottom:24px;
-
-  display:flex;
-
-  gap:12px;
-
-  z-index:20;
-}
-
 .floating-icon-btn{
 
   width:52px;
@@ -856,6 +840,53 @@ body{
     border-radius:15px;
   }
 
+}
+
+/* =========================================
+   CENTER IMAGE + FLOATING BUTTONS
+========================================= */
+
+.image-center-wrap{
+
+  position:relative;
+
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+}
+
+/* IMAGE */
+
+#download-image{
+
+  display:block;
+
+  max-width:100%;
+  max-height:680px;
+
+  width:auto;
+  height:auto;
+
+  object-fit:contain;
+
+  border-radius:24px;
+}
+
+/* FLOATING BUTTONS */
+
+.floating-image-actions{
+
+  position:absolute;
+
+  right:20px;
+  bottom:20px;
+
+  display:flex;
+
+  gap:12px;
+
+  z-index:20;
 }
 
 /* =========================================================
