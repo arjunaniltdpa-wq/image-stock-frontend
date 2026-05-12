@@ -402,7 +402,8 @@ body{
   border:
   1px solid rgba(0,0,0,.06);
 
-  min-height:760px;
+  min-height:auto;
+  padding:18px;
 
   display:flex;
 
@@ -419,17 +420,13 @@ body{
 }
 
 #download-image{
-
   width:100%;
   height:auto;
 
   display:block;
 
-  max-height:85vh;
-
   object-fit:contain;
 }
-
 /* =========================================================
    FLOATING BUTTONS
 ========================================================= */
@@ -1553,14 +1550,8 @@ body{
 
   border-radius:28px;
 
-  background:#fff;
-
-  box-shadow:
-  0 12px 34px rgba(0,0,0,.06);
-
   transition:
-  transform .35s ease,
-  box-shadow .35s ease;
+  transform .28s ease;
 }
 
 .related-wrapper .image-item:hover{
