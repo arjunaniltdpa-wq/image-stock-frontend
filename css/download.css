@@ -1712,14 +1712,6 @@ body{
   }
 
 }
-/* SIDEBAR */
-
-.photo-sidebar{
-  position:sticky;
-  top:120px;
-
-  height:fit-content;
-}
 
 /* TAGS */
 
