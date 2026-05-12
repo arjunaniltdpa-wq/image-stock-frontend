@@ -879,3 +879,108 @@ body{
   background:#111;
   color:#fff;
 }
+
+/* =========================================
+   PREMIUM PHOTO HERO
+========================================= */
+
+.photo-hero{
+  width:min(1500px,94%);
+  margin:30px auto 40px;
+
+  display:grid;
+  grid-template-columns:
+    minmax(0,1fr)
+    380px;
+
+  gap:28px;
+
+  align-items:start;
+}
+
+/* LEFT */
+
+.photo-left{
+  position:sticky;
+  top:120px;
+}
+
+/* IMAGE CONTAINER */
+
+.photo-image-wrap{
+  position:relative;
+
+  width:100%;
+
+  height:calc(100vh - 160px);
+
+  min-height:720px;
+  max-height:980px;
+
+  background:#fff;
+
+  border-radius:32px;
+
+  overflow:hidden;
+
+  box-shadow:
+  0 10px 40px rgba(0,0,0,.06);
+}
+
+/* IMAGE */
+
+.photo-image-wrap img{
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+
+  display:block;
+
+  background:#f6f6f6;
+}
+
+/* SIDEBAR */
+
+.photo-sidebar{
+  position:sticky;
+  top:120px;
+
+  height:fit-content;
+}
+
+/* TAGS */
+
+.photo-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+
+  margin-top:18px;
+}
+
+.photo-tags a{
+  padding:10px 16px;
+
+  background:#fff;
+
+  border-radius:999px;
+
+  text-decoration:none;
+
+  color:#111;
+
+  font-size:13px;
+  font-weight:600;
+
+  border:1px solid rgba(0,0,0,.06);
+}
+
+/* =========================================
+   RELATED
+========================================= */
+
+.related-section{
+  width:min(1600px,97%);
+  margin:40px auto 100px;
+}
