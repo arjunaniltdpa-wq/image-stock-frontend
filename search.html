@@ -216,10 +216,6 @@
   </div>
 </div>
 
-<div class="load-more-wrapper" id="loadMoreSection" style="display:none;">
-  <button class="load-more-btn" onclick="loadMoreImages()">Load More</button>
-</div>
-
 <!-- 🔥 SMART LEGAL BAR -->
 <div id="legalBar">
   <div class="legal-inner">
@@ -262,7 +258,6 @@ let colIndex = 0;
 
 /* Search Pagination */
 let nextCursor = null;
-let totalImages = 0;
 let imageCounter = 0;
 
 
@@ -289,11 +284,10 @@ function createCard(img, index = 999) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-  if (!img.thumbnailFileName) return null;  
-  const file = img.thumbnailFileName;
+if (!img.thumbnailUrl)
+  return null;  
+  const url = img.thumbnailUrl;
 
-  const url =
-  `https://cdn.pixeora.com/cdn-cgi/image/width=420,quality=50,format=webp/${encodeURIComponent(file)}`;
   const safeFileAttr = String(img.fileName || "").replace(/"/g, "&quot;");
 
   div.innerHTML = `
@@ -406,23 +400,39 @@ function lazyLoadInit() {
 }
 
 function preloadFirstRow(images) {
-  images.slice(0, 2).forEach(img => {
-    const file = img.thumbnailFileName || img.fileName;
-    if (!file) return;
 
-    const link = document.createElement("link");
+  document
+  .querySelectorAll(
+    'link[data-search-preload]'
+  )
+  .forEach(el => el.remove());
+
+  images.slice(0, 2).forEach(img => {
+
+    if (!img.thumbnailUrl)
+      return;
+
+    const link =
+    document.createElement("link");
+
     link.rel = "preload";
     link.as = "image";
-    link.href =
-    `https://cdn.pixeora.com/cdn-cgi/image/width=420,quality=50,format=webp/${encodeURIComponent(file)}`;
-    link.fetchpriority = "high";
-    document.head.appendChild(link);
-  });
-}
 
+    link.href =
+    img.thumbnailUrl;
+
+    link.fetchpriority = "high";
+
+    link.dataset.searchPreload = "1";
+
+    document.head.appendChild(link);
+
+  });
+
+}
 /* ================= LOAD FIRST SEARCH RESULTS ================= */
 const FIRST_RENDER_COUNT = 8;
-const SCROLL_BATCH = 8;
+const SCROLL_BATCH = 6;
 
 let bufferedImages = [];
 let bufferIndex = 0;
@@ -457,29 +467,8 @@ async function loadSearchFirst(q) {
     bufferedImages = data.images || [];
     bufferIndex = 0;
     nextCursor = data.nextCursor;
-    totalImages = data.total || bufferedImages.length;
-
-    // instantly append remaining
-    if (
-      bufferedImages.length <= 20
-    ) {
-
-      bufferedImages
-      .slice(FIRST_RENDER_COUNT)
-      .forEach((img, i) => {
-
-        requestAnimationFrame(() => {
-          addCardWithAd(
-            img,
-            i + FIRST_RENDER_COUNT
-          );
-        });
-
-      });
-
-    }
-
-    imageCountDiv.textContent = `${totalImages} Images`;
+    imageCountDiv.textContent =
+    "Thousands of Images";
 
     // REMOVE ONLY skeleton items
     document.querySelectorAll(".image-item.skeleton-item")
@@ -504,6 +493,19 @@ async function loadSearchFirst(q) {
     preloadFirstRow(bufferedImages);
 
     bufferIndex = FIRST_RENDER_COUNT;
+
+    if (bufferedImages.length <= 20) {
+
+      bufferedImages
+      .slice(FIRST_RENDER_COUNT)
+      .forEach(img => {
+
+        addCardWithAd(img);
+
+      });
+
+    }
+
     lazyLoadInit();
 
   } catch (err) {
@@ -550,39 +552,34 @@ async function maybeAppendMore() {
   isAppending = false;
 }
 
-/* ================= LOAD MORE BUTTON ================= */
-
-function toggleLoadMore() {
-  const section = document.getElementById("loadMoreSection");
-
-  if (nextCursor) {
-    section.style.display = "block";
-  } else {
-    section.style.display = "none";
-  }
-}
-
-
 /* ================= LOAD NEXT SEARCH RESULTS ================= */
 
 async function loadSearchNext() {
   if (!nextCursor) return;
 
   const res = await fetch(
-    `${API_BASE}/api/search/next?q=${encodeURIComponent(query)}&cursor=${nextCursor}&limit=50`
+    `${API_BASE}/api/search/next?q=${encodeURIComponent(query)}&cursor=${nextCursor}&limit=16`
   );
   const data = await res.json();
   const images = data.images || [];
 
   nextCursor = data.nextCursor;
 
-  images.forEach(img => addCardWithAd(img));
+  for (let i = 0; i < images.length; i++) {
+
+    addCardWithAd(images[i]);
+
+    if (i % 2 === 0) {
+
+      await new Promise(resolve =>
+        requestAnimationFrame(resolve)
+      );
+
+    }
+
+  }
 
   lazyLoadInit();
-  toggleLoadMore();
-}
-function loadMoreImages() {
-  loadSearchNext();
 }
 
 /* ================= RELATED FALLBACK ================= */
@@ -606,18 +603,39 @@ async function loadRelatedInitial(keyword) {
 }
 
 function loadNextRelatedBatch() {
-  const relatedCols = relatedContainer.querySelectorAll(".related-col");
-  const batch = relatedAll.slice(relatedIndex, relatedIndex + RELATED_BATCH);
+
+  const relatedCols =
+  relatedContainer.querySelectorAll(".related-col");
+
+  const batch =
+  relatedAll.slice(
+    relatedIndex,
+    relatedIndex + RELATED_BATCH
+  );
+
   if (!batch.length) return;
 
   let col = 0;
+
   batch.forEach(img => {
-    addCardWithAd(img);
-    col = (col + 1) % relatedCols.length;
+
+    const card = createCard(img);
+
+    if (!card) return;
+
+    relatedCols[col]
+    .appendChild(card);
+
+    col =
+    (col + 1) %
+    relatedCols.length;
+
   });
 
   relatedIndex += RELATED_BATCH;
+
   lazyLoadInit();
+
 }
 
 const loadTrigger = document.createElement("div");
@@ -640,7 +658,7 @@ new IntersectionObserver((entries) => {
   });
 
 }, {
-  rootMargin: "1400px"
+  rootMargin: "350px"
 });
 
 scrollObserver.observe(loadTrigger);
