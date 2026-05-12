@@ -341,29 +341,19 @@ body{
   color:#111;
 }
 
-/* =========================================================
-   PAGE WRAPPER
-========================================================= */
-
-.page-wrapper{
-
-  width:100%;
-}
-
-.page-wrapper main{
-
-  width:100%;
-
-  max-width:1450px;
-
-  margin:auto;
-
-  padding:28px 24px 80px;
-}
 
 /* =========================================================
-   MAIN IMAGE LAYOUT
+   PREMIUM CENTER HERO SECTION
 ========================================================= */
+
+.photo-hero{
+
+  width:min(1500px,94%);
+
+  margin:26px auto 60px;
+}
+
+/* MAIN LAYOUT */
 
 .wallpaper-container{
 
@@ -371,126 +361,88 @@ body{
 
   grid-template-columns:
   minmax(0,1fr)
-  380px;
+  420px;
 
-  gap:28px;
+  gap:32px;
 
   align-items:start;
 }
 
 /* =========================================================
-   IMAGE SIDE
+   LEFT SIDE
 ========================================================= */
 
-.wallpaper-image{
+.photo-left{
+  width:100%;
   min-width:0;
 }
 
-.image-section{
+/* MAIN IMAGE CARD */
+
+.photo-image-wrap{
 
   position:relative;
 
   width:100%;
 
-  min-height:760px;
-
   background:#fff;
 
-  border:
-  1px solid #ececec;
-
-  border-radius:36px;
+  border-radius:30px;
 
   overflow:hidden;
+
+  border:1px solid rgba(0,0,0,.06);
+
+  box-shadow:
+  0 10px 40px rgba(0,0,0,.04);
+}
+
+/* IMAGE AREA */
+
+.photo-image-inner{
+
+  position:relative;
+
+  width:100%;
+
+  height:760px;
 
   display:flex;
 
   align-items:center;
   justify-content:center;
 
-  padding:42px;
+  background:#f3f4f6;
 
-  box-shadow:
-  0 10px 40px rgba(0,0,0,.04);
+  overflow:hidden;
+
+  padding:40px;
 }
-
-.under-image-content{
-
-  padding:
-  34px
-  10px
-  0;
-}
-
-.under-image-title{
-
-  font-size:54px;
-
-  line-height:1.02;
-
-  font-weight:900;
-
-  letter-spacing:-2px;
-
-  color:#111;
-
-  max-width:950px;
-
-  margin-bottom:18px;
-}
-
-.under-image-desc{
-
-  font-size:17px;
-
-  line-height:1.9;
-
-  color:#666;
-
-  max-width:950px;
-}
-
-.top-tags-row{
-
-  margin-top:24px;
-}
-
-.protected-wrapper{
-
-  width:100%;
-
-  position:relative;
-}
+/* IMAGE */
 
 #download-image{
 
-  display:block;
-
   max-width:100%;
-  max-height:620px;
+  max-height:680px;
 
   width:auto;
   height:auto;
 
   object-fit:contain;
 
-  border-radius:26px;
+  display:block;
+
+  border-radius:24px;
 }
 
-.image-section.portrait{
-
-  padding:20px 80px;
-}
-/* =========================================================
-   FLOATING BUTTONS
-========================================================= */
+/* FLOATING ACTIONS */
 
 .floating-image-actions{
 
   position:absolute;
 
-  right:22px;
-  bottom:22px;
+  right:24px;
+  bottom:24px;
 
   display:flex;
 
@@ -509,7 +461,7 @@ body{
   border-radius:18px;
 
   background:
-  rgba(15,15,15,.78);
+  rgba(20,20,20,.82);
 
   backdrop-filter:blur(12px);
 
@@ -524,74 +476,78 @@ body{
 
   transform:translateY(-2px);
 
-  background:#111;
+  background:#000;
 }
 
 /* =========================================================
-   SIDEBAR
+   CONTENT UNDER IMAGE
 ========================================================= */
 
-.wallpaper-details{
+.under-image-content{
 
-  position:sticky;
-
-  top:120px;
-}
-
-.details-sticky{
-
-  background:#fff;
-
-  border-radius:32px;
-
-  padding:28px;
-
-  border:
-  1px solid rgba(0,0,0,.06);
-
-  box-shadow:
-  0 10px 30px rgba(0,0,0,.04);
+  padding:34px;
 }
 
 /* TITLE */
 
-.wallpaper-details h1{
+.under-image-title{
 
-  font-size:40px;
+  font-size:44px;
 
-  line-height:1.1;
+  line-height:1.08;
 
-  letter-spacing:-1px;
+  font-weight:850;
 
-  margin-bottom:16px;
+  letter-spacing:-1.6px;
+
+  color:#111;
+
+  max-width:900px;
+
+  margin-bottom:18px;
 }
 
 /* DESCRIPTION */
 
-.seo-desc{
+.under-image-desc{
 
   font-size:16px;
 
-  line-height:1.8;
+  line-height:1.9;
 
-  color:#555;
+  color:#666;
+
+  max-width:900px;
 }
 
-/* DOWNLOAD */
+/* TAGS */
 
-.premium-download-btn{
+.top-tags-row{
 
-  width:100%;
+  display:flex;
 
-  height:60px;
+  flex-wrap:wrap;
 
-  margin-top:28px;
+  gap:12px;
 
-  border-radius:20px;
+  margin-top:26px;
+}
 
-  background:#111;
+.top-tag-chip{
 
-  color:#fff;
+  height:42px;
+
+  padding:0 18px;
+
+  border-radius:999px;
+
+  background:#f4f4f4;
+
+  border:1px solid rgba(0,0,0,.05);
+
+  color:#111;
+
+  text-decoration:none;
 
   display:flex;
 
@@ -599,24 +555,88 @@ body{
 
   justify-content:center;
 
+  font-size:14px;
+
+  font-weight:500;
+
+  transition:.2s ease;
+}
+
+.top-tag-chip:hover{
+
+  background:#111;
+
+  color:#fff;
+}
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.photo-sidebar{
+
+  position:sticky;
+
+  top:110px;
+}
+
+/* SIDEBAR CARD */
+
+.details-sticky{
+
+  background:#fff;
+
+  border-radius:30px;
+
+  padding:26px;
+
+  border:1px solid rgba(0,0,0,.06);
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,.04);
+}
+
+/* DOWNLOAD BUTTON */
+
+.premium-download-btn{
+
+  width:100%;
+
+  height:58px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:#111;
+
+  color:#fff;
+
   text-decoration:none;
 
-  font-size:16px;
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  font-size:15px;
 
   font-weight:700;
 
-  transition:.2s ease;
+  transition:.22s ease;
 }
 
 .premium-download-btn:hover{
   background:#000;
 }
 
-/* SIDEBAR ACTIONS */
+/* ACTIONS */
 
 .sidebar-actions{
 
-  display:flex;
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
 
   gap:12px;
 
@@ -625,19 +645,19 @@ body{
 
 .sidebar-actions button{
 
-  flex:1;
-
   height:52px;
 
   border:none;
 
-  border-radius:18px;
+  border-radius:16px;
 
   background:#f5f5f5;
 
-  cursor:pointer;
+  font-size:14px;
 
   font-weight:600;
+
+  cursor:pointer;
 
   transition:.2s ease;
 }
@@ -649,18 +669,15 @@ body{
   color:#fff;
 }
 
-/* =========================================================
-   META GRID
-========================================================= */
+/* META */
 
 .premium-meta-grid{
 
   display:grid;
 
-  grid-template-columns:
-  repeat(2,1fr);
+  grid-template-columns:1fr 1fr;
 
-  gap:14px;
+  gap:12px;
 
   margin-top:26px;
 }
@@ -692,46 +709,7 @@ body{
   color:#111;
 }
 
-/* =========================================================
-   TAGS
-========================================================= */
-
-.top-tags-row{
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:12px;
-
-  margin-top:24px;
-}
-
-.top-tag-chip{
-
-  padding:10px 16px;
-
-  border-radius:999px;
-
-  background:#fff;
-
-  border:1px solid #ececec;
-
-  color:#111;
-
-  text-decoration:none;
-
-  font-size:14px;
-
-  transition:.2s ease;
-}
-
-.top-tag-chip:hover{
-
-  background:#111;
-
-  color:#fff;
-}
+/* TAGS */
 
 .detail-group{
   margin-top:30px;
@@ -781,9 +759,7 @@ body{
   color:#fff;
 }
 
-/* =========================================================
-   CREATOR
-========================================================= */
+/* CREATOR */
 
 .creator-card{
 
@@ -802,8 +778,8 @@ body{
 
 .creator-avatar{
 
-  width:54px;
-  height:54px;
+  width:52px;
+  height:52px;
 
   border-radius:50%;
 
@@ -814,313 +790,72 @@ body{
   display:flex;
 
   align-items:center;
-
   justify-content:center;
 
   font-weight:700;
 }
 
-.creator-info{
-
-  display:flex;
-
-  flex-direction:column;
-}
-
-.creator-info strong{
-
-  font-size:15px;
-}
-
-.creator-info span{
-
-  color:#777;
-
-  font-size:13px;
-
-  margin-top:4px;
-}
-
 /* =========================================================
-   RELATED SECTION
+   RESPONSIVE
 ========================================================= */
 
-.related-wrapper{
+@media (max-width:1100px){
 
-  margin-top:70px;
+  .wallpaper-container{
+    grid-template-columns:1fr;
+  }
+
+  .photo-sidebar{
+    position:relative;
+    top:0;
+  }
+
 }
 
-.related-header{
+@media (max-width:700px){
 
-  display:flex;
+  .photo-image-inner{
+    min-height:420px;
+  }
 
-  align-items:center;
+  .under-image-content{
+    padding:24px;
+  }
 
-  justify-content:space-between;
+  .under-image-title{
 
-  margin-bottom:28px;
+    font-size:30px;
+
+    line-height:1.15;
+  }
+
+  .under-image-desc{
+
+    font-size:15px;
+
+    line-height:1.8;
+  }
+
+  .premium-meta-grid{
+    grid-template-columns:1fr;
+  }
+
 }
 
-.related-header h2{
+@media (max-width:520px){
 
-  font-size:34px;
+  .photo-image-inner{
+    min-height:320px;
+  }
 
-  letter-spacing:-1px;
-}
+  .floating-icon-btn{
 
-.view-all-link{
+    width:46px;
+    height:46px;
 
-  color:#111;
+    border-radius:15px;
+  }
 
-  text-decoration:none;
-
-  font-weight:600;
-}
-
-/* MASONRY */
-
-#related-images{
-
-  display:flex;
-
-  gap:24px;
-}
-
-.masonry-col{
-
-  flex:1;
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:24px;
-}
-
-
-/* DOWNLOAD OVERLAY */
-
-.download-overlay{
-
-  position:absolute;
-
-  right:16px;
-  bottom:16px;
-
-  width:42px;
-  height:42px;
-
-  border:none;
-
-  border-radius:50%;
-
-  background:
-  rgba(255,255,255,.92);
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  cursor:pointer;
-
-  opacity:0;
-
-  transform:translateY(6px);
-
-  transition:.25s ease;
-}
-
-.image-wrapper:hover .download-overlay{
-
-  opacity:1;
-
-  transform:translateY(0);
-}
-
-/* =========================================================
-   SHARE MODAL
-========================================================= */
-
-.share-modal{
-
-  position:fixed;
-
-  inset:0;
-
-  background:
-  rgba(0,0,0,.55);
-
-  backdrop-filter:blur(8px);
-
-  display:none;
-
-  align-items:center;
-
-  justify-content:center;
-
-  z-index:99999;
-}
-
-.share-modal.active{
-  display:flex;
-}
-
-.share-content{
-
-  width:92%;
-
-  max-width:520px;
-
-  background:
-  rgba(255,255,255,.92);
-
-  backdrop-filter:blur(20px);
-
-  border-radius:32px;
-
-  padding:28px;
-
-  box-shadow:
-  0 20px 60px rgba(0,0,0,.18);
-}
-
-.share-header{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin-bottom:24px;
-}
-
-.share-header h3{
-
-  font-size:28px;
-
-  font-weight:800;
-}
-
-.close-share{
-
-  width:42px;
-  height:42px;
-
-  border:none;
-
-  border-radius:14px;
-
-  background:#f2f2f2;
-
-  font-size:22px;
-
-  cursor:pointer;
-}
-
-.share-grid{
-
-  display:grid;
-
-  grid-template-columns:
-  repeat(3,1fr);
-
-  gap:16px;
-}
-
-.share-item{
-
-  height:110px;
-
-  border-radius:24px;
-
-  background:#fff;
-
-  border:1px solid #ececec;
-
-  display:flex;
-
-  flex-direction:column;
-
-  align-items:center;
-
-  justify-content:center;
-
-  gap:10px;
-
-  transition:.22s ease;
-}
-
-.share-item:hover{
-
-  transform:translateY(-3px);
-
-  box-shadow:
-  0 10px 25px rgba(0,0,0,.08);
-}
-
-.share-item img{
-
-  width:34px;
-  height:34px;
-}
-
-.share-item span{
-
-  font-size:14px;
-
-  font-weight:600;
-
-  color:#111;
-}
-
-/* COPY */
-
-.copy-section{
-
-  margin-top:24px;
-
-  display:flex;
-
-  gap:12px;
-}
-
-.copy-section input{
-
-  flex:1;
-
-  height:54px;
-
-  border-radius:18px;
-
-  border:1px solid #e8e8e8;
-
-  background:#fff;
-
-  padding:0 18px;
-
-  font-size:15px;
-
-  outline:none;
-}
-
-#copyShareBtn{
-
-  padding:0 24px;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:#111;
-
-  color:#fff;
-
-  font-weight:700;
-
-  cursor:pointer;
 }
 
 /* =========================================================
@@ -1522,311 +1257,6 @@ body{
 
 
 /* =========================================
-   PREMIUM PHOTO HERO
-========================================= */
-
-.photo-hero{
-  width:min(1500px,94%);
-  margin:30px auto 40px;
-
-  display:grid;
-  grid-template-columns:
-    minmax(0,1fr)
-    380px;
-
-  gap:28px;
-
-  align-items:start;
-}
-
-/* LEFT */
-
-/* =========================================
-   PREMIUM IMAGE + CONTENT LAYOUT
-========================================= */
-
-.photo-left{
-  width:100%;
-  min-width:0;
-}
-
-/* MAIN WHITE CONTAINER */
-
-.photo-image-wrap{
-
-  position:relative;
-
-  width:100%;
-
-  background:#fff;
-
-  border-radius:34px;
-
-  padding:34px;
-
-  border:1px solid rgba(0,0,0,.05);
-
-  box-shadow:
-  0 10px 40px rgba(0,0,0,.04);
-}
-
-/* FIXED IMAGE AREA */
-
-.photo-image-inner{
-
-  position:relative;
-
-  width:100%;
-
-  height:680px;
-
-  border-radius:28px;
-
-  overflow:hidden;
-
-  background:#f5f5f5;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-}
-
-/* IMAGE */
-
-.photo-image-inner img{
-
-  max-width:100%;
-  max-height:100%;
-
-  width:auto;
-  height:auto;
-
-  object-fit:contain;
-
-  display:block;
-}
-
-/* FLOATING ICONS INSIDE IMAGE */
-
-.floating-image-actions{
-
-  position:absolute;
-
-  right:22px;
-  bottom:22px;
-
-  display:flex;
-
-  gap:12px;
-
-  z-index:10;
-}
-
-/* CONTENT UNDER IMAGE */
-
-.under-image-content{
-
-  padding-top:28px;
-}
-
-/* TITLE */
-
-.under-image-title{
-
-  font-size:42px;
-
-  line-height:1.08;
-
-  font-weight:800;
-
-  letter-spacing:-1.5px;
-
-  color:#111;
-
-  margin-bottom:18px;
-
-  max-width:1000px;
-}
-
-/* DESCRIPTION */
-
-.under-image-desc{
-
-  font-size:16px;
-
-  line-height:1.9;
-
-  color:#666;
-
-  max-width:1000px;
-}
-
-/* TAGS */
-
-.top-tags-row{
-
-  margin-top:26px;
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:12px;
-}
-
-/* RESPONSIVE */
-
-@media (max-width:900px){
-
-  .photo-image-inner{
-    height:520px;
-  }
-
-  .under-image-title{
-    font-size:32px;
-  }
-
-}
-
-@media (max-width:600px){
-
-  .photo-image-wrap{
-    padding:18px;
-    border-radius:24px;
-  }
-
-  .photo-image-inner{
-    height:340px;
-    border-radius:20px;
-  }
-
-  .under-image-title{
-    font-size:26px;
-    line-height:1.15;
-  }
-
-  .under-image-desc{
-    font-size:15px;
-    line-height:1.8;
-  }
-
-}
-
-/* TAGS */
-
-.photo-tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-
-  margin-top:18px;
-}
-
-.photo-tags a{
-  padding:10px 16px;
-
-  background:#fff;
-
-  border-radius:999px;
-
-  text-decoration:none;
-
-  color:#111;
-
-  font-size:13px;
-  font-weight:600;
-
-  border:1px solid rgba(0,0,0,.06);
-}
-
-/* =========================================
-   RELATED
-========================================= */
-
-.related-section{
-  width:min(1600px,97%);
-  margin:40px auto 100px;
-}
-
-/* =========================================
-   PREMIUM IMAGE LAYOUT
-========================================= */
-
-.wallpaper-container{
-
-  display:grid;
-
-  grid-template-columns:
-  minmax(0,1fr)
-  380px;
-
-  gap:42px;
-
-  align-items:start;
-}
-
-.image-section{
-  width:100%;
-}
-
-.photo-image-wrap{
-
-  position:relative;
-
-  width:100%;
-
-  min-height:760px;
-
-  background:#fff;
-
-  border-radius:34px;
-
-  overflow:hidden;
-
-  box-shadow:
-  0 20px 60px rgba(0,0,0,.08);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-/* IMAGE */
-
-.photo-image-wrap img{
-
-  width:100%;
-  height:100%;
-
-  object-fit:contain;
-
-  border-radius:34px;
-
-  background:#f7f7f7;
-
-  display:block;
-}
-
-/* SIDEBAR */
-
-.details-sticky{
-
-  position:sticky;
-
-  top:120px;
-
-  background:#fff;
-
-  border-radius:30px;
-
-  padding:26px;
-
-  box-shadow:
-  0 10px 40px rgba(0,0,0,.05);
-}
-
-/* =========================================
    RELATED GRID
 ========================================= */
 
@@ -2003,4 +1433,62 @@ body{
 
 .related-image-wrap img{
   vertical-align:middle;
+}
+
+/* BETTER SIDEBAR TYPOGRAPHY */
+
+.details-sticky h1{
+
+  font-size:34px;
+
+  line-height:1.08;
+
+  letter-spacing:-1px;
+
+  margin-bottom:16px;
+}
+
+.seo-desc{
+
+  font-size:15px;
+
+  line-height:1.85;
+
+  color:#666;
+}
+
+/* CLEANER CARD LOOK */
+
+.details-sticky{
+
+  position:sticky;
+
+  top:110px;
+
+  padding:30px;
+}
+
+@media (max-width:1100px){
+
+  .wallpaper-container{
+    grid-template-columns:1fr;
+  }
+
+  .photo-image-inner{
+    height:560px;
+  }
+
+}
+
+@media (max-width:700px){
+
+  .photo-image-inner{
+    height:380px;
+    padding:20px;
+  }
+
+  #download-image{
+    max-height:320px;
+  }
+
 }
