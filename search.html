@@ -284,9 +284,14 @@ function createCard(img, index = 999) {
   const div = document.createElement("div");
   div.classList.add("image-item");
 
-if (!img.thumbnailUrl)
-  return null;  
-  const url = img.thumbnailUrl;
+const file =
+img.thumbnailFileName || img.fileName;
+
+if (!file)
+  return null;
+
+const url =
+`https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
   const safeFileAttr = String(img.fileName || "").replace(/"/g, "&quot;");
 
@@ -409,7 +414,10 @@ function preloadFirstRow(images) {
 
   images.slice(0, 2).forEach(img => {
 
-    if (!img.thumbnailUrl)
+    const file =
+    img.thumbnailFileName || img.fileName;
+
+    if (!file)
       return;
 
     const link =
@@ -419,7 +427,7 @@ function preloadFirstRow(images) {
     link.as = "image";
 
     link.href =
-    img.thumbnailUrl;
+    `https://cdn.pixeora.com/${encodeURIComponent(file)}`;
 
     link.fetchpriority = "high";
 
