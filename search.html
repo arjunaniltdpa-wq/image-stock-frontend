@@ -159,17 +159,46 @@
 
   </div>
 
-  <div class="search-sort">
+  <div class="sort-dropdown">
 
-    <button class="sort-search-btn">
+    <button class="sort-btn" id="sortToggle">
 
-      Relevant
+      <span id="selectedSort">
+        Relevant
+      </span>
 
-      <svg viewBox="0 0 24 24">
+      <svg class="sort-arrow" viewBox="0 0 24 24">
         <path d="M7 10l5 5 5-5"></path>
       </svg>
 
     </button>
+
+    <div class="sort-menu" id="sortMenu">
+
+      <button
+        class="sort-option"
+        data-sort="popular"
+      >
+        Popular
+      </button>
+
+      <button
+        class="sort-option"
+        data-sort="new"
+      >
+        New
+      </button>
+
+      <button
+        class="sort-option active"
+        data-sort="relevant"
+      >
+        Relevant
+      </button>
+
+    </div>
+
+  </div>
 
   </div>
 
@@ -264,6 +293,7 @@ let colIndex = 0;
 
 /* Search Pagination */
 let currentPage = 1;
+let currentSort = "relevant";
 let hasMore = true;
 let imageCounter = 0;
 
@@ -487,7 +517,7 @@ async function loadSearchFirst(q) {
     currentPage = 1;
 
     const res = await fetch(
-      `${API_BASE}/api/search?q=${encodeURIComponent(q)}&page=1`
+      `${API_BASE}/api/search?q=${encodeURIComponent(q)}&page=1&sort=${currentSort}`
     );
     const data = await res.json();
 
@@ -542,7 +572,7 @@ async function loadSearchNext() {
   currentPage++;
 
   const res = await fetch(
-    `${API_BASE}/api/search?q=${encodeURIComponent(query)}&page=${currentPage}`
+    `${API_BASE}/api/search?q=${encodeURIComponent(query)}&page=${currentPage}&sort=${currentSort}`
   );
 
   const data = await res.json();
@@ -630,6 +660,74 @@ function loadNextRelatedBatch() {
 }
 const loadMoreBtn =
 document.getElementById("loadMoreBtn");
+
+/* SORT SYSTEM */
+
+const sortToggle =
+document.getElementById("sortToggle");
+
+const sortMenu =
+document.getElementById("sortMenu");
+
+const selectedSort =
+document.getElementById("selectedSort");
+
+sortToggle.addEventListener("click", () => {
+
+  sortMenu.classList.toggle("show");
+
+});
+
+document
+.querySelectorAll(".sort-option")
+.forEach(option => {
+
+  option.addEventListener("click", async () => {
+
+    document
+    .querySelectorAll(".sort-option")
+    .forEach(btn => {
+
+      btn.classList.remove("active");
+
+    });
+
+    option.classList.add("active");
+
+    selectedSort.textContent =
+    option.textContent;
+
+    currentSort =
+    option.dataset.sort;
+
+    sortMenu.classList.remove("show");
+
+    /* RESET */
+
+    currentPage = 1;
+    hasMore = true;
+
+    cols.forEach(col => {
+      col.innerHTML = "";
+    });
+
+    colIndex = 0;
+
+    await loadSearchFirst(query);
+
+  });
+
+});
+
+window.addEventListener("click", e => {
+
+  if (!e.target.closest(".sort-dropdown")) {
+
+    sortMenu.classList.remove("show");
+
+  }
+
+});
 
 loadMoreBtn.addEventListener(
   "click",

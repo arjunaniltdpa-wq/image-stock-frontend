@@ -381,37 +381,7 @@ body{
   transform:scale(1.015);
 }
 
-/* DOWNLOAD */
 
-.download-overlay{
-  position:absolute;
-
-  top:14px;
-  right:14px;
-
-  width:46px;
-  height:46px;
-
-  border-radius:50%;
-
-  background:
-  rgba(255,255,255,.92)
-  url('../images/download-icon-dark.png')
-  center/20px no-repeat;
-
-  opacity:0;
-
-  transition:.25s ease;
-
-  cursor:pointer;
-
-  box-shadow:
-  0 8px 20px rgba(0,0,0,.12);
-}
-
-.image-item:hover .download-overlay{
-  opacity:1;
-}
 
 /* =========================================
    SKELETON
@@ -759,37 +729,153 @@ body{
 
 .download-overlay{
   position:absolute;
-  top:12px;
-  right:12px;
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
+
+  right:14px;
+  bottom:14px;
+
+  width:120px;
+  height:42px;
+
+  background:
+  url('../images/download-icon.png')
+  center/contain no-repeat;
+
+  background-color:transparent;
+
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+
   opacity:0;
-  transform:translateY(4px);
+
   transition:
-    opacity .22s ease,
-    transform .22s ease;
-  z-index:5;
-  box-shadow:
-    0 4px 14px rgba(0,0,0,.12);
+  opacity .25s ease,
+  transform .25s ease;
+
+  transform:translateY(6px);
+
+  cursor:pointer;
+
+  z-index:10;
 }
 
-.image-item:hover .download-overlay{
+.image-item:hover .download-overlay {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+
+/* =========================================
+   SEARCH SORT DROPDOWN
+========================================= */
+
+.sort-dropdown{
+  position:relative;
+}
+
+.sort-btn{
+  height:52px;
+  min-width:140px;
+
+  padding:0 18px;
+
+  border:none;
+  outline:none;
+
+  border-radius:16px;
+
+  background:#111;
+  color:#fff;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.25s ease;
+}
+
+.sort-btn:hover{
+  transform:translateY(-2px);
+}
+
+.sort-arrow{
+  width:18px;
+  height:18px;
+
+  stroke:#fff;
+  fill:none;
+  stroke-width:2;
+
+  transition:.25s ease;
+}
+
+.sort-menu{
+  position:absolute;
+
+  top:62px;
+  right:0;
+
+  width:180px;
+
+  background:#fff;
+
+  border-radius:18px;
+
+  padding:10px;
+
+  box-shadow:
+  0 20px 60px rgba(0,0,0,.12);
+
+  opacity:0;
+  visibility:hidden;
+
+  transform:translateY(10px);
+
+  transition:.25s ease;
+
+  z-index:9999;
+}
+
+.sort-menu.show{
   opacity:1;
+  visibility:visible;
   transform:translateY(0);
 }
 
-.download-overlay img{
-  width:18px;
-  height:18px;
-  object-fit:contain;
-  pointer-events:none;
+.sort-option{
+  width:100%;
+  height:48px;
+
+  border:none;
+  outline:none;
+
+  background:none;
+
+  border-radius:12px;
+
+  text-align:left;
+
+  padding:0 14px;
+
+  font-size:14px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.2s ease;
+}
+
+.sort-option:hover{
+  background:#f5f5f7;
+}
+
+.sort-option.active{
+  background:#111;
+  color:#fff;
 }

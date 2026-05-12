@@ -656,7 +656,6 @@ color: white;
   overflow: hidden;
 }
 
-
 /* ⭐ DOWNLOAD OVERLAY */
 .download-overlay {
     position: absolute;
@@ -1188,28 +1187,65 @@ body{
 }
 
 /* TAGS */
-
 .hero-tags{
   display:flex;
   flex-wrap:wrap;
   gap:12px;
+
+  margin-top:28px;
 }
 
-.hero-tags span{
-  padding:12px 18px;
+.hero-tags a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  height:42px;
+
+  padding:0 18px;
 
   border-radius:999px;
 
-  background:rgba(255,255,255,.12);
+  background:rgba(255,255,255,0.10);
 
-  backdrop-filter:blur(10px);
-
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,0.14);
 
   color:#fff;
 
+  text-decoration:none;
+
   font-size:14px;
   font-weight:500;
+
+  backdrop-filter:blur(14px);
+
+  transition:
+  transform .22s ease,
+  background .22s ease,
+  border-color .22s ease;
+}
+
+.hero-tags a:hover{
+  transform:translateY(-2px);
+
+  background:rgba(255,255,255,0.18);
+
+  border-color:rgba(255,255,255,0.24);
+}
+
+@media(max-width:768px){
+
+  .hero-tags{
+    gap:10px;
+    margin-top:22px;
+  }
+
+  .hero-tags a{
+    height:38px;
+    padding:0 15px;
+    font-size:13px;
+  }
+
 }
 
 /* CATEGORY SECTION */

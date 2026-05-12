@@ -20,28 +20,22 @@ body{
   color:#111;
 }
 
-/* =========================================================
+
+/* =========================================
    PREMIUM STICKY HEADER
-========================================================= */
+========================================= */
 
 .premium-search-header{
-
   position:sticky;
   top:0;
-
   z-index:9999;
 
-  background:
-  rgba(255,255,255,.82);
-
-  backdrop-filter:
-  blur(20px);
-
-  border-bottom:
-  1px solid rgba(0,0,0,.06);
+  background:rgba(255,255,255,.94);
+  border-bottom:1px solid rgba(0,0,0,.06);
 
   transition:
-  transform .28s ease;
+  transform .4s ease,
+  background .3s ease;
 }
 
 .premium-search-header.hide{
@@ -49,56 +43,43 @@ body{
 }
 
 .search-header-inner{
-
-  max-width:1400px;
-
+  width:min(1450px,94%);
   margin:auto;
 
-  height:82px;
-
-  padding:0 28px;
+  height:88px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
 }
 
 /* LOGO */
 
 .search-logo{
-
-  font-size:38px;
-
-  font-weight:900;
-
-  letter-spacing:-2px;
+  text-decoration:none;
 
   color:#111;
 
-  text-decoration:none;
+  font-size:34px;
+  font-weight:800;
+
+  letter-spacing:-2px;
 }
 
 /* NAV */
 
 .search-nav{
-
   display:flex;
-
   align-items:center;
-
-  gap:34px;
+  gap:38px;
 }
 
 .search-nav a{
-
-  color:#333;
-
   text-decoration:none;
 
-  font-size:15px;
+  color:#111;
 
+  font-size:15px;
   font-weight:500;
 
   transition:.2s ease;
@@ -111,125 +92,108 @@ body{
 /* ACTIONS */
 
 .search-actions{
-
   display:flex;
-
   align-items:center;
-
-  gap:12px;
+  gap:14px;
 }
 
 .upload-btn-link,
 .login-btn-link{
+  text-decoration:none;
 
   color:#111;
 
-  text-decoration:none;
-
   font-size:14px;
-
   font-weight:600;
 }
 
 .join-btn-link{
+  background:#111;
+  color:#fff;
 
-  height:44px;
-
-  padding:0 22px;
+  padding:12px 22px;
 
   border-radius:16px;
 
-  background:#111;
-
-  color:#fff;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
   text-decoration:none;
 
+  font-size:14px;
   font-weight:700;
+
+  transition:.25s ease;
 }
 
-/* =========================================================
+.join-btn-link:hover{
+  transform:translateY(-2px);
+}
+
+/* =========================================
    SEARCH HERO
-========================================================= */
+========================================= */
 
-.image-search-hero{
+.search-hero{
+  width:min(1450px,94%);
+  margin:auto;
 
-  padding:
-  0 28px 22px;
+  padding:0 0 30px;
 }
+
+/* SEARCH FORM */
 
 .premium-search-form{
+  height:78px;
 
-  max-width:900px;
-
-  height:68px;
-
-  margin:auto;
+  display:flex;
+  align-items:center;
 
   background:#fff;
 
   border-radius:999px;
 
-  display:flex;
-
-  align-items:center;
-
-  padding:0 14px;
+  padding:0 12px;
 
   box-shadow:
-  0 10px 30px rgba(0,0,0,.05);
+  0 10px 40px rgba(0,0,0,.06);
 }
 
 .premium-search-icon{
-
-  width:52px;
+  width:64px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
 }
 
 .premium-search-icon svg{
-
   width:22px;
   height:22px;
 
   stroke:#888;
-
   fill:none;
-
   stroke-width:2;
 }
 
 .premium-search-form input{
-
   flex:1;
 
   height:100%;
 
   border:none;
-
   outline:none;
 
-  background:transparent;
+  background:none;
 
-  font-size:16px;
+  font-size:18px;
+
+  color:#111;
 }
 
-.premium-select{
+/* SELECT */
 
-  height:48px;
+.premium-select{
+  height:52px;
 
   border:none;
-
   outline:none;
 
   border-radius:14px;
@@ -241,27 +205,33 @@ body{
   margin-right:10px;
 
   font-size:14px;
-
   font-weight:600;
 }
 
+/* BUTTON */
+
 .premium-search-btn{
-
   height:52px;
-
-  padding:0 28px;
 
   border:none;
 
-  border-radius:999px;
+  padding:0 24px;
+
+  border-radius:14px;
 
   background:#111;
-
   color:#fff;
 
+  font-size:14px;
   font-weight:700;
 
   cursor:pointer;
+
+  transition:.25s ease;
+}
+
+.premium-search-btn:hover{
+  background:#000;
 }
 
 /* =========================================================
@@ -322,12 +292,53 @@ body{
   transition:.2s ease;
 }
 
-.category:hover,
-.category.active{
+.category{
+
+  height:42px;
+
+  padding:0 18px;
+
+  border-radius:999px;
+
+  background:#f4f4f4;
+
+  color:#111;
+
+  text-decoration:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:14px;
+
+  font-weight:500;
+
+  transition:.22s ease;
+}
+
+/* ONLY HOVER BLACK */
+
+.category:hover{
 
   background:#111;
 
   color:#fff;
+
+  transform:translateY(-1px);
+}
+
+/* ACTIVE CATEGORY */
+
+.category.active{
+
+  background:#fff;
+
+  border:1px solid #ddd;
+
+  color:#111;
 }
 
 /* =========================================================
@@ -1420,4 +1431,45 @@ body{
     text-align:center;
   }
 
+}
+
+.image-item img{
+  display:block;
+  width:100%;
+  height:auto;
+  opacity:1;
+  transition:opacity .2s ease;
+}
+
+.related-skeleton{
+  width:100%;
+  border-radius:24px;
+  background:linear-gradient(
+    90deg,
+    #f1f1f1 25%,
+    #e7e7e7 37%,
+    #f1f1f1 63%
+  );
+
+  background-size:400% 100%;
+
+  animation:skeleton-loading 1.4s ease infinite;
+
+  margin-bottom:18px;
+
+  aspect-ratio:3/4;
+}
+
+@keyframes skeleton-loading{
+  0%{
+    background-position:100% 50%;
+  }
+  100%{
+    background-position:0 50%;
+  }
+}
+
+.masonry-grid{
+  opacity:1;
+  transition:opacity .25s ease;
 }
