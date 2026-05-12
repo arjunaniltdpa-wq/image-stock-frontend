@@ -1471,16 +1471,14 @@ body{
 /* =========================================================
    FINAL PREMIUM PHOTO PAGE
 ========================================================= */
-
 .photo-hero{
   width:100%;
+  padding:42px 0 20px;
 }
 
 .wallpaper-container{
 
-  width:100%;
-  max-width:1500px;
-
+  width:min(1500px,94%);
   margin:0 auto;
 
   display:grid;
@@ -1489,14 +1487,9 @@ body{
   minmax(0,1fr)
   380px;
 
-  gap:36px;
+  gap:38px;
 
   align-items:start;
-
-  padding:
-  40px
-  24px
-  0;
 }
 
 /* =========================================
@@ -1504,8 +1497,14 @@ body{
 ========================================= */
 
 .photo-left{
+
   width:100%;
   min-width:0;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:28px;
 }
 
 /* =========================================
@@ -1518,7 +1517,7 @@ body{
 
   background:#fff;
 
-  border-radius:34px;
+  border-radius:36px;
 
   border:
   1px solid #ececec;
@@ -1534,10 +1533,10 @@ body{
 
   min-height:760px;
 
-  padding:36px;
+  padding:42px;
 
   box-shadow:
-  0 10px 40px rgba(0,0,0,.04);
+  0 10px 45px rgba(0,0,0,.045);
 }
 
 .photo-image-wrap{
@@ -1553,21 +1552,41 @@ body{
   position:relative;
 }
 
-/* MAIN IMAGE */
+/* =========================================
+   MAIN IMAGE
+========================================= */
 
 #download-image{
 
   display:block;
 
   max-width:100%;
-  max-height:660px;
+  max-height:680px;
 
   width:auto;
   height:auto;
 
   object-fit:contain;
 
-  border-radius:24px;
+  border-radius:26px;
+
+  box-shadow:
+  0 10px 35px rgba(0,0,0,.08);
+}
+
+/* portrait fix */
+
+.image-section.portrait #download-image{
+
+  max-height:640px;
+}
+
+/* landscape fix */
+
+.image-section:not(.portrait) #download-image{
+
+  width:100%;
+  height:auto;
 }
 
 /* =========================================
@@ -1578,27 +1597,27 @@ body{
 
   position:absolute;
 
-  right:24px;
-  bottom:24px;
+  right:26px;
+  bottom:26px;
 
   display:flex;
 
-  gap:10px;
+  gap:12px;
 
   z-index:20;
 }
 
 .floating-icon-btn{
 
-  width:52px;
-  height:52px;
+  width:54px;
+  height:54px;
 
   border:none;
 
   border-radius:18px;
 
   background:
-  rgba(15,15,15,.78);
+  rgba(15,15,15,.82);
 
   color:#fff;
 
@@ -1607,6 +1626,8 @@ body{
   cursor:pointer;
 
   transition:.25s ease;
+
+  font-size:16px;
 }
 
 .floating-icon-btn:hover{
@@ -1622,38 +1643,38 @@ body{
 
 .under-image-content{
 
+  width:100%;
+
   padding:
-  28px
-  8px
-  0;
+  0 8px;
 }
 
 .under-image-title{
 
-  font-size:52px;
+  font-size:54px;
 
   line-height:1.02;
 
   font-weight:900;
 
-  letter-spacing:-2px;
+  letter-spacing:-2.4px;
 
   color:#111;
 
-  margin-bottom:18px;
+  margin:0 0 20px;
 
-  max-width:900px;
+  max-width:980px;
 }
 
 .under-image-desc{
 
   font-size:17px;
 
-  line-height:1.9;
+  line-height:1.95;
 
   color:#666;
 
-  max-width:950px;
+  max-width:980px;
 }
 
 /* =========================================
@@ -1666,15 +1687,13 @@ body{
   flex-wrap:wrap;
 
   gap:12px;
-
-  margin-top:24px;
 }
 
 .top-tag-chip{
 
   padding:
   10px
-  16px;
+  18px;
 
   border-radius:999px;
 
@@ -1688,6 +1707,8 @@ body{
   text-decoration:none;
 
   font-size:14px;
+
+  font-weight:500;
 
   transition:.22s ease;
 }
@@ -1713,17 +1734,107 @@ body{
 
   background:#fff;
 
-  border-radius:32px;
+  border-radius:34px;
 
-  padding:26px;
+  padding:28px;
 
   border:
   1px solid #ececec;
 
   box-shadow:
-  0 10px 35px rgba(0,0,0,.04);
+  0 10px 40px rgba(0,0,0,.045);
 }
 
+/* =========================================
+   RELATED SECTION
+========================================= */
+
+.related-wrapper{
+
+  width:min(1500px,94%);
+  margin:80px auto 40px;
+}
+
+.related-header{
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:30px;
+}
+
+.related-header h2{
+
+  font-size:48px;
+
+  line-height:1;
+
+  letter-spacing:-2px;
+
+  font-weight:900;
+
+  color:#111;
+}
+
+.view-all-link{
+
+  padding:
+  14px 22px;
+
+  border-radius:16px;
+
+  background:#111;
+
+  color:#fff;
+
+  text-decoration:none;
+
+  font-size:14px;
+
+  font-weight:700;
+
+  transition:.2s ease;
+}
+
+.view-all-link:hover{
+
+  transform:translateY(-2px);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width:1100px){
+
+  .wallpaper-container{
+
+    grid-template-columns:1fr;
+  }
+
+  .photo-sidebar{
+
+    position:relative;
+    top:0;
+  }
+
+  .under-image-title{
+
+    font-size:42px;
+  }
+
+  .image-section{
+
+    min-height:auto;
+  }
+
+  #download-image{
+
+    max-height:520px;
+  }
+
+}
 /* =========================================
    RELATED
 ========================================= */
