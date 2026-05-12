@@ -300,7 +300,7 @@ if (!img.thumbnailUrl)
           loading="lazy"
           decoding="async"
           class="lazy-img image-load"
-          alt="${(img.alt || img.title || "")}"
+          alt="${img.title || ''}"
           ${index < 2 ? 'fetchpriority="high"' : ''}
         >
       </a>
