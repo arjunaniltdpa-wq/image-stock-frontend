@@ -399,6 +399,8 @@ body{
 
 /* IMAGE AREA */
 
+/* IMAGE AREA */
+
 .photo-image-inner{
 
   position:relative;
@@ -407,8 +409,6 @@ body{
   height:760px;
 
   display:flex;
-
-  flex-direction:column;
 
   align-items:center;
   justify-content:center;
@@ -424,17 +424,41 @@ body{
 
 #download-image{
 
-  max-width:100%;
-  max-height:680px;
-
-  width:auto;
-  height:auto;
+  width:100%;
+  height:100%;
 
   object-fit:contain;
+
+  object-position:center;
 
   display:block;
 
   border-radius:24px;
+}
+
+@media (max-width:1100px){
+
+  .photo-image-inner{
+    height:560px;
+  }
+
+}
+
+@media (max-width:700px){
+
+  .photo-image-inner{
+    height:420px;
+    padding:20px;
+  }
+
+}
+
+@media (max-width:520px){
+
+  .photo-image-inner{
+    height:340px;
+  }
+
 }
 
 /* FLOATING ACTIONS */
