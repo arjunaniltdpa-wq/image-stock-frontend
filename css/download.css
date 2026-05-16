@@ -379,26 +379,6 @@ body{
 
 /* MAIN IMAGE CARD */
 
-.photo-image-wrap{
-
-  position:relative;
-
-  width:100%;
-
-  background:#fff;
-
-  border-radius:30px;
-
-  overflow:hidden;
-
-  border:1px solid rgba(0,0,0,.06);
-
-  box-shadow:
-  0 10px 40px rgba(0,0,0,.04);
-}
-
-/* IMAGE AREA */
-
 /* IMAGE CARD */
 
 .photo-image-wrap{
@@ -447,7 +427,7 @@ body{
 #download-image{
 
   max-width:100%;
-  max-height:680px;
+  max-height:100%;
 
   width:auto;
   height:auto;
@@ -457,6 +437,8 @@ body{
   object-position:center;
 
   display:block;
+
+  margin:auto;
 
   border-radius:24px;
 }
