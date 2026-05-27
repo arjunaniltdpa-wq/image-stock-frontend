@@ -461,9 +461,10 @@
       <div class="footer-col">
         <h4>COMPANY</h4>
 
-        <a href="about_pixeora.html">About Us</a>
-        <a href="stories.html">Stories</a>
-        <a href="roadmap.html">Roadmap</a>
+          <a href="help.html">Help Center</a>
+          <a href="blog.html">Blog</a>
+          <a href="guides.html">Guides</a>
+          <a href="contact.html">Contact</a>
       </div>
 
 
@@ -526,12 +527,14 @@ let convertedFileUrl = null;
 // ==========================
 // HAMBURGER MENU
 // ==========================
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
-hamburger.addEventListener('click', () => {
-  navMenu.classList.toggle('active');
-});
+const hamburger = document.getElementById("hamburger");
+const navMenu = document.querySelector(".nav-menu");
 
+if (hamburger && navMenu) {
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+}
 // ==========================
 // PREVIEW IMAGE
 // ==========================
