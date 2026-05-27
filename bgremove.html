@@ -1,234 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- =========================
-       SEO
-  ========================== -->
-  <title>Free AI Background Remover | Remove Background Online - Pixeora</title>
+  <title>Pixeora AI Upscaler</title>
 
-  <meta name="description" 
-        content="Remove image backgrounds instantly with Pixeora's free AI Background Remover. Upload your photo and get a transparent PNG in seconds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <meta name="keywords" 
-        content="remove background, free background remover, AI background remover, erase background, transparent PNG, cutout tool, online background eraser, Pixeora">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="canonical" href="https://pixeora.com/bgremove.html" />
-
-  <!-- =========================
-       OPEN GRAPH
-  ========================== -->
-  <meta property="og:title" content="Free AI Background Remover | Pixeora">
-  <meta property="og:description" content="Remove backgrounds from images instantly and download clean transparent PNGs for free.">
-  <meta property="og:image" content="https://pixeora.com/images/bg-remove-tool.jpg">
-  <meta property="og:url" content="https://pixeora.com/bgremove.html">
-  <meta property="og:type" content="website">
-
-  <!-- =========================
-       TWITTER
-  ========================== -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Free AI Background Remover - Pixeora">
-  <meta name="twitter:description" content="Remove image backgrounds instantly using advanced AI. Download clean transparent PNGs for free.">
-  <meta name="twitter:image" content="https://pixeora.com/images/bg-remove-tool.jpg">
-
-  <!-- Favicons (Google SERP friendly) -->
-  <link rel="icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-
-  <!-- =========================
-       CSS
-  ========================== -->
-  <link rel="stylesheet" href="css/bgremove.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Marck+Script&display=swap" rel="stylesheet">
-
-  <!-- =========================
-       STRUCTURED DATA (Tool Schema)
-       Helps Google identify this as a tool page
-  ========================== -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "AI Background Remover",
-    "url": "https://pixeora.com/bgremove.html",
-    "image": "https://pixeora.com/images/bg-remove-tool.jpg",
-    "applicationCategory": "PhotoEditing",
-    "operatingSystem": "All",
-    "creator": {
-      "@type": "Organization",
-      "name": "Pixeora",
-      "url": "https://pixeora.com"
-    }
-  }
-  </script>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VPX3GGRR7H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-VPX3GGRR7H');
-  </script>
-
-  <!-- =========================
-       Google AdSense
-  ========================== -->
-  <script async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4549865852809903"
-          crossorigin="anonymous">
-  </script>
+  <link rel="stylesheet" href="css/upscale.css" />
 </head>
-
 
 <body>
 
-  <!-- Header -->
-  <header class="main-header">
-    <a href="index.html" class="logo-link">Pixeora</a>
+  <!-- =========================
+       BACKGROUND GLOW
+  ========================== -->
 
-    <div class="hamburger" id="hamburger">
-      <div></div><div></div><div></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <header class="navbar">
+
+    <div class="logo">
+      Pixeora
     </div>
 
-    <nav class="nav-menu" id="navMenu">
-      <a href="upscale.html" class="nav-item">Upscale</a>
-      <a href="bgremove.html" class="nav-item active">BG Remove</a>
-      <a href="imagecompressor.html" class="nav-item">Image Compressor</a>
-      <a href="formatconverter.html" class="nav-item">Format Converter</a>
+    <nav class="nav-links">
+      <a href="about_pixeora.html">ABOUT</a>
+      <a href="stories.html">STORIES</a>
+      <a href="roadmap.html">ROADMAP</a>
+      <a href="faq.html">FAQS</a>
     </nav>
+
+    <div class="nav-actions">
+
+      <a href="login.html" class="login-btn">
+        Log In
+      </a>
+
+      <a href="pricing.html" class="pricing-btn">
+        Pricing
+      </a>
+
+    </div>
+
   </header>
 
-  <!-- ⭐ Top Banner Ad -->
-  <div class="banner-ad">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-4549865852809903"
-         data-ad-slot="1551401768"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- =========================
+       HERO SECTION
+  ========================== -->
 
-  <!-- Hero -->
   <section class="hero">
-    <h1>FREE AI Background Remover</h1>
-    <p>Remove backgrounds from images automatically. Upload your photo and get a transparent PNG in seconds.</p>
+
+    <!-- LEFT -->
+    <div class="hero-left">
+
+      <span class="hero-tag">
+        AI BACKGROUND REMOVER
+      </span>
+
+      <h1>
+        COMING <br>
+        SOON 
+      </h1>
+
+      <div class="line"></div>
+
+      <p>
+        Instantly remove image backgrounds with
+        powerful AI precision for portraits,
+        products, wallpapers and creative projects.
+      </p>
+
+      <a href="#" class="hero-btn">
+        TRY BG REMOVER
+        <span>→</span>
+      </a>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero-right">
+
+      <div class="showcase-card">
+
+        <img src="images/remove-preview.jpg" alt="AI Upscale">
+
+        <!-- CENTER DIVIDER -->
+        <div class="divider-line"></div>
+
+        <!-- AI BADGE -->
+        <div class="ai-badge">
+          <h3>AI</h3>
+          <span>BG <br>
+            REMOVE</span>
+        </div>
+
+        <!-- BEFORE -->
+        <div class="tag before">
+          <span>BEFORE</span>
+        </div>
+
+        <!-- AFTER -->
+        <div class="tag after">
+          <span>AFTER</span>
+        </div>
+
+      </div>
+
+    </div>
+
   </section>
 
-  <!-- ⭐ Side Ads + Poster -->
-  <div class="tools-container">
+  <!-- =========================================
+      PREMIUM TOOLS SLIDER
+  ========================================= -->
 
-    <!-- Left Ad -->
-    <div class="side-ad-vertical">
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:160px;height:600px"
-           data-ad-client="ca-pub-4549865852809903"
-           data-ad-slot="4083649188"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  <section class="premium-tools-slider-section">
+
+    <div class="tools-heading">
+
+      <span>PIXEORA AI TOOLS</span>
+
+      <h2>
+        Creative AI <br>
+        Tool Collection
+      </h2>
+
     </div>
 
-    <div class="coming-wrapper">
-      <!-- Coming Soon -->
-      <section class="coming-soon-box">
-        <img src="images/bgremove-coming-soon.png" class="cs-image" alt="BG Remove Coming Soon">
-      </section>
+    <!-- SLIDER -->
 
-      <!-- ⭐ Banner Under Poster -->
-      <div class="banner-ad">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-4549865852809903"
-             data-ad-slot="3493494231"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <div class="tools-slider">
+
+      <!-- CARD 1 -->
+      <div class="slider-card">
+
+        <img src="images/upscale-tool.jpg"
+            alt="AI Upscaler Tool">
+
+        <div class="slider-overlay"></div>
+
+        <div class="slider-content">
+
+          <span>AI UPSCALER</span>
+
+          <h3>
+            Enhance Images <br>
+            Using AI
+          </h3>
+
+          <p>
+            Enlarge and sharpen visuals instantly
+            with advanced AI upscaling.
+          </p>
+
+          <a href="upscale.html">
+            Try Upscaler
+          </a>
+
+        </div>
+
       </div>
-    </div>
 
-    <!-- Right Ad -->
-    <div class="side-ad-vertical">
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:160px;height:600px"
-           data-ad-client="ca-pub-4549865852809903"
-           data-ad-slot="4083649188"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+      <!-- CARD 2 -->
+      <div class="slider-card">
 
-  </div>
+        <img src="images/bg-remove-tool.jpg"
+            alt="Background Remover Tool">
 
-  <!-- Other Tools Section -->
-  <section class="other-tools">
-    <div class="tool">
-      <div class="tool-img"><img src="images/upscale-tool.jpg" alt="AI Image Upscaler Tool" /></div>
-      <div class="tool-text">
-        <h3>AI Image Upscaler</h3>
-        <p>Enlarge and enhance images with smart AI algorithms to improve quality instantly.</p>
-        <a href="upscale.html">Try Upscaler</a>
+        <div class="slider-overlay"></div>
+
+        <div class="slider-content">
+
+          <span>BG REMOVE</span>
+
+          <h3>
+            Remove Backgrounds <br>
+            Instantly
+          </h3>
+
+          <p>
+            Clean AI background removal
+            with high precision edges.
+          </p>
+
+          <a href="bgremove.html">
+            Try BG Remove
+          </a>
+
+        </div>
+
       </div>
+
+      <!-- CARD 3 -->
+      <div class="slider-card">
+
+        <img src="images/image-compressor.jpg"
+            alt="Image Compressor Tool">
+
+        <div class="slider-overlay"></div>
+
+        <div class="slider-content">
+
+          <span>IMAGE COMPRESSOR</span>
+
+          <h3>
+            Compress Images <br>
+            Without Quality Loss
+          </h3>
+
+          <p>
+            Optimize image sizes for faster
+            websites and social media.
+          </p>
+
+          <a href="imagecompressor.html">
+            Try Compressor
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="slider-card">
+
+        <img src="images/format-converter.jpg"
+            alt="Format Converter Tool">
+
+        <div class="slider-overlay"></div>
+
+        <div class="slider-content">
+
+          <span>FORMAT CONVERTER</span>
+
+          <h3>
+            Convert PNG, JPG <br>
+            WEBP & More
+          </h3>
+
+          <p>
+            Convert image formats instantly
+            with high-quality output.
+          </p>
+
+          <a href="formatconverter.html">
+            Try Converter
+          </a>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="tool reverse">
-      <div class="tool-text">
-        <h3>Image Compressor</h3>
-        <p>Reduce file size without losing quality. Ideal for web, email, and social media use.</p>
-        <a href="imagecompressor.html">Try Compressor</a>
-      </div>
-      <div class="tool-img"><img src="images/image-compressor.jpg" alt="Image Compressor Tool" /></div>
-    </div>
-
-    <div class="tool">
-      <div class="tool-img"><img src="images/format-converter.jpg" alt="Format Converter Tool" /></div>
-      <div class="tool-text">
-        <h3>Format Converter</h3>
-        <p>Convert JPG, PNG, WebP and more instantly.</p>
-        <a href="formatconverter.html">Try Converter</a>
-      </div>
-    </div>
   </section>
+  <!-- =========================
+       FOOTER
+  ========================== -->
 
-<footer>
-  &copy; 2025 Pixeora. All rights reserved.
-  <a href="legal.html" class="footer-legal">Legal & Policies</a>
-</footer>
+  <footer class="footer">
 
-<div class="bottom-sticky-ad" id="stickyAd">
-  <button class="close-sticky" onclick="closeStickyAd()">✕</button>
-  <ins class="adsbygoogle"
-       style="display:block;width:100%;height:60px"
-       data-ad-client="ca-pub-4549865852809903"
-       data-ad-slot="2074145941"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
+    <div class="footer-grid">
 
-<script>
-  document.getElementById("hamburger").addEventListener("click", () => {
-    document.getElementById("navMenu").classList.toggle("show");
-  });
-   // ⭐ Sticky bottom ad timer (change 3000 to any ms)
-  setTimeout(() => {
-    document.querySelector(".bottom-sticky-ad").classList.add("show");
-  }, 15000); // 3 seconds
+      <!-- COL 1 -->
+      <div class="footer-col">
+        <div class="footer-logo">Pixeora</div>
 
-  function closeStickyAd() {
-  const ad = document.getElementById("stickyAd");
-  ad.style.display = "none";
+        <p>
+          Pushing the boundaries of imagination
+          with immersive experiences and next-gen technology.
+        </p>
 
-  // Restore after 15 seconds
-  setTimeout(() => {
-    ad.style.display = "block";
-  }, 8000);
-}
+      </div>
 
+      <!-- COL 2 -->
+      <div class="footer-col">
+        <h4>COMPANY</h4>
 
-</script>
+        <a href="about_pixeora.html">About Us</a>
+        <a href="stories.html">Stories</a>
+        <a href="roadmap.html">Roadmap</a>
+      </div>
+
+      <!-- COL 3 -->
+      <div class="footer-col">
+        <h4>RESOURCES</h4>
+
+          <a href="help.html">Help Center</a>
+          <a href="blog.html">Blog</a>
+          <a href="guides.html">Guides</a>
+          <a href="contact.html">Contact</a>
+      </div>
+
+      <!-- COL 4 -->
+      <div class="footer-col">
+        <h4>STAY UPDATED</h4>
+
+        <p>Subscribe to get the latest updates</p>
+
+        <div class="newsletter">
+
+          <input type="email" placeholder="Enter your email">
+
+          <button>
+            →
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+
+    <div class="footer-bottom">
+
+      <p>
+        © 2026 Pixeora. All rights reserved.
+      </p>
+
+      <p>
+        Made with 💜 for creators.
+      </p>
+
+    </div>
+
+  </footer>
 
 </body>
+
 </html>
