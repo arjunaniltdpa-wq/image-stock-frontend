@@ -1113,7 +1113,11 @@ body{
   border-radius:18px;
 
   background:
-  rgba(255,255,255,.06);
+  linear-gradient(
+  145deg,
+  rgba(28,28,32,.92),
+  rgba(40,40,46,.88)
+  );
 }
 
 .info-item span{
@@ -1130,6 +1134,27 @@ body{
 .info-item strong{
 
   font-size:15px;
+}
+
+.close-share,
+.close-btn{
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  line-height:1;
+
+  padding:0;
+}
+
+.info-item strong{
+
+  font-size:15px;
+
+  line-height:1.4;
+
+  word-break:break-word;
 }
 
 /* =========================
@@ -1165,9 +1190,9 @@ body{
 
   background:
   linear-gradient(
-    145deg,
-    rgba(18,18,18,.96),
-    rgba(28,28,28,.92)
+  145deg,
+  rgba(28,28,32,.92),
+  rgba(40,40,46,.88)
   );
 
   border:1px solid rgba(255,255,255,.08);
