@@ -1136,16 +1136,35 @@ body{
   font-size:15px;
 }
 
-.close-share,
 .close-btn{
+
+  position:absolute;
+
+  top:18px;
+  right:18px;
+
+  width:42px;
+  height:42px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:rgba(255,255,255,.08);
+
+  color:#fff;
+
+  font-size:28px;
+
+  cursor:pointer;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  line-height:1;
+  padding-bottom:2px;
 
-  padding:0;
+  line-height:1;
 }
 
 .info-item strong{
