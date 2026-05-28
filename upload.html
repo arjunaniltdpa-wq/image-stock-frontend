@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pixaora Upload</title>
+
+  <link rel="stylesheet" href="css/upload.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+</head>
+<body>
+
+  <!-- NAVBAR -->
+
+  <header class="navbar">
+
+    <a href="index.html" class="logo">Pixaora</a>
+
+    <nav class="nav-links">
+
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="collections.html">Collections</a>
+      <a href="community.html">Community</a>
+      <a href="blog.html">Blog</a>
+
+    </nav>
+
+    <div class="nav-right">
+
+      <a href="login.html">Login</a>
+
+      <a href="join.html" class="join-btn">
+        Join
+      </a>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <img
+      src="images/banner.jpg"
+      class="hero-bg"
+      alt=""
+    >
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+      <span class="hero-badge">
+        PIXAORA CREATOR UPLOAD
+      </span>
+
+      <h1>
+        Share your creativity
+        with the world.
+      </h1>
+
+      <p>
+        Upload wallpapers, photography and premium visuals.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- MAIN -->
+
+  <main class="upload-wrapper">
+
+    <!-- LEFT -->
+
+    <div class="upload-left">
+
+      <!-- UPLOAD BOX -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+            <h2>Upload Images</h2>
+            <p>
+              JPG, PNG and WebP supported.
+            </p>
+          </div>
+
+          <span class="upload-limit">
+            Max 10 files
+          </span>
+
+        </div>
+
+        <label class="upload-box">
+
+          <input
+            type="file"
+            multiple
+            hidden
+          >
+
+          <div class="upload-icon">
+
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+          </div>
+
+          <h3>
+            Drag & drop your images
+          </h3>
+
+          <p>
+            or click to browse files
+          </p>
+
+          <button type="button">
+            Select Images
+          </button>
+
+        </label>
+
+      </div>
+
+      <!-- PREVIEW -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+            <h2>Selected Images</h2>
+            <p>
+              Preview uploaded thumbnails.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="preview-grid">
+
+          <div class="preview-card">
+            <img src="images/uploads/upload-1.jpg">
+          </div>
+
+          <div class="preview-card">
+            <img src="images/uploads/upload-2.jpg">
+          </div>
+
+          <div class="preview-card">
+            <img src="images/uploads/upload-3.jpg">
+          </div>
+
+          <div class="preview-card">
+            <img src="images/uploads/upload-4.jpg">
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- DETAILS -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+            <h2>Photo Details</h2>
+            <p>
+              Add information to improve discovery.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="form-grid">
+
+          <div class="input-group full">
+
+            <label>Title</label>
+
+            <input
+              type="text"
+              placeholder="Enter image title"
+            >
+
+          </div>
+
+          <div class="input-group full">
+
+            <label>Description</label>
+
+            <textarea
+              placeholder="Describe your image..."
+            ></textarea>
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Category</label>
+
+            <select>
+              <option>Select category</option>
+              <option>Cars</option>
+              <option>Nature</option>
+              <option>Wallpapers</option>
+              <option>Technology</option>
+            </select>
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Tags</label>
+
+            <input
+              type="text"
+              placeholder="wallpaper, car, 4k..."
+            >
+
+          </div>
+
+          <div class="input-group">
+
+            <label>Location</label>
+
+            <input
+              type="text"
+              placeholder="New York, USA"
+            >
+
+          </div>
+
+          <div class="input-group">
+
+            <label>License</label>
+
+            <select>
+              <option>Select license</option>
+              <option>Free Use</option>
+              <option>Editorial</option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="upload-right">
+
+      <!-- PUBLISH -->
+
+      <div class="side-card">
+
+        <h3>Publishing</h3>
+
+        <div class="radio-group">
+
+          <label>
+            <input
+              type="radio"
+              name="publish"
+              checked
+            >
+            Publish now
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="publish"
+            >
+            Save as draft
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="publish"
+            >
+            Schedule upload
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- TIPS -->
+
+      <div class="side-card">
+
+        <h3>Tips</h3>
+
+        <ul class="tips-list">
+
+          <li>
+            Use high-resolution images
+          </li>
+
+          <li>
+            Add descriptive titles & tags
+          </li>
+
+          <li>
+            Upload original content only
+          </li>
+
+          <li>
+            Use strong thumbnail visuals
+          </li>
+
+        </ul>
+
+      </div>
+
+      <!-- ACTIONS -->
+
+      <div class="action-box">
+
+        <button class="draft-btn">
+          Save Draft
+        </button>
+
+        <button class="publish-btn">
+          Publish Images
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+
+    <div class="footer-grid">
+
+      <div>
+
+        <h2>Pixaora</h2>
+
+        <p>
+          Stunning wallpapers. Totally free.
+        </p>
+
+      </div>
+
+      <div>
+
+        <h4>PRODUCT</h4>
+
+        <a href="explore.html">Explore</a>
+        <a href="collections.html">Collections</a>
+        <a href="blog.html">Blog</a>
+
+      </div>
+
+      <div>
+
+        <h4>COMPANY</h4>
+
+        <a href="about_pixeora.html">
+          About Us
+        </a>
+
+        <a href="privacy.html">
+          Privacy Policy
+        </a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
+      </div>
+
+      <div>
+
+        <h4>COMMUNITY</h4>
+
+        <a href="community.html">
+          Community
+        </a>
+
+        <a href="leaderboard.html">
+          Leaderboard
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+      <p>
+        © 2026 Pixaora. All rights reserved.
+      </p>
+
+    </div>
+
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixaora Collections</title>
+
+  <link rel="stylesheet" href="css/collection.css" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+
+    <a href="index.html" class="logo">Pixaora</a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="collections.html" class="active">Collections</a>
+      <a href="community.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+
+    <div class="nav-right">
+      <a href="upload.html" class="nav-btn">Upload</a>
+      <a href="login.html" class="nav-btn">Login</a>
+      <a href="join.html" class="join-btn">Join</a>
+      <a href="ai-tools.html" class="ai-btn">AI Tools</a>
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+  <section class="collections-hero">
+
+    <img
+      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1800&auto=format&fit=crop"
+      alt=""
+      class="hero-bg"
+    />
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+      <div class="hero-top">
+
+        <div>
+          <h1>Collections</h1>
+          <p>
+            Organize and share your favorite wallpapers and stock images.
+          </p>
+        </div>
+
+        <a href="create-collection.html" class="create-btn">
+          <i class="fa-solid fa-plus"></i>
+          Create Collection
+        </a>
+
+      </div>
+
+      <div class="search-bar">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search collections..."
+        />
+
+        <button id="searchBtn">Search</button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MAIN -->
+  <main class="collections-section">
+
+    <!-- TOP FILTERS -->
+    <div class="top-bar">
+
+      <div class="tabs">
+        <button class="tab active" data-filter="all">My Collections</button>
+        <button class="tab" data-filter="following">Following</button>
+        <button class="tab" data-filter="explore">Explore</button>
+      </div>
+
+      <div class="filter-actions">
+
+        <select id="sortSelect">
+          <option value="recent">Recently Updated</option>
+          <option value="images-high">Most Images</option>
+          <option value="images-low">Least Images</option>
+          <option value="name">A-Z</option>
+        </select>
+
+        <button class="filter-btn">
+          <i class="fa-solid fa-sliders"></i>
+          Filters
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- COLLECTION GRID -->
+    <div class="collections-grid" id="collectionsGrid"></div>
+
+    <!-- LOAD MORE -->
+    <div class="load-more-wrap">
+      <button id="loadMoreBtn" class="load-more-btn">
+        Load more
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+
+    <div class="footer-grid">
+
+      <div>
+        <h2>Pixaora</h2>
+        <p>Stunning wallpapers. Totally free.</p>
+      </div>
+
+      <div>
+        <h4>PRODUCT</h4>
+
+        <a href="explore.html">Explore</a>
+        <a href="collections.html">Collections</a>
+        <a href="ai-tools.html">AI Tools</a>
+        <a href="blog.html">Blog</a>
+      </div>
+
+      <div>
+        <h4>COMPANY</h4>
+
+        <a href="about_pixeora.html">About Us</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div>
+        <h4>COMMUNITY</h4>
+
+        <a href="community.html">Community</a>
+        <a href="creators.html">Creators</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="challenges.html">Challenges</a>
+      </div>
+
+      <div>
+        <h4>STAY CONNECTED</h4>
+
+        <p>Subscribe to our newsletter for the latest updates.</p>
+
+        <div class="newsletter">
+          <input type="email" placeholder="Enter your email" />
+          <button>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="socials">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-x-twitter"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Pixaora. All rights reserved.</p>
+      <p>Made with ❤️ for creators and dreamers.</p>
+    </div>
+
+  </footer>
+
+  <script src="collections.js"></script>
+
+</body>
+
+<script>
+
+// collections.js
+
+const collections = [
+  {
+    title: "Best Porsche Wallpapers",
+    images: 32,
+    privacy: "Public",
+    creator: "Liam Foster",
+    tab: "all",
+    image:
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/men/32.jpg",
+    link:
+      "collection-details.html?id=porsche"
+  },
+
+  {
+    title: "Cinematic Food",
+    images: 45,
+    privacy: "Public",
+    creator: "Emma Wilson",
+    tab: "following",
+    image:
+      "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/women/44.jpg",
+    link:
+      "collection-details.html?id=food"
+  },
+
+  {
+    title: "Nature Escapes",
+    images: 28,
+    privacy: "Public",
+    creator: "Noah Anderson",
+    tab: "explore",
+    image:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/men/41.jpg",
+    link:
+      "collection-details.html?id=nature"
+  },
+
+  {
+    title: "Cyberpunk Cityscapes",
+    images: 50,
+    privacy: "Private",
+    creator: "Liam Foster",
+    tab: "all",
+    image:
+      "https://images.unsplash.com/photo-1520034475321-cbe63696469a?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/men/32.jpg",
+    link:
+      "collection-details.html?id=cyberpunk"
+  },
+
+  {
+    title: "Architectural Wonders",
+    images: 37,
+    privacy: "Public",
+    creator: "Olivia Bennett",
+    tab: "following",
+    image:
+      "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/women/68.jpg",
+    link:
+      "collection-details.html?id=architecture"
+  },
+
+  {
+    title: "Minimalist Backgrounds",
+    images: 60,
+    privacy: "Public",
+    creator: "Liam Foster",
+    tab: "explore",
+    image:
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/men/32.jpg",
+    link:
+      "collection-details.html?id=minimal"
+  },
+
+  {
+    title: "Summer Vibes",
+    images: 23,
+    privacy: "Public",
+    creator: "Sophia Carter",
+    tab: "all",
+    image:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/women/21.jpg",
+    link:
+      "collection-details.html?id=summer"
+  },
+
+  {
+    title: "Wildlife Moments",
+    images: 42,
+    privacy: "Private",
+    creator: "Noah Anderson",
+    tab: "following",
+    image:
+      "https://images.unsplash.com/photo-1474511320723-9a56873867b5?q=80&w=1200&auto=format&fit=crop",
+    avatar:
+      "https://randomuser.me/api/portraits/men/41.jpg",
+    link:
+      "collection-details.html?id=wildlife"
+  }
+];
+
+const grid = document.getElementById("collectionsGrid");
+const tabs = document.querySelectorAll(".tab");
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+
+let currentFilter = "all";
+
+function renderCollections(data){
+
+  grid.innerHTML = "";
+
+  data.forEach(item => {
+
+    const card = document.createElement("a");
+
+    card.className = "collection-card";
+    card.href = item.link;
+
+    card.innerHTML = `
+      <div class="card-image">
+
+        <img src="${item.image}" alt="${item.title}">
+
+        <div class="card-overlay">
+
+          <h3>${item.title}</h3>
+
+          <div class="meta">
+            <span>${item.images} images</span>
+            <span class="badge">${item.privacy}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="card-bottom">
+
+        <div class="user">
+          <img src="${item.avatar}">
+          <span>${item.creator}</span>
+        </div>
+
+        <i class="fa-regular fa-bookmark bookmark"></i>
+
+      </div>
+    `;
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+function filterCollections(){
+
+  const search = searchInput.value.toLowerCase();
+
+  let filtered = collections.filter(item => {
+
+    const matchesTab =
+      currentFilter === "all"
+        ? true
+        : item.tab === currentFilter;
+
+    const matchesSearch =
+      item.title.toLowerCase().includes(search);
+
+    return matchesTab && matchesSearch;
+
+  });
+
+  const sortValue = sortSelect.value;
+
+  if(sortValue === "images-high"){
+    filtered.sort((a,b)=> b.images - a.images);
+  }
+
+  if(sortValue === "images-low"){
+    filtered.sort((a,b)=> a.images - b.images);
+  }
+
+  if(sortValue === "name"){
+    filtered.sort((a,b)=>
+      a.title.localeCompare(b.title)
+    );
+  }
+
+  renderCollections(filtered);
+
+}
+
+tabs.forEach(tab => {
+
+  tab.addEventListener("click", ()=>{
+
+    tabs.forEach(btn => btn.classList.remove("active"));
+
+    tab.classList.add("active");
+
+    currentFilter = tab.dataset.filter;
+
+    filterCollections();
+
+  });
+
+});
+
+searchInput.addEventListener("input", filterCollections);
+
+sortSelect.addEventListener("change", filterCollections);
+
+document
+  .getElementById("searchBtn")
+  .addEventListener("click", filterCollections);
+
+renderCollections(collections);
+</script>

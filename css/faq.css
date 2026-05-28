@@ -6,7 +6,7 @@
 
 body{
   font-family:'Outfit',sans-serif;
-  background:#07010F;
+  background:#0b033c;
   color:#fff;
   overflow-x:hidden;
   position:relative;
@@ -26,21 +26,20 @@ body{
 .glow-1{
   width:500px;
   height:500px;
-  background:#7a00ff;
+  background:#36fafd;
   top:-150px;
   left:-100px;
-  opacity:.22;
+  opacity:.25;
 }
 
 .glow-2{
   width:500px;
   height:500px;
-  background:#ff00c8;
+  background:#d400ff;
   bottom:-200px;
   right:-100px;
   opacity:.18;
 }
-
 /* =========================
    NAVBAR
 ========================= */
