@@ -18,7 +18,7 @@
 
   <header class="navbar">
 
-    <a href="index.html" class="logo">Pixaora</a>
+    <a href="index.html" class="logo">Pixeora</a>
 
     <nav class="nav-links">
       <a href="index.html">Home</a>
@@ -66,8 +66,8 @@
           <i class="fa-regular fa-user"></i>
 
           <div>
-            <h2>125K+</h2>
-            <span>Members</span>
+            <h2>25K+</h2>
+            <span>Creators</span>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
           <i class="fa-regular fa-image"></i>
 
           <div>
-            <h2>8.4M+</h2>
+            <h2>850K+</h2>
             <span>Images Uploaded</span>
           </div>
         </div>
@@ -84,7 +84,7 @@
           <i class="fa-solid fa-download"></i>
 
           <div>
-            <h2>2.6M+</h2>
+            <h2>5.2M+</h2>
             <span>Downloads</span>
           </div>
         </div>
@@ -176,6 +176,28 @@
 
   </section>
 
+  <section class="section">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Community Challenges</h2>
+        <p>
+          Join ongoing creative challenges and showcase your work.
+        </p>
+      </div>
+
+      <a href="challenges.html">
+        View all challenges
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+
+    </div>
+
+    <div class="challenges-grid" id="challengesGrid"></div>
+
+  </section>
+
   <!-- LATEST UPLOADS -->
 
   <section class="section">
@@ -200,7 +222,6 @@
     <div class="uploads-grid" id="uploadsGrid"></div>
 
   </section>
-
   <!-- FOOTER -->
 
   <footer class="footer">
@@ -208,7 +229,7 @@
     <div class="footer-grid">
 
       <div>
-        <h2>Pixaora</h2>
+        <h2>Pixeora</h2>
         <p>Stunning wallpapers. Totally free.</p>
       </div>
 
@@ -217,7 +238,7 @@
 
         <a href="explore.html">Explore</a>
         <a href="collections.html">Collections</a>
-        <a href="ai-tools.html">AI Tools</a>
+        <a href="community.html">Community</a>
         <a href="blog.html">Blog</a>
       </div>
 
@@ -225,18 +246,20 @@
         <h4>COMPANY</h4>
 
         <a href="about_pixeora.html">About Us</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="contact.html">Contact</a>
+        <a href="stories.html">Stories</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="faq.html">FAQS</a>
       </div>
 
       <div>
-        <h4>COMMUNITY</h4>
+        <h4>Legal</h4>
 
-        <a href="community.html">Community</a>
-        <a href="creators.html">Creators</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="challenges.html">Challenges</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="privacy-policy.html">Privacy-Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="dmca.html">DMCA</a>
+        <a href="contact.html">Contact</a>
+
       </div>
 
       <div>
@@ -280,7 +303,379 @@
 
   </footer>
 
-  <script src="community.js"></script>
-
 </body>
-</html>
+
+<script>
+
+const API_BASE =
+"https://api.pixeora.com";
+
+const CDN_BASE =
+"https://cdn.pixeora.com";
+
+const uploadsGrid =
+document.getElementById("uploadsGrid");
+
+async function loadLatestUploads(){
+
+  try{
+
+    uploadsGrid.innerHTML = "";
+
+    const res =
+    await fetch(
+      `${API_BASE}/api/images/popular-latest?page=1&limit=12`
+    );
+
+    const data =
+    await res.json();
+
+    const images =
+    data.images || [];
+
+    images.forEach((img)=>{
+
+      const thumb =
+      img.thumbnailFileName ||
+      img.fileName;
+
+      const thumbUrl =
+      `${CDN_BASE}/${encodeURIComponent(thumb)}`;
+
+      const card =
+      document.createElement("a");
+
+      card.href =
+      `/photo/${img.slug}-${img._id}`;
+
+      card.className =
+      "upload-card";
+
+      card.innerHTML = `
+
+        <img
+          src="${thumbUrl}"
+          alt="${img.alt || img.title || ''}"
+          loading="lazy"
+        >
+
+      `;
+
+      uploadsGrid.appendChild(card);
+
+    });
+
+  }
+
+  catch(err){
+
+    console.error(
+      "Latest uploads error:",
+      err
+    );
+
+  }
+
+}
+
+loadLatestUploads();
+
+const creatorsGrid =
+document.getElementById("creatorsGrid");
+
+function loadTopCreators(){
+
+  const creators = [
+
+    {
+      name: "Alex Carter",
+      avatar: "images/avatar1.jpg",
+      uploads: "12.4K",
+      downloads: "340K"
+    },
+
+    {
+      name: "Sophia Lee",
+      avatar: "images/avatar2.jpg",
+      uploads: "9.8K",
+      downloads: "280K"
+    },
+
+    {
+      name: "Daniel Smith",
+      avatar: "images/avatar3.jpg",
+      uploads: "8.6K",
+      downloads: "220K"
+    },
+
+    {
+      name: "Emma Wilson",
+      avatar: "images/avatar4.jpg",
+      uploads: "7.1K",
+      downloads: "190K"
+    }
+
+  ];
+
+  creatorsGrid.innerHTML = "";
+
+  creators.forEach((creator)=>{
+
+    creatorsGrid.innerHTML += `
+
+      <a
+        href="creator-profile.html"
+        class="creator-card"
+      >
+
+        <img
+          src="${creator.avatar}"
+          alt="${creator.name}"
+        >
+
+        <h3>${creator.name}</h3>
+
+        <div class="creator-stats">
+
+          <span>
+            ${creator.uploads} Uploads
+          </span>
+
+          <span>
+            ${creator.downloads} Downloads
+          </span>
+
+        </div>
+
+      </a>
+
+    `;
+
+  });
+
+}
+
+loadTopCreators();
+
+const featuredList =
+document.getElementById("featuredList");
+
+function loadFeaturedPhotographers(){
+
+  const photographers = [
+
+    {
+      name:"James Walker",
+      country:"United States",
+      avatar:"images/avatar1.jpg",
+      uploads:"5.4K",
+      badge:"Featured Creator"
+    },
+
+    {
+      name:"Sophia Johnson",
+      country:"United Kingdom",
+      avatar:"images/avatar2.jpg",
+      uploads:"4.8K",
+      badge:"Top Photographer"
+    },
+
+    {
+      name:"Ethan Brown",
+      country:"Canada",
+      avatar:"images/avatar3.jpg",
+      uploads:"3.9K",
+      badge:"Featured Creator"
+    },
+
+    {
+      name:"Olivia Davis",
+      country:"Australia",
+      avatar:"images/avatar4.jpg",
+      uploads:"3.4K",
+      badge:"Top Photographer"
+    }
+
+  ];
+
+  featuredList.innerHTML = "";
+
+  photographers.forEach((user)=>{
+
+    featuredList.innerHTML += `
+
+      <a
+        href="creator-profile.html"
+        class="featured-user"
+      >
+
+        <img
+          src="${user.avatar}"
+          alt="${user.name}"
+        >
+
+        <div class="featured-info">
+
+          <h3>${user.name}</h3>
+
+          <p>${user.country}</p>
+
+          <span>${user.uploads} Uploads</span>
+
+        </div>
+
+        <div class="featured-badge">
+          ${user.badge}
+        </div>
+
+      </a>
+
+    `;
+
+  });
+
+}
+
+loadFeaturedPhotographers();
+
+const rankingList =
+document.getElementById("rankingList");
+
+function loadRankings(){
+
+  const rankings = [
+
+    {
+      rank:1,
+      name:"Alex Carter",
+      points:"98.2K"
+    },
+
+    {
+      rank:2,
+      name:"Sophia Lee",
+      points:"92.7K"
+    },
+
+    {
+      rank:3,
+      name:"James Walker",
+      points:"87.5K"
+    },
+
+    {
+      rank:4,
+      name:"Emma Wilson",
+      points:"81.3K"
+    },
+
+    {
+      rank:5,
+      name:"Daniel Smith",
+      points:"76.4K"
+    }
+
+  ];
+
+  rankingList.innerHTML = "";
+
+  rankings.forEach((user)=>{
+
+    rankingList.innerHTML += `
+
+      <div class="ranking-item">
+
+        <div class="ranking-left">
+
+          <div class="rank-number">
+            #${user.rank}
+          </div>
+
+          <div>
+
+            <h4>${user.name}</h4>
+
+            <span>
+              Creator Score
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="ranking-score">
+          ${user.points}
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+loadRankings();
+
+const challengesGrid =
+document.getElementById("challengesGrid");
+
+function loadChallenges(){
+
+  const challenges = [
+
+    {
+      title:"Nature Photography",
+      submissions:"12.4K",
+      deadline:"7 Days Left"
+    },
+
+    {
+      title:"Urban Street Life",
+      submissions:"8.9K",
+      deadline:"5 Days Left"
+    },
+
+    {
+      title:"Minimal Wallpapers",
+      submissions:"6.3K",
+      deadline:"10 Days Left"
+    },
+
+    {
+      title:"Travel Stories",
+      submissions:"9.7K",
+      deadline:"3 Days Left"
+    }
+
+  ];
+
+  challengesGrid.innerHTML = "";
+
+  challenges.forEach((item)=>{
+
+    challengesGrid.innerHTML += `
+
+      <div class="challenge-card">
+
+        <h3>${item.title}</h3>
+
+        <p>
+          ${item.submissions} submissions
+        </p>
+
+        <span>
+          ${item.deadline}
+        </span>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+loadChallenges();
+
+</script>

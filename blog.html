@@ -21,7 +21,7 @@
 
   <header class="navbar">
 
-    <a href="index.html" class="logo">Pixaora</a>
+    <a href="index.html" class="logo">Pixeora</a>
 
     <nav class="nav-links">
 
@@ -81,10 +81,11 @@
 
         <input
           type="text"
+          id="blogSearchInput"
           placeholder="Search articles..."
         />
 
-        <button>
+        <button id="blogSearchBtn">
           Search
         </button>
 
@@ -103,7 +104,7 @@
       <div class="featured-image">
 
         <img
-          src="images/blog/featured.jpg"
+          src="images/featured.png"
           alt=""
         />
 
@@ -130,7 +131,7 @@
           <div class="author">
 
             <img
-              src="images/users/user-1.jpg"
+              src="images/user-1.png"
               alt=""
             />
 
@@ -169,32 +170,44 @@
 
     <div class="categories-grid">
 
-      <a href="#" class="category-card">
-        <img src="images/categories/cars.jpg">
+      <a
+        href="blog-category.html?category=cars"
+        class="category-card"
+      >
+        <img src="images/cars.jpg">
         <div class="category-overlay">
           <h3>Cars</h3>
           <span>128 Articles</span>
         </div>
       </a>
 
-      <a href="#" class="category-card">
-        <img src="images/categories/wallpapers.jpg">
+      <a
+        href="blog-category.html?category=wallpapers"
+        class="category-card"
+      >
+        <img src="images/wallpaper.jpg">
         <div class="category-overlay">
           <h3>Wallpapers</h3>
           <span>96 Articles</span>
         </div>
       </a>
 
-      <a href="#" class="category-card">
-        <img src="images/categories/photography.jpg">
+      <a
+        href="blog-category.html?category=photography"
+        class="category-card"
+      >
+        <img src="images/photography.jpg">
         <div class="category-overlay">
           <h3>Photography</h3>
           <span>74 Articles</span>
         </div>
       </a>
 
-      <a href="#" class="category-card">
-        <img src="images/categories/ai.jpg">
+      <a
+        href="blog-category.html?category=ai-tools"
+        class="category-card"
+      >
+        <img src="images/ai.png">
         <div class="category-overlay">
           <h3>AI Tools</h3>
           <span>43 Articles</span>
@@ -230,181 +243,10 @@
 
     </div>
 
-    <div class="posts-grid">
-
-      <!-- CARD -->
-
-      <a href="blog-post.html" class="post-card">
-
-        <div class="post-image">
-
-          <img src="images/blog/blog-1.jpg">
-
-        </div>
-
-        <div class="post-content">
-
-          <span class="post-category">
-            Wallpapers
-          </span>
-
-          <h3>
-            Best Porsche GT3 RS Wallpapers
-            For AMOLED Displays
-          </h3>
-
-          <p>
-            Discover ultra realistic Porsche wallpapers
-            optimized for premium mobile and desktop screens.
-          </p>
-
-          <div class="post-meta">
-
-            <span>
-              <i class="fa-regular fa-clock"></i>
-              5 min read
-            </span>
-
-            <span>
-              May 28, 2026
-            </span>
-
-          </div>
-
-        </div>
-
-      </a>
-
-      <!-- CARD -->
-
-      <a href="blog-post.html" class="post-card">
-
-        <div class="post-image">
-
-          <img src="images/blog/blog-2.jpg">
-
-        </div>
-
-        <div class="post-content">
-
-          <span class="post-category">
-            AI Tools
-          </span>
-
-          <h3>
-            AI Background Removal:
-            Future Of Content Creation
-          </h3>
-
-          <p>
-            Explore how AI-powered tools are changing
-            the workflow of creators and photographers.
-          </p>
-
-          <div class="post-meta">
-
-            <span>
-              <i class="fa-regular fa-clock"></i>
-              7 min read
-            </span>
-
-            <span>
-              May 27, 2026
-            </span>
-
-          </div>
-
-        </div>
-
-      </a>
-
-      <!-- CARD -->
-
-      <a href="blog-post.html" class="post-card">
-
-        <div class="post-image">
-
-          <img src="images/blog/blog-3.jpg">
-
-        </div>
-
-        <div class="post-content">
-
-          <span class="post-category">
-            Photography
-          </span>
-
-          <h3>
-            Cinematic Night Photography Tips
-            For Urban Creators
-          </h3>
-
-          <p>
-            Learn how to capture cyberpunk-style city shots
-            with professional lighting and editing.
-          </p>
-
-          <div class="post-meta">
-
-            <span>
-              <i class="fa-regular fa-clock"></i>
-              6 min read
-            </span>
-
-            <span>
-              May 25, 2026
-            </span>
-
-          </div>
-
-        </div>
-
-      </a>
-
-      <!-- CARD -->
-
-      <a href="blog-post.html" class="post-card">
-
-        <div class="post-image">
-
-          <img src="images/blog/blog-4.jpg">
-
-        </div>
-
-        <div class="post-content">
-
-          <span class="post-category">
-            Travel
-          </span>
-
-          <h3>
-            Top Nature Wallpaper Trends
-            In 2026
-          </h3>
-
-          <p>
-            Explore mountain, forest and cinematic landscape
-            wallpapers trending worldwide.
-          </p>
-
-          <div class="post-meta">
-
-            <span>
-              <i class="fa-regular fa-clock"></i>
-              4 min read
-            </span>
-
-            <span>
-              May 22, 2026
-            </span>
-
-          </div>
-
-        </div>
-
-      </a>
-
-    </div>
+    <div
+      class="posts-grid"
+      id="postsGrid"
+    ></div>
 
   </section>
 
@@ -440,6 +282,7 @@
 
   </section>
 
+
   <!-- FOOTER -->
 
   <footer class="footer">
@@ -447,45 +290,36 @@
     <div class="footer-grid">
 
       <div>
-
-        <h2>Pixaora</h2>
-
-        <p>
-          Stunning wallpapers. Totally free.
-        </p>
-
+        <h2>Pixeora</h2>
+        <p>Stunning wallpapers. Totally free.</p>
       </div>
 
       <div>
-
         <h4>PRODUCT</h4>
 
         <a href="explore.html">Explore</a>
         <a href="collections.html">Collections</a>
-        <a href="ai-tools.html">AI Tools</a>
+        <a href="community.html">Community</a>
         <a href="blog.html">Blog</a>
-
       </div>
 
       <div>
-
         <h4>COMPANY</h4>
 
         <a href="about_pixeora.html">About Us</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="contact.html">Contact</a>
-
+        <a href="stories.html">Stories</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="faq.html">FAQS</a>
       </div>
 
       <div>
+        <h4>Legal</h4>
 
-        <h4>COMMUNITY</h4>
-
-        <a href="community.html">Community</a>
-        <a href="creators.html">Creators</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="challenges.html">Challenges</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="privacy-policy.html">Privacy-Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="dmca.html">DMCA</a>
+        <a href="contact.html">Contact</a>
 
       </div>
 
@@ -497,12 +331,9 @@
           Subscribe to our newsletter for the latest updates.
         </p>
 
-        <div class="footer-newsletter">
+        <div class="newsletter">
 
-          <input
-            type="email"
-            placeholder="Enter your email"
-          />
+          <input type="email" placeholder="Enter your email">
 
           <button>
             <i class="fa-solid fa-arrow-right"></i>
@@ -534,4 +365,225 @@
   </footer>
 
 </body>
-</html>
+
+<script>
+
+document
+
+.getElementById("blogSearchBtn")
+
+.addEventListener("click",()=>{
+
+  const q =
+
+  document
+
+  .getElementById("blogSearchInput")
+
+  .value
+
+  .trim();
+
+  if(!q) return;
+
+  window.location.href =
+
+  `blog-search.html?q=${encodeURIComponent(q)}`;
+
+});
+
+
+
+document
+
+.getElementById("blogSearchInput")
+
+.addEventListener("keypress",(e)=>{
+
+  if(e.key === "Enter"){
+
+    document
+
+    .getElementById("blogSearchBtn")
+
+    .click();
+
+  }
+
+});
+
+
+</script>
+
+<script>
+
+const postsGrid =
+document.getElementById("postsGrid");
+
+function loadBlogPosts(){
+
+  const posts = [
+
+    {
+      category:"Wallpapers",
+      title:"Best Porsche GT3 RS Wallpapers For AMOLED Displays",
+      image:"images/porsche.jpg",
+      excerpt:"Discover ultra realistic Porsche wallpapers optimized for premium screens.",
+      date:"May 28, 2026",
+      readTime:"5 min read",
+      slug:"best-porsche-gt3-rs-wallpapers"
+    },
+
+    {
+      category:"AI Tools",
+      title:"AI Background Removal: Future Of Content Creation",
+      image:"images/remove-preview.jpg",
+      excerpt:"Explore how AI-powered tools are changing content creation.",
+      date:"May 27, 2026",
+      readTime:"7 min read",
+      slug:"ai-background-removal"
+    },
+
+    {
+      category:"Photography",
+      title:"Cinematic Night Photography Tips For Urban Creators",
+      image:"images/story.jpg",
+      excerpt:"Learn how to capture cyberpunk style city photography.",
+      date:"May 25, 2026",
+      readTime:"6 min read",
+      slug:"cinematic-night-photography"
+    },
+
+    {
+      category:"Travel",
+      title:"Top Nature Wallpaper Trends In 2026",
+      image:"images/nature.jpg",
+      excerpt:"Explore mountain and cinematic landscape wallpapers.",
+      date:"May 22, 2026",
+      readTime:"4 min read",
+      slug:"nature-wallpaper-trends"
+    }
+
+  ];
+
+  postsGrid.innerHTML = "";
+
+  posts.forEach((post)=>{
+
+    postsGrid.innerHTML += `
+
+      <a
+        href="blog-post.html?slug=${post.slug}"
+        class="post-card"
+      >
+
+        <div class="post-image">
+
+          <img
+            src="${post.image}"
+            alt="${post.title}"
+          >
+
+        </div>
+
+        <div class="post-content">
+
+          <span class="post-category">
+            ${post.category}
+          </span>
+
+          <h3>
+            ${post.title}
+          </h3>
+
+          <p>
+            ${post.excerpt}
+          </p>
+
+          <div class="post-meta">
+
+            <span>
+              <i class="fa-regular fa-clock"></i>
+              ${post.readTime}
+            </span>
+
+            <span>
+              ${post.date}
+            </span>
+
+          </div>
+
+        </div>
+
+      </a>
+
+    `;
+
+  });
+
+}
+
+loadBlogPosts();
+
+
+
+const articles = {
+
+  "best-porsche-gt3-rs-wallpapers": {
+
+    title:
+    "Best Porsche GT3 RS Wallpapers For AMOLED Displays",
+
+    category:
+    "Wallpapers",
+
+    image:
+    "images/blog/blog-1.jpg",
+
+    author:
+    "Liam Foster",
+
+    date:
+    "May 28, 2026",
+
+    content:`
+
+      <p>
+      Porsche GT3 RS wallpapers remain among
+      the most downloaded automotive wallpapers.
+      </p>
+
+      <h2>
+      Why AMOLED Wallpapers Look Better
+      </h2>
+
+      <p>
+      AMOLED displays create deeper blacks
+      and higher contrast.
+      </p>
+
+    `
+  }
+
+};
+
+const params =
+
+new URLSearchParams(
+window.location.search
+);
+
+const slug =
+params.get("slug");
+
+const article =
+articles[slug];
+
+if(article){
+
+  document.title =
+  article.title;
+
+} 
+
+</script>

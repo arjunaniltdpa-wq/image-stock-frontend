@@ -651,3 +651,332 @@ body{
   }
 
 }
+
+.uploads-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fill,minmax(260px,1fr));
+
+  gap:24px;
+
+}
+
+.upload-card{
+
+  display:block;
+
+  overflow:hidden;
+
+  border-radius:24px;
+
+  text-decoration:none;
+
+  background:#111827;
+
+}
+
+.upload-card img{
+
+  width:100%;
+
+  height:280px;
+
+  object-fit:cover;
+
+  display:block;
+
+  transition:.3s;
+
+}
+
+.upload-card:hover img{
+
+  transform:scale(1.05);
+
+}
+
+.creators-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(260px,1fr));
+
+  gap:24px;
+
+}
+
+.creator-card{
+
+  background:#fff;
+
+  border-radius:24px;
+
+  padding:24px;
+
+  text-align:center;
+
+  text-decoration:none;
+
+  color:#111827;
+
+  transition:.3s;
+
+  border:1px solid #e5e7eb;
+
+}
+
+.creator-card:hover{
+
+  transform:translateY(-4px);
+
+}
+
+.creator-card img{
+
+  width:90px;
+  height:90px;
+
+  border-radius:50%;
+
+  object-fit:cover;
+
+  margin-bottom:16px;
+
+}
+
+.creator-card h3{
+
+  margin-bottom:12px;
+
+}
+
+.creator-stats{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+  color:#6b7280;
+
+  font-size:14px;
+
+}
+
+.featured-list{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.featured-user{
+
+  display:flex;
+  align-items:center;
+  gap:16px;
+
+  background:#fff;
+
+  padding:18px;
+
+  border-radius:20px;
+
+  text-decoration:none;
+
+  color:#111827;
+
+  border:1px solid #e5e7eb;
+
+  transition:.3s;
+}
+
+.featured-user:hover{
+  transform:translateY(-3px);
+}
+
+.featured-user img{
+
+  width:70px;
+  height:70px;
+
+  border-radius:50%;
+
+  object-fit:cover;
+}
+
+.featured-info{
+  flex:1;
+}
+
+.featured-info h3{
+  margin-bottom:4px;
+}
+
+.featured-info p{
+  color:#6b7280;
+  margin-bottom:6px;
+}
+
+.featured-info span{
+  font-size:13px;
+  color:#9ca3af;
+}
+
+.featured-badge{
+
+  background:#111827;
+  color:#fff;
+
+  padding:8px 14px;
+
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:600;
+}
+
+.ranking-list{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:14px;
+
+}
+
+.ranking-item{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:#fff;
+
+  border:1px solid #e5e7eb;
+
+}
+
+.ranking-left{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+
+}
+
+.rank-number{
+
+  width:48px;
+  height:48px;
+
+  border-radius:14px;
+
+  background:#111827;
+
+  color:#fff;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-weight:700;
+
+}
+
+.ranking-left h4{
+
+  margin-bottom:4px;
+
+}
+
+.ranking-left span{
+
+  color:#6b7280;
+
+  font-size:13px;
+
+}
+
+.ranking-score{
+
+  font-weight:700;
+
+  font-size:18px;
+
+}
+
+.challenges-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(260px,1fr));
+
+  gap:24px;
+
+}
+
+.challenge-card{
+
+  background:#fff;
+
+  border:1px solid #e5e7eb;
+
+  border-radius:24px;
+
+  padding:24px;
+
+  transition:.3s;
+
+}
+
+.challenge-card:hover{
+
+  transform:translateY(-4px);
+
+}
+
+.challenge-card h3{
+
+  margin-bottom:12px;
+
+}
+
+.challenge-card p{
+
+  color:#6b7280;
+
+  margin-bottom:14px;
+
+}
+
+.challenge-card span{
+
+  display:inline-block;
+
+  background:#111827;
+
+  color:#fff;
+
+  padding:8px 14px;
+
+  border-radius:999px;
+
+  font-size:12px;
+
+}

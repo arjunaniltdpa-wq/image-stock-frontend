@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pixaora Collections</title>
+  <title>Pixeora Collections</title>
 
   <link rel="stylesheet" href="css/collection.css" />
 
@@ -17,7 +17,7 @@
   <!-- NAVBAR -->
   <header class="navbar">
 
-    <a href="index.html" class="logo">Pixaora</a>
+    <a href="index.html" class="logo">Pixeora</a>
 
     <nav class="nav-links">
       <a href="index.html">Home</a>
@@ -40,7 +40,7 @@
   <section class="collections-hero">
 
     <img
-      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1800&auto=format&fit=crop"
+      src="images/banner.jpg"
       alt=""
       class="hero-bg"
     />
@@ -58,14 +58,14 @@
           </p>
         </div>
 
-        <a href="create-collection.html" class="create-btn">
+        <button class="create-btn" id="openCollectionModal">
           <i class="fa-solid fa-plus"></i>
           Create Collection
-        </a>
+        </button>
 
       </div>
 
-      <div class="search-bar">
+      <div class="search-bar">  
 
         <i class="fa-solid fa-magnifying-glass"></i>
 
@@ -127,12 +127,13 @@
   </main>
 
   <!-- FOOTER -->
+
   <footer class="footer">
 
     <div class="footer-grid">
 
       <div>
-        <h2>Pixaora</h2>
+        <h2>Pixeora</h2>
         <p>Stunning wallpapers. Totally free.</p>
       </div>
 
@@ -141,7 +142,7 @@
 
         <a href="explore.html">Explore</a>
         <a href="collections.html">Collections</a>
-        <a href="ai-tools.html">AI Tools</a>
+        <a href="community.html">Community</a>
         <a href="blog.html">Blog</a>
       </div>
 
@@ -149,37 +150,47 @@
         <h4>COMPANY</h4>
 
         <a href="about_pixeora.html">About Us</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="privacy.html">Privacy Policy</a>
+        <a href="stories.html">Stories</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="faq.html">FAQS</a>
+      </div>
+
+      <div>
+        <h4>Legal</h4>
+
+        <a href="cookies.html">Cookies</a>
+        <a href="privacy-policy.html">Privacy-Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="dmca.html">DMCA</a>
         <a href="contact.html">Contact</a>
+
       </div>
 
       <div>
-        <h4>COMMUNITY</h4>
 
-        <a href="community.html">Community</a>
-        <a href="creators.html">Creators</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="challenges.html">Challenges</a>
-      </div>
-
-      <div>
         <h4>STAY CONNECTED</h4>
 
-        <p>Subscribe to our newsletter for the latest updates.</p>
+        <p>
+          Subscribe to our newsletter for the latest updates.
+        </p>
 
         <div class="newsletter">
-          <input type="email" placeholder="Enter your email" />
+
+          <input type="email" placeholder="Enter your email">
+
           <button>
             <i class="fa-solid fa-arrow-right"></i>
           </button>
+
         </div>
 
         <div class="socials">
+
           <a href="#"><i class="fab fa-instagram"></i></a>
           <a href="#"><i class="fab fa-x-twitter"></i></a>
           <a href="#"><i class="fab fa-pinterest"></i></a>
           <a href="#"><i class="fab fa-youtube"></i></a>
+
         </div>
 
       </div>
@@ -187,180 +198,230 @@
     </div>
 
     <div class="footer-bottom">
+
       <p>© 2026 Pixaora. All rights reserved.</p>
+
       <p>Made with ❤️ for creators and dreamers.</p>
+
     </div>
 
   </footer>
 
   <script src="collections.js"></script>
 
+  <div class="collection-modal" id="collectionModal">
+
+    <div class="collection-modal-content">
+
+      <button
+        class="close-modal"
+        id="closeCollectionModal"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="modal-header">
+
+        <h2>Create Collection</h2>
+
+        <p>
+          Organize your favorite wallpapers, photos and PNG assets.
+        </p>
+
+      </div>
+
+      <div class="cover-upload">
+
+        <div class="cover-preview">
+
+          <i class="fa-regular fa-images"></i>
+
+          <span>Collection Cover</span>
+
+        </div>
+
+        <button class="upload-cover-btn">
+
+          <i class="fa-solid fa-upload"></i>
+          Upload Cover
+
+        </button>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Collection Name</label>
+
+        <input
+          type="text"
+          id="collectionName"
+          placeholder="Dream Cars"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Description</label>
+
+        <textarea
+          id="collectionDescription"
+          placeholder="Describe this collection..."
+        ></textarea>
+
+      </div>
+
+      <div class="modal-row">
+
+        <div class="form-group">
+
+          <label>Privacy</label>
+
+          <select id="collectionPrivacy">
+
+            <option value="public">
+              Public
+            </option>
+
+            <option value="private">
+              Private
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          class="cancel-btn"
+          id="closeCollectionModal2"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="create-collection-submit"
+          id="createCollectionBtn"
+        >
+          Create Collection
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </body>
 
 <script>
 
-// collections.js
-
-const collections = [
-  {
-    title: "Best Porsche Wallpapers",
-    images: 32,
-    privacy: "Public",
-    creator: "Liam Foster",
-    tab: "all",
-    image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/men/32.jpg",
-    link:
-      "collection-details.html?id=porsche"
-  },
-
-  {
-    title: "Cinematic Food",
-    images: 45,
-    privacy: "Public",
-    creator: "Emma Wilson",
-    tab: "following",
-    image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/women/44.jpg",
-    link:
-      "collection-details.html?id=food"
-  },
-
-  {
-    title: "Nature Escapes",
-    images: 28,
-    privacy: "Public",
-    creator: "Noah Anderson",
-    tab: "explore",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/men/41.jpg",
-    link:
-      "collection-details.html?id=nature"
-  },
-
-  {
-    title: "Cyberpunk Cityscapes",
-    images: 50,
-    privacy: "Private",
-    creator: "Liam Foster",
-    tab: "all",
-    image:
-      "https://images.unsplash.com/photo-1520034475321-cbe63696469a?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/men/32.jpg",
-    link:
-      "collection-details.html?id=cyberpunk"
-  },
-
-  {
-    title: "Architectural Wonders",
-    images: 37,
-    privacy: "Public",
-    creator: "Olivia Bennett",
-    tab: "following",
-    image:
-      "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/women/68.jpg",
-    link:
-      "collection-details.html?id=architecture"
-  },
-
-  {
-    title: "Minimalist Backgrounds",
-    images: 60,
-    privacy: "Public",
-    creator: "Liam Foster",
-    tab: "explore",
-    image:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/men/32.jpg",
-    link:
-      "collection-details.html?id=minimal"
-  },
-
-  {
-    title: "Summer Vibes",
-    images: 23,
-    privacy: "Public",
-    creator: "Sophia Carter",
-    tab: "all",
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/women/21.jpg",
-    link:
-      "collection-details.html?id=summer"
-  },
-
-  {
-    title: "Wildlife Moments",
-    images: 42,
-    privacy: "Private",
-    creator: "Noah Anderson",
-    tab: "following",
-    image:
-      "https://images.unsplash.com/photo-1474511320723-9a56873867b5?q=80&w=1200&auto=format&fit=crop",
-    avatar:
-      "https://randomuser.me/api/portraits/men/41.jpg",
-    link:
-      "collection-details.html?id=wildlife"
-  }
-];
+const STORAGE_KEY = "pixeoraCollections";
 
 const grid = document.getElementById("collectionsGrid");
-const tabs = document.querySelectorAll(".tab");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
 
-let currentFilter = "all";
+const modal = document.getElementById("collectionModal");
+const openBtn = document.getElementById("openCollectionModal");
+const closeBtn = document.getElementById("closeCollectionModal");
+const closeBtn2 = document.getElementById("closeCollectionModal2");
 
-function renderCollections(data){
+const createCollectionBtn =
+document.getElementById("createCollectionBtn");
+
+/* ------------------------------
+   COLLECTION STORAGE
+--------------------------------*/
+
+function getCollections(){
+
+  return JSON.parse(
+    localStorage.getItem(STORAGE_KEY)
+  ) || [];
+
+}
+
+function saveCollections(collections){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(collections)
+  );
+
+}
+
+/* ------------------------------
+   RENDER COLLECTIONS
+--------------------------------*/
+
+function renderCollections(collections){
 
   grid.innerHTML = "";
 
-  data.forEach(item => {
+  if(collections.length === 0){
 
-    const card = document.createElement("a");
+    grid.innerHTML = `
+      <div class="empty-state">
 
-    card.className = "collection-card";
-    card.href = item.link;
+        <h3>No Collections Yet</h3>
+
+        <p>
+          Create your first collection to save images.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  collections.forEach(collection => {
+
+    const card =
+    document.createElement("div");
+
+    card.className =
+    "collection-card";
+
+    const coverImage =
+      collection.coverImage ||
+      "images/default-collection.jpg";
 
     card.innerHTML = `
+
       <div class="card-image">
 
-        <img src="${item.image}" alt="${item.title}">
+        <img
+          src="${coverImage}"
+          alt="${collection.title}"
+        >
 
         <div class="card-overlay">
 
-          <h3>${item.title}</h3>
+          <h3>${collection.title}</h3>
 
           <div class="meta">
-            <span>${item.images} images</span>
-            <span class="badge">${item.privacy}</span>
+
+            <span>
+              ${collection.images.length}
+              images
+            </span>
+
+            <span class="badge">
+              ${collection.privacy}
+            </span>
+
           </div>
 
         </div>
 
       </div>
 
-      <div class="card-bottom">
-
-        <div class="user">
-          <img src="${item.avatar}">
-          <span>${item.creator}</span>
-        </div>
-
-        <i class="fa-regular fa-bookmark bookmark"></i>
-
-      </div>
     `;
 
     grid.appendChild(card);
@@ -369,67 +430,282 @@ function renderCollections(data){
 
 }
 
-function filterCollections(){
+/* ------------------------------
+   LOAD COLLECTIONS
+--------------------------------*/
 
-  const search = searchInput.value.toLowerCase();
+function loadCollections(){
 
-  let filtered = collections.filter(item => {
+  let collections =
+  getCollections();
 
-    const matchesTab =
-      currentFilter === "all"
-        ? true
-        : item.tab === currentFilter;
+  const search =
+  searchInput.value.toLowerCase();
 
-    const matchesSearch =
-      item.title.toLowerCase().includes(search);
+  if(search){
 
-    return matchesTab && matchesSearch;
+    collections =
+    collections.filter(item =>
 
-  });
+      item.title
+      .toLowerCase()
+      .includes(search)
 
-  const sortValue = sortSelect.value;
+    );
+
+  }
+
+  const sortValue =
+  sortSelect.value;
+
+  if(sortValue === "name"){
+
+    collections.sort((a,b)=>
+
+      a.title.localeCompare(b.title)
+
+    );
+
+  }
 
   if(sortValue === "images-high"){
-    filtered.sort((a,b)=> b.images - a.images);
+
+    collections.sort((a,b)=>
+
+      b.images.length -
+      a.images.length
+
+    );
+
   }
 
   if(sortValue === "images-low"){
-    filtered.sort((a,b)=> a.images - b.images);
-  }
 
-  if(sortValue === "name"){
-    filtered.sort((a,b)=>
-      a.title.localeCompare(b.title)
+    collections.sort((a,b)=>
+
+      a.images.length -
+      b.images.length
+
     );
+
   }
 
-  renderCollections(filtered);
+  renderCollections(collections);
 
 }
 
-tabs.forEach(tab => {
+/* ------------------------------
+   CREATE COLLECTION
+--------------------------------*/
 
-  tab.addEventListener("click", ()=>{
+function createCollection(){
 
-    tabs.forEach(btn => btn.classList.remove("active"));
+  const name =
+  document
+  .getElementById("collectionName")
+  .value
+  .trim();
 
-    tab.classList.add("active");
+  const description =
+  document
+  .getElementById("collectionDescription")
+  .value
+  .trim();
 
-    currentFilter = tab.dataset.filter;
+  const privacy =
+  document
+  .getElementById("collectionPrivacy")
+  .value;
 
-    filterCollections();
+  if(!name){
+
+    alert(
+      "Please enter a collection name"
+    );
+
+    return;
+  }
+
+  const collections =
+  getCollections();
+
+  collections.unshift({
+
+    id: Date.now(),
+
+    title: name,
+
+    description: description,
+
+    privacy: privacy,
+
+    coverImage: "",
+
+    images: [],
+
+    createdAt:
+    new Date().toISOString()
 
   });
 
-});
+  saveCollections(collections);
 
-searchInput.addEventListener("input", filterCollections);
+  document
+  .getElementById("collectionName")
+  .value = "";
 
-sortSelect.addEventListener("change", filterCollections);
+  document
+  .getElementById("collectionDescription")
+  .value = "";
+
+  modal.classList.remove("show");
+
+  loadCollections();
+
+}
+
+/* ------------------------------
+   MODAL EVENTS
+--------------------------------*/
+
+if(openBtn){
+
+  openBtn.addEventListener(
+    "click",
+    () => {
+
+      modal.classList.add("show");
+
+    }
+  );
+
+}
+
+if(closeBtn){
+
+  closeBtn.addEventListener(
+    "click",
+    () => {
+
+      modal.classList.remove("show");
+
+    }
+  );
+
+}
+
+if(closeBtn2){
+
+  closeBtn2.addEventListener(
+    "click",
+    () => {
+
+      modal.classList.remove("show");
+
+    }
+  );
+
+}
+
+/* ------------------------------
+   CREATE BUTTON
+--------------------------------*/
+
+if(createCollectionBtn){
+
+  createCollectionBtn.addEventListener(
+    "click",
+    createCollection
+  );
+
+}
+
+/* ------------------------------
+   SEARCH + SORT
+--------------------------------*/
+
+searchInput.addEventListener(
+  "input",
+  loadCollections
+);
+
+sortSelect.addEventListener(
+  "change",
+  loadCollections
+);
 
 document
-  .getElementById("searchBtn")
-  .addEventListener("click", filterCollections);
+.getElementById("searchBtn")
+.addEventListener(
+  "click",
+  loadCollections
+);
 
-renderCollections(collections);
+/* ------------------------------
+   IMAGE SAVE SUPPORT
+--------------------------------*/
+
+/*
+Future image page:
+
+saveImageToCollection(
+  collectionId,
+  imageData
+)
+
+imageData example:
+
+{
+  id:"img123",
+  imageUrl:"...",
+  title:"Porsche Wallpaper"
+}
+*/
+
+function saveImageToCollection(
+  collectionId,
+  imageData
+){
+
+  const collections =
+  getCollections();
+
+  const collection =
+  collections.find(
+
+    item =>
+    item.id == collectionId
+
+  );
+
+  if(!collection)
+  return;
+
+  const exists =
+  collection.images.some(
+
+    image =>
+    image.id === imageData.id
+
+  );
+
+  if(exists)
+  return;
+
+  collection.images.push(
+    imageData
+  );
+
+  saveCollections(
+    collections
+  );
+
+}
+
+/* ------------------------------
+   INITIAL LOAD
+--------------------------------*/
+
+loadCollections();
+
 </script>

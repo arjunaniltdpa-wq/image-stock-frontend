@@ -13,211 +13,93 @@
     rel="stylesheet"
   />
 
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
   <link rel="stylesheet" href="css/explore.css" />
 </head>
 <body>
   
-<header class="navbar">
+  <header class="navbar">
 
-  <div class="nav-container">
-
-    <!-- LOGO -->
-
-    <a href="index.html" class="logo">
-      Pixeora
-    </a>
-
-
-
-    <!-- NAVIGATION -->
+    <a href="index.html" class="logo">Pixeora</a>
 
     <nav class="nav-links">
 
-      <a href="index.html">
-        Home
-      </a>
-
-      <a
-        href="explore.html"
-        class="active"
-      >
-        Explore
-      </a>
-
-      <a href="collections.html">
-        Collections
-      </a>
-
-      <a href="community.html">
-        Community
-      </a>
-
-      <a href="blog.html">
-        Blog
-      </a>
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="collection.html">Collections</a>
+      <a href="community.html">Community</a>
+      <a href="blog.html" class="active">Blog</a>
 
     </nav>
 
-
-
-    <!-- RIGHT SIDE -->
-
     <div class="nav-right">
 
-      <a href="upload.html">
-        Upload
-      </a>
+      <a href="upload.html">Upload</a>
+      <a href="login.html">Login</a>
 
-      <a href="login.html">
-        Login
-      </a>
+      <a href="join.html" class="join-btn">Join</a>
 
-      <a
-        href="join.html"
-        class="join-btn"
-      >
-        Join
-      </a>
+      <a href="ai-tools.html" class="ai-btn">AI Tools</a>
 
+    </div>
 
+  </header>
 
-      <div class="dropdown">
+<!-- EXPLORE HEADER -->
+<main class="explore-page">
 
-        <button class="dropdown-btn">
+  <section class="explore-banner">
 
-          AI Tools
+    <div class="banner-overlay">
 
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
+      <div class="banner-content">
 
-            <path
-              d="M6 9L12 15L18 9"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
+        <h1>Explore</h1>
 
-          </svg>
+        <p>
+          Discover stunning wallpapers, stock photos,
+          PNG images and creative assets.
+        </p>
 
-        </button>
+        <!-- SEARCH INSIDE BANNER -->
 
+        <div class="hero-search">
 
+          <div class="search-input">
 
-        <div class="dropdown-content">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
 
-          <a href="upscale.html">
-            Upscale
-          </a>
+              <path
+                d="M21 21L16.65 16.65M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
 
-          <a href="bgremove.html">
-            BG Remove
-          </a>
+            </svg>
 
-          <a href="imagecompressor.html">
-            Image Compressor
-          </a>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search wallpapers, PNGs, photos..."
+            >
 
-          <a href="formatconverter.html">
-            Format Converter
-          </a>
+          </div>
+
+          <button class="search-btn">
+            Search
+          </button>
 
         </div>
 
       </div>
 
     </div>
-  </div>
-</header>
-
-
-
-<!-- EXPLORE HEADER -->
-
-<main class="explore-page">
-
-  <section class="hero">
-
-    <h1>
-      Explore
-    </h1>
-
-    <p>
-      Discover stunning wallpapers and stock images.
-    </p>
 
   </section>
-
-
-  <!-- SEARCH -->
-
-  <section class="search-wrapper">
-
-    <div class="search-bar">
-
-      <div class="search-input">
-
-        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-
-          <path
-            d="M21 21L16.65 16.65M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-
-        </svg>
-
-
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search wallpapers, backgrounds, photos..."
-        >
-
-      </div>
-
-
-
-      <div class="search-divider"></div>
-
-
-
-      <select class="search-select">
-
-        <option value="all">
-          All images
-        </option>
-
-        <option value="wallpapers">
-          Wallpapers
-        </option>
-
-        <option value="photos">
-          Photography
-        </option>
-
-        <option value="png">
-          PNG
-        </option>
-
-      </select>
-
-
-
-      <button class="search-btn">
-        Search
-      </button>
-
-    </div>
-
-  </section>
-
 
 
   <!-- TOP FILTER -->
@@ -409,137 +291,70 @@
 
 </main>
 
-
-
 <!-- FOOTER -->
 
 <footer class="footer">
 
-  <div class="footer-container">
+  <div class="footer-grid">
 
-    <div class="footer-brand">
+    <div>
+      <h2>Pixeora</h2>
+      <p>Stunning wallpapers. Totally free.</p>
+    </div>
 
-      <a
-        href="index.html"
-        class="footer-logo"
-      >
-        Pixeora
-      </a>
+    <div>
+      <h4>PRODUCT</h4>
 
-      <p>
-        Stunning wallpapers. Totally free.
-      </p>
+      <a href="explore.html">Explore</a>
+      <a href="collections.html">Collections</a>
+      <a href="community.html">Community</a>
+      <a href="blog.html">Blog</a>
+    </div>
+
+    <div>
+      <h4>COMPANY</h4>
+
+      <a href="about_pixeora.html">About Us</a>
+      <a href="stories.html">Stories</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="faq.html">FAQS</a>
+    </div>
+
+    <div>
+      <h4>Legal</h4>
+
+      <a href="cookies.html">Cookies</a>
+      <a href="privacy-policy.html">Privacy-Policy</a>
+      <a href="terms.html">Terms</a>
+      <a href="dmca.html">DMCA</a>
+      <a href="contact.html">Contact</a>
 
     </div>
 
+    <div>
 
+      <h4>STAY CONNECTED</h4>
 
-    <div class="footer-links">
+      <p>
+        Subscribe to our newsletter for the latest updates.
+      </p>
 
+      <div class="newsletter">
 
+        <input type="email" placeholder="Enter your email">
 
-      <div class="footer-column">
-
-        <h4>
-          PRODUCT
-        </h4>
-
-        <a href="explore.html">
-          Explore
-        </a>
-
-        <a href="collections.html">
-          Collections
-        </a>
-
-        <a href="aitools.html">
-          AI Tools
-        </a>
-
-        <a href="blog.html">
-          Blog
-        </a>
+        <button>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
 
       </div>
 
+      <div class="socials">
 
-
-      <div class="footer-column">
-
-        <h4>
-          COMPANY
-        </h4>
-
-        <a href="about_pixeora.html">
-          About Us
-        </a>
-
-        <a href="terms.html">
-          Terms of Service
-        </a>
-
-        <a href="privacy-policy.html">
-          Privacy Policy
-        </a>
-
-        <a href="contact.html">
-          Contact
-        </a>
-
-      </div>
-
-
-
-      <div class="footer-column">
-
-        <h4>
-          COMMUNITY
-        </h4>
-
-        <a href="community.html">
-          Community
-        </a>
-
-        <a href="creators.html">
-          Creators
-        </a>
-
-        <a href="leaderboard.html">
-          Leaderboard
-        </a>
-
-        <a href="challenges.html">
-          Challenges
-        </a>
-
-      </div>
-
-
-
-      <div class="footer-column newsletter">
-
-        <h4>
-          STAY CONNECTED
-        </h4>
-
-        <p>
-          Subscribe to our newsletter for the latest updates.
-        </p>
-
-
-
-        <div class="newsletter-box">
-
-          <input
-            type="email"
-            placeholder="Enter your email"
-          >
-
-          <button>
-            →
-          </button>
-
-        </div>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-pinterest"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
 
       </div>
 
@@ -547,8 +362,18 @@
 
   </div>
 
+  <div class="footer-bottom">
+
+    <p>© 2026 Pixaora. All rights reserved.</p>
+
+    <p>Made with ❤️ for creators and dreamers.</p>
+
+  </div>
+
 </footer>
+
 </body>
+
 <script>
 
 const API_BASE =
@@ -579,30 +404,29 @@ let currentCategory = "all";
 
 const categoryQueries = {
 
-  all: "wallpapers",
+  all: "",
 
-  automotive: "car wallpaper",
+  automotive: "car",
 
-  nature: "nature wallpaper",
+  nature: "nature",
 
-  food: "food photography",
+  food: "food",
 
-  technology: "technology wallpaper",
+  technology: "technology",
 
-  architecture: "architecture wallpaper",
+  architecture: "architecture",
 
-  travel: "travel photography",
+  travel: "travel",
 
-  animals: "wildlife photography",
+  animals: "animals",
 
-  fashion: "fashion photography",
+  fashion: "fashion",
 
   street: "street photography",
 
-  wallpapers: "4k wallpaper"
+  wallpapers: "wallpaper"
 
 };
-
 
 
 /* SORT SEARCH */
@@ -645,10 +469,19 @@ async function loadImages(reset = false){
 
     /* ONLY ONE API */
 
+    let query =
+    categoryQueries[currentCategory] || "";
+
+    if(currentCategory !== "all"){
+      query =
+      categoryQueries[currentCategory] ||
+      currentCategory;
+    }
+
     const endpoint =
-
-`${API_BASE}/api/images/popular-latest?page=1&limit=200`;
-
+    query
+    ? `${API_BASE}/api/search?q=${encodeURIComponent(query)}&page=1&sort=relevant`
+    : `${API_BASE}/api/images/popular-latest?page=1&limit=200`;
 
 
     const res =
@@ -671,32 +504,6 @@ async function loadImages(reset = false){
 
     let images =
     [...data.images];
-
-
-
-    /* CATEGORY FILTER */
-
-    if(currentCategory !== "all"){
-
-      images = images.filter((img)=>{
-
-        const text = `
-
-          ${img.title || ""}
-          ${img.alt || ""}
-          ${img.tags || ""}
-          ${img.category || ""}
-
-        `.toLowerCase();
-
-
-
-        return text.includes(currentCategory);
-
-      });
-
-    }
-
 
 
     /* SORT */
@@ -902,18 +709,24 @@ function createCard(img){
 
 /* LOAD MORE */
 
-loadMoreBtn.addEventListener(
+loadMoreBtn.addEventListener("click", () => {
 
-  "click",
+  const query =
+  categoryQueries[currentCategory] ||
+  currentCategory;
 
-  ()=>{
+  if(currentCategory === "all"){
 
-    loadImages();
+    window.location.href =
+    "/search.html";
 
+    return;
   }
 
-);
+  window.location.href =
+  `/search.html?query=${encodeURIComponent(query)}`;
 
+});
 
 
 /* SEARCH */
