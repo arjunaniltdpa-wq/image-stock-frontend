@@ -23,7 +23,7 @@ if (googleBtn) {
           provider: "google",
           options: {
             redirectTo:
-              window.location.origin + "/dashboard.html"
+              window.location.origin + "/login.html"
           }
         });
 
@@ -67,7 +67,24 @@ if (loginForm) {
 
       console.log("Logged in:", data.user);
 
-      window.location.href = "dashboard.html";
+      const redirectUrl =
+      localStorage.getItem("redirectAfterLogin");
+
+      if (redirectUrl) {
+
+        localStorage.removeItem(
+          "redirectAfterLogin"
+        );
+
+        window.location.href =
+        redirectUrl;
+
+      } else {
+
+        window.location.href =
+        "dashboard.html";
+
+      }
 
     } catch (err) {
       console.error(err);

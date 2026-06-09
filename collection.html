@@ -334,6 +334,25 @@ const closeBtn2 = document.getElementById("closeCollectionModal2");
 const createCollectionBtn =
 document.getElementById("createCollectionBtn");
 
+
+
+// Check login before loading page
+
+const user = localStorage.getItem("pixeoraUser");
+
+if (!user) {
+
+  // Save page user wanted to visit
+  localStorage.setItem(
+    "redirectAfterLogin",
+    window.location.href
+  );
+
+  window.location.href = "login.html";
+
+}
+
+
 /* ------------------------------
    COLLECTION STORAGE
 --------------------------------*/

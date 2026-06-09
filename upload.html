@@ -13,8 +13,13 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="js/auth-check.js"></script>
 
 </head>
+
+
 <body>
 
   <!-- NAVBAR -->
@@ -33,17 +38,30 @@
 
     </nav>
 
-    <div class="nav-right">
+      <div class="nav-right">
 
-      <a href="login.html">Login</a>
+        <a href="ai-tools.html" class="ai-btn">
 
-      <a href="join.html" class="join-btn">
-        Join
-      </a>
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-    </div>
+          AI Tools
 
-  </header>
+        </a>
+
+        <div class="user-menu">
+
+          <img
+            id="userAvatar"
+            src="images/default-avatar.jpg"
+            alt="User"
+            class="user-avatar"
+          >
+
+        </div>
+
+      </div>
+
+    </header>
 
   <!-- HERO -->
 
@@ -420,3 +438,61 @@
   </footer>
 
 </body>
+
+<script>
+
+// Check if user is logged in
+
+const user = localStorage.getItem("pixeoraUser");
+
+if (!user) {
+
+  localStorage.setItem(
+    "redirectAfterLogin",
+    window.location.href
+  );
+
+  window.location.href = "login.html";
+
+}
+
+const SUPABASE_URL =
+"https://ulntuatfxmbcvjfqfati.supabase.co";
+
+const SUPABASE_KEY =
+"YOUR_PUBLISHABLE_KEY";
+
+const { createClient } = supabase;
+
+const supabaseClient =
+createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+(async () => {
+
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+
+  if (!user) return;
+
+  const avatar =
+  document.getElementById(
+    "userAvatar"
+  );
+
+  if (
+    user.user_metadata &&
+    user.user_metadata.avatar_url
+  ) {
+    avatar.src =
+    user.user_metadata.avatar_url;
+  }
+
+})();
+
+
+</script>
+
