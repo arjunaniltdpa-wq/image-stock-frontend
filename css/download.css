@@ -843,6 +843,25 @@ body{
   font-weight:700;
 }
 
+.image-specs {
+  margin: 30px 0;
+}
+
+.image-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.image-spec-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.image-spec-table td:first-child {
+  font-weight: 600;
+  width: 35%;
+}
+
 /* =========================================================
    RESPONSIVE
 ========================================================= */
